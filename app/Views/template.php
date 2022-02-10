@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="<?= base_url('public/main/css/styles.css') ?>">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <link rel="icon" type="image/png" href="<?= base_url('public/main/images/favico.png ') ?>" />
+  <title>Mitrarenov</title>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-top">
+      <div class="header-inner">
+        <div class="d-flex align-items-center">
+          <div class="w-100">
+            Belum memiliki akun ? <a href="<?= base_url('member/register') ?>" class="text-warning font-weight-bold">Registrasi sekarang</a>
+          </div>
+          <div class="w-100 text-right">
+            <ul class="nav justify-content-end">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="ico ico-phone"></i> <span class="font-weight-bold">Call Center</span> 0822
+                  9000 9990
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="ico ico-download"></i> <span class="font-weight-bold">Unduh Aplikasi</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="header-inner">
+        <div class="d-flex align-items-center header-row">
+          <div class="header-logo">
+            <a href="<?= base_url('/') ?>">
+              <img src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
+            </a>
+          </div>
+          <div class="header-main-nav">
+            <div class="login-mobile">
+              <a href="<?= base_url('member/login') ?>" class="nav-link px-0">
+                <i class="ico ico-user"></i> Login / Daftar
+              </a>
+            </div>
+            <?php $currentURL = current_url();?>
+            <ul class="nav main-nav">
+              <li class="nav-item">
+               
+                <a href="<?= base_url().'/' ?>" class="nav-link <?php if($currentURL == base_url().'/') echo "active"; ?>">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link <?php if($currentURL == base_url('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('tentang-kami') ?>" class="nav-link <?php if($currentURL == base_url('tentang-kami')) echo "active"; ?>">Tentang Kami</a>
+              </li>
+              <li class="nav-item">
+                <a href="#ckk" class="nav-link <?php if($currentURL == base_url('/')) echo "active"; ?>">Cara Kerja</a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('kontak') ?>" class="nav-link <?php if($currentURL == base_url('kontak')) echo "active"; ?>">Hubungi Kami</a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('artikel') ?>" class="nav-link <?php if($currentURL == base_url('artikel')) echo "active"; ?>">Artikel</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link ">Material</a>
+              </li>
+            </ul>
+            <ul class="nav justify-content-end mobile-call-center">
+              <li class="nav-item">
+                <a href="#" class="nav-link px-0">
+                  <i class="ico ico-phone"></i> <span class="font-weight-bold">Call Center</span> 0822
+                  9000 9990
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link px-0">
+                  <i class="ico ico-download"></i> <span class="font-weight-bold">Unduh Aplikasi</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="header-nav-second">
+            <ul class="nav justify-content-end">
+              <li class="nav-item">
+                <a href="keranjang.html" class="nav-link">
+                  <i class="ico ico-cart"></i>
+                  <span class="badge">1</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="percakapan.html" class="nav-link">
+                  <i class="ico ico-chat"></i>
+                  <span class="badge">2</span>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link" href="#" id="notifDropdown" role="button" data-toggle="dropdown" data-offset="40" aria-expanded="false">
+                  <i class="ico ico-bell"></i>
+                  <span class="badge">1</span>
+                </a>
+                <div class="dropdown-menu notif-dropdown dropdown-menu-right" aria-labelledby="notifDropdown">
+                  <div class="mt-3">
+                    <div class="row">
+                      <div class="col-md-4 mb-3 pl-4 text-primary font-weight-bold">Notifikasi</div>
+                      <div class="col-md-8 mb-3 text-right">
+                        <a href="#" class="read-all-notif">Tandai sudah dibaca semua <i class="ico ico-check-circle"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <a class="dropdown-item new-notif" href="#">
+                    <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore
+                      magna aliqua.
+                    </p>
+                    <p class="text-right mb-0">11.30</p>
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore
+                      magna aliqua.
+                    </p>
+                    <p class="text-right mb-0">11.30</p>
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore
+                      magna aliqua.
+                    </p>
+                    <p class="text-right mb-0">11.30</p>
+                  </a>
+                </div>
+              </li>
+              <?php $sess = session(); ?>
+              <li class="nav-item mobile-off">
+                <?php if($sess->get('logged_in') == FALSE){ ?>
+                  <a href="<?= base_url('member/login') ?>" class="nav-link">
+                    <i class="ico ico-user"></i>
+                  </a>
+                <?php }else{ ?>
+                  <a href="<?= base_url('member/logout') ?>" class="nav-link">
+                    <i class="ico ico-user"></i>
+                  </a>
+                <?php } ?>
+              </li>
+              <li class="nav-item btn-nav-mobile">
+                <a href="#" class="nav-link pr-0">
+                  <div class="humburger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <?= $this->renderSection('content') ?>
+  
+  <div class="btn-whatsapp">
+    <a href="#">
+      <div class="whatsapp-inner">
+        <i class="ico ico-whatsapp"></i> Konsultasi Gratis
+      </div>
+    </a>
+  </div>
+
+  <footer class="footer">
+    <div class="section-inner py-5">
+      <div class="row">
+        <div class="col-12 mb-4">
+          <a href="#">
+            <img src="<?= base_url('public/main/images/logo-mitrarenov-white.svg') ?>" class="img-fluid" alt="">
+          </a>
+        </div>
+        <div class="col-md-7">
+          <div class="row">
+            <div class="col-lg-5">
+              <h5>Info Kontak</h5>
+
+              <div class="d-flex mb-2 align-items-center">
+                <div class="icon-cnt">
+                  <i class="ico ico-phone-white"></i>
+                </div>
+                <div class="pl-3">0822 9000 9990</div>
+              </div>
+              <div class="d-flex mb-2 align-items-center">
+                <div class="icon-cnt">
+                  <i class="ico ico-location"></i>
+                </div>
+                <div class="pl-3">
+                  Rukan Taman Pondok Kelapa Blok F No.1, Jaktim
+                </div>
+              </div>
+              <div class="d-flex mb-2 align-items-center">
+                <div class="icon-cnt">
+                  <i class="ico ico-mail-white"></i>
+                </div>
+                <div class="pl-3">
+                  info@mitrarenov.com
+                </div>
+              </div>
+
+            </div>
+            <div class="col-lg-7">
+              <h5>Peroleh Bantuan</h5>
+              <div class="row">
+                <div class="col-lg-7">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a href="#" class="nav-link px-0">
+                        Informasi pengiriman
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Syarat & ketentuan penjualan
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Pengembalian uang
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Pemberitahuan privasi
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        FAQ Belanja
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-lg-5">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a href="#" class="nav-link px-0">
+                        Partner
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Disclaimer
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        User Privacy
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Application privacy
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Complaint
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Blog
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="row">
+            <div class="col-lg-5">
+              <h5>PARTNER</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a href="#" class="nav-link px-0">
+                    Daftar Rekanan
+                  </a>
+                  <a href="#" class="nav-link px-0">
+                    Karir
+                  </a>
+                  <a href="#" class="nav-link px-0">
+                    Perawatan Rumah
+                  </a>
+                  <a href="#" class="nav-link px-0">
+                    Interior
+                  </a>
+                  <a href="#" class="nav-link px-0">
+                    Pengurusan IMB
+                  </a>
+                  <a href="#" class="nav-link px-0">
+                    Jasa Arsitek
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-7">
+              <h5 class="mb-3">Ikuti Kami di Sosial media</h5>
+              <a href="#" class="mr-4 mb-3">
+                <i class="ico ico-facebook"></i>
+              </a>
+              <a href="#" class="mr-4 mb-3">
+                <i class="ico ico-instagram"></i>
+              </a>
+              <a href="#" class="mr-4 mb-3">
+                <i class="ico ico-twitter"></i>
+              </a>
+              <a href="#" class="mr-4 mb-3">
+                <i class="ico ico-youtube"></i>
+              </a>
+
+              <h5 class="mt-4 mb-3">Unduh Aplikasi</h5>
+              <a href="#" class="mr-4 mb-3">
+                <i class="ico ico-playstore"></i>
+              </a>
+              <a href="#" class="mr-4 mb-3">
+                <i class="ico ico-ios"></i>
+              </a>
+
+              <h5 class="mt-5 mb-3">TETAP TERHUBUNG</h5>
+              <div class="newsletter">
+                <input type="text" class="form-control" placeholder="Masukkan email anda disini">
+                <button type="submit" class="btn">LANGGANAN</button>
+              </div>
+              <p class="mt-3">
+                Tetap up to date dengan berita terbaru
+                dan penawaran khusus kami.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <h5>We accept:</h5>
+        <img src="<?= base_url('public/main/images/Logo-Midtrans.svg') ?>" class="img-fluid" alt="">
+      </div>
+
+    </div>
+    <hr>
+    <div class="section-inner py-3">
+      <div class="row">
+        <div class="col-md-6">
+          ©2021, mitrarenov
+        </div>
+        <div class="col-md-6 text-right">
+          All Rights Reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="text/javascript" src="<?= base_url('public/main/js/script-bundle.min.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/leaflet.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/leaflet-src.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-debug.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/script.min.js') ?>"></script>
+
+  <?= $this->renderSection('script') ?>
+
+  <script>
+    $('#pekerjaanGallery').magnificPopup({
+      type: 'image',
+      delegate: 'a',
+      closeOnContentClick: false,
+      tLoading: 'Загрузка...',
+      mainClass: 'mfp-zoom-in mfp-img-mobile',
+      image: {
+        markup: '<div class="mfp-figure">' +
+          '<button type="button" class="close-gallery" onClick="closePopup();"><i class="ico ico-close"></button>' +
+          '<div class="gallery-container-popup">' +
+          '<div class="mfp-img"></div>' +
+          '<div class="content-gl">' +
+          '<div class="mfp-title"></div>' +
+          '<div class="mfp-author"></div>' +
+          '</div>' +
+          '</div>' +
+          '<div class="mfp-description"></div>' +
+          '</div>',
+        cursor: 'mfp-zoom-out-cur',
+        tError: '<a href="%url%">The image</a> could not be loaded.', // Error message
+      },
+      preloader: true,
+
+      gallery: {
+        enabled: true,
+        arrowMarkup: '<button type="button" class="mfp-arrow-%dir%">%title%</button>', // markup of an arrow button
+        tPrev: '<i class="ico ico-prev"></i>', // title for left button
+        tNext: '<i class="ico ico-next"></i>', // title for right button
+      },
+      zoom: {
+        enabled: true,
+        duration: 300
+      },
+      removalDelay: 300,
+      callbacks: {
+        change: function() {
+          $(this.content)
+            .find('.mfp-description')
+            .html($(this.currItem.el).attr('data-description'));
+          $(this.content)
+            .find('.mfp-author')
+            .html($(this.currItem.el).attr('data-author'));
+        }
+      }
+    });
+
+    function closePopup() {
+      $.magnificPopup.close();
+    }
+  </script>
+</body>
+
+</html>
