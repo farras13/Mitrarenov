@@ -51,29 +51,29 @@
                 <i class="ico ico-user"></i> Login / Daftar
               </a>
             </div>
-            <?php $currentURL = current_url();?>
+            <?php $currentURL = current_url(); ?>
             <ul class="nav main-nav">
               <li class="nav-item">
-               
-                <a href="<?= base_url().'/' ?>" class="nav-link <?php if($currentURL == base_url().'/') echo "active"; ?>">Home</a>
+
+                <a href="<?= base_url() . '/' ?>" class="nav-link <?php if ($currentURL == base_url() . '/') echo "active"; ?>">Home</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link <?php if($currentURL == base_url('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
+                <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link <?php if ($currentURL == base_url('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('tentang-kami') ?>" class="nav-link <?php if($currentURL == base_url('tentang-kami')) echo "active"; ?>">Tentang Kami</a>
+                <a href="<?= base_url('tentang-kami') ?>" class="nav-link <?php if ($currentURL == base_url('tentang-kami')) echo "active"; ?>">Tentang Kami</a>
               </li>
               <li class="nav-item">
-                <a href="#ckk" class="nav-link <?php if($currentURL == base_url('/')) echo "active"; ?>">Cara Kerja</a>
+                <a href="<?= base_url('/#ckk') ?>" class="nav-link <?php if ($currentURL == base_url('/#ckk')) echo "active"; ?>">Cara Kerja</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('kontak') ?>" class="nav-link <?php if($currentURL == base_url('kontak')) echo "active"; ?>">Hubungi Kami</a>
+                <a href="<?= base_url('kontak') ?>" class="nav-link <?php if ($currentURL == base_url('kontak')) echo "active"; ?>">Hubungi Kami</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('artikel') ?>" class="nav-link <?php if($currentURL == base_url('artikel')) echo "active"; ?>">Artikel</a>
+                <a href="<?= base_url('artikel') ?>" class="nav-link <?php if ($currentURL == base_url('artikel')) echo "active"; ?>">Artikel</a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link ">Material</a>
+                <a href="<?= base_url('/#jasa') ?>" class="nav-link <?php if ($currentURL == base_url('/#jasa')) echo "active"; ?>">Order</a>
               </li>
             </ul>
             <ul class="nav justify-content-end mobile-call-center">
@@ -149,11 +149,11 @@
               </li>
               <?php $sess = session(); ?>
               <li class="nav-item mobile-off">
-                <?php if($sess->get('logged_in') == FALSE){ ?>
+                <?php if ($sess->get('logged_in') == FALSE) { ?>
                   <a href="<?= base_url('member/login') ?>" class="nav-link">
                     <i class="ico ico-user"></i>
                   </a>
-                <?php }else{ ?>
+                <?php } else { ?>
                   <a href="<?= base_url('member/logout') ?>" class="nav-link">
                     <i class="ico ico-user"></i>
                   </a>
@@ -179,7 +179,7 @@
   </header>
 
   <?= $this->renderSection('content') ?>
-  
+
   <div class="btn-whatsapp">
     <a href="#">
       <div class="whatsapp-inner">

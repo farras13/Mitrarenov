@@ -171,7 +171,7 @@ class Home extends BaseController
     {
         $model = new ArtikelModel();
         // $data['berita'] = $this->model->getAll('news')->getResult(); 
-        $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->orderBy('created', 'DESC')->paginate(5, 'berita');;
+        $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->orderBy('created', 'DESC')->paginate(5, 'berita');
         // $data['kategori'] = $this->model->getAll('category_aritkel')->getResult();
         // var_dump($data['terbaru']);die;
         $data['hot'] = $model->orderBy('created', 'ASC')->hot();

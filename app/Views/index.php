@@ -190,7 +190,7 @@
       </div>
     </div>
   </div>
-  <div class="section section-3 py-5">
+  <div class="section section-3 py-5" id="jasa">
     <div class="section-inner">
       <div class="text-center">
         <h2 class="title text-primary">Pilihan Jasa</h2>

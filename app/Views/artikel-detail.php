@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <div class="content-wrapper">
   <div class="page-title">
-    <h1>Artikel</h1>
+    <h1>Artikel Detail</h1>
   </div>
 
   <div class="container my-5">
