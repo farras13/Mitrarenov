@@ -41,7 +41,7 @@ $(function () {
     })
 
     $('.testi-slide').slick({
-        slidesToShow: 2,
+        slidesToShow: 3,
         prevArrow: '.testi-prev',
         nextArrow: '.testi-next',
         responsive: [
@@ -99,6 +99,18 @@ $(function () {
             }
         ]
     })
+    $('.nav-gallery-mobile').slick({
+        slidesToShow: 2,
+        arrows: false,
+        dots: true,
+        infinite: false,
+        variableWidth: true,
+        // centerMode: true,
+        focusOnSelect: true
+    })
+    $('.nav-gallery-mobile .nav-link').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+        console.log(nextSlide);
+    });
     $('.article-slider').slick({
         slidesToShow: 1,
         prevArrow: '.article-btn-prev',
@@ -144,6 +156,10 @@ $(function () {
 
     $('.header-nav-second .dropdown').on('hidden.bs.dropdown', function () {
         $('.dropdown-overlay').remove();
+    })
+
+    $('.nav-gallery-mobile .nav-link').click(function () {
+        $('.nav-gallery-mobile .nav-link').removeClass('active');
     })
 
 })

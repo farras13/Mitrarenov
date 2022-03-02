@@ -20,7 +20,8 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">Rp.</span>
                 </div>
-                <input type="text" id="hb" class="form-control text-center" placeholder="Harga Bangun / Renovasi Rumah">
+                <input type="text" id="hb" class="form-control text-center number-separator" placeholder="Harga Bangun / Renovasi Rumah">
+                <input type="hidden" id="result_input" name="">
               </div>
               <div class="input-group mb-3">
                 <input type="text" id="um" class="form-control text-center" placeholder="Masukkan Uang Muka ( Contoh : 30 ) ">
@@ -48,7 +49,6 @@
                   <option value="5">5 Tahun</option>
                   <option value="10">10 Tahun</option>
                   <option value="15">15 Tahun</option>
-                  <option value="20">20 Tahun</option>
                 </select>
               </div>
               <div class="text-center">
@@ -211,9 +211,14 @@
 </div>
 
 <?= $this->section('script') ?>
-
+<script src="<?= base_url('public/main/js/easy-number-separator.js') ?>"></script>
 <script>
   $(document).ready(function() {
+    easyNumberSeparator({
+      selector: '.number-separator',
+      separator: '.',
+      resultInput: '#result_input',
+    })
     $(".waktu-pinjaman").select2({
       placeholder: "Jangka Waktu Pinjaman",
       minimumResultsForSearch: -1,
@@ -233,12 +238,22 @@
   })
 </script>
 <script>
+
+
+  function formatNumber(num) {
+    return (
+      num
+      .toFixed(0)
+      .replace('.', '')
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+    )
+  }
+
   function hitungKpr() {
-    var harga = document.getElementById('hb').value;
+    var harga = document.getElementById('result_input').value;
     var dp = document.getElementById('um').value;
     var bunga = document.getElementById('bunga').value;
     var jw = $('#jangka').val();;
-    
     var bulan = jw * 12;
     var dp_persen = dp / 100;
     var bungaEfektif = bunga / 100;
@@ -247,7 +262,7 @@
 
     var _bungaPerBulan = bungaEfektif / 12;
 
-    var _bungaPerBulan1 = 1 + (bungaEfektif/12);
+    var _bungaPerBulan1 = 1 + (bungaEfektif / 12);
 
     var _bungaPerBulan1Exp = Math.pow(_bungaPerBulan1, bulan);
 
@@ -255,13 +270,13 @@
 
     var _angsuranPerBulan1 = pokok * _bungaPerBulan * _bungaPerBulan1Exp;
 
-    var angsuranPerBulan = Math.round(_angsuranPerBulan1 / _bungaPerBulan2Exp); 
-    var gajiMinumun = Math.round(angsuranPerBulan / 0.4); 
+    var angsuranPerBulan = Math.round(_angsuranPerBulan1 / _bungaPerBulan2Exp);
+    var gajiMinumun = Math.round(angsuranPerBulan / 0.4);
 
-    document.getElementById("uangmuka").innerHTML = temp_dp;
-		document.getElementById("pembiayaan").innerHTML = pokok;
-		document.getElementById("angsuran").innerHTML = angsuranPerBulan;
-		document.getElementById("minimg").innerHTML = gajiMinumun;
+    document.getElementById("uangmuka").innerHTML = formatNumber(temp_dp);
+    document.getElementById("pembiayaan").innerHTML = formatNumber(pokok);
+    document.getElementById("angsuran").innerHTML = formatNumber(angsuranPerBulan) ;
+    document.getElementById("minimg").innerHTML = formatNumber(gajiMinumun);
 
   }
 </script>

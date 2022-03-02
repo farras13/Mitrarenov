@@ -7,7 +7,7 @@
     <div class="top-banner">
 
       <?php foreach ($promo as $p) : ?>
-        <div class="slide-item">
+        <div class="slick-slide slide-item">
           <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt="">
 
           <!-- <?php if ($p->image == null) { ?>
@@ -195,10 +195,10 @@
       <div class="text-center">
         <h2 class="title text-primary">Pilihan Jasa</h2>
       </div>
-      <div class="row align-items-center mt-4">
-        <div class="col-md-3 order-md-1 order-2 category-btn-cn">
+      <div class="row align-items-center justify-content-center mt-4">
+        <!-- <div class="col-md-3 order-md-1 order-2 category-btn-cn">
           <a href="#" class="btn btn-category px-4 py-3"><i class="ico ico-menu mr-3"></i> SEMUA KATEGORI</a>
-        </div>
+        </div> -->
         <div class="col-md-9 order-md-2 order-1">
           <div class="row row-sm">
             <div class="col-lg-2 col-md-3 col-6 my-4">
@@ -270,7 +270,9 @@
               <div class="testi-content">
                 <p class="font-weight-bold mb-0"><?= $t->name ?></p>
                 <p class="mb-2"><?= strip_tags($t->company) ?></p>
-                <i>"<?= strip_tags($t->testimoni) ?>"</i>
+                <p class="text-14">
+                  <i>"<?= strip_tags($t->testimoni) ?>"</i>
+                </p>
               </div>
             </div>
           <?php endforeach; ?>
@@ -287,25 +289,36 @@
         Gallery Progress
       </h3>
 
-      <div class="nav-scroller">
-        <ul class="nav justify-content-center nav-gallery my-5">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#pekerjaan">UPDATE PEKERJAAN</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#portofolio">PORTOFOLIO</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#desain_rumah">DESAIN RUMAH</a>
-          </li>
-        </ul>
+      <!-- <div class="nav-scroller"> -->
+      <ul class="nav justify-content-center nav-gallery my-5">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#pekerjaan">UPDATE PEKERJAAN</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#portofolio">PORTOFOLIO</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#desain_rumah">DESAIN RUMAH</a>
+        </li>
+      </ul>
+      <!-- </div> -->
+      <div class="nav-gallery-mobile">
+        <div>
+          <a class="nav-link active" data-toggle="tab" href="#pekerjaan">UPDATE PEKERJAAN</a>
+        </div>
+        <div>
+          <a class="nav-link" data-toggle="tab" href="#portofolio">PORTOFOLIO</a>
+        </div>
+        <div>
+          <a class="nav-link" data-toggle="tab" href="#desain_rumah">DESAIN RUMAH</a>
+        </div>
       </div>
       <div class="tab-content">
         <div class="tab-pane fade show active" id="pekerjaan">
           <div class="row" id="pekerjaanGallery">
             <?php foreach ($galery as $g) { ?>
               <div class="col-md-3 mb-4">
-                <a href="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->title ?>">
+                <a href="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
                   <img src="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $g->judul ?></h5>
@@ -436,17 +449,17 @@
           Area Kerja Kami
         </h3>
         <div class="d-flex justify-content-center flex-wrap city-area mt-5">
-          <div class="area-item">Jakarta</div>
-          <div class="area-item">Bogor</div>
-          <div class="area-item">Depok</div>
-          <div class="area-item">Tangerang</div>
-          <div class="area-item">Bekasi</div>
-          <div class="area-item">Bandung</div>
-          <div class="area-item">Cirebon</div>
-          <div class="area-item">Indramayu</div>
-          <div class="area-item">Surabaya</div>
-          <div class="area-item">Semarang</div>
-          <div class="area-item">Jogjakarta</div>
+          <a href="#" class="area-item">Jakarta</a>
+          <a href="#" class="area-item">Bogor</a>
+          <a href="#" class="area-item">Depok</a>
+          <a href="#" class="area-item">Tangerang</a>
+          <a href="#" class="area-item">Bekasi</a>
+          <a href="#" class="area-item">Bandung</a>
+          <a href="#" class="area-item">Cirebon</a>
+          <a href="#" class="area-item">Indramayu</a>
+          <a href="#" class="area-item">Surabaya</a>
+          <a href="#" class="area-item">Semarang</a>
+          <a href="#" class="area-item">Jogjakarta</a>
         </div>
       </div>
     </div>
@@ -458,11 +471,11 @@
       Unduh Aplikasi Sekarang
     </h3>
     <div class="unduh-container mt-5">
-      <div class="row align-items-center">
-        <div class="col-md-4">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-md-4 mobile-off">
           <img src="<?= base_url('public/main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-10">
           <div class="d-flex download-btn">
             <a href="#">
               <img src="<?= base_url('public/main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
@@ -472,7 +485,7 @@
             </a>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 mobile-off">
           <img src="<?= base_url('public/main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
         </div>
       </div>
@@ -490,11 +503,11 @@
         </button>
 
         <div class="row align-items-center">
-          <div class="col-6">
+          <div class="col-md-6 col-4">
             <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
           </div>
-          <div class="col-6 text-right">
-            <h4 class="mb-0">Membangun</h4>
+          <div class="col-md-6 col-8 text-right">
+            <h4 class="mb-0 title-category-modal">Membangun</h4>
           </div>
         </div>
         <hr class="my-5">

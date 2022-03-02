@@ -95,12 +95,10 @@
 
         $(".provinsi").select2({
             placeholder: "Pilih Provinsi",
-            minimumResultsForSearch: -1,
             selectionCssClass: "pl-35",
         });
         $(".area").select2({
             placeholder: "Pilih Area",
-            minimumResultsForSearch: -1,
             selectionCssClass: "pl-35",
         });
         $(".perihal").select2({

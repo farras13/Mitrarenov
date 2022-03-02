@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="<?= base_url('public/main/css/styles.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('public/main/css/custom.css') ?>">
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <link rel="icon" type="image/png" href="<?= base_url('public/main/images/favico.png ') ?>" />
   <title>Mitrarenov</title>
@@ -98,67 +99,87 @@
                   <span class="badge">1</span>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="percakapan.html" class="nav-link">
-                  <i class="ico ico-chat"></i>
-                  <span class="badge">2</span>
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link" href="#" id="notifDropdown" role="button" data-toggle="dropdown" data-offset="40" aria-expanded="false">
-                  <i class="ico ico-bell"></i>
-                  <span class="badge">1</span>
-                </a>
-                <div class="dropdown-menu notif-dropdown dropdown-menu-right" aria-labelledby="notifDropdown">
-                  <div class="mt-3">
-                    <div class="row">
-                      <div class="col-md-4 mb-3 pl-4 text-primary font-weight-bold">Notifikasi</div>
-                      <div class="col-md-8 mb-3 text-right">
-                        <a href="#" class="read-all-notif">Tandai sudah dibaca semua <i class="ico ico-check-circle"></i></a>
+              <?php $sess = session(); ?>
+              <?php if ($sess->get('logged_in') == TRUE) { ?>
+                <li class="nav-item">
+                  <a href="percakapan.html" class="nav-link">
+                    <i class="ico ico-chat"></i>
+                    <span class="badge">2</span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link" href="#" id="notifDropdown" role="button" data-toggle="dropdown" data-offset="40" aria-expanded="false">
+                    <i class="ico ico-bell"></i>
+                    <span class="badge">1</span>
+                  </a>
+                  <div class="dropdown-menu notif-dropdown dropdown-menu-right" aria-labelledby="notifDropdown">
+                    <div class="mt-3">
+                      <div class="row">
+                        <div class="col-md-4 mb-3 pl-4 text-primary font-weight-bold">Notifikasi</div>
+                        <div class="col-md-8 mb-3 text-right">
+                          <a href="#" class="read-all-notif">Tandai sudah dibaca semua <i class="ico ico-check-circle"></i></a>
+                        </div>
                       </div>
                     </div>
+                    <a class="dropdown-item new-notif" href="#">
+                      <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      </p>
+                      <p class="text-right mb-0">11.30</p>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      </p>
+                      <p class="text-right mb-0">11.30</p>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      </p>
+                      <p class="text-right mb-0">11.30</p>
+                    </a>
                   </div>
-                  <a class="dropdown-item new-notif" href="#">
-                    <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore
-                      magna aliqua.
-                    </p>
-                    <p class="text-right mb-0">11.30</p>
+                </li>
+              <?php } ?>
+              <?php if ($sess->get('logged_in') == FALSE) { ?>
+                <li class="nav-item mobile-off">
+                  <a href="<?= base_url('member/login') ?>" class="nav-link btn btn-outline-primary ml-3">
+                    Login
                   </a>
-                  <a class="dropdown-item" href="#">
-                    <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore
-                      magna aliqua.
-                    </p>
-                    <p class="text-right mb-0">11.30</p>
+                </li>
+                <li class="nav-item mobile-off">
+                  <a href="<?= base_url('member/register') ?>" class="nav-link btn btn-primary ml-3">
+                    Register
                   </a>
-                  <a class="dropdown-item" href="#">
-                    <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore
-                      magna aliqua.
-                    </p>
-                    <p class="text-right mb-0">11.30</p>
-                  </a>
-                </div>
-              </li>
-              <?php $sess = session(); ?>
-              <li class="nav-item mobile-off">
-                <?php if ($sess->get('logged_in') == FALSE) { ?>
-                  <a href="<?= base_url('member/login') ?>" class="nav-link">
+                </li>
+              <?php } else { ?>
+                <li class="nav-item mobile-off">
+                  <a href="<?= base_url('member/logout') ?>" class="nav-link">
                     <i class="ico ico-user"></i>
+                  </a>
+                </li>
+              <?php } ?>
+              <!-- <li class="nav-item mobile-off">
+                <?php if ($sess->get('logged_in') == FALSE) { ?>
+                  <a href="<?= base_url('member/login') ?>" class="nav-link btn btn-primary ml-3">
+                    Login
                   </a>
                 <?php } else { ?>
                   <a href="<?= base_url('member/logout') ?>" class="nav-link">
                     <i class="ico ico-user"></i>
                   </a>
                 <?php } ?>
-              </li>
+              </li> -->
               <li class="nav-item btn-nav-mobile">
                 <a href="#" class="nav-link pr-0">
                   <div class="humburger-menu">
@@ -183,7 +204,7 @@
   <div class="btn-whatsapp">
     <a href="#">
       <div class="whatsapp-inner">
-        <i class="ico ico-whatsapp"></i> Konsultasi Gratis
+        <i class="ico ico-whatsapp"></i> <span>Konsultasi Gratis</span>
       </div>
     </a>
   </div>
@@ -318,6 +339,9 @@
               <a href="#" class="mr-4 mb-3">
                 <i class="ico ico-youtube"></i>
               </a>
+              <a href="#" class="mr-4 mb-3">
+                <i class="ico ico-tiktok"></i>
+              </a>
 
               <h5 class="mt-4 mb-3">Unduh Aplikasi</h5>
               <a href="#" class="mr-4 mb-3">
@@ -365,7 +389,7 @@
   <script type="text/javascript" src="<?= base_url('public/main/js/leaflet-src.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-debug.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('public/main/js/script.min.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/script.js') ?>"></script>
 
   <?= $this->renderSection('script') ?>
 

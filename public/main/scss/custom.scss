@@ -1,0 +1,142 @@
+.nav-gallery-mobile {
+    display: none;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: 23px;
+    .nav-link {
+        border-radius: 50px;
+        background: #fff;
+        color: #525050;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 15px 30px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+        text-align: center;
+        &.active {
+            color: #fff;
+            background: #45a1e2;
+        }
+    }
+    .slick-slide {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .slick-list {
+        padding-bottom: 13px;
+    }
+    .slick-dots {
+        bottom: -16px;
+    }
+}
+
+.testi-slide {
+    .slick-track {
+        display: flex !important;
+    }
+    .slick-slide {
+        height: auto;
+        > div {
+            height: 100%;
+        }
+    }
+    .testi-item {
+        height: 100%;
+        .testi-img {
+            width: 115px;
+            flex: 0 0 115px;
+            height: 115px;
+        }
+    }
+}
+
+.content-article {
+    img {
+        max-width: 100%;
+    }
+}
+
+.article-title {
+    font-size: 2rem;
+}
+
+.article-description {
+    font-size: 18px;
+    color: #333;
+    line-height: 1.89;
+    p {
+        margin: 0 0 20px;
+    }
+}
+
+.ico-tiktok {
+    width: 30px;
+    height: 30px;
+    vertical-align: sub;
+    background: url(../images/ico-tiktok.svg) no-repeat 50%/contain;
+}
+
+// Large devices (desktops, less than 1200px)
+@media (max-width: 1199.98px) {
+}
+
+// Medium devices (tablets, less than 992px)
+@media (max-width: 991.98px) {
+}
+
+// Small devices (landscape phones, less than 768px)
+@media (max-width: 767.98px) {
+    .nav-gallery,
+    .mobile-off {
+        display: none;
+    }
+    .nav-gallery-mobile {
+        display: block;
+    }
+    .unduh-container {
+        background: url(../images/unduh-bg-1.png);
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .btn-whatsapp {
+        width: 49px;
+        height: 49px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        .whatsapp-inner {
+            border: 0;
+            padding: 0;
+            span {
+                display: none;
+            }
+        }
+    }
+    .text-19 {
+        font-size: 15px !important;
+    }
+    .cat-img-i {
+        flex: 0 0 38px;
+        max-width: 39px;
+    }
+    .title-category-modal {
+        font-size: 18px;
+    }
+    .modal .close {
+        top: -15px;
+        right: -7px;
+    }
+    .auth-container .auth-inner {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .auth-container::after,
+    .auth-container::before {
+        width: 144px;
+        height: 144px;
+    }
+}
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+}

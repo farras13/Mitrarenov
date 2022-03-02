@@ -1,20 +1,23 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= base_url('public/main/css/styles.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('public/main/css/custom.css') ?>">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-    <link rel="icon" type="image/png" href="images/favico.png"/>
+    <link rel="icon" type="image/png" href="images/favico.png" />
     <title>Mitrarenov</title>
-  </head>
+</head>
 
 <body>
     <div class="auth-container">
         <div class="auth-inner">
+            <a href="javascript:window.history.go(-1);" class="back-btn"><i class="ico ico-back"></i></a>
             <div class="auth-logo">
-                <img src="<?=  base_url('public/main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
             </div>
             <div class="mt-5">
                 <form action="<?= base_url('login') ?>" method="POST">
@@ -34,7 +37,7 @@
                         <a href="#" class="text-grey">Lupa Password ?</a>
                     </div>
                     <button type="submit" class="btn btn-success btn-block font-weight-bold">MASUK</button>
-    
+
                     <div class="mt-4 text-center text-grey">
                         Belum Punya Akun ? <span><a href="<?= base_url('member/register') ?>" class="text-warning font-weight-bold">REGISTRASI SEKARANG</a></span>
                     </div>
