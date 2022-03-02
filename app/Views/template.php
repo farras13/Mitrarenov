@@ -23,7 +23,7 @@
           <div class="w-100 text-right">
             <ul class="nav justify-content-end">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="https://wa.me/6282290009990" target="_blank" class="nav-link">
                   <i class="ico ico-phone"></i> <span class="font-weight-bold">Call Center</span> 0822
                   9000 9990
                 </a>
@@ -74,7 +74,7 @@
                 <a href="<?= base_url('artikel') ?>" class="nav-link <?php if ($currentURL == base_url('artikel')) echo "active"; ?>">Artikel</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('/#jasa') ?>" class="nav-link <?php if ($currentURL == base_url('/#jasa')) echo "active"; ?>">Order</a>
+                <a href="<?= base_url('/#jasa') ?>" class="nav-link <?php if ($currentURL == base_url('/#jasa')) echo "active"; ?>">Order Jasa</a>
               </li>
             </ul>
             <ul class="nav justify-content-end mobile-call-center">
@@ -202,7 +202,7 @@
   <?= $this->renderSection('content') ?>
 
   <div class="btn-whatsapp">
-    <a href="#">
+    <a href="https://wa.me/6282290009990" target="_blank">
       <div class="whatsapp-inner">
         <i class="ico ico-whatsapp"></i> <span>Konsultasi Gratis</span>
       </div>
@@ -361,14 +361,74 @@
                 dan penawaran khusus kami.
               </p>
             </div>
+
+          </div>
+        </div>
+      </div>
+      <h5>We accept:</h5>
+      <div class="payment-bank">
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/mastercard-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/visa-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/shopepay-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/akulaku-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/uob-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/octo-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/bca-clickpay-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/indomaret-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/alfamart-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/danamon-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="row payment-options">
+
+          <div class="col-3 mb-2">
+
+          </div>
+          <div class="col-3 mb-2">
+
+          </div>
+          <div class="col-3 mb-2">
+
+          </div>
+          <div class="col-3 mb-2">
+
           </div>
         </div>
       </div>
 
-      <div class="acc">
-        <h5>We accept:</h5>
-        <img src="<?= base_url('public/main/images/Logo-Midtrans.svg') ?>" class="img-fluid" alt="">
-      </div>
 
     </div>
     <hr>

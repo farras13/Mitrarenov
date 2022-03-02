@@ -22,7 +22,7 @@
             <div class="slide-text">
               <div class="row">
                 <div class="col-md-8">
-                  <h3><?= $p->title ?></h3>
+                  <h1><?= $p->title ?></h1>
                   <?php $date = new DateTime($p->expired); ?>
                   <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
                 </div>
@@ -449,17 +449,17 @@
           Area Kerja Kami
         </h3>
         <div class="d-flex justify-content-center flex-wrap city-area mt-5">
-          <a href="#" class="area-item">Jakarta</a>
-          <a href="#" class="area-item">Bogor</a>
-          <a href="#" class="area-item">Depok</a>
-          <a href="#" class="area-item">Tangerang</a>
-          <a href="#" class="area-item">Bekasi</a>
-          <a href="#" class="area-item">Bandung</a>
-          <a href="#" class="area-item">Cirebon</a>
-          <a href="#" class="area-item">Indramayu</a>
-          <a href="#" class="area-item">Surabaya</a>
-          <a href="#" class="area-item">Semarang</a>
-          <a href="#" class="area-item">Jogjakarta</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Jakarta</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Bogor</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Depok</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Tangerang</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Bekasi</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Bandung</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Cirebon</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Indramayu</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Surabaya</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Semarang</a>
+          <a href="<?= base_url('kontak') ?>" class="area-item">Jogjakarta</a>
         </div>
       </div>
     </div>

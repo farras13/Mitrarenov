@@ -46,6 +46,12 @@ $(function () {
         nextArrow: '.testi-next',
         responsive: [
             {
+                breakpoint: 1367,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
                 breakpoint: 767.98,
                 settings: {
                     slidesToShow: 1,
