@@ -1,0 +1,16 @@
+{
+  "name": "mitrarenov",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "css": "node-sass public/main/scss -o public/main/css --output-style compressed",
+    "css-watch": "npm run css && node-sass public/main/scss -wo public/main/css --output-style compressed"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "node-sass": "^6.0.1"
+  }
+}
