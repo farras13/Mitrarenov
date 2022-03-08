@@ -454,15 +454,19 @@
   <?= $this->renderSection('script') ?>
 
   <script>
-    $('#pekerjaanGallery').magnificPopup({
+    function closePopup() {
+      $.magnificPopup.close();
+    }
+    $("#pekerjaanGallery, #portofolioGallery, #desainGallery").magnificPopup({
       type: 'image',
       delegate: 'a',
       closeOnContentClick: false,
-      tLoading: 'Загрузка...',
+      closeOnBgClick: false,
+      tLoading: 'Loading',
       mainClass: 'mfp-zoom-in mfp-img-mobile',
       image: {
         markup: '<div class="mfp-figure">' +
-          '<button type="button" class="close-gallery" onClick="closePopup();"><i class="ico ico-close"></button>' +
+          '<button type="button" class="close-gallery" onClick="closePopup();"><i class="ico ico-close"></i></button>' +
           '<div class="gallery-container-popup">' +
           '<div class="mfp-img"></div>' +
           '<div class="content-gl">' +
@@ -472,7 +476,7 @@
           '</div>' +
           '<div class="mfp-description"></div>' +
           '</div>',
-        cursor: 'mfp-zoom-out-cur',
+        // cursor: 'mfp-zoom-out-cur',
         tError: '<a href="%url%">The image</a> could not be loaded.', // Error message
       },
       preloader: true,
@@ -487,7 +491,7 @@
         enabled: true,
         duration: 300
       },
-      removalDelay: 300,
+      // removalDelay: 300,
       callbacks: {
         change: function() {
           $(this.content)
@@ -499,10 +503,6 @@
         }
       }
     });
-
-    function closePopup() {
-      $.magnificPopup.close();
-    }
   </script>
 </body>
 
