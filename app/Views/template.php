@@ -204,7 +204,7 @@
   <div class="btn-whatsapp">
     <a href="https://wa.me/6282290009990" target="_blank">
       <div class="whatsapp-inner">
-        <i class="ico ico-whatsapp"></i> <span>Konsultasi Gratis</span>
+        <i class="ico ico-whatsapp"></i>
       </div>
     </a>
   </div>
