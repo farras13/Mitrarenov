@@ -257,7 +257,7 @@
 
   <div class="testimoni-wrapper">
     <div class="section section-testi">
-      <h3 class="title text-center mb-5">
+      <h3 class="title text-center mb-3">
         Testimonial
       </h3>
       <div class="testi-inner position-relative">
@@ -317,7 +317,7 @@
         <div class="tab-pane fade show active" id="pekerjaan">
           <div class="row" id="pekerjaanGallery">
             <?php foreach ($galery as $g) { ?>
-              <div class="col-md-3 mb-4">
+              <div class="col-md-3 mb-4 col-gallery">
                 <a href="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
                   <img src="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
@@ -329,13 +329,13 @@
             <?php } ?>
           </div>
           <div class="text-center mt-4">
-            <a href="#" class="readmore">Lihat Selengkapnya</a>
+            <a href="#" class="readmore" id="morePekerjaan">Lihat Selengkapnya</a>
           </div>
         </div>
         <div class="tab-pane fade" id="portofolio">
-          <div class="row" id="pekerjaanGallery">
+          <div class="row" id="portofolioGallery">
             <?php foreach ($merawat as $m) { ?>
-              <div class="col-md-3 mb-4">
+              <div class="col-md-3 mb-4 col-gallery-portfolio">
                 <a href="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="gallery-item" title="<?= $m->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $m->title ?>">
                   <img src="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
@@ -346,11 +346,14 @@
               </div>
             <?php } ?>
           </div>
+          <div class="text-center mt-4">
+            <a href="#" class="readmore" id="morePortfolio">Lihat Selengkapnya</a>
+          </div>
         </div>
         <div class="tab-pane fade" id="desain_rumah">
-          <div class="row" id="pekerjaanGallery">
+          <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
-              <div class="col-md-3 mb-4">
+              <div class="col-md-3 mb-4 col-gallery-desain">
                 <a href="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
                   <img src="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
@@ -360,6 +363,9 @@
                 </a>
               </div>
             <?php } ?>
+          </div>
+          <div class="text-center mt-4">
+            <a href="#" class="readmore" id="moreDesain">Lihat Selengkapnya</a>
           </div>
         </div>
       </div>
@@ -560,4 +566,36 @@
     </div>
   </div>
 </div>
+<?= $this->section('script') ?>
+<script>
+  $(document).ready(function() {
+    $(".col-gallery").slice(0, 8).show();
+    $("#morePekerjaan").on('click', function(e) {
+      e.preventDefault();
+      $(".col-gallery:hidden").slice(0, 8).slideDown();
+      if ($(".col-gallery:hidden").length == 0) {
+        $("#morePekerjaan").fadeOut('slow');
+      }
+    });
+    $(".col-gallery-portfolio").slice(0, 8).show();
+    $("#morePortfolio").on('click', function(e) {
+      e.preventDefault();
+      $(".col-gallery-portfolio:hidden").slice(0, 8).slideDown();
+      if ($(".col-gallery-portfolio:hidden").length == 0) {
+        $("#morePortfolio").fadeOut('slow');
+      }
+    });
+    $(".col-gallery-desain").slice(0, 8).show();
+    $("#moreDesain").on('click', function(e) {
+      e.preventDefault();
+      $(".col-gallery-desain:hidden").slice(0, 8).slideDown();
+      if ($(".col-gallery-desain:hidden").length == 0) {
+        $("#moreDesain").fadeOut('slow');
+      }
+    });
+  });
+</script>
+
+
+<?= $this->endSection() ?>
 <?= $this->endSection() ?>

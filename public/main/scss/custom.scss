@@ -93,8 +93,72 @@
     font-size: 30px;
 }
 
+.mfp-wrap.mfp-gallery.mfp-close-btn-in.mfp-auto-cursor.mfp-zoom-in.mfp-img-mobile.mfp-ready {
+    cursor: default;
+}
+
+.section-testi {
+    padding: 16px 26px;
+    overflow: hidden;
+}
+
+.testi-item {
+    padding: 0 30px;
+}
+
+.col-gallery,
+.col-gallery-portfolio,
+.col-gallery-desain {
+    display: none;
+}
+
+.btn-whatsapp {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    .whatsapp-inner {
+        border: 0;
+        padding: 0;
+        i {
+            width: 35px;
+            height: 35px;
+        }
+    }
+}
+
+// Large devices (desktops, less than 1200px)
+@media (max-width: 1366.98px) {
+    .header .header-main-nav {
+        padding-left: 10px;
+    }
+}
+
+// Large devices (desktops, less than 1200px)
+@media (max-width: 1234.98px) {
+    .section-blog .article-prev {
+        left: 16px;
+    }
+    .section-blog .article-next {
+        right: 16px;
+    }
+    .bg-area {
+        height: auto;
+    }
+    .header .main-nav .nav-item .nav-link {
+        font-size: 15px;
+    }
+}
+
 // Large devices (desktops, less than 1200px)
 @media (max-width: 1199.98px) {
+    .testi-slide .testi-item .testi-img {
+        width: 92px;
+        flex: 0 0 92px;
+        height: 92px;
+    }
 }
 
 // Medium devices (tablets, less than 992px)
@@ -125,8 +189,9 @@
         .whatsapp-inner {
             border: 0;
             padding: 0;
-            span {
-                display: none;
+            i {
+                width: 25px;
+                height: 25px;
             }
         }
     }

@@ -41,7 +41,7 @@ $(function () {
     })
 
     $('.testi-slide').slick({
-        slidesToShow: 3,
+        slidesToShow: 2,
         prevArrow: '.testi-prev',
         nextArrow: '.testi-next',
         responsive: [
