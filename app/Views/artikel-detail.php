@@ -88,29 +88,36 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-12">
         <h5 class="text-primary">Artikel Serupa</h5>
-        <?php foreach($terkait as $tk): ?>
-          <div class="d-flex article-item-small is-small">
-            <div class="article-sm-img">
-              <div class="article-sm-img-inner">
-                <img src="<?= base_url('public/images/news') . '/' . $tk->image ?>" alt="">
+        <div class="row">
+
+          <?php foreach ($terkait as $tk) : ?>
+            <div class="col-md-3">
+              <div class="d-flex article-item-small is-small" style="border-bottom: 0;">
+                <div class="article-sm-img">
+                  <div class="article-sm-img-inner">
+                    <img src="<?= base_url('public/images/news') . '/' . $tk->image ?>" alt="">
+                  </div>
+                </div>
+                <div class="w-100 pl-4">
+                  <h4 class="mb-2"><?= $tk->title ?></h4>
+                  <p class="text-grey mb-0">Penulis Admin</p>
+                  <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent aliquam odio mau
+                    ris, ut vestibulum velit auctor quis. Donec interdum pellentesque felis et ...
+                  </p>
+                  <div class="text-right">
+                    <a href="artikel-detail.html" class="font-weight-bold">Baca Selengkapnya..</a>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="w-100 pl-4">
-              <h4 class="mb-2"><?= $tk->title ?></h4>
-              <p class="text-grey mb-0">Penulis Admin</p>
-              <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent aliquam odio mau
-                ris, ut vestibulum velit auctor quis. Donec interdum pellentesque felis et ...
-              </p>
-              <div class="text-right">
-                <a href="artikel-detail.html" class="font-weight-bold">Baca Selengkapnya..</a>
-              </div>
-            </div>
-          </div>
-        <?php endforeach; ?>
+
+          <?php endforeach; ?>
+        </div>
+
       </div>
     </div>
   </div>
