@@ -214,8 +214,21 @@
 																		<br>
 																		<span style='color:#222222;'>Admin Mitrarenov</span>
 																	</p>
-																<?php }else{ ?>
+																<?php }else if($stat == "forgot"){ ?>
 																	<p style='text-align:justify;color:#222222;font-size:14px;font-weight:normal;line-height:19px;'>
+                                                                    
+																		<h2>Reset Password</h2>
+                                                                        <span>Untuk melakukan reset password anda dapat klik link berikut</span> 
+                                                                        <b><a href="' . base_url('reset_password') . '/' . $token . '">Link reset</a></b> 
+																		
+																		<br>
+																		<br>
+																		Terima kasih,
+																		<br>
+																		<span style='color:#222222;'>Admin Mitrarenov</span>
+																	</p>
+																<?php }else{ ?>
+                                                                    	<p style='text-align:justify;color:#222222;font-size:14px;font-weight:normal;line-height:19px;'>
                                                                     
 																		Dear Bapak/Ibu <?= $nama ?>, <br /><br />
 																		Selamat, Project anda di APLIKASI MITRARENOV dengan Project Number <strong>#<?= $project_id ?> </strong> telah berhasil dibuat.<br />

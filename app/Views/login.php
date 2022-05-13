@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="<?= base_url('public/main/css/custom.css') ?>">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link rel="icon" type="image/png" href="images/favico.png" />
+     <!-- toast -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <title>Mitrarenov</title>
 </head>
 
@@ -34,7 +36,7 @@
                         <input type="text" name="password" class="form-control" placeholder="Password">
                     </div>
                     <div class="text-right mb-4">
-                        <a href="#" class="text-grey">Lupa Password ?</a>
+                        <a href="<?= base_url('lupa_password') ?>" class="text-grey">Lupa Password ?</a>
                     </div>
                     <button type="submit" class="btn btn-success btn-block font-weight-bold">MASUK</button>
 
@@ -45,6 +47,25 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+	$(document).ready(() => {
+		<?php if (session()->get('toast')) { ?>
+            toastr.options.closeButton = true;
+            var toastvalue = "<?php echo session()->get('toast') ?>";
+            var status = toastvalue.split(":")[0];
+            var message = toastvalue.split(":")[1];
+            if (status === "success") {
+            toastr.success(message, status);
+            } else if (status === "error") {
+            toastr.error(message, status);
+            } else if (status == "warn") {
+            toastr.warning(message, status);
+            }
+      <?php } ?>
+	});
+</script>
 </body>
 
 </html>

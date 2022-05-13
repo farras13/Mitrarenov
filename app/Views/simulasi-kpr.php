@@ -115,43 +115,44 @@
       Pengajuan Kredit Bangun & Renovasi Rumah
     </h2>
 
-    <form action="#">
+    <form action="<?= site_url('Home/add_kpr') ?>" method="post" enctype="multipart/form-data">
+      <?= csrf_field(); ?>
       <div class="row pengajuan-kredit">
         <div class="col-md-6 mb-5">
           <div class="px-5">
             <h5 class="mb-4">Detail Informasi</h5>
             <div class="form-group">
-              <select class="provinsi w-100">
+              <select class="provinsi w-100" name="prov" id="prov" >
                 <option value=""></option>
-                <option value="1">Lorem </option>
-                <option value="1">Ipsum</option>
+
+                <?php foreach ($prov as $p): ?>
+                  <option value="<?= $p->province_id ?>"> <?= $p->name ?> </option>
+                <?php endforeach ?>
               </select>
             </div>
             <div class="form-group">
-              <select class="area w-100">
-                <option value=""></option>
-                <option value="1">Lorem </option>
-                <option value="1">Ipsum</option>
+              <select class="area w-100" id="area" name="area">
+             
               </select>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control pl-35" placeholder="Alamat">
+              <input type="text" class="form-control pl-35" placeholder="Alamat" name="alamat">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control pl-35" placeholder="Luas Bangun">
+              <input type="text" class="form-control pl-35" placeholder="Luas Bangun" name="luas_bangun">
               <div class="mt-2 text-grey">
                 <i>* masukan luas rumah yang hendak dibangun atau renovasi</i>
               </div>
             </div>
             <div class="form-group">
-              <textarea class="form-control pl-35" cols="30" rows="3" placeholder="Deskripsi"></textarea>
+              <textarea class="form-control pl-35" cols="30" rows="3" placeholder="Deskripsi" name="deskripsi"></textarea>
               <div class="mt-2 text-grey">
                 <i>* Jelaskan sedetail mungkin kebutuhan anda, spesifikasi, bahan dan
                   material yang anda impikan, juga budget pembangunan anda</i>
               </div>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control pl-35" placeholder="Jangka Waktu">
+              <input type="text" class="form-control pl-35" placeholder="Jangka Waktu" name="jangka_waktu">
             </div>
           </div>
         </div>
@@ -159,13 +160,13 @@
           <div class="px-5">
             <h5 class="mb-4">Kontak Pribadi</h5>
             <div class="form-group">
-              <input type="text" class="form-control pl-35" placeholder="Nama Lengkap">
+              <input type="text" class="form-control pl-35" placeholder="Nama Lengkap" name="nama">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control pl-35" placeholder="Telepon">
+              <input type="text" class="form-control pl-35" placeholder="Telepon" name="no_telp">
             </div>
             <div class="form-group">
-              <input type="email" class="form-control pl-35" placeholder="Email">
+              <input type="email" class="form-control pl-35" placeholder="Email" name="email">
             </div>
             <div class="row form-group align-items-center my-4">
               <div class="col-6">
@@ -173,7 +174,7 @@
               </div>
               <div class="col-6 text-right">
                 <div class="single-file-upload no-label">
-                  <input type="file" id="upload_foto" hidden="">
+                  <input type="file" id="upload_foto" hidden="" name="file">
                   <label for="upload_foto" class="btn btn-upload border-10 mb-0">
                     Choose File
                   </label>
@@ -181,24 +182,24 @@
               </div>
             </div>
             <div class="input-inline mb-3">
-              <input type="text" class="form-control pl-35 date" placeholder="Jangka Waktu">
+              <input type="text" class="form-control pl-35 date" placeholder="Jadwal Survey" name="jadwal_survey">
               <span class="input-icon"><i class="ico ico-calendar"></i></span>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control pl-35" placeholder="Kode Referal">
+              <input type="text" class="form-control pl-35" placeholder="Kode Referal" name="kode_referal">
               <div class="mt-2 text-grey">
                 <i>* Opsional</i>
               </div>
             </div>
             <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="customCheck1">
+              <input type="checkbox" class="custom-control-input" id="customCheck1" name="cekbok">
               <label class="custom-control-label" for="customCheck1">
                 <span></span>
                 Saya telah membaca dan menyetujui <a href="#">syarat dan ketentuan</a> yang berlaku.
               </label>
             </div>
             <div class="mt-3">
-              <button type="submit" class="btn btn-success btn-lg btn-radius btn-block">SUBMIT</button>
+              <button type="submit" onclick="if(document.getElementById('customCheck1').checked) { return true; } else { alert('please agree'); return false; }" class="btn btn-success btn-lg btn-radius btn-block">SUBMIT</button>
             </div>
             <div class="mt-4">
               Jika memiliki pertanyaan silahkan hubungi kami di email <a href="mailto:info@mitrarenov.com">info@mitrarenov.com</a>
@@ -234,12 +235,33 @@
       minimumResultsForSearch: -1,
       selectionCssClass: "pl-35",
     });
-    $('.date').datepicker()
+    $('.date').datepicker();
+
+    $('#prov').change(function(){ 
+      var id=$(this).val();
+      $.ajax({
+          url : "<?php echo site_url('home/get_area');?>",
+          method : "POST",
+          data : {id: id},
+          async : true,
+          dataType : 'json',
+          success: function(data){                
+              var html = '';
+              var i;
+              for(i=0; i<data.length; i++){
+                  html += '<option value='+data[i].id_area+'>'+data[i].nama_area+'</option>';
+              }
+              $('#area').html(html);
+
+          }
+      });
+      return false;
+    }); 
+
+
   })
 </script>
 <script>
-
-
   function formatNumber(num) {
     return (
       num
@@ -275,7 +297,7 @@
 
     document.getElementById("uangmuka").innerHTML = formatNumber(temp_dp);
     document.getElementById("pembiayaan").innerHTML = formatNumber(pokok);
-    document.getElementById("angsuran").innerHTML = formatNumber(angsuranPerBulan) ;
+    document.getElementById("angsuran").innerHTML = formatNumber(angsuranPerBulan);
     document.getElementById("minimg").innerHTML = formatNumber(gajiMinumun);
 
   }

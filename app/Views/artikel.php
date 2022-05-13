@@ -37,11 +37,11 @@
                 <h5 class="text-primary mt-5">Hot Kategori</h5>
 
                 <ul class="nav nav-article-cat flex-column">
-                  <?php foreach ($hot as $h) : ?>
+                  <?php foreach ($kategori as $h) : if($h->title != null || $h->title != ''): ?>
                     <li class="nav-item">
                       <a href="<?= base_url('artikel/' . $h->id . '/detail') ?>" class="nav-link px-0"><?= $h->title ?></a>
                     </li>
-                  <?php endforeach; ?>
+                  <?php endif; endforeach; ?>
                 </ul>
               </div>
 
@@ -51,6 +51,7 @@
       </div>
       <div class="col-lg-8 mb-5 content-article">
         <div class="article-list">
+          <?php if(!$key): ?>
           <h5 class="mb-4 text-primary">Artikel Populer</h5>
           <div class="article-slider-outer">
             <div class="article-slider">
@@ -78,8 +79,10 @@
             <div class="btn-slide article-btn-prev"><i class="ico ico-prev"></i></div>
             <div class="btn-slide article-btn-next"><i class="ico ico-next"></i></div>
           </div>
+          <?php endif; ?>
 
-          <h5 class="mt-5 text-primary">Artikel Terbaru</h5>
+
+          <h5 class="mt-5 text-primary"> <?php if(!$key): ?>Artikel Terbaru<?php else: ?>Result Search<?php endif; ?></h5>
 
           <div class="article-list-small">
             <?php foreach ($terbaru as $tb) : ?>

@@ -26,34 +26,29 @@
                   </a>
                 </div>
                 <div class="input-inline w-100">
-                  <input type="text" class="form-control pl-4" placeholder="Cari Artikel">
-                  <span class="input-icon"><i class="ico ico-search"></i></span>
+                  <form action="" method="get" name="artikel_search">
+                    <input type="text" name="cari" class="form-control pl-4" placeholder="Cari Artikel">
+                    <span class="input-icon" onclick="artikel_search.submit()"><i class="ico ico-search"></i></span>
+                  </form>
                 </div>
               </div>
 
               <div class="collapse dont-collapse-sm" id="catColapse">
-                <h5 class="text-primary mt-5">Artikel Terkait</h5>
-
-                <ul class="nav nav-article-cat flex-column">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link px-0">Lorem ipsum dolor sit amet</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link px-0">Lorem ipsum dolor sit amet</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link px-0">Lorem ipsum dolor sit amet</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link px-0">Lorem ipsum dolor sit amet</a>
-                  </li>
-                </ul>
-                <h5 class="text-primary mt-4">Hot Kategori</h5>
+                <h5 class="text-primary mt-5">Artikel Populer</h5>
 
                 <ul class="nav nav-article-cat flex-column">
                   <?php foreach ($hot as $h) : ?>
                     <li class="nav-item">
                       <a href="<?= base_url('artikel/' . $h->id . '/detail') ?>" class="nav-link px-0"><?= $h->title ?></a>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+                <h5 class="text-primary mt-4">Hot Kategori</h5>
+
+                <ul class="nav nav-article-cat flex-column">
+                  <?php foreach ($kategori as $k) : ?>
+                    <li class="nav-item">
+                      <a href="<?= base_url('artikel/' . $k->id . '/detail') ?>" class="nav-link px-0"><?= $k->title ?></a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
@@ -95,63 +90,27 @@
     <div class="row">
       <div class="col-lg-4">
         <h5 class="text-primary">Artikel Serupa</h5>
-        <div class="d-flex article-item-small is-small">
-          <div class="article-sm-img">
-            <div class="article-sm-img-inner">
-              <img src="<?= base_url('public/main/images/article-img.jpg') ?>" alt="">
+        <?php foreach($terkait as $tk): ?>
+          <div class="d-flex article-item-small is-small">
+            <div class="article-sm-img">
+              <div class="article-sm-img-inner">
+                <img src="<?= base_url('public/images/news') . '/' . $tk->image ?>" alt="">
+              </div>
+            </div>
+            <div class="w-100 pl-4">
+              <h4 class="mb-2"><?= $tk->title ?></h4>
+              <p class="text-grey mb-0">Penulis Admin</p>
+              <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent aliquam odio mau
+                ris, ut vestibulum velit auctor quis. Donec interdum pellentesque felis et ...
+              </p>
+              <div class="text-right">
+                <a href="artikel-detail.html" class="font-weight-bold">Baca Selengkapnya..</a>
+              </div>
             </div>
           </div>
-          <div class="w-100 pl-4">
-            <h4 class="mb-2">Tips membangun rumah yang baik dan benar</h4>
-            <p class="text-grey mb-0">Penulis Admin</p>
-            <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent aliquam odio mau
-              ris, ut vestibulum velit auctor quis. Donec interdum pellentesque felis et ...
-            </p>
-            <div class="text-right">
-              <a href="artikel-detail.html" class="font-weight-bold">Baca Selengkapnya..</a>
-            </div>
-          </div>
-        </div>
-        <div class="d-flex article-item-small is-small">
-          <div class="article-sm-img">
-            <div class="article-sm-img-inner">
-              <img src="<?= base_url('public/main/images/article-img.jpg') ?>" alt="">
-            </div>
-          </div>
-          <div class="w-100 pl-4">
-            <h4 class="mb-2">Tips membangun rumah yang baik dan benar</h4>
-            <p class="text-grey mb-0">Penulis Admin</p>
-            <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent aliquam odio mau
-              ris, ut vestibulum velit auctor quis. Donec interdum pellentesque felis et ...
-            </p>
-            <div class="text-right">
-              <a href="artikel-detail.html" class="font-weight-bold">Baca Selengkapnya..</a>
-            </div>
-          </div>
-        </div>
-        <div class="d-flex article-item-small is-small">
-          <div class="article-sm-img">
-            <div class="article-sm-img-inner">
-              <img src="<?= base_url('public/main/images/article-img.jpg') ?>" alt="">
-            </div>
-          </div>
-          <div class="w-100 pl-4">
-            <h4 class="mb-2">Tips membangun rumah yang baik dan benar</h4>
-            <p class="text-grey mb-0">Penulis Admin</p>
-            <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent aliquam odio mau
-              ris, ut vestibulum velit auctor quis. Donec interdum pellentesque felis et ...
-            </p>
-            <div class="text-right">
-              <a href="artikel-detail.html" class="font-weight-bold">Baca Selengkapnya..</a>
-            </div>
-          </div>
-        </div>
+        <?php endforeach; ?>
       </div>
     </div>
   </div>

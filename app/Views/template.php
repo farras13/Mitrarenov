@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="<?= base_url('public/main/css/custom.css') ?>">
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <link rel="icon" type="image/png" href="<?= base_url('public/main/images/favico.png ') ?>" />
+  <!-- toast -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <title>Mitrarenov</title>
 </head>
 
@@ -23,7 +25,7 @@
           <div class="w-100 text-right">
             <ul class="nav justify-content-end">
               <li class="nav-item">
-                <a href="https://wa.me/6282290009990" target="_blank" class="nav-link">
+                <a href=" https://bit.ly/whatsapp-mitrarenov" target="_blank" class="nav-link">
                   <i class="ico ico-phone"></i> <span class="font-weight-bold">Call Center</span> 0822
                   9000 9990
                 </a>
@@ -94,10 +96,10 @@
           <div class="header-nav-second">
             <ul class="nav justify-content-end">
               <li class="nav-item">
-                <a href="keranjang.html" class="nav-link">
+                <!-- <a href="keranjang.html" class="nav-link">
                   <i class="ico ico-cart"></i>
                   <span class="badge">1</span>
-                </a>
+                </a> -->
               </li>
               <?php $sess = session(); ?>
               <?php if ($sess->get('logged_in') == TRUE) { ?>
@@ -164,7 +166,7 @@
                 </li>
               <?php } else { ?>
                 <li class="nav-item mobile-off">
-                  <a href="<?= base_url('member/logout') ?>" class="nav-link">
+                  <a href="<?= base_url('member/akun') ?>" class="nav-link">
                     <i class="ico ico-user"></i>
                   </a>
                 </li>
@@ -202,7 +204,7 @@
   <?= $this->renderSection('content') ?>
 
   <div class="btn-whatsapp">
-    <a href="https://wa.me/6282290009990" target="_blank">
+    <a href=" https://bit.ly/whatsapp-mitrarenov" target="_blank">
       <div class="whatsapp-inner">
         <i class="ico ico-whatsapp"></i>
       </div>
@@ -247,7 +249,7 @@
 
             </div>
             <div class="col-lg-7">
-              <h5>Peroleh Bantuan</h5>
+              <!-- <h5>Peroleh Bantuan</h5>
               <div class="row">
                 <div class="col-lg-7">
                   <ul class="nav flex-column">
@@ -294,6 +296,45 @@
                     </li>
                   </ul>
                 </div>
+              </div> -->
+              <h5>Peroleh Bantuan</h5>
+              <div class="row">
+                <div class="col-lg-7">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a href="<?= base_url('tentang-kami') ?>" class="nav-link px-0">
+                        Tentang Kami
+                      </a>
+                      <a href="<?= base_url('kontak') ?>" class="nav-link px-0">
+                        Hubungi Kami
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Pemberitahuan privasi
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Syarat & Ketentuan
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-lg-5">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a href="<?= base_url('kontak') ?>" class="nav-link px-0">
+                        Partner
+                      </a>
+                      <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link px-0">
+                        Simulasi KPR
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Bank Rekanan
+                      </a>
+                      <a href="#" class="nav-link px-0">
+                        Tanya Jawab
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -301,7 +342,7 @@
         <div class="col-md-5">
           <div class="row">
             <div class="col-lg-5">
-              <h5>PARTNER</h5>
+              <!-- <h5>PARTNER</h5>
               <ul class="nav flex-column">
                 <li class="nav-item">
                   <a href="#" class="nav-link px-0">
@@ -323,23 +364,23 @@
                     Jasa Arsitek
                   </a>
                 </li>
-              </ul>
+              </ul> -->
             </div>
             <div class="col-lg-7">
               <h5 class="mb-3">Ikuti Kami di Sosial media</h5>
-              <a href="#" class="mr-4 mb-3">
+              <a target="_BLANK" href="https://www.facebook.com/" class="mr-4 mb-3">
                 <i class="ico ico-facebook"></i>
               </a>
-              <a href="#" class="mr-4 mb-3">
+              <a target="_BLANK" href="https://www.instagram.com/" class="mr-4 mb-3">
                 <i class="ico ico-instagram"></i>
               </a>
-              <a href="#" class="mr-4 mb-3">
+              <a target="_BLANK" href="https://www.twitter.com/" class="mr-4 mb-3">
                 <i class="ico ico-twitter"></i>
               </a>
-              <a href="#" class="mr-4 mb-3">
+              <a target="_BLANK" href="https://www.youtube.com/" class="mr-4 mb-3">
                 <i class="ico ico-youtube"></i>
               </a>
-              <a href="#" class="mr-4 mb-3">
+              <a target="_BLANK" href="https://www.tiktok.com/" class="mr-4 mb-3">
                 <i class="ico ico-tiktok"></i>
               </a>
 
@@ -450,9 +491,26 @@
   <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-debug.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('public/main/js/script.js') ?>"></script>
-
+  <!-- toast -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <?= $this->renderSection('script') ?>
-
+  <script>
+    $(document).ready(() => {
+      <?php if (session()->get('toast')) { ?>
+        toastr.options.closeButton = true;
+        var toastvalue = "<?php echo session()->get('toast') ?>";
+        var status = toastvalue.split(":")[0];
+        var message = toastvalue.split(":")[1];
+        if (status === "success") {
+          toastr.success(message, status);
+        } else if (status === "error") {
+          toastr.error(message, status);
+        } else if (status == "warn") {
+          toastr.warning(message, status);
+        }
+      <?php } ?>
+    });
+  </script>
   <script>
     function closePopup() {
       $.magnificPopup.close();
