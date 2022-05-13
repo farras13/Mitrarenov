@@ -44,6 +44,45 @@ class ArtikelModel extends Model
         ->select('news.*, member_detail.name as penulis')
         ->join('member', 'member.id = news.created_by')
         ->join('member_detail', 'member_detail.member_id = member.id')
+        ->orderBy('news.analyticsviews', 'desc')->get(5)->getResult(); 
+    }
+
+    function kategori()
+    {
+        $cek =  $this->db->table('news')
+        ->select('news.id, news.kategori as title, count(kategori) as banyak')
+        ->groupBy('news.kategori')
+        ->orderBy('banyak', 'desc')->get(8);
+        if($cek){
+            return $cek->getResult();;
+        }else{
+            return $this->tagline();
+        }
+    }
+
+    function tagline()
+    {
+        return  $this->db->table('news')
+        ->select('news.id, news.tagline as title, count(tagline) as banyak')
+        ->groupBy('news.tagline')
+        ->orderBy('banyak', 'desc')->get(8)->getResult();
+    }
+
+    function terkait($id)
+    {
+        return  $this->db->table('news')
+        ->select('news.*')
+        ->where('tagline', $id)
+        ->orderBy('id', 'desc')->get(3)->getResult();
+    }
+
+    function search_hot($s)
+    {
+         return $this->db->table('news')
+        ->select('news.*, member_detail.name as penulis')
+        ->join('member', 'member.id = news.created_by')
+        ->join('member_detail', 'member_detail.member_id = member.id')
+        ->like('title', $s)
         ->orderBy('news.analyticsviews', 'desc')->get(8)->getResult(); 
     }
 }
