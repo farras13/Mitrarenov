@@ -36,11 +36,15 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('home', 'Home::index');
 
-$routes->get('member', 'Home::akun');
+$routes->post('login', 'Home::pros_log');
+$routes->get('lupa_password/(:any)', 'Home::forgot_pass/$1');
+$routes->get('lupa_password', 'Home::pageEmail');
+$routes->post('lupa_password/sendEmail', 'Home::sendEmail');
+$routes->post('lupa_password/send', 'Home::sendReset');
+$routes->post('regis', 'Home::reg');
+
 $routes->get('member/login', 'Home::login');
 $routes->get('member/register', 'Home::register');
-$routes->post('login', 'Home::pros_log');
-$routes->post('regis', 'Home::reg');
 $routes->get('member/logout', 'Home::logout');
 
 $routes->get('artikel', 'Home::artikel');
@@ -49,6 +53,21 @@ $routes->get('detail-promo/(:any)', 'Home::d_promo/$1');
 $routes->get('kontak', 'Home::hubungi');
 $routes->get('tentang-kami', 'Home::tentang_kami');
 $routes->get('simulasi-kpr', 'Home::simulasi');
+
+$routes->get('order', 'Home::order');
+$routes->post('getHarga', 'Home::getHarga');
+$routes->post('order/desain', 'Home::order_desain');
+$routes->post('order/no_desain', 'Home::order_non');
+
+$routes->get('member/akun', 'Home::akun');
+$routes->get('member/edit_profile', 'Home::edit_profile');
+$routes->post('member/update_profile', 'Home::update_profile');
+$routes->get('member/tentang-mitra', 'Home::tentang_mitra');
+$routes->get('member/riwayat', 'Home::riwayat_projek');
+$routes->get('member/ubah_password', 'Home::changePass');
+$routes->post('member/change_password', 'Home::updPass');
+$routes->get('member/qa', 'Home::qa');
+$routes->get('member/syarat', 'Home::snk');
 
 
 $routes->group('api', function ($routes) {
@@ -59,16 +78,22 @@ $routes->group('api', function ($routes) {
             $routes->post('register', 'Api\LoginController::register');
             $routes->post('reset_pass', 'Api\LoginController::resetPass_luar');
         });
-        
+
         $routes->post('sendEmailReset', 'Api\LoginController::send_email_reset');
-        
+
         $routes->group('', ['filter' => 'token'], function ($routes) {
             $routes->group('auth', function ($routes) {
+                $routes->post('fcm_update', 'Api\LoginController::updateFcm');
                 $routes->get('profile', 'Api\LoginController::profile');
                 $routes->post('editProfile', 'Api\LoginController::uploadImage');
                 $routes->post('reset_password', 'Api\LoginController::resetPass');
                 $routes->post('logout', 'Api\LoginController::signout');
             });
+
+            $routes->group('pemberitauan', function ($routes) {
+                $routes->get('/', 'Api\NotifikasiController::index');
+            });
+
             $routes->group('material', function ($routes) {
                 $routes->get('/', 'Api\MaterialController::index');
                 $routes->get('(:any)/detail', 'Api\MaterialController::show/$1');
@@ -76,9 +101,9 @@ $routes->group('api', function ($routes) {
 
             $routes->group('cart', function ($routes) {
                 $routes->get('/', 'Api\TransaksiController::index');
-                $routes->post('add', 'Api\TransaksiController::addcart'); 
-                $routes->post('add_qty', 'Api\TransaksiController::add_by_qty'); 
-                $routes->post('del_qty', 'Api\TransaksiController::del_by_qty'); 
+                $routes->post('add', 'Api\TransaksiController::addcart');
+                $routes->post('add_qty', 'Api\TransaksiController::add_by_qty');
+                $routes->post('del_qty', 'Api\TransaksiController::del_by_qty');
             });
 
             $routes->group('artikel', function ($routes) {
@@ -90,7 +115,7 @@ $routes->group('api', function ($routes) {
                 $routes->get('/', 'Api\Home::KategoriJasa');
                 $routes->get('(:num)/detail', 'Api\Home::subKategori/$1');
             });
-            
+
             $routes->group('promo', function ($routes) {
                 $routes->get('/', 'Api\Home::PromoAll');
                 $routes->get('(:num)/detail', 'Api\Home::showPromo/$1');
@@ -110,7 +135,7 @@ $routes->group('api', function ($routes) {
                 $routes->get('progres', 'Api\ProjectController::projectProgres');
                 $routes->get('(:num)/detail', 'Api\ProjectController::detail/$1');
             });
-            
+
             $routes->group('chat', function ($routes) {
                 $routes->post('/', 'Api\QaController::detail_chat');
                 $routes->get('list', 'Api\QaController::listChat');
@@ -118,14 +143,15 @@ $routes->group('api', function ($routes) {
             });
 
             $routes->group('kpr', function ($routes) {
-                $routes->post('simulasi', 'Api\SimulasiKpr::perhitungan_kpr');            
-                $routes->post('pengajuan', 'Api\SimulasiKpr::create');            
+                $routes->get('snk', 'Api\TentangController::snk_kpr');
+                $routes->post('simulasi', 'Api\SimulasiKpr::perhitungan_kpr');
+                $routes->post('pengajuan', 'Api\SimulasiKpr::create');
             });
 
             $routes->get('type_order', 'Api\ProjectController::type_order');
-            $routes->get('Area', 'Api\SimulasiKpr::index_area');            
-            $routes->get('Prov', 'Api\SimulasiKpr::province');            
-            $routes->get('rules', 'Api\TentangController::RulesOrder');            
+            $routes->get('Area', 'Api\SimulasiKpr::index_area');
+            $routes->get('Prov', 'Api\SimulasiKpr::province');
+            $routes->get('rules', 'Api\TentangController::RulesOrder');
             $routes->get('tentang-kami', 'Api\TentangController::about');
             $routes->get('tanya-jawab', 'Api\QaController::index');
             $routes->get('syarat-ketentuan-aplikasi', 'Api\TentangController::syarat');

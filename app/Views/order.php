@@ -16,7 +16,7 @@
                             <div class="card-body px-5 py-4">
                                 <div class="row align-items-center">
                                     <div class="col-6 mb-4">
-                                        <img src="<?= base_url('public/main/images/alur-order-1.svg') ?>" class="img-fluid" alt="">
+                                        <img src="<?= base_url('main/images/alur-order-1.svg') ?>" class="img-fluid" alt="">
                                     </div>
                                     <div class="col-6 mb-4">
                                         <h3 class="text-primary mb-3">Order Online</h3>
@@ -31,10 +31,10 @@
                                         </p>
                                     </div>
                                     <div class="col-6 mb-4">
-                                        <img src="<?= base_url('public/main/images/alur-order-2.svg') ?>" class="img-fluid" alt="">
+                                        <img src="<?= base_url('main/images/alur-order-2.svg') ?>" class="img-fluid" alt="">
                                     </div>
                                     <div class="col-6 mb-4">
-                                        <img src="<?= base_url('public/main/images/alur-order-3.svg') ?>" class="img-fluid" alt="">
+                                        <img src="<?= base_url('main/images/alur-order-3.svg') ?>" class="img-fluid" alt="">
                                     </div>
                                     <div class="col-6 mb-4">
                                         <h3 class="text-primary mb-3">Pembuatan RAB</h3>
@@ -49,7 +49,7 @@
                                         </p>
                                     </div>
                                     <div class="col-6 mb-4">
-                                        <img src="<?= base_url('public/main/images/alur-order-4.svg') ?>" class="img-fluid" alt="">
+                                        <img src="<?= base_url('main/images/alur-order-4.svg') ?>" class="img-fluid" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                 </ul>
                             </div>
                             <div class="mt-5">
-                                <form onsubmit="get_action(this);" method="POST" enctype="multipart/form-data" id="formorder>
+                                <form onsubmit="get_action(this);" method="POST" enctype="multipart/form-data" id="formorder">
                                     <?= csrf_field(); ?>
                                     <input type="hidden" id="order" name="tipe_order">
                                     <input type="hidden" id="lang" name="lat">
@@ -159,13 +159,13 @@
                                         <p class="text-22 text-primary font-weight-bold">Detail Bangunan</p>
 
                                         <div class="input-inline mb-3">
-                                            <input type="text" class="form-control form-shadow" placeholder="Luas Bangunan" name="luas" id="luasbang">
+                                            <input type="text" class="form-control form-shadow" placeholder="Luas Bangunan" name="luas" id="luasbang" required>
                                             <span class="input-icon">
                                                 <i class="ico ico-m2"></i>
                                             </span>
                                         </div>
                                         <div class="images-upload">
-                                            <input type="file" id="fotoRumah" hidden="" accept="image/*" name="gambar_rumah">
+                                            <input type="file" id="fotoRumah" hidden="" accept="image/*" name="gambar_rumah" required>
                                             <label for="fotoRumah" class="btn foto-rumah">
                                                 <div class="label-inner">
                                                     <div class="w-100">Upload Foto Rumah</div>
@@ -177,12 +177,12 @@
                                         <div class="mt-2 mb-3 text-grey"><i>*Format ( JPG/JPEG/PNG )</i></div>
 
                                         <div class="mb-3">
-                                            <textarea class="form-control form-shadow" cols="30" rows="4" placeholder="Deskripsi" name="deskripsi"></textarea>
+                                            <textarea class="form-control form-shadow" cols="30" rows="4" placeholder="Deskripsi" name="deskripsi" required></textarea>
                                             <div class="mt-2 text-grey"><i>*Jelaskan sedetail mungkin kebutuhan anda, spesifikasi dan juga
                                                     budget pembangunan anda</i></div>
                                         </div>
                                         <div class="mb-3">
-                                            <textarea class="form-control form-shadow" cols="30" rows="4" placeholder="Alamat" name="alamat"></textarea>
+                                            <textarea class="form-control form-shadow" cols="30" rows="4" placeholder="Alamat" name="alamat" required></textarea>
                                             <div class="mt-2 text-grey"><i>*Jelaskan sedetail mungkin kebutuhan anda, spesifikasi dan juga
                                                     budget pembangunan anda</i></div>
                                         </div>
@@ -196,18 +196,18 @@
                                         <!-- <a href="#allSpec" class="btn btn-success btn-block btn-lg btn-rounded py-3" data-toggle="collapse">LIHAT SPESIFIKASI</a>
 
                                         <div class="collapse" id="allSpec"> -->
-                                            <div class="py-5">
-                                                <p class="text-22 text-primary font-weight-bold">Spesifikasi</p>
-                                                <?php foreach($spek as $s): ?>
-                                                    <div class="spec">
-                                                        <a href="#spesifikasi<?= $s->id ?>" class="spec-btn" data-toggle="collapse" aria-expanded="false">
-                                                            Spesifikasi <?= ucfirst($s->type_price); ?>
-                                                        </a>
-                                                        <div class="collapse" id="spesifikasi<?= $s->id ?>">
-                                                            <div class="spec-content">
-                                                                <p class="font-weight-bold text-dark">Harga /m2 : Rp <?= number_format($s->product_price, 2) ?> m2</p>
-                                                                <?= $s->spesifikasi ?>
-                                                                <!-- Struktur: <br>
+                                        <div class="py-5">
+                                            <p class="text-22 text-primary font-weight-bold">Spesifikasi</p>
+                                            <?php foreach ($spek as $s) : ?>
+                                                <div class="spec">
+                                                    <a href="#spesifikasi<?= $s->id ?>" class="spec-btn" data-toggle="collapse" aria-expanded="false">
+                                                        Spesifikasi <?= ucfirst($s->type_price); ?>
+                                                    </a>
+                                                    <div class="collapse" id="spesifikasi<?= $s->id ?>">
+                                                        <div class="spec-content">
+                                                            <p class="font-weight-bold text-dark">Harga /m2 : Rp <?= number_format($s->product_price, 2) ?> m2</p>
+                                                            <?= $s->spesifikasi ?>
+                                                            <!-- Struktur: <br>
                                                                 <ul class="pl-3 mt-0">
                                                                     <li>Lorem ipsum</li>
                                                                     <li>Lorem ipsum</li>
@@ -224,16 +224,16 @@
                                                                     <li>Lorem ipsum</li>
                                                                     <li>Lorem ipsum</li>
                                                                 </ul> -->
-                                                            </div>
                                                         </div>
                                                     </div>
-                                               <?php endforeach; ?>
+                                                </div>
+                                            <?php endforeach; ?>
 
-                                                <p class="text-22 text-primary font-weight-bold mt-5">Estimasi Harga</p>
-                                                <div class="spec">
-                                                    <div class="spec-content border-0">
-                                                        <div class="row">
-                                                            <?php if($type < 3): ?>
+                                            <p class="text-22 text-primary font-weight-bold mt-5">Estimasi Harga</p>
+                                            <div class="spec">
+                                                <div class="spec-content border-0">
+                                                    <div class="row">
+                                                        <?php if ($type < 3) : ?>
                                                             <div class="col-md-6">
                                                                 Luas Rumah
                                                             </div>
@@ -252,68 +252,70 @@
                                                             <div class="col-md-6">
                                                                 : <?= $jenis ?>
                                                             </div>
-                                                            <?php else: ?>
-                                                                <div class="col-md-12">
-                                                                    <center><h4> Contact Us </h4></center>
-                                                                </div>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-3 mb-4">
-                                                        <img src="<?= base_url('public/main/images/mitrarenove-a-2.svg') ?>" class="img-fluid" alt="">
-                                                    </div>
-                                                    <div class="col-md-9 mb-4">
-                                                        <p class="text-20 text-grey">Ingin tahu harga real?</p>
-                                                        <p class="text-20 text-grey mb-0">Yuk Konsultasi dan Survey <b>GRATIS !</b></p>
+                                                        <?php else : ?>
+                                                            <div class="col-md-12">
+                                                                <center>
+                                                                    <h4> Contact Us </h4>
+                                                                </center>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row align-items-center">
+                                                <div class="col-md-3 mb-4">
+                                                    <img src="<?= base_url('main/images/mitrarenove-a-2.svg') ?>" class="img-fluid" alt="">
+                                                </div>
+                                                <div class="col-md-9 mb-4">
+                                                    <p class="text-20 text-grey">Ingin tahu harga real?</p>
+                                                    <p class="text-20 text-grey mb-0">Yuk Konsultasi dan Survey <b>GRATIS !</b></p>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!-- </div> -->
 
                                         <!-- <a href="#kosultasi" class="btn btn-success btn-block btn-lg btn-rounded py-3 mt-5" data-toggle="collapse">KONSULTASI DAN SURVEY</a>
 
                                         <div class="collapse" id="kosultasi"> -->
-                                            <div class="pt-5">
-                                                <p class="text-22 text-primary font-weight-bold">Isi Data Order</p>
-                                                <div class="mb-3">
-                                                    <select class="choose-spec w-100" name="spek" id="spek">
-                                                        <option value=""></option>
-                                                        <?php foreach($spek as $sp): ?>
+                                        <div class="pt-5">
+                                            <p class="text-22 text-primary font-weight-bold">Isi Data Order</p>
+                                            <div class="mb-3">
+                                                <select class="choose-spec w-100" name="spek" id="spek" required>
+                                                    <option value=""></option>
+                                                    <?php foreach ($spek as $sp) : ?>
                                                         <option value="<?= $sp->id ?>" data-harga="<?= $s->product_price ?>">Spesifikasi <?= ucfirst($sp->type_price); ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <select class="form-control form-shadow w-100" name="metodpay" id="metodpay">
-                                                        <option value="" selected disabled>Metode Pembayaran</option>
-                                                        <option value="Cash">Cash</option>
-                                                        <option value="KPR">KPR</option>
-                                                    </select>
-                                                </div>
-                                                 <div class="mb-3">
-                                                    <input type="text" class="form-control form-shadow" placeholder="Nama Lengkap" name="nama_lengkap">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="text" class="form-control form-shadow" placeholder="Nomor Telepon" name="telepon">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="email" class="form-control form-shadow" placeholder="Email" name="email">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="text" class="form-control form-shadow" placeholder="Nama Marketing" name="marketing">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="text" class="form-control form-shadow" placeholder="Kode Promo" name="promo">
-                                                </div>
-                                                 <div class="mb-3">
-                                                    <input type="text" class="form-control form-shadow" placeholder="Kode Referal" name="referal">
-                                                </div>
-                                                
-
-
+                                                    <?php endforeach; ?>
+                                                </select>
                                             </div>
+                                            <div class="mb-3">
+                                                <select class="form-control form-shadow w-100" name="metodpay" id="metodpay" required>
+                                                    <option value="" selected disabled>Metode Pembayaran</option>
+                                                    <option value="Cash">Cash</option>
+                                                    <option value="KPR">KPR</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control form-shadow" placeholder="Nama Lengkap" name="nama_lengkap" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control form-shadow" placeholder="Nomor Telepon" name="telepon" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="email" class="form-control form-shadow" placeholder="Email" name="email" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control form-shadow" placeholder="Nama Marketing" name="marketing" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control form-shadow" placeholder="Kode Promo" name="promo">
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control form-shadow" placeholder="Kode Referal" name="referal">
+                                            </div>
+
+
+
+                                        </div>
                                         <!-- </div> -->
                                         <div class="custom-control custom-checkbox mt-4">
                                             <input type="checkbox" class="custom-control-input" id="customCheck1" name="cekkonfrim">
@@ -338,35 +340,42 @@
 </div>
 
 <?= $this->section('script') ?>
-  <script type="text/javascript" src="<?= base_url('public/main/js/script.min.js') ?>"></script>
+<script type="text/javascript" src="<?= base_url('main/js/script.min.js') ?>"></script>
 <script>
-    var baseURL = "<?php echo base_url();?>";
+    var baseURL = "<?php echo base_url(); ?>";
     var nluas = $("#luasbang").val();
     var nharga;
 
-    $('#luasbang').on('keyup', function(){
+    const formatRupiah = (money) => {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(money);
+    };
+
+    $('#luasbang').on('keyup', function() {
         nluas = $("#luasbang").val();
         nharga = $('option:selected', '#spek').attr('data-harga');
 
-        $('#nluas').text(': '+ nluas +' m2' );
+        $('#nluas').text(': ' + nluas + ' m2');
 
         if (nharga == null || nharga == 0) {
             nharga = 1;
         }
         var total = nluas * nharga;
-        $('#nharga').text(': Rp.'+ total );
+        $('#nharga').text(': ' + formatRupiah(total));
     });
 
-    $('#spek').change(function(){
-        nharga =  $('option:selected', this).attr('data-harga');
+    $('#spek').change(function() {
+        nharga = $('option:selected', this).attr('data-harga');
         nluas = $("#luasbang").val();
         if (nluas == null || nluas == 0) {
             nluas = 1;
         }
         var total = nluas * nharga;
-        $('#nharga').text(': Rp.'+ total );
+        $('#nharga').text(': ' + formatRupiah(total));
     });
-   
 </script>
 <script>
     var base_url = window.location.origin;
@@ -379,14 +388,14 @@
     var link_desain = base_url + '/order/desain';
     var link_nodesain = base_url + '/order/no_desain';
     var action;
-    
+
     $(document).ready(function() {
         $(".choose-spec").select2({
             placeholder: "Pilihan Spesifikasi",
             minimumResultsForSearch: -1,
             selectionCssClass: "form-shadow",
         });
-       
+
         if (type != 1 && type != 2) {
             $('.nav-non-design').addClass('active');
             $('#designOrder').collapse('hide');
@@ -420,10 +429,10 @@
         action = link_nodesain;
     })
 
-     function get_action(form) {
+    function get_action(form) {
         form.action = action;
         // console.log(action);
-        return true; 
+        return true;
     }
 
     $('.images-upload').click(function() {

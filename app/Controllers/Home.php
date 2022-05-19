@@ -314,6 +314,11 @@ class Home extends BaseController
         $input = $this->request->getVar();
         $tdate = date('Y-m-d');
         $date = strtotime($tdate);
+        $id = $sess->get('user_id');
+
+        if (empty($id)) {
+            redirect('login');
+        }
 
         $rules = [
             "customRadioInline" => "required",
@@ -322,7 +327,6 @@ class Home extends BaseController
             "kamar_mandi" => "required",
             "dapur" => "required",
             "luas" => "required",
-            'denah' => 'uploaded[denah]|mime_in[denah,image/jpg,image/jpeg,image/gif,image/png]|max_size[denah,2048]',
             "deskripsi" => "required",
             "alamat" => "required",
             "jangka_waktu" => "required",
@@ -332,8 +336,7 @@ class Home extends BaseController
             "email" => "required",
             "latitude" => "required",
             "longitude" => "required",
-            "metode_pembayaran" => "required",
-            'gambar_rumah' => 'uploaded[gambar_rumah]|mime_in[gambar_rumah,image/jpg,image/jpeg,image/gif,image/png]|max_size[gambar_rumah,2048]',
+            "metodpay" => "required",
         ];
         $msg = [
             'gambar_rumah' => [
@@ -365,14 +368,12 @@ class Home extends BaseController
             $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
 
             if ($uploadImg != null) {
-                $path_image = $path_uploadImg;
-                $json_text = $uploadImg['message'];
+
                 $img_rumah = $uploadImg['data']['file_name'];
             }
 
             if ($uploadImgdenah != null) {
-                $path_image = $path;
-                $json_text = $uploadImgdenah['message'];
+
                 $denah = $uploadImgdenah['data']['file_name'];
             }
 
@@ -385,7 +386,7 @@ class Home extends BaseController
             }
 
             $insert = [
-                'project_number' => "PRJ" . date("dmY", time()) . "" . rand(10, 100),
+                'project_number' => date("dmY", time()) . "" . rand(10, 100),
                 'type' => $jenis_order,
                 'total' => $total,
                 'alamat_pengerjaan' => $input['alamat'],
@@ -394,9 +395,12 @@ class Home extends BaseController
                 'description' => $input['deskripsi'],
                 'latitude' => $input['lat'],
                 'longitude' => $input['long'],
-                'metode_payment' => $input['metode_pembayaran'],
+                'metode_payment' => $input['metodpay'],
                 'status_project' => 'quotation',
                 'image_upload' => $img_rumah,
+                'marketing_name' => $input['marketing'],
+                'kode_referal' => $input['promo'],
+                'kode_promo' => $input['referal'],
                 'created' => time()
             ];
 
@@ -418,7 +422,7 @@ class Home extends BaseController
             ];
 
             $insert_design = [
-                'tipe_rumah' => $input['tipe_rumah'],
+                'tipe_rumah' => $tipe_rumah,
                 'ruang_keluarga' => $input['ruang_keluarga'],
                 'kamar_tidur' => $input['kamar_tidur'],
                 'kamar_mandi' => $input['kamar_mandi'],
@@ -439,100 +443,91 @@ class Home extends BaseController
     public function order_non()
     {
         $sess = session();
-        $req = $this->request->getVar();
         $tdate = date('Y-m-d');
+        $input = $this->request->getVar();
         $date = strtotime($tdate);
+        $id = $sess->get('user_id');
 
-        $rules = [
-            "luas" => "required",
-            "deskripsi" => "required",
-            "alamat" => "required",
-            "jangka_waktu" => "required",
-            "spek" => "required",
-            "nama_lengkap" => "required",
-            "telepon" => "required",
-            "email" => "required",
-            "latitude" => "required",
-            "longitude" => "required",
-            "metode_pembayaran" => "required",
-            'gambar_rumah' => 'uploaded[gambar_rumah]|mime_in[gambar_rumah,image/jpg,image/jpeg,image/gif,image/png]|max_size[gambar_rumah,2048]',
-        ];
-        $msg = [
-            'gambar_rumah' => [
-                'uploaded' => 'Harus Ada File yang diupload',
-                'mime_in' => 'File Extention Harus Berupa jpg,jpeg,gif,png',
-                'max_size' => 'Ukuran File Maksimal 2 MB'
-            ]
-        ];
-
-        if (!$this->validate($rules, $msg)) {
-            session()->setFlashdata('toast', 'error:' . $this->validator->getErrors());
-            return redirect()->back()->withInput();
-        } else {
-            $jenis_order = $input['jenis_order'];
-            $type_order = $input['tipe_order'];
-            $tipe_rumah = $input['customRadioInline'];
-
-            $file_rumah = $this->request->getFile('gambar_rumah');
-
-            $temp_produk = $this->model->getData('product', ['id' => $type_order])->getRow();
-            if ($temp_produk == null) {
-                $total = $input['totalHarga'];
-            } else {
-                $price = $temp_produk->price;
-                $total = $price * $input['luas'];
-            }
-
-            $path_uploadImg = "./public/images/projek";
-            $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
-
-            if ($uploadImg != null) {
-                $path_image = $path_uploadImg;
-                $json_text = $uploadImg['message'];
-                $img_rumah = $uploadImg['data']['file_name'];
-            }
-
-            $insert = [
-                'project_number' => "PRJ" . date("dmY", time()) . "" . rand(10, 100),
-                'type' => $jenis_order,
-                'total' => $total,
-                'alamat_pengerjaan' => $input['alamat'],
-                'catatan_alamat' => $input['alamat'],
-                'luas' => $input['luas'],
-                'description' => $input['deskripsi'],
-                'latitude' => $input['lat'],
-                'longitude' => $input['long'],
-                'metode_payment' => $input['metode_pembayaran'],
-                'status_project' => 'quotation',
-                'image_upload' => $img_rumah,
-                'created' => time()
-            ];
-
-            $insert_data = [
-                'name' => $input['nama_lengkap'],
-                'address' => $input['alamat'],
-                'email' => $input['email'],
-                'phone' => $input['telepon'],
-                'created' => time(),
-                'member_id' => $id
-            ];
-
-
-            $insert_detail = [
-                'product_id' => $input['type'],
-                'product_price_id' => $input['spek'],
-                'desain_id' => 0
-            ];
-
-            $this->m->insert('projects', $insert);
-            $this->m->insert('project_data_customer', $insert_data);
-            $this->m->ins('projects_detail', $insert_detail);
-
-            session()->setFlashdata('toast', 'success:Selamat pengajuan Order berhasil dikirim !.');
-            return redirect()->to('home');
+        if (empty($id)) {
+            redirect('login');
         }
+
+        $jenis_order = $input['jenis_order'];
+        $type_order = $input['tipe_order'];
+        $spek = $input['spek'];
+
+        $file_rumah = $this->request->getFile('gambar_rumah');
+
+        $temp_produk = $this->model->getWhere('product', ['id' => $spek])->getRow();
+        if ($temp_produk == null) {
+            $total = $input['totalHarga'];
+        } else {
+            $price = $temp_produk->price;
+            $total = $price * $input['luas'];
+        }
+
+        $path_uploadImg = "./public/images/projek";
+       
+        $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
+        
+        if ($uploadImg != null) {
+            $path_image = $path_uploadImg;
+            $json_text = $uploadImg['message'];
+            $img_rumah = $uploadImg['data']['file_name'];
+        }
+
+        $insert = [
+            'project_number' => date("dmY", time()) . "" . rand(10, 100),
+            'type' => $jenis_order,
+            'total' => $total,
+            'alamat_pengerjaan' => $input['alamat'],
+            'catatan_alamat' => $input['alamat'],
+            'luas' => $input['luas'],
+            'description' => $input['deskripsi'],
+            'latitude' => $input['lat'],
+            'longitude' => $input['long'],
+            'metode_payment' => $input['metodpay'],
+            'status_project' => 'quotation',
+            'image_upload' => $img_rumah,
+            'marketing_name' => $input['marketing'],
+            'kode_referal' => $input['promo'],
+            'kode_promo' => $input['referal'],
+            'created' => time()
+        ];
+
+        $insert_data = [
+            'name' => $input['nama_lengkap'],
+            'address' => $input['alamat'],
+            'email' => $input['email'],
+            'phone' => $input['telepon'],
+            'created' => time(),
+            'member_id' => $id
+        ];
+
+
+        $insert_detail = [
+            'product_id' => $input['type'],
+            'product_price_id' => $input['spek'],
+            'desain_id' => 0
+        ];
+
+        $this->model->ins('projects', $insert);
+        $this->model->ins('project_data_customer', $insert_data);
+        $this->model->ins('projects_detail', $insert_detail);
+
+        session()->setFlashdata('toast', 'success:Selamat pengajuan Order berhasil dikirim !.');
+        return redirect()->to('home');
     }
 
+    public function desain()
+    {
+        $sess = session();
+        $id = $sess->get('id');
+
+        if (empty($id)) {
+            redirect('Login');
+        }
+    }
     // TRANSAKSI
 
 
@@ -564,7 +559,6 @@ class Home extends BaseController
         $input = $this->request->getVar();
 
         $json_tukang =  $model->findTukang($input['area']);
-
 
         $id_tukang = $json_tukang->id_tukang;
         $email_tukang = $json_tukang->email_tukang;
@@ -738,7 +732,7 @@ class Home extends BaseController
         $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20);
         // var_dump($newfilename);die;
         if (!$file->isValid()) {
-            return $this->fail($file->getErrorString());
+            return $response = $file->getErrorString();
         }
 
         if ($file->move($path, $nameNew)) {
@@ -822,6 +816,7 @@ class Home extends BaseController
 
     public function tentang_mitra()
     {
+        $sess = session();
         $model = new GeneralModel();
         $data['tentang'] = $model->getWhere('footer', ['id' => 1])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
@@ -830,6 +825,7 @@ class Home extends BaseController
 
     public function qa()
     {
+        $sess = session();
         $model = new GeneralModel();
         $data['tentang'] = $model->getWhere('footer', ['id' => 7])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
@@ -838,6 +834,7 @@ class Home extends BaseController
 
     public function snk()
     {
+        $sess = session();
         $model = new GeneralModel();
         $data['tentang'] = $model->getWhere('footer', ['id' => 4])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
