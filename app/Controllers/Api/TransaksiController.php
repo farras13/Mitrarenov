@@ -188,11 +188,19 @@ class TransaksiController extends ResourceController
         $mdl = new GeneralModel();
         $headers = $this->request->headers();
         $token = $headers['X-Auth-Token']->getValue();
+        $agent = $this->request->getUserAgent();
+        if ($agent->isMobile('iphone')) {
+            $device = "1";
+        } elseif ($agent->isMobile()) {
+            $device = "2";
+        } else {
+            $device = "3";
+        }
         $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
         $id = (int)$cekUser->member_id;
         $temp_idp = $mdl->lastId('projects')->getRow();
         $id_projek = (int)$temp_idp->id + 1;
-// var_dump($id_projek);die;
+        // var_dump($id_projek);die;
         $input = $this->request->getVar();
         $tdate = date('Y-m-d');
         $date = strtotime($tdate);
@@ -250,7 +258,7 @@ class TransaksiController extends ResourceController
             // var_dump($price);die;
             $total = $price * $input['luas']; 
             $insert = [
-                'project_number' => "PRJ" . date("dmY", time())."".rand(10,100),
+                'project_number' => date("dmY", time())."".rand(10,100),
                 'type' => $type,
                 'total' => $total,
                 'alamat_pengerjaan' => $input['alamat'],
@@ -259,8 +267,10 @@ class TransaksiController extends ResourceController
                 'description' => $input['deskripsi'],
                 'latitude' => $input['latitude'],
                 'longitude' => $input['longitude'],
-                'metode_payment' => $input['metode_pembayaran'],
+                'metode_payment' => $input['metodpay'],
+                'nama_marketing' => $input['marketing'],
                 'status_project' => 'quotation',
+                'device' => $device,
                 'created' => time()
             ];
 
