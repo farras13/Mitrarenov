@@ -21,14 +21,12 @@ class LoginController extends ResourceController
 
     public function login()
     {
-        // inisiet model
         $auth = new AuthModel();
         $mtoken = new AuthTokenModel();
         $model = new GeneralModel();
 
         // init request json
         $request = $this->request->getVar();
-        // var_dump($request->email);die;
 
         // get login request
         $data = array(
@@ -43,31 +41,32 @@ class LoginController extends ResourceController
         }
 
         $cek_token = $model->getWhere('token_login', ['member_id' => $cek[0]['id']], null)->getRow();
-       
-        if($cek_token != null){
-            $token = $cek_token->token; 
-        }else{
-            $token = random_string('alnum', 30);
-        }
-        // create token
-        // get device user
-        $headers = $this->request->headers();
-        $ip = $this->request->getIPAddress();
-        $device = $headers['User-Agent']->getValue();
 
-        // ins log
-        $hdata = array(
-            'token' => $token,
-            'device' => $device,
-        );
-        $cek[0]['key'] = $hdata;
-        // ins token auth
-        $dtoken = array(
-            'member_id' => $cek[0]['id'],
-            'token' => $token,
-            'user_agent' => $device,
-        );
-        $mtoken->ignore(true)->insert($dtoken);
+        if ($cek_token != null) {
+            $token = $cek_token->token;
+            $fcm_id = $request['fcm_id'];
+            $model->upd('token_login',  ['token' => $token], ['fcm_id' => $fcm_id]);
+        } else {
+            $token = random_string('alnum', 30);
+            $headers = $this->request->headers();
+            $fcm_id = $request['fcm_id'];
+            $device = $headers['User-Agent']->getValue();
+
+            // ins log
+            $hdata = array(
+                'token' => $token,
+                'fcm_id' => $fcm_id,
+                'device' => $device,
+            );
+            $cek[0]['key'] = $hdata;
+            // ins token auth
+            $dtoken = array(
+                'member_id' => $cek[0]['id'],
+                'token' => $token,
+                'user_agent' => $device,
+            );
+            $mtoken->ignore(true)->insert($dtoken);
+        }
 
         $res =  [
             'id' => $cek[0]['id'],
