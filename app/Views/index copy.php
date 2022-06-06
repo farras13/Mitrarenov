@@ -7,24 +7,33 @@
     <div class="top-banner">
       <?php foreach ($promo as $p) : ?>
         <div class="slick-slide slide-item">
-          <div class="banner-top-container">
-            <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt="">
-            <div class="slide-content">
-              <div class="slide-text">
-                <div class="row">
-                  <div class="col-md-8">
-                    <h1><?= $p->title ?></h1>
-                    <?php $date = new DateTime($p->expired); ?>
-                    <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
-                  </div>
+          <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt="">
 
+          <!-- <?php if ($p->image == null) { ?>
+            <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt="">
+          <?php } else { ?>
+            <img src="<?= base_url('public/images/promo') . '/' . $p->imagecontent ?>" class="w-100"  alt="">
+          <?php } ?> -->
+
+          <div class="slide-content">
+            <!-- <div class="discount-badge">
+              Diskon <?= $p->promo ?>%
+            </div> -->
+            <div class="slide-text">
+              <div class="row">
+                <div class="col-md-8">
+                  <h1><?= $p->title ?></h1>
+                  <?php $date = new DateTime($p->expired); ?>
+                  <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
                 </div>
+                <!-- <div class="col-md-4 text-right">
+                  <a href="<?= base_url('detail-promo') . '/' . $p->id ?>" class="btn btn-success btn-rounded font-weight-bold px-4 py-2">LIHAT KODE PROMO</a>
+                </div> -->
               </div>
             </div>
           </div>
         </div>
       <?php endforeach ?>
-
     </div>
     <div class="btn-slide btn-prev"><i class="ico ico-prev"></i></div>
     <div class="btn-slide btn-next"><i class="ico ico-next"></i></div>
@@ -96,13 +105,13 @@
     </div>
   </div>
 
-  <div class="section section-2 py-4">
-    <h3 class="title text-primary text-center mb-5">
+  <div class="section section-2 py-5">
+    <h3 class="title text-primary text-center">
       Keunggulan Kami
     </h3>
     <div class="section-inner">
       <div class="row">
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
             <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-1.svg') ?>" class="img-fluid" alt="">
           </div>
@@ -115,7 +124,7 @@
             untuk wilayah Jabodetabek
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
             <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-2.svg') ?>" class="img-fluid" alt="">
           </div>
@@ -128,7 +137,7 @@
             GRATIS S&K Berlaku
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
             <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-4.svg') ?>" class="img-fluid" alt="">
           </div>
@@ -141,7 +150,7 @@
             kapanpun melalui gadget
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
             <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-4.svg') ?>" class="img-fluid" alt="">
           </div>
@@ -154,7 +163,7 @@
             siap membantu anda
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
             <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-5.svg') ?>" class="img-fluid" alt="">
           </div>
@@ -166,7 +175,7 @@
             seluruh pekerjaan yang kami lakukan
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
             <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-6.svg') ?>" class="img-fluid" alt="">
           </div>
