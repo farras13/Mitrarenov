@@ -7,24 +7,33 @@
     <div class="top-banner">
       <?php foreach ($promo as $p) : ?>
         <div class="slick-slide slide-item">
-          <div class="banner-top-container">
-            <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt="">
-            <div class="slide-content">
-              <div class="slide-text">
-                <div class="row">
-                  <div class="col-md-8">
-                    <h1><?= $p->title ?></h1>
-                    <?php $date = new DateTime($p->expired); ?>
-                    <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
-                  </div>
+          <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt="">
 
+          <!-- <?php if ($p->image == null) { ?>
+            <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt="">
+          <?php } else { ?>
+            <img src="<?= base_url('public/images/promo') . '/' . $p->imagecontent ?>" class="w-100"  alt="">
+          <?php } ?> -->
+
+          <div class="slide-content">
+            <!-- <div class="discount-badge">
+              Diskon <?= $p->promo ?>%
+            </div> -->
+            <div class="slide-text">
+              <div class="row">
+                <div class="col-md-8">
+                  <h1><?= $p->title ?></h1>
+                  <?php $date = new DateTime($p->expired); ?>
+                  <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
                 </div>
+                <!-- <div class="col-md-4 text-right">
+                  <a href="<?= base_url('detail-promo') . '/' . $p->id ?>" class="btn btn-success btn-rounded font-weight-bold px-4 py-2">LIHAT KODE PROMO</a>
+                </div> -->
               </div>
             </div>
           </div>
         </div>
       <?php endforeach ?>
-
     </div>
     <div class="btn-slide btn-prev"><i class="ico ico-prev"></i></div>
     <div class="btn-slide btn-next"><i class="ico ico-next"></i></div>
@@ -39,7 +48,7 @@
         <div class="col-md-6 my-4">
           <div class="d-flex align-items-center">
             <div class="icon-how">
-              <img src="<?= base_url('main/images/mitrarenove-a-1.svg') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/mitrarenove-a-1.svg') ?>" class="img-fluid" alt="">
             </div>
             <div class="w-100 pl-4">
               <h4><span>1.</span> Order Online</h4>
@@ -53,7 +62,7 @@
         <div class="col-md-6 my-4">
           <div class="d-flex align-items-center">
             <div class="icon-how">
-              <img src="<?= base_url('main/images/mitrarenove-a-2.svg') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/mitrarenove-a-2.svg') ?>" class="img-fluid" alt="">
             </div>
             <div class="w-100 pl-4">
               <h4><span>2.</span> Survey Lokasi</h4>
@@ -67,7 +76,7 @@
         <div class="col-md-6 my-4">
           <div class="d-flex align-items-center">
             <div class="icon-how">
-              <img src="<?= base_url('main/images/mitrarenove-a-1.svg') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/mitrarenove-a-1.svg') ?>" class="img-fluid" alt="">
             </div>
             <div class="w-100 pl-4">
               <h4><span>3.</span> Pembuatan RAB</h4>
@@ -81,7 +90,7 @@
         <div class="col-md-6 my-4">
           <div class="d-flex align-items-center">
             <div class="icon-how">
-              <img src="<?= base_url('main/images/mitrarenove-a-3.svg') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/mitrarenove-a-3.svg') ?>" class="img-fluid" alt="">
             </div>
             <div class="w-100 pl-4">
               <h4><span>4.</span> Tanda Tangan Surat Kontrak</h4>
@@ -96,15 +105,15 @@
     </div>
   </div>
 
-  <div class="section section-2 py-4">
-    <h3 class="title text-primary text-center mb-5">
+  <div class="section section-2 py-5">
+    <h3 class="title text-primary text-center">
       Keunggulan Kami
     </h3>
     <div class="section-inner">
       <div class="row">
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-1.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-1.svg') ?>" class="img-fluid" alt="">
           </div>
           <h4 class="text-primary">
             Free Survey
@@ -115,9 +124,9 @@
             untuk wilayah Jabodetabek
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-2.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-2.svg') ?>" class="img-fluid" alt="">
           </div>
           <h4 class="text-primary">
             Free Design
@@ -128,9 +137,9 @@
             GRATIS S&K Berlaku
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-4.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-4.svg') ?>" class="img-fluid" alt="">
           </div>
           <h4 class="text-primary">
             Kemudahan Pantau Progress
@@ -141,9 +150,9 @@
             kapanpun melalui gadget
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-4.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-4.svg') ?>" class="img-fluid" alt="">
           </div>
           <h4 class="text-primary">
             Cash & KPR
@@ -154,9 +163,9 @@
             siap membantu anda
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-5.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-5.svg') ?>" class="img-fluid" alt="">
           </div>
           <h4 class="text-primary">
             Bergaransi
@@ -166,9 +175,9 @@
             seluruh pekerjaan yang kami lakukan
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
+        <div class="col-md-4 col-6 my-5 text-center">
           <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-6.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/keunggulan-mitrarenov-6.svg') ?>" class="img-fluid" alt="">
           </div>
           <h4 class="text-primary">
             Tukang Ahli & Berpengalaman
@@ -209,7 +218,7 @@
             <!-- <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="<?= base_url('order?type=Renovasi') ?>">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Renovasi</p>
                 </div>
               </a>
@@ -217,7 +226,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-03.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-03.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Perawatan Rumah</p>
                 </div>
               </a>
@@ -225,7 +234,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-04.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-04.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Interior</p>
                 </div>
               </a>
@@ -233,7 +242,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-05.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-05.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Pengurusan IMB</p>
                 </div>
               </a>
@@ -241,7 +250,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-06.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-06.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Jasa Arsitek</p>
                 </div>
               </a>
@@ -262,7 +271,7 @@
           <?php foreach ($testimoni as $t) : ?>
             <div class="testi-item">
               <div class="testi-img">
-                <img class="testi-img" src="<?= base_url('images/testimoni/' . $t->image) ?>" alt="">
+                <img class="testi-img" src="<?= base_url('public/images/testimoni/' . $t->image) ?>" alt="">
               </div>
               <div class="testi-content">
                 <p class="font-weight-bold mb-0"><?= $t->name ?></p>
@@ -315,8 +324,8 @@
           <div class="row" id="pekerjaanGallery">
             <?php foreach ($galery as $g) { ?>
               <div class="col-md-3 mb-4 col-gallery">
-                <a href="<?= base_url('images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
-                  <img src="<?= base_url('images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
+                  <img src="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $g->judul ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -333,8 +342,8 @@
           <div class="row" id="portofolioGallery">
             <?php foreach ($merawat as $m) { ?>
               <div class="col-md-3 mb-4 col-gallery-portfolio">
-                <a href="<?= base_url('images/merawat') . '/' . $m->image ?>" class="gallery-item" title="<?= $m->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $m->title ?>">
-                  <img src="<?= base_url('images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="gallery-item" title="<?= $m->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $m->title ?>">
+                  <img src="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -351,8 +360,8 @@
           <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
               <div class="col-md-3 mb-4 col-gallery-desain">
-                <a href="<?= base_url('images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
-                  <img src="<?= base_url('images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
+                  <img src="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $dr->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -437,20 +446,20 @@
     <div class="unduh-container mt-5">
       <div class="row align-items-center justify-content-center">
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('public/main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
         </div>
         <div class="col-md-4 col-10">
           <div class="d-flex download-btn">
             <a href="#">
-              <img src="<?= base_url('main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
             </a>
             <a href="#">
-              <img src="<?= base_url('main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
             </a>
           </div>
         </div>
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('public/main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
         </div>
       </div>
     </div>
@@ -468,7 +477,7 @@
 
         <div class="row align-items-center">
           <div class="col-md-6 col-4">
-            <img src="<?= base_url('main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
           </div>
           <div class="col-md-6 col-8 text-right">
             <h4 class="mb-0 title-category-modal">Membangun</h4>
@@ -496,7 +505,7 @@
           <!-- <div class="col-md-6 my-4">
             <div class="d-flex align-items-center">
               <div class="cat-img-i">
-                <img src="<?= base_url('main/images/icon-cat-detail-2.svg') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/icon-cat-detail-2.svg') ?>" class="img-fluid" alt="">
               </div>
               <div class="w-100 text-19 pl-3">
                 Membangun Rumah Minimalis
@@ -506,7 +515,7 @@
           <div class="col-md-6 my-4">
             <div class="d-flex align-items-center">
               <div class="cat-img-i">
-                <img src="<?= base_url('main/images/icon-cat-detail-3.svg') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/icon-cat-detail-3.svg') ?>" class="img-fluid" alt="">
               </div>
               <div class="w-100 text-19 pl-3">
                 Membangun Rumah Kost
@@ -516,7 +525,7 @@
           <div class="col-md-6 my-4">
             <div class="d-flex align-items-center">
               <div class="cat-img-i">
-                <img src="<?= base_url('main/images/icon-cat-detail-4.svg') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/icon-cat-detail-4.svg') ?>" class="img-fluid" alt="">
               </div>
               <div class="w-100 text-19 pl-3">
                 Membangun Ruko
@@ -539,7 +548,7 @@
 
         <div class="row align-items-center">
           <div class="col-md-6 col-4">
-            <img src="<?= base_url('main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
           </div>
           <div class="col-md-6 col-8 text-right">
             <h4 class="mb-0 title-category-modal">Renovasi</h4>

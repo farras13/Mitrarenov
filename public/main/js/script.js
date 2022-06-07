@@ -86,7 +86,6 @@ $(function () {
     })
     $('.client-slide').slick({
         slidesToShow: 4,
-        rows: 2,
         prevArrow: '.client-prev',
         nextArrow: '.client-next',
         dots: true,
