@@ -8,7 +8,32 @@
 
   <div class="container my-5">
     <div class="row">
-      <div class="col-lg-4 mb-5">
+      <div class="col-lg-9 mb-5 content-article">
+        <h1 class="mb-4 article-title">
+          <?= $berita['title'] ?>
+        </h1>
+        <div class="article-img">
+          <img src="<?= base_url('public/images/news') . '/' . $berita['image'] ?>" alt="">
+        </div>
+        <div class="row align-items-center py-4">
+          <div class="col-8">
+            <p class="text-grey mb-0">Penulis <?= $berita['penulis'] ?></p>
+            <p class="text-grey mb-0">Diterbitkan <?php $time = $berita['created'];
+                                                  $date = new DateTime("@$time");
+                                                  echo $date->format('d M Y'); ?></p>
+          </div>
+          <div class="col-4 text-right">
+            <a href="#">
+              <i class="ico ico-share"></i>
+            </a>
+          </div>
+        </div>
+        <div class="article-description">
+          <?= $berita['description'] ?>
+        </div>
+
+      </div>
+      <div class="col-lg-3 mb-5">
         <div class="sidebar">
           <div class="card rounded-0 sidebar-inner">
             <div class="card-body p-5 card-sidebar">
@@ -59,33 +84,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-8 mb-5 content-article">
-        <div class="article-list">
-          <h1 class="mb-4 article-title">
-            <?= $berita['title'] ?>
-          </h1>
-          <div class="article-img">
-            <img src="<?= base_url('public/images/news') . '/' . $berita['image'] ?>" alt="">
-          </div>
-          <div class="row align-items-center py-4">
-            <div class="col-8">
-              <p class="text-grey mb-0">Penulis <?= $berita['penulis'] ?></p>
-              <p class="text-grey mb-0">Diterbitkan <?php $time = $berita['created'];
-                                                    $date = new DateTime("@$time");
-                                                    echo $date->format('d M Y'); ?></p>
-            </div>
-            <div class="col-4 text-right">
-              <a href="#">
-                <i class="ico ico-share"></i>
-              </a>
-            </div>
-          </div>
-          <div class="article-description">
-            <?= $berita['description'] ?>
-          </div>
 
-        </div>
-      </div>
     </div>
     <div class="row">
       <div class="col-lg-12">

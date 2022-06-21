@@ -398,8 +398,7 @@
                 <button type="submit" class="btn">LANGGANAN</button>
               </div>
               <p class="mt-3">
-                Tetap up to date dengan berita terbaru
-                dan penawaran khusus kami.
+                Tetap up to date dengan berita terbaru dan penawaran khusus kami.
               </p>
             </div>
 
