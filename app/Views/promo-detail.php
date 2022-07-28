@@ -23,7 +23,7 @@
             </div>
           </div>
           <p>
-            <?= $p->description ?>
+            <?= $promo->description ?>
           </p>
         </div>
         <div class="col-md-4 order-md-2 order-1">

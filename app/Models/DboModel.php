@@ -15,7 +15,13 @@ class DboModel extends Model
     public function getProjectProgres($id)
     {
         $db = db_connect();
-        return $data = $db->query("SELECT * FROM `dbo.mst_project` WHERE member_id = $id and ")->getResult();
+        return $data = $db->query("SELECT * FROM projects WHERE member_id = $id and status_project = 'project'")->getResult();
+    }
+
+    public function getSnk()
+    {
+        $db = db_connect();
+        return $data = $db->query("SELECT * FROM snk_kpr")->getResult();
     }
 
     function findTukang($area_id)
@@ -26,6 +32,8 @@ class DboModel extends Model
 
         return $json;
     }
+
+    
 
     public function updateData($t, $id, $data)
     {
@@ -38,34 +46,51 @@ class DboModel extends Model
         // var_dump($id);
         // $data = $db->query("SELECT b.* FROM `projects` as b join project_data_customer as  a on a.project_id = b.id  WHERE member_id = $id")->getResult();
         if ($l != null && $w != null) {
-            $data = $db->query("SELECT b.id, a.member_id, a.name, b.project_number,b.alamat_pengerjaan, b.status_project, DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
+            $data = $db->query("SELECT b.id, a.member_id, a.name,a.phone,b.luas,b.metode_payment, b.project_number,b.nomor_kontrak, e.rab,e.dokumen,e.dokumen_rab, b.alamat_pengerjaan,f.name as pic,f.telephone as phone_pic, b.status_project, DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
 			FROM `project_data_customer` as a 
             join projects as  b on b.id = a.project_id  
             join projects_detail as c on c.project_id = b.id  
-			join product as d on d.id = c.product_id  
-            WHERE member_id = $id AND b.status_project = '$w' ORDER BY b.id DESC LIMIT $l")->getResult();
+            left join projects_persetujuan as e on e.nomor_kontrak = b.nomor_kontrak			
+            join product as d on d.id = c.product_id
+            join member_detail as f on f.member_id = b.id_admin_project  
+            WHERE a.member_id = $id AND b.status_project = '$w' ORDER BY b.id DESC LIMIT $l")->getResult();
         } else if ($l == null && $w != null) {
-            $data = $db->query("SELECT b.id,a.member_id, a.name, b.project_number,b.alamat_pengerjaan, b.status_project,DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
+            $data = $db->query("SELECT b.id,a.member_id, a.name,a.phone,b.luas,b.metode_payment, b.project_number,b.nomor_kontrak,e.rab,e.dokumen,e.dokumen_rab,b.alamat_pengerjaan,f.name as pic,f.telephone as phone_pic, b.status_project,DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
 			FROM `project_data_customer` as a 
             join projects as  b on b.id = a.project_id  
-            join projects_detail as c on c.project_id = b.id  
-			join product as d on d.id = c.product_id  
-            WHERE member_id = $id AND b.status_project = '$w' ORDER BY b.id DESC")->getResult();
+            join projects_detail as c on c.project_id = b.id 
+            left join projects_persetujuan as e on e.nomor_kontrak = b.nomor_kontrak
+			join product as d on d.id = c.product_id
+            join member_detail as f on f.member_id = b.id_admin_project  
+            WHERE a.member_id = $id AND b.status_project = '$w' ORDER BY b.id DESC")->getResult();
         } else if ($l != null && $w == null) {
-            $data = $db->query("SELECT b.id,a.member_id, a.name, b.project_number,b.alamat_pengerjaan, b.status_project,DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
+            $data = $db->query("SELECT b.id,a.member_id, a.name,a.phone,b.luas,b.metode_payment, b.project_number,b.nomor_kontrak,e.rab,e.dokumen,e.dokumen_rab,b.alamat_pengerjaan,f.name as pic,f.telephone as phone_pic, b.status_project,DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
 			FROM `project_data_customer` as a 
             join projects as  b on b.id = a.project_id  
-            join projects_detail as c on c.project_id = b.id  
-			join product as d on d.id = c.product_id  
-            WHERE member_id = $id ORDER BY b.id DESC LIMIT $l")->getResult();
+            join projects_detail as c on c.project_id = b.id 
+            left join projects_persetujuan as e on e.nomor_kontrak = b.nomor_kontrak
+			join product as d on d.id = c.product_id
+            join member_detail as f on f.member_id = b.id_admin_project  
+            WHERE a.member_id = $id ORDER BY b.id DESC LIMIT $l")->getResult();
         } else {
-            $data = $db->query("SELECT b.id,a.member_id, a.name, b.project_number,b.alamat_pengerjaan, b.status_project,DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
+            $data = $db->query("SELECT b.id,a.member_id, a.name,a.phone,b.luas,b.metode_payment, b.project_number,b.nomor_kontrak,e.rab,e.dokumen,e.dokumen_rab,b.alamat_pengerjaan,f.name as pic,f.telephone as phone_pic, b.status_project,DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
 			FROM `project_data_customer` as a 
             join projects as b on b.id = a.project_id  
-            join projects_detail as c on c.project_id = b.id  
-			join product as d on d.id = c.product_id  
-            WHERE member_id = $id ORDER BY b.id DESC")->getResult();
+            join projects_detail as c on c.project_id = b.id 
+            left join projects_persetujuan as e on e.nomor_kontrak = b.nomor_kontrak
+			join product as d on d.id = c.product_id
+            join member_detail as f on f.member_id = b.id_admin_project  
+            WHERE a.member_id = $id ORDER BY b.id DESC")->getResult();
         }
+        foreach ($data as $key => $value) {
+            
+            $value->addenum = $db->query("SELECT sum(biaya) as total FROM `projects_addendum`  
+                WHERE STATUS = 'disetujui' AND project_id = $value->id
+                GROUP BY tipe
+                ORDER BY `projects_addendum`.`tipe`  DESC")->getResult();
+           
+        }
+
 
         // var_dump($data);
         return $data;
@@ -101,7 +126,7 @@ class DboModel extends Model
             JOIN member_detail as t on t.member_id = projects.tukang_id
             WHERE project_id = $id limit 1")->getResult();
 
-        $projek = $db->query("SELECT projects.id, projects.project_number, projects.presentase_progress, product.paket_name, projects_update.tanggal FROM projects
+        $projek = $db->query("SELECT projects.id, projects.nomor_kontrak as no_sk, projects.project_number, projects.presentase_progress, product.paket_name, projects_update.tanggal FROM projects
             JOIN projects_detail on projects_detail.project_id = projects.id
             JOIN product on product.id = projects_detail.product_id
             LEFT JOIN projects_update on projects_update.project_id = projects.id
@@ -121,13 +146,13 @@ class DboModel extends Model
         // var_dump($sk->bulan);
         $bln = $array_bln[$sk->bulan];
         $nsk = $sk->id . '/' . $nm . '/' . $bln . '/' . $sk->tahun;
-        $projek->no_sk = $nsk;
+        // $projek->no_sk = $nsk;
 
 
 
 
         if ($termin == null) {
-            $termin = 'Hubungi Admin untuk pembuatan invoice';
+            $termin = [["title" => 'Hubungi Admin untuk pembuatan invoice']];
         } else {
             $a = 1;
             foreach ($termin as $t) {
@@ -149,7 +174,7 @@ class DboModel extends Model
         }
 
         $url = base_url();
-        $path = $url . '/public/images/project_update/';
+        $path = "https://admin.mitrarenov.soldig.co.id/assets/main/images/project_update/";
         if ($progres != null) {
             foreach ($progres as $p) {
                 if ($p->image != null) {
@@ -158,11 +183,12 @@ class DboModel extends Model
                     $p->image = $url . '/public/images/no-picture/no_logo.png';
                 }
             }
+
         } else {
-            $progres = [
+            $progres = [[
                 'image' => $url . '/public/images/no-picture/no_logo.png',
                 'keterangan' => 'Belum ada report proses'
-            ];
+            ]];
         }
 
         $data = [
@@ -229,5 +255,11 @@ class DboModel extends Model
             GROUP BY chat.project_id
             ORDER BY chat.id DESC")->getResult();
         }
+    }
+
+    public function dtrans($w)
+    {
+        $db = db_connect();
+        return $db->query("SELECT product.paket_name, product.price, product_price.product_price, projects_desain.*  FROM projects JOIN projects_detail on projects_detail.project_id = projects.id JOIN product ON projects_detail.product_id = product.id JOIN product_price on product.id = product_price.product_id JOIN projects_desain on projects_detail.desain_id = projects_desain.id WHERE projects.id = $w");        
     }
 }

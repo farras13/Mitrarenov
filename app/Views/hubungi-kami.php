@@ -25,6 +25,7 @@
                     </div>
                     <div class="form-group">
                         <select class="provinsi w-100" id="provinsi" name="provinsi">
+                            <option value="">select province</option>
                             <?php foreach ($prov as $p): ?>
                             <option value="<?= $p->province_id ?>"><?=  $p->name ?></option>
                             <?php endforeach ?>
@@ -43,32 +44,34 @@
                 <div class="col-md-6">
                     <h5 class="mb-4">Perihal</h5>
                     <div class="form-group">
-                        <select class="perihal w-100" name="perihal">
+                        <select class="perihal w-100" name="perihal" id="perihal">
                             <option value=""></option>
                             <option value="mitra">Menjadi Mitra</option>
                             <option value="suplier">Menjadi Suplier</option>
+                            <option value="kds">Konsultasi dan support</option>
                         </select>
                     </div>
-                    <h5 class="mb-4">Detail Informasi</h5>
+                    <h5 class="mb-4" id="info">Detail Informasi</h5>
                     <div class="form-group">
-                        <input type="text" class="form-control pl-35" placeholder="Nama Bisnis" name="detail_info">
+                        <input type="text" class="form-control pl-35" placeholder="Nama Bisnis" id="bisnis" name="detail_info">
                     </div>
-                    <div class="row form-group align-items-center my-4">
+                    <div class="row form-group align-items-center my-4" >
                         <div class="col-6">
-                            <div>Lampirkan Penawaran</div>
+                            <div id="lampiran">Lampirkan Penawaran</div>
                             <div class="text-grey">Upload File : Max 1Mb</div>
                         </div>
                         <div class="col-6 text-right">
                             <div class="single-file-upload no-label">
-                                <input type="file" id="upload_foto" hidden="" name="file">
+                                <input type="file" id="upload_foto" hidden="" name="file" required>
                                 <label for="upload_foto" class="btn btn-upload border-10 mb-0">
                                     Choose File
                                 </label>
                             </div>
                         </div>
+                        <!-- <span id="wrn" hidden><b><small>*Wajib di isi</small></b></span> -->
                     </div>
                     <div class="mt-3">
-                        <button type="submit" class="btn btn-success btn-lg btn-radius btn-block">KIRIM PESAN</button>
+                        <button type="submit" id="submit" class="btn btn-success btn-lg btn-radius btn-block">KIRIM PESAN</button>
                     </div>
                 </div>
             </div>
@@ -127,6 +130,36 @@
         });
         return false;
         }); 
+
+         $(document).on('change', '#perihal', function() {
+             var b = $(this).find(":selected").val();
+             console.log(b);
+             if(b == "kds"){
+                var html = "Lampirkan Dokumen";
+
+                $('#info').hide();
+                $('#bisnis').hide();
+                $('#lampiran').html(html);
+             }else{
+                var html = "Lampirkan Penawaran";
+
+                $('#info').show();
+                $('#bisnis').show();
+                $('#lampiran').html(html);
+                
+             }
+
+         });
+
+            $('#submit').bind("click",function() 
+            { 
+                var imgVal = $('#upload_foto').val(); 
+                if(imgVal=='') 
+                { 
+                    alert("empty input file"); 
+                    return false; 
+                } 
+            }); 
     })
 </script>
 <?= $this->endSection() ?>

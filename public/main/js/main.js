@@ -8,7 +8,7 @@ $(function () {
 
     $(".top-banner").slick({
         centerMode: true,
-        centerPadding: '260px',
+        centerPadding: '120px',
         slidesToShow: 1,
         prevArrow: '.btn-prev',
         nextArrow: '.btn-next',
@@ -42,6 +42,8 @@ $(function () {
 
     $('.testi-slide').slick({
         slidesToShow: 2,
+        autoplay: true,
+        autoplaySpeed: 5000,
         prevArrow: '.testi-prev',
         nextArrow: '.testi-next',
         responsive: [
@@ -80,9 +82,28 @@ $(function () {
     })
     $('.client-slide').slick({
         slidesToShow: 4,
-        rows: 2,
         prevArrow: '.client-prev',
         nextArrow: '.client-next',
+        dots: true,
+        responsive: [
+            {
+                breakpoint: 767.98,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 575.98,
+                settings: {
+                    slidesToShow: 2,
+                }
+            }
+        ]
+    })
+    $('.liputan-slide').slick({
+        slidesToShow: 5,
+        prevArrow: '.liputan-prev',
+        nextArrow: '.liputan-next',
         dots: true,
         responsive: [
             {

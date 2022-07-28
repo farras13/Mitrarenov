@@ -47,21 +47,21 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPHost = 'smtp.gmail.com';
+   public $SMTPHost = 'mail.mitrarenov.com';
 
     /**
      * SMTP Username
      *
      * @var string
      */
-    public $SMTPUser = 'contact.dokarco@gmail.com';
+    public $SMTPUser = 'notifikasi@mitrarenov.com';
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = 'doyankarya';
+    public $SMTPPass = '$no#2134WKOA';
 
     /**
      * SMTP Port

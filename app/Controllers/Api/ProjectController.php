@@ -64,6 +64,11 @@ class ProjectController extends ResourceController
         return $this->respond($res, 200);
     }
 
+    public function projekBerjalan()
+    {
+        
+    }
+
     public function detail($id)
     {
         $headers = $this->request->headers();
@@ -93,8 +98,39 @@ class ProjectController extends ResourceController
     public function spek()
     {
         $models = new GeneralModel();
-
-        $data = $models->getAll('product_price')->getResult();
+        $key = $this->request->getGet();
+       
+        $produk =  $models->getWhere('product', ['id' => $key['id']])->getRow();
+        if($key != null){
+                // $spek = $models->getWhere('product_price', ['product_id' => $produk->id])->getResult();
+                // if($spek == null){
+                //     $spek = $models->getWhere('product_price', ['product_id' => $produk->category_id])->getResult();
+                //     if ($spek == null) {
+                //         $spek = $models->getWhere('product', ['paket_name' => $key['name']])->getResult();
+                //         foreach ($spek as $key => $value) {
+                //             $value->type_price = $value->paket_name;
+                //             $value->product_price = $value->start_from_text;
+                //             $value->spesifikasi = $value->spesifikasi_renov;
+                //         }
+                //     }
+                // }
+                $spek =  $models->getWhere('product_price', ['product_id' => $produk->id])->getResult();
+                if($spek == null){
+                    $spek =  $models->getWhere('product_price', ['product_id' => $produk->category_id])->getResult();
+                    if ($spek == null) {
+                        $spek =  $models->getWhere('product', ['paket_name' => $key['name']])->getResult();
+                        foreach ($spek as $key => $value) {
+                            $value->type_price = $value->paket_name;
+                            $value->product_price = $value->start_from_text;
+                            $value->spesifikasi = $value->spesifikasi_renov;
+                        }
+                    }
+                }
+            // $data = $models->getWhere('product_price', ['id' => $key['id']])->getRow();
+            $data = $spek;
+        }else{
+            $data = $models->getAll('product_price')->getResult();
+        }
 
         $res = [
             'data' => $data,
@@ -125,13 +161,12 @@ class ProjectController extends ResourceController
         $token = $headers['X-Auth-Token']->getValue();
         $model = new GeneralModel();
         $models = new DboModel();
-
+        
         $cekUser = $model->getWhere('token_login', ['token' => $token])->getRow();
-
+        
         $id = (int)$cekUser->member_id;
 
         $data = $models->getProjectUserS($id, 'done');
-
         $user = $model->getwhere('project_data_customer', ['member_id' => $id])->getResult();
 
         $key = $this->request->getGet();
@@ -181,145 +216,4 @@ class ProjectController extends ResourceController
         return $this->respond($res, 200);
     }
 
-    // public function orderProjek()
-    // {
-    //     $mdl = new GeneralModel();
-    //     $headers = $this->request->headers();
-    //     $token = $headers['X-Auth-Token']->getValue();
-    //     $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-    //     $id = (int)$cekUser->member_id;
-
-    //     $input = $this->request->getVar();
-
-    //     $type = $input['type'];
-    //     $insert = [
-    //         'project_number' => date("dmY", time()) . "" . rand(10, 100),
-    //         'total' => $input['total'],
-    //         'alamat_pengerjaan' => $input['alamat_pengerjaan'],
-    //         'catatan_alamat' => $input['catatan_alamat'],
-    //         'luas' => $input['luas'],
-    //         'description' => $input['description'],
-    //         'metode_payment' => $input['metode_payment'],
-    //         'status_project' => 'quotation',
-    //     ];
-
-    //     $insert_data = [
-    //         'name' => $input['name'],
-    //         'address' => $input['address'],
-    //         'email' => $input['email'],
-    //         'phone' => $input['phone'],
-    //         'created' => time(),
-    //     ];
-
-    //     $insert_detail = [
-    //         'product_id' => $input['product_id'],
-    //         'product_price_id' => $input['tipe_paket'],
-    //     ];       
-
-    //     $query = $this->general_model->insertTable('projects', $insert);
-
-    //     if ($query) {
-
-    //         $insert_data['project_id'] = $query;
-    //         $query_data = $this->general_model->insertTable('project_data_customer', $insert_data);
-
-    //         $insert_detail['project_id'] = $query;
-    //         $query_detail = $this->general_model->insertTable('projects_detail', $insert_detail);
-
-    //         /* start upload */
-    //         $image =  $_FILES['image_upload']['name'];
-    //         $uploadImageResultJson = json_decode($this->upload_image_project($image, $query), true);
-    //         foreach ($uploadImageResultJson as $a => $value) {
-    //             if ($a == 'status') {
-    //                 $upload_status = $value;
-    //             }
-    //             if ($a == 'message') {
-    //                 $upload_message = $value;
-    //             }
-    //             if ($a == 'path_image') {
-    //                 $upload_path = $value;
-    //             }
-    //         }
-    //         if ($upload_status != 0) {
-    //             $path_image = $upload_path;
-    //             $json_text = $upload_message;
-    //         } else {
-    //             $path_image = '';
-    //             $json_text = $upload_message;
-    //         }
-    //         /* end upload */
-    //         $product_id = array('id' => $input['product_id']);
-    //         $getProduct = $this->general_model->getfieldById('paket_name', 'product', $product_id);
-
-    //         $return = array(
-    //             $query, $insert['project_number'], $getProduct->paket_name, $insert['luas'], number_format($insert['total']), $insert['metode_payment'], $insert_data['name'], $insert_data['phone'], date("d M Y", $insert_data['created']), $insert_data['email'], $insert['marketing_name'], $this->access['action'], $insert['catatan_alamat']
-    //         );
-    //         $json_status = 1;
-    //     } else {
-    //         $json_status = 0;
-    //     }
-
-    //     $res = array(
-    //         'status' => $json_status,
-    //         'message' => $json_text,
-    //         'data' => $return,
-    //         'type' => $type
-    //     );
-
-    //     return $this->respond($res,200);
-    // }
-
-    // public function uploadImage($id)
-    // {
-    //     $file = $this->request->getFile('image');
-       
-    //     $profile_image = $file->getName();
-
-    //     // Renaming file before upload
-    //     $temp = explode(".", $profile_image);
-    //     $newfilename = round(microtime(true)) . '.' . end($temp);
-
-    //     if ($file->move("images/image_foder/", $newfilename)) {
-
-    //         $data = [
-    //             "file_name" => $newfilename,
-    //             "file_path" => "images/members/" . $newfilename
-    //         ];
-
-    //         $fileModel = new AuthDetailModel();
-
-    //         if ($fileModel->update($id, $data)) {
-
-    //             $response = [
-    //                 'status' => 200,
-    //                 'error' => false,
-    //                 'message' => 'File uploaded successfully',
-    //                 'data' => []
-    //             ];
-    //         } else {
-
-    //             $response = [
-    //                 'status' => 500,
-    //                 'error' => true,
-    //                 'message' => 'Failed to save image',
-    //                 'data' => []
-    //             ];
-    //         }
-    //     } else {
-
-    //         $response = [
-    //             'status' => 500,
-    //             'error' => true,
-    //             'message' => 'Failed to upload image',
-    //             'data' => []
-    //         ];
-    //     }
-
-    //     return $this->respondCreated($response);
-    // }
-
-    // public function upload_image_project($image, $query)
-    // {
-    //    return true;
-    // }
 }

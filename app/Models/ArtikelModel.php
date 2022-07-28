@@ -44,13 +44,13 @@ class ArtikelModel extends Model
         ->select('news.*, member_detail.name as penulis')
         ->join('member', 'member.id = news.created_by')
         ->join('member_detail', 'member_detail.member_id = member.id')
-        ->orderBy('news.analyticsviews', 'desc')->get(5)->getResult(); 
+        ->orderBy('news.analyticsviews', 'desc')->get(8)->getResult(); 
     }
 
     function kategori()
     {
         $cek =  $this->db->table('news')
-        ->select('news.id, news.kategori as title, count(kategori) as banyak')
+        ->select('news.id, news.news_category as title, count(kategori) as banyak')
         ->groupBy('news.kategori')
         ->orderBy('banyak', 'desc')->get(8);
         if($cek){
@@ -59,6 +59,15 @@ class ArtikelModel extends Model
             return $this->tagline();
         }
     }
+
+    // function kategori()
+    // {
+    //     return $this->db->table('news_category')
+    //     ->select('id_news_category, news_category as title')
+    //     ->orderBy('id_news_category', 'desc')
+    //     ->get()->getResult();
+        
+    // }
 
     function tagline()
     {
@@ -73,7 +82,7 @@ class ArtikelModel extends Model
         return  $this->db->table('news')
         ->select('news.*')
         ->where('tagline', $id)
-        ->orderBy('id', 'desc')->get(3)->getResult();
+        ->orderBy('id', 'desc')->get(4)->getResult();
     }
 
     function search_hot($s)

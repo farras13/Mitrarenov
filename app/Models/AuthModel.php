@@ -40,4 +40,9 @@ class AuthModel extends Model
        return $this->db->table($t)->ignore(true)->insert($object);
     }
 
+    public function upd($t, $object, $w)
+    {
+        return $this->db->update($t, $object, $w);
+    }
+
 }

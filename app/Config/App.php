@@ -23,8 +23,8 @@ class App extends BaseConfig
      *
      * @var string
      */
-    // public $baseURL = 'https://mitrarenov.soldig.co.id/';
-    public $baseURL = 'http://localhost:8080/';
+    public $baseURL = 'https://mitrarenov.soldig.co.id/';
+    // public $baseURL = 'http://localhost:8080/';
 
     /**
      * --------------------------------------------------------------------------
@@ -109,7 +109,9 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $appTimezone = 'America/Chicago';
+    // public $appTimezone = 'America/Chicago';
+    public $appTimezone = 'Asia/Jakarta';
+    
 
     /**
      * --------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Models\DboModel;
+use App\Models\GeneralModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\RequestTrait;
 use CodeIgniter\RESTful\ResourceController;
@@ -180,6 +181,7 @@ class SimulasiKpr extends ResourceController
         return $this->respond($res, 200);
     }
 
+
     /**
      * Return the editable properties of a resource object
      *
@@ -189,6 +191,17 @@ class SimulasiKpr extends ResourceController
     {
         //
     }
+
+    // public function merawat()
+    // {
+    //     $model = new GeneralModel();
+    //     $merawat = $model->getAll('merawat')->getResult();
+    //     foreach ($merawat as $key => $value) {
+    //         $model->ins('gambar_portofolio', ['porto_id' => $value->id,'image' => $value->image]);
+    //     }
+    //     $res = $model->getAll('gambar_portofolio')->getResult();
+    //     return $this->respond($res, 200);
+    // }
 
     
 }

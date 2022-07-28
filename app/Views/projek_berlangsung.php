@@ -1,8 +1,8 @@
 <?= $this->extend('template2') ?>
 
 <?= $this->section('content') ?>
-
 <div class="col-lg-9 col-right">
+    <?php foreach($projekBerjalan as $key => $pb): ?>
     <div class="card-nav">
         <div class="slider-section">
             <span class="pagingInfo"></span>
@@ -31,17 +31,17 @@
         <div class="px-3">
             <div class="row mt-4">
                 <div class="col-md-7">
-                    <p class="font-weight-bold mb-2 text-primary">Project - #131/3219/MR</p>
-                    <h2 class="text-30">Renovasi Ruang Kerja</h2>
+                    <p class="font-weight-bold mb-2 text-primary">Project - <?= $pb->nomor_kontrak; ?></p>
+                    <h2 class="text-30"><?= $pb->paket_name; ?></h2>
                 </div>
                 <div class="col-md-5">
                     <div class="text-right">
                         <p class="font-weight-bold mb-2 text-grey">Progress</p>
-                        <p class="text-30 font-weight-bold text-success">80%</p>
+                        <p class="text-30 font-weight-bold text-success"><?= $pb->presentase_progress != '' ? $pb->presentase_progress : "0%"; ?></p>
                     </div>
                 </div>
             </div>
-            <span class="label-update mb-4">Updated: 21 Maret 2021</span>
+            <span class="label-update mb-4">Updated: <?= $pb->created; ?></span>
 
             <div class="row align-items-center py-3">
                 <div class="col-md-7">
@@ -51,12 +51,12 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Nomor Surat Kontrak</p>
-                            <p class="text-23 mb-0">182/SPPPR/MAT/II/2021</p>
+                            <p class="text-23 mb-0"><?= $pb->nomor_kontrak; ?></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a href="#" class="text-warning">Lihat Kontrak</a>
+                    <a href="<?= 'https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'.$pb->dokumen; ?>" target="_BLANK" class="text-warning">Lihat Kontrak</a>
                 </div>
             </div>
             <hr>
@@ -68,12 +68,12 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Nilai Project</p>
-                            <p class="text-23 mb-0">Rp. 102.000.000</p>
+                            <p class="text-23 mb-0">Rp. <?= number_format($pb->rab, 0,',','.'); ?></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a href="#" class="text-warning">Lihat RAB</a>
+                    <a href="<?= 'https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'.$pb->dokumen_rab; ?>" target="_BLANK" class="text-warning">Lihat RAB</a>
                 </div>
             </div>
             <div class="row align-items-center py-3">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Tambah</p>
-                            <p class="text-23 mb-0">Rp. 10.000.000</p>
+                            <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[0]->total, 0,',','.'); ?></p>
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Kurang</p>
-                            <p class="text-23 mb-0">Rp. 5.000.000</p>
+                            <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[1]->total, 0,',','.'); ?></p>
                         </div>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pemilik Proyek</p>
-                            <p class="text-23 mb-0">Ari Purwoko</p>
+                            <p class="text-23 mb-0"><?= $pb->name; ?></p>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">No. Telepon</p>
-                            <p class="text-23 mb-0">0897100260</p>
+                            <p class="text-23 mb-0"><?= $pb->phone; ?></p>
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Metode Pembayaran</p>
-                            <p class="text-23 mb-0">Cash/Transfer</p>
+                            <p class="text-23 mb-0"><?= $pb->metode_payment == "kredit" ? "Kredit/KPR" : "Cash/Transfer"; ?></p>
                         </div>
                     </div>
                 </div>
@@ -152,7 +152,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Luas Bangunan</p>
-                            <p class="text-23 mb-0">120 m2</p>
+                            <p class="text-23 mb-0"><?= $pb->luas; ?> m2</p>
                         </div>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">PIC</p>
-                            <p class="text-23 mb-0">Sahrin Sopian</p>
+                            <p class="text-23 mb-0"><?= $pb->pic; ?></p>
                         </div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">No. Telepon PIC</p>
-                            <p class="text-23 mb-0">082712410018</p>
+                            <p class="text-23 mb-0"><?= $pb->phone_pic; ?></p>
                         </div>
                     </div>
                 </div>
@@ -184,8 +184,8 @@
             </div>
         </div>
     </div>
+    <?php endforeach; ?>
 </div>
-
 
 <?= $this->endSection() ?>
 <?= $this->section('script') ?>

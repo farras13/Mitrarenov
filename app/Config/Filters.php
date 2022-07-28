@@ -4,6 +4,7 @@ namespace Config;
 
 use App\Filters\Cors;
 use App\Filters\Token;
+use App\Filters\Auth;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -23,6 +24,7 @@ class Filters extends BaseConfig
         'honeypot' => Honeypot::class,
         'cors' => Cors::class,
         'token' => Token::class,
+        'auth'     => Auth::class,
     ];
 
     /**

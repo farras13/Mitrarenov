@@ -8,8 +8,11 @@
       <?php foreach ($promo as $p) : ?>
         <div class="slick-slide slide-item">
           <div class="banner-top-container">
-            <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt="">
+            <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt=""></a>
             <div class="slide-content">
+              <div class="discount-badge">
+                Diskon <?= $p->promo ?>%
+              </div>
               <div class="slide-text">
                 <div class="row">
                   <div class="col-md-8">
@@ -36,62 +39,22 @@
     </div>
     <div class="section-inner">
       <div class="row align-items-center">
-        <div class="col-md-6 my-4">
-          <div class="d-flex align-items-center">
-            <div class="icon-how">
-              <img src="<?= base_url('main/images/mitrarenove-a-1.svg') ?>" class="img-fluid" alt="">
-            </div>
-            <div class="w-100 pl-4">
-              <h4><span>1.</span> Order Online</h4>
-              <p class="mb-0">
-                Order Pekerjaan Renovasi atau Pembangunan
-                rumah anda melalui aplikasi atau website
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 my-4">
-          <div class="d-flex align-items-center">
-            <div class="icon-how">
-              <img src="<?= base_url('main/images/mitrarenove-a-2.svg') ?>" class="img-fluid" alt="">
-            </div>
-            <div class="w-100 pl-4">
-              <h4><span>2.</span> Survey Lokasi</h4>
-              <p class="mb-0">
-                Tim lapangan kami akan menghubungi anda
-                untuk melakukan survey dan diskusi
-              </p>
+        <?php $no=1; foreach($alur as $a){ ?>
+          <div class="col-md-6 my-4">
+            <div class="d-flex align-items-center">
+              <div class="icon-how">
+                <img src="<?= $a->image ?>" class="img-fluid" alt="">
+              </div>
+              <div class="w-100 pl-4">
+                <h4><span><?= $no; ?>.</span> <?= $a->type; ?></h4>
+                <p class="mb-0">
+                 <?= $a->description; ?>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-6 my-4">
-          <div class="d-flex align-items-center">
-            <div class="icon-how">
-              <img src="<?= base_url('main/images/mitrarenove-a-1.svg') ?>" class="img-fluid" alt="">
-            </div>
-            <div class="w-100 pl-4">
-              <h4><span>3.</span> Pembuatan RAB</h4>
-              <p class="mb-0">
-                Tim lapangan kami akan membuatkan Rencana
-                biaya renovasi atau bangun kepada anda
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 my-4">
-          <div class="d-flex align-items-center">
-            <div class="icon-how">
-              <img src="<?= base_url('main/images/mitrarenove-a-3.svg') ?>" class="img-fluid" alt="">
-            </div>
-            <div class="w-100 pl-4">
-              <h4><span>4.</span> Tanda Tangan Surat Kontrak</h4>
-              <p class="mb-0">
-                Setelah anda menyetujui harga, anda akan
-                menandatangani kontrak
-              </p>
-            </div>
-          </div>
-        </div>
+         
+        <?php $no++; } ?>
       </div>
     </div>
   </div>
@@ -102,82 +65,19 @@
     </h3>
     <div class="section-inner">
       <div class="row">
+        <?php foreach($keunggulan as $k){ ?>
         <div class="col-md-4 col-6 text-center">
           <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-1.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= $k->image ?>" class="img-fluid" alt="">
           </div>
           <h4 class="text-primary">
-            Free Survey
+            <?= $k->keunggulan; ?>
           </h4>
           <p class="px-5">
-            Nikmati layanan Free Survey & konsultasi
-            bangun atau renovasi rumah Mitrarenov
-            untuk wilayah Jabodetabek
+            <?= $k->deskripisi; ?>
           </p>
         </div>
-        <div class="col-md-4 col-6 text-center">
-          <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-2.svg') ?>" class="img-fluid" alt="">
-          </div>
-          <h4 class="text-primary">
-            Free Design
-          </h4>
-          <p class="px-5">
-            Rumah anda akan didesain oleh team
-            arsitek yang berpengalaman secara
-            GRATIS S&K Berlaku
-          </p>
-        </div>
-        <div class="col-md-4 col-6 text-center">
-          <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-4.svg') ?>" class="img-fluid" alt="">
-          </div>
-          <h4 class="text-primary">
-            Kemudahan Pantau Progress
-          </h4>
-          <p class="px-5">
-            Pertama di Indonesia, anda dapat melihat
-            progress pembangunan rumah anda
-            kapanpun melalui gadget
-          </p>
-        </div>
-        <div class="col-md-4 col-6 text-center">
-          <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-4.svg') ?>" class="img-fluid" alt="">
-          </div>
-          <h4 class="text-primary">
-            Cash & KPR
-          </h4>
-          <p class="px-5">
-            Anda tidak perlu pusing mengenai
-            pembayaran karena bank rekanan kami
-            siap membantu anda
-          </p>
-        </div>
-        <div class="col-md-4 col-6 text-center">
-          <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-5.svg') ?>" class="img-fluid" alt="">
-          </div>
-          <h4 class="text-primary">
-            Bergaransi
-          </h4>
-          <p class="px-5">
-            Kami memberikan GARANSI atas
-            seluruh pekerjaan yang kami lakukan
-          </p>
-        </div>
-        <div class="col-md-4 col-6 text-center">
-          <div class="image-keunggulan mb-4">
-            <img src="<?= base_url('main/images/keunggulan-mitrarenov-6.svg') ?>" class="img-fluid" alt="">
-          </div>
-          <h4 class="text-primary">
-            Tukang Ahli & Berpengalaman
-          </h4>
-          <p class="px-5">
-            Rumah anda akan dibangun oleh
-            tukang yang ahli dan berpengalaman
-          </p>
-        </div>
+        <?php } ?>
       </div>
     </div>
   </div>
@@ -201,7 +101,7 @@
                     <?php endif; ?>
                     <div class="jasa-container">
                       <img src="<?= $k->image ?>" class="img-fluid" alt="">
-                      <p class="mb-0"><?= $k->description ?></p>
+                      <p class="mb-0"><?= $k->category_name ?></p>
                     </div>
                     </a>
               </div>
@@ -209,7 +109,7 @@
             <!-- <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="<?= base_url('order?type=Renovasi') ?>">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Renovasi</p>
                 </div>
               </a>
@@ -217,7 +117,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-03.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-03.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Perawatan Rumah</p>
                 </div>
               </a>
@@ -225,7 +125,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-04.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-04.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Interior</p>
                 </div>
               </a>
@@ -233,7 +133,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-05.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-05.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Pengurusan IMB</p>
                 </div>
               </a>
@@ -241,7 +141,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-06.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-06.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Jasa Arsitek</p>
                 </div>
               </a>
@@ -262,7 +162,7 @@
           <?php foreach ($testimoni as $t) : ?>
             <div class="testi-item">
               <div class="testi-img">
-                <img class="testi-img" src="<?= base_url('images/testimoni/' . $t->image) ?>" alt="">
+                <img class="testi-img" src="https://admin.mitrarenov.soldig.co.id/assets/main/images/testimoni/<?= $t->image ?>" alt="">
               </div>
               <div class="testi-content">
                 <p class="font-weight-bold mb-0"><?= $t->name ?></p>
@@ -286,37 +186,37 @@
         Gallery Progress
       </h3>
 
-      <!-- <div class="nav-scroller"> -->
-      <ul class="nav justify-content-center nav-gallery my-5">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#pekerjaan">UPDATE PEKERJAAN</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#portofolio">PORTOFOLIO</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#desain_rumah">DESAIN RUMAH</a>
-        </li>
-      </ul>
-      <!-- </div> -->
-      <div class="nav-gallery-mobile">
-        <div>
-          <a class="nav-link active" data-toggle="tab" href="#pekerjaan">UPDATE PEKERJAAN</a>
-        </div>
-        <div>
-          <a class="nav-link" data-toggle="tab" href="#portofolio">PORTOFOLIO</a>
-        </div>
-        <div>
-          <a class="nav-link" data-toggle="tab" href="#desain_rumah">DESAIN RUMAH</a>
-        </div>
+      <div class="text-center">
+        <ul class="nav justify-content-center nav-gallery my-5">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#pekerjaan">Progress</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#portofolio">Portofolio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#desain_rumah">Desain</a>
+          </li>
+        </ul>
       </div>
+      <!-- <div class="nav-gallery-mobile">
+        <div>
+          <a class="nav-link active" data-toggle="tab" href="#pekerjaan">Progress</a>
+        </div>
+        <div>
+          <a class="nav-link" data-toggle="tab" href="#portofolio">Portofolio</a>
+        </div>
+        <div>
+          <a class="nav-link" data-toggle="tab" href="#desain_rumah">Desain</a>
+        </div>
+      </div> -->
       <div class="tab-content">
         <div class="tab-pane fade show active" id="pekerjaan">
           <div class="row" id="pekerjaanGallery">
             <?php foreach ($galery as $g) { ?>
               <div class="col-md-3 mb-4 col-gallery">
-                <a href="<?= base_url('images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
-                  <img src="<?= base_url('images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
+                  <img src="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $g->judul ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -330,29 +230,30 @@
           </div>
         </div>
         <div class="tab-pane fade" id="portofolio">
-          <div class="row" id="portofolioGallery">
-            <?php foreach ($merawat as $m) { ?>
-              <div class="col-md-3 mb-4 col-gallery-portfolio">
-                <a href="<?= base_url('images/merawat') . '/' . $m->image ?>" class="gallery-item" title="<?= $m->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $m->title ?>">
-                  <img src="<?= base_url('images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
-                  <div class="gallery-cnt">
+          <div class="row mt-5">
+             <?php foreach ($merawat as $m) { ?>
+            <div class="col-md-3 mb-4" >
+              <a href="<?= base_url('portofolio/'.$m->id.'/detail'); ?>" class="gallery-item">
+                <img src="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
+                <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
-                  </div>
-                </a>
-              </div>
+                </div>
+              </a>
+            </div>
             <?php } ?>
           </div>
           <div class="text-center mt-4">
-            <a href="#" class="readmore" id="morePortfolio">Lihat Selengkapnya</a>
+            <a href="<?= base_url('portofolio'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
           </div>
         </div>
+       
         <div class="tab-pane fade" id="desain_rumah">
           <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
               <div class="col-md-3 mb-4 col-gallery-desain">
-                <a href="<?= base_url('images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
-                  <img src="<?= base_url('images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
+                  <img src="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $dr->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -369,6 +270,22 @@
     </div>
   </div>
 
+  <div class="section section-liputan position-relative my-5">
+    <h3 class="title text-center text-primary">
+      Diliput Oleh
+    </h3>
+    <div class="liputan-slide ">
+      <?php foreach ($liputan as $lp) { ?>
+        <div class="client-item">
+          <a href="<?= $lp->judul; ?>" target="_blank"> <img src="<?= $lp->image; ?>" class="img-fluid" alt=""></a>
+        </div>      
+      <?php } ?>
+    </div>
+    <div class="btn-slide liputan-prev"><i class="ico ico-prev"></i></div>
+    <div class="btn-slide liputan-next"><i class="ico ico-next"></i></div>
+  </div>
+
+
   <div class="section-blog py-5 mt-5">
     <h3 class="title text-center text-primary">
       Artikel Populer dan Terbaru
@@ -378,7 +295,7 @@
         <?php foreach ($artikel as $art) : ?>
           <div class="article-item">
             <div class="article-img">
-              <img src="<?= base_url('public/images/news/thumbs') . '/' . $art->image ?>" alt="">
+              <img src="<?= "https://admin.mitrarenov.soldig.co.id/assets/main/images/news/" . $art->image ?>" alt="">
             </div>
             <div class="article-dsc">
               <h4><?= $art->title ?></h4>
@@ -404,7 +321,7 @@
       <div class="client-slide">
         <?php foreach ($partner as $p) : ?>
           <div class="client-item">
-            <img src="<?= base_url('public/images/partner_icon/' . $p->image) ?>" class="img-fluid" alt="">
+            <img src="<?= "https://admin.mitrarenov.soldig.co.id/assets/main/images/partner_icon/" . $p->image ?>" class="img-fluid" alt="">
           </div>
         <?php endforeach ?>
 
@@ -437,26 +354,25 @@
     <div class="unduh-container mt-5">
       <div class="row align-items-center justify-content-center">
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('public/main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
         </div>
         <div class="col-md-4 col-10">
           <div class="d-flex download-btn">
             <a href="#">
-              <img src="<?= base_url('main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
             </a>
             <a href="#">
-              <img src="<?= base_url('main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
             </a>
           </div>
         </div>
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('public/main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
         </div>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Modal Detail Category -->
 <div class="modal fade" id="modal-detail-category1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-category modal-dialog-centered">
@@ -468,7 +384,7 @@
 
         <div class="row align-items-center">
           <div class="col-md-6 col-4">
-            <img src="<?= base_url('main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
           </div>
           <div class="col-md-6 col-8 text-right">
             <h4 class="mb-0 title-category-modal">Membangun</h4>
@@ -479,50 +395,20 @@
         <h5 class="sub-title-cat">Pilihan Jasa</h5>
 
         <div class="row">
-          <?php foreach ($membangun as $m) : ?>
-            <div class="col-md-6 my-4">
-              <div class="d-flex align-items-center">
-
+          <?php foreach($membangun as $m): ?>
+          <div class="col-md-6 my-4">
+            <div class="d-flex align-items-center">
+             
                 <div class="cat-img-i">
-                  <img src="<?= $m->image_icon ?>" class="img-fluid" alt="">
+                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
                 </div>
                 <div class="w-100 text-15 pl-3">
-                  <a href="<?= base_url('order?type=' . $m->category_id . '&jenis=' . $m->paket_name) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
+                  <a href="<?= base_url('order?type='.$m->category_id.'&jenis='.$m->paket_name) ?>" target="_blank" style="color:black;" > <?= $m->paket_name ?> </a>
                 </div>
-
-              </div>
+              
             </div>
+          </div>
           <?php endforeach; ?>
-          <!-- <div class="col-md-6 my-4">
-            <div class="d-flex align-items-center">
-              <div class="cat-img-i">
-                <img src="<?= base_url('main/images/icon-cat-detail-2.svg') ?>" class="img-fluid" alt="">
-              </div>
-              <div class="w-100 text-19 pl-3">
-                Membangun Rumah Minimalis
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 my-4">
-            <div class="d-flex align-items-center">
-              <div class="cat-img-i">
-                <img src="<?= base_url('main/images/icon-cat-detail-3.svg') ?>" class="img-fluid" alt="">
-              </div>
-              <div class="w-100 text-19 pl-3">
-                Membangun Rumah Kost
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 my-4">
-            <div class="d-flex align-items-center">
-              <div class="cat-img-i">
-                <img src="<?= base_url('main/images/icon-cat-detail-4.svg') ?>" class="img-fluid" alt="">
-              </div>
-              <div class="w-100 text-19 pl-3">
-                Membangun Ruko
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -539,7 +425,7 @@
 
         <div class="row align-items-center">
           <div class="col-md-6 col-4">
-            <img src="<?= base_url('main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
           </div>
           <div class="col-md-6 col-8 text-right">
             <h4 class="mb-0 title-category-modal">Renovasi</h4>
@@ -550,21 +436,21 @@
         <h5 class="sub-title-cat">Pilihan Jasa</h5>
 
         <div class="row">
-          <?php foreach ($renovasi as $rn) : ?>
+          <?php foreach($renovasi as $rn): ?>
             <div class="col-md-6 my-4">
-              <div class="d-flex align-items-center">
-                <div class="cat-img-i">
-                  <img src="https://mitrarenov.com/cdn/images/product_icon/<?= $rn->image_icon ?>" class="img-fluid" alt="">
+                <div class="d-flex align-items-center">
+                  <div class="cat-img-i">
+                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $rn->image_icon ?>" class="img-fluid" alt="">
+                  </div>
+                  <div class="w-100 text-19 pl-3">
+                    <a href="<?= base_url('order?type='.$rn->category_id.'&jenis='.$rn->paket_name) ?>" target="_blank">
+                      <?= $rn->paket_name ?>
+                   </a>
+                  </div>
                 </div>
-                <div class="w-100 text-19 pl-3">
-                  <a href="<?= base_url('order?type=' . $rn->category_id . '&jenis=' . $rn->paket_name) ?>" target="_blank">
-                    <?= $rn->paket_name ?>
-                  </a>
-                </div>
-              </div>
             </div>
           <?php endforeach; ?>
-
+         
         </div>
       </div>
     </div>
@@ -572,33 +458,26 @@
 </div>
 
 <?= $this->section('script') ?>
-<script>
-  $(document).ready(function() {
-    $(".col-gallery").slice(0, 8).show();
-    $("#morePekerjaan").on('click', function(e) {
-      e.preventDefault();
-      $(".col-gallery:hidden").slice(0, 8).slideDown();
-      if ($(".col-gallery:hidden").length == 0) {
-        $("#morePekerjaan").fadeOut('slow');
-      }
+  <script>
+    $(document).ready(function() {
+      $(".col-gallery").slice(0, 8).show();
+      $("#morePekerjaan").on('click', function(e) {
+        e.preventDefault();
+        $(".col-gallery:hidden").slice(0, 8).slideDown();
+        if ($(".col-gallery:hidden").length == 0) {
+          $("#morePekerjaan").fadeOut('slow');
+        }
+      });
+     
+      $(".col-gallery-desain").slice(0, 8).show();
+      $("#moreDesain").on('click', function(e) {
+        e.preventDefault();
+        $(".col-gallery-desain:hidden").slice(0, 8).slideDown();
+        if ($(".col-gallery-desain:hidden").length == 0) {
+          $("#moreDesain").fadeOut('slow');
+        }
+      });
     });
-    $(".col-gallery-portfolio").slice(0, 8).show();
-    $("#morePortfolio").on('click', function(e) {
-      e.preventDefault();
-      $(".col-gallery-portfolio:hidden").slice(0, 8).slideDown();
-      if ($(".col-gallery-portfolio:hidden").length == 0) {
-        $("#morePortfolio").fadeOut('slow');
-      }
-    });
-    $(".col-gallery-desain").slice(0, 8).show();
-    $("#moreDesain").on('click', function(e) {
-      e.preventDefault();
-      $(".col-gallery-desain:hidden").slice(0, 8).slideDown();
-      if ($(".col-gallery-desain:hidden").length == 0) {
-        $("#moreDesain").fadeOut('slow');
-      }
-    });
-  });
-</script>
+  </script>
 <?= $this->endSection() ?>
 <?= $this->endSection() ?>

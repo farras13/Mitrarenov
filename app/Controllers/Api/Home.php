@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Models\GeneralModel;
+use App\Models\HomeModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\RequestTrait;
 use CodeIgniter\RESTful\ResourceController;
@@ -16,7 +17,7 @@ class Home extends ResourceController
     public function KategoriJasa()
     {
         $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
+        // $token = $headers['X-Auth-Token']->getValue();
         $model = new GeneralModel();
         
         $data = $model->getWhere('category', ['id !=' => 3])->getResult();
@@ -54,9 +55,11 @@ class Home extends ResourceController
             return $this->respondNoContent('data tidak ditemukan');
         }
         $url = base_url();
-
+        foreach ($subdata as $key => $value) {
+            $value->image_icon = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/'.$value->image_icon;
+        }
         $data = [
-            "base_image" => $url . '/images/kategori/',
+            "base_image" => 'https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/',
             "data" => $subdata
         ];
 
@@ -73,13 +76,13 @@ class Home extends ResourceController
     public function PromoAll()
     {
         $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
+        // $token = $headers['X-Auth-Token']->getValue();
         $model = new GeneralModel();
         
         $data = $model->getWhere('promomobile', ['is_publish' => 0])->getResult();
         
         $url = base_url();
-        $base_image = $url.'/public/image/promo/';
+        $base_image = $url.'/public/images/promo/';
         
         $key = $this->request->getGet();
     
@@ -100,8 +103,8 @@ class Home extends ResourceController
             $date = new DateTime($d->expired);
             $d->expired = $date->format('F Y');
             if($d->image != null){
-                $d->image = $url.$base_image.$d->image;
-                $d->imagecontent = $url.$base_image.$d->imagecontent;
+                $d->image = $base_image.$d->image;
+                $d->imagecontent = $base_image.$d->imagecontent;
             }else{
                 $d->image = $url.'/public/main/images/slider-1.jpg';
                 $d->imagecontent = $url.'/public/main/images/slider-2.jpg';
@@ -131,10 +134,10 @@ class Home extends ResourceController
         }  
 
         $url = base_url();
-        $base_image = $url.'/public/image/promo/';
+        $base_image = $url.'/public/images/promo/';
         if($data->image != null){
-            $data->image = $url.$base_image.$data->image;
-            $data->imagecontent = $url.$base_image.$data->imagecontent;
+            $data->image = $base_image.$data->image;
+            $data->imagecontent = $base_image.$data->imagecontent;
         }else{
             $data->image = $url.'/public/main/images/slider-1.jpg';
             $data->imagecontent = $url.'/public/main/images/slider-2.jpg';

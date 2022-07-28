@@ -34,12 +34,13 @@
               </div>
 
               <div class="collapse dont-collapse-sm" id="catColapse">
-                <h5 class="text-primary mt-5">Hot Kategori</h5>
+                <h5 class="text-primary mt-5">Kategori Artikel</h5>
 
                 <ul class="nav nav-article-cat flex-column">
-                  <?php foreach ($kategori as $h) : if($h->title != null || $h->title != ''): ?>
+                  <?php foreach ($kategori as $h) : if($h->category != null || $h->category != ''): ?>
                     <li class="nav-item">
-                      <a href="<?= base_url('artikel/' . $h->id . '/detail') ?>" class="nav-link px-0"><?= $h->title ?></a>
+                      <?php $link = str_replace(' ', '-', $h->category); ?>
+                      <a href="<?= base_url('artikel/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
                     </li>
                   <?php endif; endforeach; ?>
                 </ul>

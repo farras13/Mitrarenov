@@ -5,6 +5,8 @@ namespace App\Controllers\Api;
 use App\Models\GeneralModel;
 use CodeIgniter\RESTful\ResourceController;
 
+use App\Libraries\Midtranspayment;
+
 class TransaksiController extends ResourceController
 {
     /**
@@ -26,11 +28,11 @@ class TransaksiController extends ResourceController
             "messages" => "Sukses",
             "data" => $data
         ];
-        
+
         return $this->respond($res, 200);
     }
-    
-     public function addCart()
+
+    public function addCart()
     {
         $mdl = new GeneralModel();
         $headers = $this->request->headers();
@@ -39,7 +41,7 @@ class TransaksiController extends ResourceController
         $id = (int)$cekUser->member_id;
 
         $input = $this->request->getVar();
-        if(!$input){
+        if (!$input) {
             $this->respond('Pilih barang terlebih dahulu !', 500);
         }
 
@@ -48,7 +50,7 @@ class TransaksiController extends ResourceController
         $db = db_connect();
         $cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$idm' and item_category = 1")->getRow();
 
-        if(!$cekMaterial){
+        if (!$cekMaterial) {
             return $this->respond('Material tidak tersedia !', 500);
         }
 
@@ -67,9 +69,9 @@ class TransaksiController extends ResourceController
         ];
 
         $add = $mdl->ins('cart', $data);
-      
-        if(!$add){
-           return $this->failResourceGone('gagal melakukan insert');
+
+        if (!$add) {
+            return $this->failResourceGone('gagal melakukan insert');
         }
 
         $res = [
@@ -88,7 +90,7 @@ class TransaksiController extends ResourceController
      */
     public function index()
     {
-        $mdl = new GeneralModel(); 
+        $mdl = new GeneralModel();
         $headers = $this->request->headers();
         $token = $headers['X-Auth-Token']->getValue();
         $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
@@ -96,7 +98,7 @@ class TransaksiController extends ResourceController
 
         $data = $mdl->getWhere('cart', ['id_user' => $id])->getResult();
 
-        if(!$data){
+        if (!$data) {
             return $this->respond('Cart masih kosong !', 500);
         }
 
@@ -111,7 +113,7 @@ class TransaksiController extends ResourceController
 
     public function add_by_qty()
     {
-        $mdl = new GeneralModel(); 
+        $mdl = new GeneralModel();
         $headers = $this->request->headers();
         $token = $headers['X-Auth-Token']->getValue();
         $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
@@ -119,13 +121,13 @@ class TransaksiController extends ResourceController
 
         $input = $this->request->getVar();
         $qty = 1;
-        $cart = $mdl->getWhere('cart', ['id_material' => $input['id_material'], 'id_user' => $id ])->getRow();
+        $cart = $mdl->getWhere('cart', ['id_material' => $input['id_material'], 'id_user' => $id])->getRow();
         $qty += $cart->qty;
 
         $db = db_connect();
         $cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$cart->id_material' and item_category = 1")->getRow();
 
-        if(!$cekMaterial){
+        if (!$cekMaterial) {
             return $this->respond('Material tidak tersedia !', 500);
         }
 
@@ -140,28 +142,27 @@ class TransaksiController extends ResourceController
             'total' => $total,
         ];
 
-        if($mdl->upd('cart', ['id' => $cart->id], $data)){
+        if ($mdl->upd('cart', ['id' => $cart->id], $data)) {
             return $this->respond('cart berhasil di tambahkan', 200);
         }
-
     }
 
     public function del_by_qty()
     {
-        $mdl = new GeneralModel(); 
+        $mdl = new GeneralModel();
         $headers = $this->request->headers();
         $token = $headers['X-Auth-Token']->getValue();
         $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
         $id = (int)$cekUser->member_id;
 
         $input = $this->request->getVar();
-        $cart = $mdl->getWhere('cart', ['id_material' => $input['id_material'], 'id_user' => $id ])->getRow();
+        $cart = $mdl->getWhere('cart', ['id_material' => $input['id_material'], 'id_user' => $id])->getRow();
         $qty = $cart->qty - 1;
 
         $db = db_connect();
         $cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$cart->id_material' and item_category = 1")->getRow();
 
-        if(!$cekMaterial){
+        if (!$cekMaterial) {
             return $this->respond('Material tidak tersedia !', 500);
         }
 
@@ -176,42 +177,65 @@ class TransaksiController extends ResourceController
             'total' => $total,
         ];
 
-        if($mdl->upd('cart', ['id' => $cart->id], $data)){
+        if ($mdl->upd('cart', ['id' => $cart->id], $data)) {
             return $this->respond('cart berhasil di tambahkan', 200);
         }
-
     }
 
     public function orderProjekDesain()
     {
         $uri = current_url(true);
         $mdl = new GeneralModel();
+
         $headers = $this->request->headers();
         $token = $headers['X-Auth-Token']->getValue();
-        $agent = $this->request->getUserAgent();
-        if ($agent->isMobile('iphone')) {
-            $device = "1";
-        } elseif ($agent->isMobile()) {
-            $device = "2";
-        } else {
-            $device = "3";
-        }
-        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-        $id = (int)$cekUser->member_id;
+        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();        
+		$input = $this->request->getVar();
+
+		if($cekUser == null){
+			$status_cust = 0;
+			$insert_h['usergroup_id'] = 5;
+			
+			$insert_h['email'] = $input['email'];
+			$insert_d['name'] = $input['nama_lengkap'];
+			$insert_d['handphone'] = $input['telepon'];
+
+			$insert_h['password'] = md5('123456');
+			$insert_h['created'] = time();
+			$insert_h['created_by'] = 2;
+			$query_h = $mdl->insId('member', $insert_h);
+			if ($query_h) {
+				$insert_d['member_id'] = $query_h;
+				$insert_d['created'] = time();
+				$insert_d['city_id'] = 0;
+				$insert_d['address'] = $input['alamat'];
+				$insert_d['created_by'] = 2;
+				$query_d = $mdl->insB('member_detail', $insert_d);
+			}
+			$id = $query_h;
+		}else{
+			$id = (int)$cekUser->member_id;
+			$status_cust = 1;
+		}
+
         $temp_idp = $mdl->lastId('projects')->getRow();
         $id_projek = (int)$temp_idp->id + 1;
         // var_dump($id_projek);die;
-        $input = $this->request->getVar();
         $tdate = date('Y-m-d');
         $date = strtotime($tdate);
-        $temp_produk = $mdl->getWhere('product', ['id' => $input['type']])->getRow();
-        $type = $temp_produk->paket_name;
+
+        if ($input['type'] != null) {
+            $temp_produk = $mdl->getWhere('product', ['id' => $input['type']])->getRow();
+            $type = $temp_produk->paket_name;
+        } else {
+            $temp_produk = $mdl->getWhere('category', ['id' => $input['id_kategori']])->getRow();
+            $type = $temp_produk->category_name;
+        }
 
         $file_rumah = $this->request->getFile('gambar_rumah');
         $rules = [
             "deskripsi" => "required",
             "alamat" => "required",
-            "jangka_waktu" => "required",
             "spek" => "required",
             "nama_lengkap" => "required",
             "telepon" => "required",
@@ -238,12 +262,12 @@ class TransaksiController extends ResourceController
                 'data' => []
             ];
             return $this->respond($response, 500);
+
         } else {
-           
             $price = $temp_produk->price;
-            if($temp_produk->price == "0"){
+            if ($temp_produk->price == "0") {
                 $temp_price = $mdl->getWhere('product_price', ['id' => $input['spek']])->getRow();
-                if(!$temp_price){
+                if (!$temp_price) {
                     $response = [
                         'status' => 500,
                         'error' => true,
@@ -253,12 +277,44 @@ class TransaksiController extends ResourceController
                     return $this->respond($response, 500);
                 }
                 $price = $temp_price->product_price;
-
             }
-            // var_dump($price);die;
-            $total = $price * $input['luas']; 
+            $total = $price * $input['luas'];
+
+            $db = db_connect();
+            $noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();
+            $temp_nopro = (int)$noprojek->hitung + 1;
+            $coun = strlen($noprojek->hitung);
+            if ($coun == 1) {
+                $ht = '0000' . '' . $temp_nopro;
+            } elseif ($coun == 2) {
+                $ht = '000' . '' . $temp_nopro;
+            } elseif ($coun == 3) {
+                $ht = '00' . '' . $temp_nopro;
+            } elseif ($coun == 4) {
+                $ht = '0' . '' . $temp_nopro;
+            } else {
+                $ht = $temp_nopro;
+            }
+
+            $cek_area = $mdl->getAll('area')->getResult();
+            $area = "";
+            foreach ($cek_area as $c) {
+                if (strpos($input['city'], $c->nama_area) > -1) {
+                    $temp += 1;
+                    $area = $c->id_area;
+                }
+            }
+            if($area == ""){
+                $response = [
+                    'status' => 200,
+                    'error' => true,
+                    'message' => "Transaksi Gagal, Area anda belum kami jangkau !",
+                    'data' => []
+                ];
+                return $this->respond($response, 200);
+            }
             $insert = [
-                'project_number' => date("dmY", time())."".rand(10,100),
+                'project_number' => date("dmY", time()) . "" . $ht,
                 'type' => $type,
                 'total' => $total,
                 'alamat_pengerjaan' => $input['alamat'],
@@ -267,13 +323,13 @@ class TransaksiController extends ResourceController
                 'description' => $input['deskripsi'],
                 'latitude' => $input['latitude'],
                 'longitude' => $input['longitude'],
-                'metode_payment' => $input['metodpay'],
-                'nama_marketing' => $input['marketing'],
+                'metode_payment' => $input['metode_pembayaran'],
                 'status_project' => 'quotation',
-                'device' => $device,
-                'created' => time()
+                'id_area' => $area,
+                'created' => time(),
+                'device' => 2
             ];
-
+           
             $insert_data = [
                 'name' => $input['nama_lengkap'],
                 'address' => $input['alamat'],
@@ -297,41 +353,9 @@ class TransaksiController extends ResourceController
                 $insert_detail['project_id'] = $id_projek;
 
                 if ($uri->getSegment(4) == "desain") {
-                    $file_denah = $this->request->getFile('denah');
-                    $rule = [
-                        "tipe_rumah" => "required",
-                        "ruang_keluarga" => "required",
-                        "kamar_tidur" => "required",
-                        "kamar_mandi" => "required",
-                        "dapur" => "required",
-                        "luas" => "required",
-                        'denah' => 'uploaded[denah]|mime_in[denah,image/jpg,image/jpeg,image/gif,image/png]|max_size[denah,2048]',
-
-                    ];
-                    $msg['denah'] =  [
-                            'uploaded' => 'Harus Ada File yang diupload',
-                            'mime_in' => 'File Extention Harus Berupa jpg,jpeg,gif,png',
-                            'max_size' => 'Ukuran File Maksimal 2 MB'
-                    ];
-                    if (!$this->validate($rule, $msg)) {
-
-                        $response = [
-                            'status' => 500,
-                            'error' => true,
-                            'message' => $this->validator->getErrors(),
-                            'data' => []
-                        ];
-                        return $this->respond($response, 500);
-                    }
-                    $path = "./public/images/desain_rumah_user";
-                    $uploadImgdenah = $this->uploadImage($file_denah, $path);
+                    // $file_denah = $this->request->getFile('denah');
                     $insert_design = [
                         'tipe_rumah' => $input['tipe_rumah'],
-                        'ruang_keluarga' => $input['ruang_keluarga'],
-                        'kamar_tidur' => $input['kamar_tidur'],
-                        'kamar_mandi' => $input['kamar_mandi'],
-                        'dapur' => $input['dapur'],
-                        'denah' => $uploadImgdenah['data']['file_name'],
                         'created' => time()
                     ];
                     $idd = $mdl->lastId('projects_desain')->getRow()->id;
@@ -345,11 +369,10 @@ class TransaksiController extends ResourceController
                 $path = "./public/images/projek";
                 $uploadImg = $this->uploadImage($file_rumah, $path);
 
-
                 if ($uploadImg != null) {
                     $path_image = $path;
                     $json_text = $uploadImg['message'];
-                    $mdl->upd('projects', ['id' => $id_projek], ['image_upload' => $uploadImg['data']['file_name']]);
+                    // $mdl->upd('projects', ['id' => $id_projek], ['image_upload' => $uploadImg['data']['file_name']]);
                 } else {
                     $path_image = '';
                     $json_text = $uploadImg['message'];
@@ -371,15 +394,63 @@ class TransaksiController extends ResourceController
             } else {
                 $json_status = 0;
             }
-        }
-        $res = array(
-            'status' => $json_status,
-            'message' => $json_text,
-            'data' => $return,
-            'type' => $type
-        );
 
-        return $this->respond($res, 200);
+			// send email
+			if ($status_cust == 1) {
+				$emailData = array(
+					'from' => 'noreply@mitrarenov.com',
+					'name' => 'noreply@mitrarenov.com',
+					'to' => $input['email'],
+					'bcc' => "",
+					'subject' => "Permintaan Jasa di Mitrarenov.com"
+					// 'template' => $this->load->view('email_submit_job', $data, true)              
+				);
+			} else {
+				$emailData = array(
+					'from' => 'noreply@mitrarenov.com',
+					'name' => 'noreply@mitrarenov.com',
+					'to' => $input['email'],
+					'bcc' => "",
+					'subject' => "Informasi Akun & Permintaan Jasa di Mitrarenov.com"
+					// 'template' => $this->load->view('email_submit_job', $data, true)              
+				);
+			}
+			
+			$this->sendEmailAktifasi($emailData, $status_cust);
+			$decode_tukang = $mdl->findAllTukang($area);
+			
+			$subject_tukang = "Permintaan Jasa di Mitrarenov atas nama " . $input['nama_lengkap'];
+			foreach ($decode_tukang as $key => $d2) {
+				if ($d2->email_tukang !== null or $d2->email_tukang !== '') {
+
+					$email = \Config\Services::email();
+					$email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+					$email->setTo($d2->email_tukang);
+					$email->setSubject($subject_tukang);
+					$email->setMessage($this->contenttukang($data2, $d2));
+
+					if (!$this->email->send()) {
+						// Generate error
+						//echo "Email is not sent!!";
+						$this->tambah_log_email_db('permintaan jasa', $d2->email_tukang, 'tukang', 'gagal');
+						$this->tambah_log_email_db('permintaan jasa', 'info@mitrarenov.com', 'admin', 'terkirim');
+					} else {
+						$this->tambah_log_email_db('permintaan jasa', $d2->email_tukang, 'tukang', 'terkirim');
+						$this->tambah_log_email_db('permintaan jasa', 'info@mitrarenov.com', 'admin', 'terkirim');
+					}					
+				}
+			}
+
+            $res = array(
+                'status' => $json_status,
+				'error' => false,
+                'message' => $json_text,
+                'data' => $return,
+                'type' => $type
+            );
+            return $this->respond($res, 200);
+        }
+
     }
 
     public function uploadImage($file, $path)
@@ -387,7 +458,7 @@ class TransaksiController extends ResourceController
         helper(['form']);
         $date = date('Y-m-d');
         $profile_image = $file->getName();
-        $nameNew = $date.substr($profile_image,0,5).rand(0,20);
+        $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20);
         // var_dump($newfilename);die;
         if (!$file->isValid()) {
             return $this->fail($file->getErrorString());
@@ -414,10 +485,10 @@ class TransaksiController extends ResourceController
 
         return $response;
     }
-   
+
     public function checkout()
     {
-        $mdl = new GeneralModel(); 
+        $mdl = new GeneralModel();
         $headers = $this->request->headers();
         $token = $headers['X-Auth-Token']->getValue();
         $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
@@ -427,14 +498,1501 @@ class TransaksiController extends ResourceController
 
         $total = 0;
 
-        foreach($data as $d){
+        foreach ($data as $d) {
             $total += $d->total;
         }
 
         if ($mdl->del('cart', ['id_user' => $id])) {
-           return $this->respond('Berhasil Checkout', 200);
+            return $this->respond('Berhasil Checkout', 200);
         }
     }
 
-    
+    public function payment()
+    {
+        $mdl = new GeneralModel();
+        $headers = $this->request->headers();
+        $input = $this->request->getVar();
+        
+        $addition = 0;
+        $deduction = 0;
+        $harga = 0;
+        $tracking_id = $input['no_invoice'];
+        $htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id], null)->getRow();
+        $trans = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
+        $projek = $mdl->getWhere('projects', ['id' => $htrans->project_id], null)->getRow();
+        $dtrans = $mdl->getWhere('projects_detail', ['project_id' => $htrans->project_id], null)->getRow();
+        $produk = $mdl->getWhere('product', ['id' => $dtrans->product_id], null)->getRow();
+        $member = $mdl->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
+        
+        // $track = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(24 / strlen($x)))), 1, 24);
+        
+        $totalpayment = 0;
+        $totalqty = 0;
+        
+        if($projek->luas == null){
+            $projek->luas = 1;
+        }
+        // if ($dtrans->product_price_id != 0) {
+        //     $cek_harga = $mdl->getWhere('product_price', ['id' => $dtrans->product_price_id], null)->getRow();
+        //     $harga += $cek_harga->product_price;
+        //     $totalpayment = $harga * $projek->luas;
+        // }else{
+        //     $harga += $produk->price;
+        //     $totalpayment = $harga * $projek->luas;
+        // }
+        $harga = $htrans->biaya;
+        $cekpromo = $mdl->getWhere('promomobile', ['promoCode' => $htrans->kode_promo], null)->getRow();
+        
+        if ($cekpromo != null ) {
+            $temp_promo = $totalpayment * $cekpromo->promo / 100;
+            $deduction += $temp_promo;
+        }
+        $totalpayment = $harga + $addition - $deduction;
+        
+        $transaction_details = array(
+            'order_id' => $trans->transaction_id,
+            'gross_amount' => $totalpayment, // no decimal allowed for creditcard
+        );
+
+        // // Optional
+        // $item1_details = array(
+        //     'id' => 'a1',
+        //     'price' => $harga,
+        //     'quantity' => $projek->luas,
+        //     'name' => $produk->paket_name
+        // );
+
+         $item1_details = array(
+            'id' => 'a1',
+            'price' => $harga,
+            'quantity' => 1,
+            'name' => $produk->paket_name
+        );
+        
+        $item_details = array ($item1_details);
+
+        // // Optional
+        $mail = str_replace(" ", "", $member->email);
+        $customer_details = array(
+            'first_name'    => "".$member->name,
+            'last_name'     => " ",
+            'email'         => "$mail",
+            'phone'         => "".$member->phone,
+        );
+        // var_dump($customer_details);die;
+        // // Optional, remove this to display all available payment methods
+        $enable_payments = array('gopay','bank_transfer');
+        // $enable_payments = array('credit_card','cimb_clicks','mandiri_clickpay','echannel');
+
+        // Fill transaction details
+        $transaction = array(
+            'enabled_payments' => $enable_payments,
+            'transaction_details' => $transaction_details,
+            'customer_details' => $customer_details,
+            'item_details' => $item_details,
+        );
+
+        // echo "<pre>";echo print_r($transaction); echo "</pre>";die;
+        $Midtranspayment = new Midtranspayment();
+        $snaptoken = $Midtranspayment->get_token($enable_payments,$transaction_details,$customer_details,$item_details);
+        $update = [
+            "token_midtrans" => $snaptoken
+        ];
+        
+        $link = "https://app.midtrans.com/snap/v2/vtweb/" . $snaptoken;
+        $mdl->upd('projects', ['id' => $htrans->project_id], $update);
+        $msg = array(
+            'status' => 1,
+            'message' => 'Token Ditemukan ',
+            'data' => [
+                "order_id" => $track,
+                "total_bayar" => $totalpayment,
+                "name" => "$member->name",
+                "email" => "$member->email",
+                "phone" => "$member->phone",
+                "token" => $snaptoken,
+                'url' => $link,
+            ]
+        );
+         return $this->respond($msg, 200);
+    }
+
+    public function paymentstatus()
+    {
+        $m = new GeneralModel();
+        $md = new GeneralModel();
+        
+        $Midtranspayment = new Midtranspayment();
+        $notif = $this->midtranspayment->notification();
+        //$notif = file_get_contents('php://input');
+        
+        $transactionstatus = $notif->transaction_status;
+        $orderid = $notif->order_id;
+        $billercode = "";
+        $payment_type = $notif->payment_type;
+        if ($payment_type == "gopay") {
+            $bank = "gopay";
+            $vanumber = "";
+            $billercode = "";
+        }
+        else if($payment_type == "bank_transfer"){
+            if (!empty($notif->va_numbers[0])) {
+                $va = $notif->va_numbers[0];
+                $vanumber = $va->va_number;
+                $bank = $va->bank;
+                $billercode = "";
+            }
+            else if(!empty($notif->permata_va_number)){
+                $vanumber = $notif->permata_va_number;
+                $bank = "permata";
+                $billercode = "";
+            }
+        }
+        else if($payment_type == "echannel"){
+            $billercode = $notif->biller_code;
+            $vanumber = $notif->bill_key;
+            $bank = "mandiri";
+        }
+        else if($payment_type == "qris"){
+            $qris = $notif->qris;
+            $bank = $qris->acquirer;
+            $vanumber = "";
+            $billercode = "";
+        }
+        else if($payment_type == "shopeepay"){
+            $bank = "shopeepay";
+            $billercode = "";
+            $vanumber = "";
+        }
+        else if($payment_type == "cstore"){
+            $cstore = $notif->cstore;
+            $bank = $cstore->store;
+            $vanumber = "";
+            $billercode = "";
+        }
+
+        // $htrans = T_htransactions::findOne($params);
+        $htrans = $m->getWhere('projects_transaction', ['transaction_id' => $orderid], null)->getRow();
+        $projek = $m->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
+        if ($htrans) {
+
+            // $member = M_members::find($htrans->member_id);
+            $member = $m->getWhere('token_login', ['member_id' => $projek->member_id], null)->getRow();
+            $dtrans = $md->dtrans($projek->project_id)->getRow();
+
+            if ($transactionstatus == "capture" || $transactionstatus == "settlement") {
+                $update = [
+                    "status" => $transactionstatus,
+                ];
+
+                $m->upd("projects_transaction", ["id" => $htrans->id], $update);
+                // $this->send_email($member, $htrans, $dtrans, "success");
+                if (!empty($member->fcm_id)) {
+                    $this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+                }
+            } else if ($transactionstatus == "pending") {
+                $update = [
+                    "status" => $transactionstatus,
+                ];
+
+               $m->upd("projects_transaction", ["id" => $htrans->id], $update);
+            } else if ($transactionstatus == "deny" || $transactionstatus == "cancel" || $transactionstatus == "expire" || $transactionstatus == "refund") {
+                $update = [
+                    "status" => $transactionstatus,
+                ];
+
+                $m->upd("projects_transaction", ["id" => $htrans->id], $update);
+                // $this->rollback_product($htrans->htrans_id);
+
+                $update_midtrans = [
+                    "token_midtrans" => NULL,
+                ];
+                $m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
+                
+                // $this->send_email($member, $htrans, $dtrans, "cancel");
+
+                if (!empty($member->fcm_id)) {
+                    $this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+                }
+                if ($transactionstatus == "refund") {
+                    // $this->send_email($member, $htrans, $dtrans, $transactionstatus);
+                    if (!empty($member->fcm_id)) {
+                        $this->send_notif("Dana dikembalikan", "Dana transaksi anda " . $htrans->transaction_id . " telah dikembalikan ", $member->fcm_id, array('title' => "Dana dikemblikan", 'message' => "Dana transaksi anda " . $htrans->transaction_id . " telah dikembalikan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+                    }
+                } else {
+                    if (!empty($member->fcm_id)) {
+                        $this->send_notif("Pesanan anda dibatalakan", "Transaksi anda " . $htrans->transaction_id . " sedang dalam perjalanan", $member->fcm_id, array('title' => "Pesanan anda dibatalkan", 'message' => "Transaksi anda " . $htrans->transaction_id . " dibatalkan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+                    }
+                }
+            }
+        }
+
+        $result = [
+            "status" => 1,
+            "message" => "payment status $transactionstatus ",
+            "data" => [
+                "payment_status" => $transactionstatus
+            ]
+        ];
+        $this->response($result);
+    }
+
+    public function irisnotif()
+    {
+        $md = new GeneralModel();
+        $json_result = file_get_contents('php://input');
+        $result = json_decode($json_result, 'true');
+        $ins = array(
+            'reference_no' => $result['reference_no'], 
+            'amount' => $result['amount'], 
+            'status' => $result['status'], 
+            'updated_at' => strtotime($result['updated_at']), 
+        );
+        $md->insb('history_midtrans', $ins);
+
+         $m->upd("pengajuan_finance", ["no_refrens " => $result['reference_no']], $update);
+    }
+
+    public function tambah_log_email_db($tipe, $email, $role, $status)
+	{
+        $mdl = new GeneralModel();
+		$inserts['tipe'] = $tipe;
+		$inserts['email'] = $email;
+		$inserts['role'] = $role;
+		$inserts['status'] = $status;
+		$query = $mdl->insB('log_email', $inserts);
+	}
+
+    public function sendEmailAktifasi($emailData = array(), $tipe)
+	{
+        $mdl = new GeneralModel();
+		$temp = $mdl->getWhere('email_ebook', array('id' => '1'))->getResult();
+		$email = \Config\Services::email();
+        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+        $email->setTo($emailData['to']);
+        $email->setSubject($emailData['subject']);
+		if ($tipe == 0) {
+			$msg = $this->content3($temp, $emailData['to']);
+			
+			$email->setMessage($msg);
+		} else {
+			$msg = $this->content2($temp, $emailData['to']);
+			$email->setMessage($msg);
+		}
+
+        if (!$email->send()) {
+            $this->tambah_log_email_db('permintaan jasa', $emailData['to'], 'customer', 'gagal');
+        } else {
+            $this->tambah_log_email_db('permintaan jasa', $emailData['to'], 'customer', 'terkirim');
+        }
+	}
+
+    private function content($data2)
+	{
+		return '
+			    <style type="text/css">
+				body {
+					padding-top: 0 !important;
+					padding-bottom: 0 !important;
+					padding-top: 0 !important;
+					padding-bottom: 0 !important;
+					margin: 0 !important;
+					width: 100% !important;
+					-webkit-text-size-adjust: 100% !important;
+					-ms-text-size-adjust: 100% !important;
+					-webkit-font-smoothing: antialiased !important;
+				}
+
+				.tableContent img {
+					border: 0 !important;
+					display: block !important;
+					outline: none !important;
+				}
+
+				a {
+					color: #382F2E;
+				}
+
+				p, h1 {
+					color: #382F2E;
+					margin: 0;
+				}
+
+				p {
+					text-align: left;
+					color: #999999;
+					font-size: 14px;
+					font-weight: normal;
+					line-height: 19px;
+				}
+
+				a.link1 {
+					color: #382F2E;
+				}
+
+				a.link2 {
+					font-size: 16px;
+					text-decoration: none;
+					color: #ffffff;
+				}
+
+				h2 {
+					text-align: center;
+					color: #222222;
+					font-size: 19px;
+					font-weight: normal;
+				}
+
+				div, p, ul, h1 {
+					margin: 0;
+				}
+
+				.bgBody {
+					background: #ffffff;
+				}
+
+				.bgItem {
+					background: #ffffff;
+				}
+
+				.btn {
+					background: darkorange;
+					background-image: -webkit-linear-gradient(top, darkorange, darkorange);
+					background-image: -moz-linear-gradient(top, darkorange, darkorange);
+					background-image: -ms-linear-gradient(top, darkorange, darkorange);
+					background-image: -o-linear-gradient(top, darkorange, darkorange);
+					background-image: linear-gradient(to bottom, darkorange, darkorange);
+					-webkit-border-radius: 28;
+					-moz-border-radius: 28;
+					border-radius: 28px;
+					font-family: Arial;
+					color: #ffffff;
+					font-size: 20px;
+					padding: 10px 20px 10px 20px;
+					text-decoration: none;
+				}
+
+					.btn:hover {
+						background: #3cb0fd;
+						background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+						background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+						background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+						background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+						background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+						text-decoration: none;
+					}
+			</style>
+			<script type="colorScheme" class="swatch active">
+				{
+				"name":"Default",
+				"bgBody":"ffffff",
+				"link":"382F2E",
+				"color":"999999",
+				"bgItem":"ffffff",
+				"title":"222222"
+				}
+			</script>
+			<body paddingwidth="0" paddingheight="0" style="padding-top: 0; padding-bottom: 0; padding-top: 0; padding-bottom: 0; background-repeat: repeat; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased;" offset="0" toppadding="0" leftpadding="0">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableContent bgBody" align="center" style="font-family:Helvetica, Arial,serif;">
+					<tr>
+						<td>
+							<table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="bgItem">
+								<tr>
+									<td width="40"></td>
+									<td width="520">
+										<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+											<!-- =============================== Header ====================================== -->
+											<!-- =============================== Body ====================================== -->
+											<tr>
+												<td class="movableContentContainer" valign="top">
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td valign="top" align="center">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable">
+																			<!--<p style="text-align:center;margin:0;font-family:Georgia,Time,sans-serif;font-size:26px;color:#222222;">Newsletter </p>-->
+																			<br>
+																			<img src="http://mitrarenov.com/cdn/frontend/img/logo.png" style="width:60%;" />
+																			<hr style="margin-top:30px; border: 2px solid darkorange;" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td valign="top" align="center">
+																	<div class="contentEditableContainer contentImageEditable">
+																		<div class="contentEditable" style="margin-top:20px;">
+																			<h2 style="color:dodgerblue;">PEMBERITAHUAN</h2>
+																		</div>
+																		<!--<div class="contentEditable" style="margin-top:0px;">
+																			<label style="margin-top:1500px;"><strong>Permintaan Jasa dari <strong>' . $data2["nama"] . '</label>
+																		</div>
+																		-->
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+													<div class="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<!--<tr>
+																<td align="left">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable" align="center">
+																			<h2>' . $data2["title"] . '</h2>
+																		</div>
+																	</div>
+																</td>
+															</tr>-->
+															<tr><td height="15"> </td></tr>
+															<tr>
+																<td align="left">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable" align="center">
+																			<!--<p style="text-align:center;color:#999999;font-size:14px;font-weight:normal;line-height:19px;">
+																				<img src="http://mitrarenov.com/cdn/images/photo_newsletter/<?=$image?>" style="width:50%;" />
+																			</p>-->
+																			<p style="text-align:left;color:#222222;font-size:14px;font-weight:normal;line-height:19px;">
+																				<!--<?=$description?>-->
+																				Dear Bapak/Ibu terdapat project dengan detail sebagai berikut: <br /> <br />
+																				Nama : ' . $data2["nama"] . ' <br>
+																				Telp : ' . $data2["no_telp"] . ' <br>
+																				
+																			</p>
+																			<hr style="margin-top:10px; margin-bottom:10px; border: 1px solid blue;" />
+																			<p style="text-align:left;color:#222222;font-size:14px;font-weight:normal;line-height:19px;">
+																				Project Number : ' . $data2["project_number"] . ' <br>
+																				Jasa : ' . jasaType($data2["product_id"]) . ' <br>
+																				Kebutuhan : ' . $data2["ins_project"]["priority"] . ' <br>
+																				Luas : ' . $data2["ins_project"]["luas"] . ' <br>
+																				Longitude & Latitude : ' . $data2["provinceVal"] . ' <br>
+																				Lokasi : ' . $data2["ins_project"]["alamat_pengerjaan"] . ' <br>
+																				Catatan Alamat : ' . $data2["ins_project"]["catatan_alamat"] . ' <br>
+																				Description : ' . $data2["ins_project"]["description"] . ' <br>
+																				Metode Payment : ' . $data2["ins_project"]["metode_payment"] . ' <br>
+																				Total : ' . $data2["ins_project"]["total"] . ' <br>
+																				Marketing Name : ' . $data2["marketing_name"] . ' <br>
+																				
+																				<br>
+																				<div class="details">
+																					Untuk informasi lengkap silahkan login pada akun anda di aplikasi
+																				</div>
+																				<!--Silahkan klik button "DOWNLOAD" untuk mendapatkan free ebook
+																				<br /><br /> -->
+																				
+																				<br>
+																				<br>
+																				Terima kasih,
+																				<br>
+																				<span style="color:#222222;">Admin Mitrarenov</span>
+																			</p>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td height="20">
+
+																</td>
+															</tr>
+														</table>
+													</div>
+													<hr style="margin-top:30px; margin-bottom:20px; border: 2px solid darkorange;" />
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td>
+																	<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+																		<tr>
+																			<td valign="top" align="left" width="370">
+																				<div class="contentEditableContainer contentTextEditable">
+																					<div class="contentEditable" align="center">
+																						<p style="text-align:left;color:#000000;font-size:14px;font-weight:normal;line-height:20px;">
+																							<span style="font-weight:bold; ">Contact us :</span>
+																							<h3 style="text-align:left; margin-top:-1px; color:#3cb0fd;">0822-9000-9990</h3>
+																						</p>
+																					</div>
+																				</div>
+																			</td>
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentFacebookEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://www.facebook.com/Mitrarenov-1763460670555727/"><img src="http://mitrarenov.com/cdn/frontend/img/Facebook.png" alt="facebook icon" style="width:60px;" data-default="placeholder" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																			<td width="16"></td>
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/twitter.png" alt="twitter icon" data-default="placeholder" style="width:70px;" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																			<td width="16"></td>
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/instagram.png" alt="twitter icon" data-default="placeholder" style="width:60px;" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																			<td width="16"></td>
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/gplus.png" alt="twitter icon" data-default="placeholder" style="width:70px;" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																		</tr>
+																	</table>
+																</td>
+															</tr>
+														</table>
+													</div>
+													<hr style="margin-top:10px; margin-bottom:20px; border: 1px solid darkorange;" />
+												</td>
+											</tr>
+
+											<!-- =============================== footer ====================================== -->
+
+										</table>
+									</td>
+									<td width="40"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr><td height="88"></td></tr>
+
+				</table>
+			</body>
+		';
+	}
+
+	private function contenttukang($data2, $d2)
+	{
+		return '
+			    <style type="text/css">
+				body {
+					padding-top: 0 !important;
+					padding-bottom: 0 !important;
+					padding-top: 0 !important;
+					padding-bottom: 0 !important;
+					margin: 0 !important;
+					width: 100% !important;
+					-webkit-text-size-adjust: 100% !important;
+					-ms-text-size-adjust: 100% !important;
+					-webkit-font-smoothing: antialiased !important;
+				}
+
+				.tableContent img {
+					border: 0 !important;
+					display: block !important;
+					outline: none !important;
+				}
+
+				a {
+					color: #382F2E;
+				}
+
+				p, h1 {
+					color: #382F2E;
+					margin: 0;
+				}
+
+				p {
+					text-align: left;
+					color: #999999;
+					font-size: 14px;
+					font-weight: normal;
+					line-height: 19px;
+				}
+
+				a.link1 {
+					color: #382F2E;
+				}
+
+				a.link2 {
+					font-size: 16px;
+					text-decoration: none;
+					color: #ffffff;
+				}
+
+				h2 {
+					text-align: center;
+					color: #222222;
+					font-size: 19px;
+					font-weight: normal;
+				}
+
+				div, p, ul, h1 {
+					margin: 0;
+				}
+
+				.bgBody {
+					background: #ffffff;
+				}
+
+				.bgItem {
+					background: #ffffff;
+				}
+
+				.btn {
+					background: darkorange;
+					background-image: -webkit-linear-gradient(top, darkorange, darkorange);
+					background-image: -moz-linear-gradient(top, darkorange, darkorange);
+					background-image: -ms-linear-gradient(top, darkorange, darkorange);
+					background-image: -o-linear-gradient(top, darkorange, darkorange);
+					background-image: linear-gradient(to bottom, darkorange, darkorange);
+					-webkit-border-radius: 28;
+					-moz-border-radius: 28;
+					border-radius: 28px;
+					font-family: Arial;
+					color: #ffffff;
+					font-size: 20px;
+					padding: 10px 20px 10px 20px;
+					text-decoration: none;
+				}
+
+					.btn:hover {
+						background: #3cb0fd;
+						background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+						background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+						background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+						background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+						background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+						text-decoration: none;
+					}
+			</style>
+			<script type="colorScheme" class="swatch active">
+				{
+				"name":"Default",
+				"bgBody":"ffffff",
+				"link":"382F2E",
+				"color":"999999",
+				"bgItem":"ffffff",
+				"title":"222222"
+				}
+			</script>
+			<body paddingwidth="0" paddingheight="0" style="padding-top: 0; padding-bottom: 0; padding-top: 0; padding-bottom: 0; background-repeat: repeat; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased;" offset="0" toppadding="0" leftpadding="0">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableContent bgBody" align="center" style="font-family:Helvetica, Arial,serif;">
+					<tr>
+						<td>
+							<table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="bgItem">
+								<tr>
+									<td width="40"></td>
+									<td width="520">
+										<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+											<!-- =============================== Header ====================================== -->
+											<!-- =============================== Body ====================================== -->
+											<tr>
+												<td class="movableContentContainer" valign="top">
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td valign="top" align="center">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable">
+																			<!--<p style="text-align:center;margin:0;font-family:Georgia,Time,sans-serif;font-size:26px;color:#222222;">Newsletter </p>-->
+																			<br>
+																			<img src="http://mitrarenov.com/cdn/frontend/img/logo.png" style="width:60%;" />
+																			<hr style="margin-top:30px; border: 2px solid darkorange;" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td valign="top" align="center">
+																	<div class="contentEditableContainer contentImageEditable">
+																		<div class="contentEditable" style="margin-top:20px;">
+																			<h2 style="color:dodgerblue;">PEMBERITAHUAN</h2>
+																		</div>
+																		<!--<div class="contentEditable" style="margin-top:0px;">
+																			<label style="margin-top:1500px;"><strong>Permintaan Jasa dari <strong>' . $data2["nama"] . '</label>
+																		</div>
+																		-->
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+													<div class="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<!--<tr>
+																<td align="left">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable" align="center">
+																			<h2>' . $data2["title"] . '</h2>
+																		</div>
+																	</div>
+																</td>
+															</tr>-->
+															<tr><td height="15"> </td></tr>
+															<tr>
+																<td align="left">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable" align="center">
+																			<!--<p style="text-align:center;color:#999999;font-size:14px;font-weight:normal;line-height:19px;">
+																				<img src="http://mitrarenov.com/cdn/images/photo_newsletter/<?=$image?>" style="width:50%;" />
+																			</p>-->
+																			<p style="text-align:left;color:#222222;font-size:14px;font-weight:normal;line-height:19px;">
+																				<!--<?=$description?>-->
+																				Dear Bapak/Ibu - ' . $d2->nama_tukang . ', anda terpilih untuk mengerjakan project dengan detail sebagai berikut: <br /> <br />
+																				Nama : ' . $data2["nama"] . ' <br>
+																				Telp : ' . $data2["no_telp"] . ' <br>
+																				
+																			</p>
+																			<hr style="margin-top:10px; margin-bottom:10px; border: 1px solid blue;" />
+																			<p style="text-align:left;color:#222222;font-size:14px;font-weight:normal;line-height:19px;">
+																				Project Number : ' . $data2["project_number"] . ' <br>
+																				Jasa : ' . jasaType($data2["product_id"]) . ' <br>
+																				Kebutuhan : ' . $data2["ins_project"]["priority"] . ' <br>
+																				Luas : ' . $data2["ins_project"]["luas"] . ' <br>
+																				Longitude & Latitude : ' . $data2["provinceVal"] . ' <br>
+																				Lokasi : ' . $data2["ins_project"]["alamat_pengerjaan"] . ' <br>
+																				Catatan Alamat : ' . $data2["ins_project"]["catatan_alamat"] . ' <br>
+																				Description : ' . $data2["ins_project"]["description"] . ' <br>
+																				Metode Payment : ' . $data2["ins_project"]["metode_payment"] . ' <br>
+																				Total : ' . $data2["ins_project"]["total"] . ' <br>
+																				Marketing Name : ' . $data2["marketing_name"] . ' <br>
+																				
+																				<br>
+																				<div class="details">
+																					Untuk informasi lengkap silahkan login pada akun anda di aplikasi
+																				</div>
+																				<!--Silahkan klik button "DOWNLOAD" untuk mendapatkan free ebook
+																				<br /><br /> -->
+																				
+																				<br>
+																				<br>
+																				Terima kasih,
+																				<br>
+																				<span style="color:#222222;">Admin Mitrarenov</span>
+																			</p>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td height="20">
+
+																</td>
+															</tr>
+														</table>
+													</div>
+													<hr style="margin-top:30px; margin-bottom:20px; border: 2px solid darkorange;" />
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td>
+																	<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+																		<tr>
+																			<td valign="top" align="left" width="370">
+																				<div class="contentEditableContainer contentTextEditable">
+																					<div class="contentEditable" align="center">
+																						<p style="text-align:left;color:#000000;font-size:14px;font-weight:normal;line-height:20px;">
+																							<span style="font-weight:bold; ">Contact us :</span>
+																							<h3 style="text-align:left; margin-top:-1px; color:#3cb0fd;">0822-9000-9990</h3>
+																						</p>
+																					</div>
+																				</div>
+																			</td>
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentFacebookEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://www.facebook.com/Mitrarenov-1763460670555727/"><img src="http://mitrarenov.com/cdn/frontend/img/Facebook.png" alt="facebook icon" style="width:60px;" data-default="placeholder" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																			<td width="16"></td>
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/twitter.png" alt="twitter icon" data-default="placeholder" style="width:70px;" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																			<td width="16"></td>
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/instagram.png" alt="twitter icon" data-default="placeholder" style="width:60px;" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																			<td width="16"></td>
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/gplus.png" alt="twitter icon" data-default="placeholder" style="width:70px;" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																		</tr>
+																	</table>
+																</td>
+															</tr>
+														</table>
+													</div>
+													<hr style="margin-top:10px; margin-bottom:20px; border: 1px solid darkorange;" />
+												</td>
+											</tr>
+
+											<!-- =============================== footer ====================================== -->
+
+										</table>
+									</td>
+									<td width="40"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr><td height="88"></td></tr>
+
+				</table>
+			</body>
+		';
+	}
+
+	private function content3($temp, $email)
+	{
+		return '
+			<!DOCTYPE html>
+
+			<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+			<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+				
+				<style type="text/css">
+					body {
+						padding-top: 0 !important;
+						padding-bottom: 0 !important;
+						padding-top: 0 !important;
+						padding-bottom: 0 !important;
+						margin: 0 !important;
+						width: 100% !important;
+						-webkit-text-size-adjust: 100% !important;
+						-ms-text-size-adjust: 100% !important;
+						-webkit-font-smoothing: antialiased !important;
+					}
+
+					.tableContent img {
+						border: 0 !important;
+						display: block !important;
+						outline: none !important;
+					}
+
+					a {
+						color: #382F2E;
+					}
+
+					p, h1 {
+						color: #382F2E;
+						margin: 0;
+					}
+
+					p {
+						text-align: left;
+						color: #999999;
+						font-size: 14px;
+						font-weight: normal;
+						line-height: 19px;
+					}
+
+					a.link1 {
+						color: #382F2E;
+					}
+
+					a.link2 {
+						font-size: 16px;
+						text-decoration: none;
+						color: #ffffff;
+					}
+
+					h2 {
+						text-align: center;
+						color: #222222;
+						font-size: 19px;
+						font-weight: normal;
+					}
+
+					div, p, ul, h1 {
+						margin: 0;
+					}
+
+					.bgBody {
+						background: #ffffff;
+					}
+
+					.bgItem {
+						background: #ffffff;
+					}
+
+					.btn {
+						background: darkorange;
+						background-image: -webkit-linear-gradient(top, darkorange, darkorange);
+						background-image: -moz-linear-gradient(top, darkorange, darkorange);
+						background-image: -ms-linear-gradient(top, darkorange, darkorange);
+						background-image: -o-linear-gradient(top, darkorange, darkorange);
+						background-image: linear-gradient(to bottom, darkorange, darkorange);
+						-webkit-border-radius: 28;
+						-moz-border-radius: 28;
+						border-radius: 28px;
+						font-family: Arial;
+						color: #ffffff;
+						font-size: 20px;
+						padding: 10px 20px 10px 20px;
+						text-decoration: none;
+					}
+
+						.btn:hover {
+							background: #3cb0fd;
+							background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+							background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+							background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+							background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+							background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+							text-decoration: none;
+						}
+				</style>
+				<script type="colorScheme" class="swatch active">
+					{
+					"name":"Default",
+					"bgBody":"ffffff",
+					"link":"382F2E",
+					"color":"999999",
+					"bgItem":"ffffff",
+					"title":"222222"
+					}
+				</script>
+
+			</head>
+			<body paddingwidth="0" paddingheight="0" style="padding-top: 0; padding-bottom: 0; padding-top: 0; padding-bottom: 0; background-repeat: repeat; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased;" offset="0" toppadding="0" leftpadding="0">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableContent bgBody" align="center" style="font-family:Helvetica, Arial,serif;">
+
+					<tr>
+						<td>
+							<table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="bgItem">
+								<tr>
+									<td width="40"></td>
+									<td width="520">
+										<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+
+											<!-- =============================== Header ====================================== -->
+											<!-- =============================== Body ====================================== -->
+
+											<tr>
+												<td class="movableContentContainer" valign="top">
+
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td valign="top" align="center">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable">
+																			<!--<p style="text-align:center;margin:0;font-family:Georgia,Time,sans-serif;font-size:26px;color:#222222;">Newsletter </p>-->
+																			<br>
+																			<img src="http://mitrarenov.com/cdn/frontend/img/logo.png" style="width:60%;" />
+																			<hr style="margin-top:30px; border: 2px solid darkorange;" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td valign="top" align="center">
+																	<div class="contentEditableContainer contentImageEditable">
+																		<div class="contentEditable" style="margin-top:20px;">
+																			<h2 style="color:dodgerblue;">SELAMAT</h2>
+																		</div>
+																		<div class="contentEditable" style="margin-top:0px;">
+																			<label style="margin-top:1500px;"><strong>Permintaan Jasa Anda Telah Kami Terima</strong></label>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+
+													<div class="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															
+
+															<tr><td height="15"> </td></tr>
+
+															<tr>
+																<td align="left">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable" align="center">
+																			<!--<p style="text-align:center;color:#999999;font-size:14px;font-weight:normal;line-height:19px;">
+																				<img src="http://mitrarenov.com/cdn/images/photo_newsletter/<?=$image?>" style="width:50%;" />
+																			</p>-->
+																			<p style="text-align:left;color:#222222;font-size:14px;font-weight:normal;line-height:19px;">
+																				<!--<?=$description?>-->
+																				Dear Bapak/Ibu, <br /> <br />
+																				Permintaan jasa Anda telah kami terima, silahkan login dengan akun dibawah ini :<br />
+                                                                                <b>Email : ' . $email . ' <br />
+                                                                                Password : 123456 <br /><br />
+                                                                                Silahkan Download dan Login pada aplikasi android mitrarenov dengan mengakses link dibawah ini : <br /><br />
+                                                                                
+      <a style="color:#337ab7" href="https://play.google.com/store/apps/details?id=hugaf.mitrarenov.com"><b><u>DOWNLOAD APLIKASI ANDROID MITRARENOV</u></b></a>	
+																			
+																				<br>
+					  
+																				
+																				<br /><br />
+																				Jika memerlukan informasi lebih lanjut dapat mengirimkan ke email: <a href="mailto:info@mitrarenov.com">info@mitrarenov.com </a> atau telepon di 0822-9000-9990
+
+																				<br>
+																				<br>
+																				Terima kasih,
+																				<br>
+																				<span style="color:#222222;">Admin Mitrarenov</span>
+																			</p>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+
+															<tr>
+																<td height="20">
+																	<p style="text-align:center;color:#999999;font-size:14px;font-weight:normal;line-height:19px;">
+																		<a href="' . $temp[0]->link_iklan . '" ><img src="http://mitrarenov.com/cdn/images/email_setting/' . $temp[0]->banner_iklan . '" style="width:100%;" /> </a>
+																	</p>
+
+
+																</td>
+															</tr>
+														</table>
+													</div>
+													<hr style="margin-top:30px; margin-bottom:20px; border: 2px solid darkorange;" />
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td>
+																	<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+																		<tr>
+																			<td valign="top" align="left" width="370">
+																				<div class="contentEditableContainer contentTextEditable">
+																					<div class="contentEditable" align="center">
+																						<p style="text-align:left;color:#000000;font-size:14px;font-weight:normal;line-height:20px;">
+																							<span style="font-weight:bold; ">Contact us :</span>
+																							<h3 style="text-align:left; margin-top:-1px; color:#3cb0fd;">0822-9000-9990</h3>
+																						</p>
+
+																					</div>
+																				</div>
+																			</td>
+
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentFacebookEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://www.facebook.com/Mitrarenov-1763460670555727/"><img src="http://mitrarenov.com/cdn/frontend/img/Facebook.png" alt="facebook icon" style="width:60px;" data-default="placeholder" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+
+																			<td width="16"></td>
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/twitter.png" alt="twitter icon" data-default="placeholder" style="width:70px;" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+
+																			<td width="16"></td>
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/instagram.png" alt="twitter icon" data-default="placeholder" style="width:60px;" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+
+																			<td width="16"></td>
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/gplus.png" alt="twitter icon" data-default="placeholder" style="width:70px;" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																		</tr>
+																	</table>
+																</td>
+															</tr>
+														</table>
+													</div>
+													<hr style="margin-top:10px; margin-bottom:20px; border: 1px solid darkorange;" />
+
+												</td>
+											</tr>
+
+
+
+											<!-- =============================== footer ====================================== -->
+
+
+
+										</table>
+									</td>
+									<td width="40"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+
+					<tr><td height="88"></td></tr>
+
+
+				</table>
+
+			</body>
+			</html>
+		';
+	}
+
+	private function content2($temp, $email)
+	{
+		return '
+			<!DOCTYPE html>
+
+			<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+			<head>
+				
+				<style type="text/css">
+					body {
+						padding-top: 0 !important;
+						padding-bottom: 0 !important;
+						padding-top: 0 !important;
+						padding-bottom: 0 !important;
+						margin: 0 !important;
+						width: 100% !important;
+						-webkit-text-size-adjust: 100% !important;
+						-ms-text-size-adjust: 100% !important;
+						-webkit-font-smoothing: antialiased !important;
+					}
+
+					.tableContent img {
+						border: 0 !important;
+						display: block !important;
+						outline: none !important;
+					}
+
+					a {
+						color: #382F2E;
+					}
+
+					p, h1 {
+						color: #382F2E;
+						margin: 0;
+					}
+
+					p {
+						text-align: left;
+						color: #999999;
+						font-size: 14px;
+						font-weight: normal;
+						line-height: 19px;
+					}
+
+					a.link1 {
+						color: #382F2E;
+					}
+
+					a.link2 {
+						font-size: 16px;
+						text-decoration: none;
+						color: #ffffff;
+					}
+
+					h2 {
+						text-align: center;
+						color: #222222;
+						font-size: 19px;
+						font-weight: normal;
+					}
+
+					div, p, ul, h1 {
+						margin: 0;
+					}
+
+					.bgBody {
+						background: #ffffff;
+					}
+
+					.bgItem {
+						background: #ffffff;
+					}
+
+					.btn {
+						background: darkorange;
+						background-image: -webkit-linear-gradient(top, darkorange, darkorange);
+						background-image: -moz-linear-gradient(top, darkorange, darkorange);
+						background-image: -ms-linear-gradient(top, darkorange, darkorange);
+						background-image: -o-linear-gradient(top, darkorange, darkorange);
+						background-image: linear-gradient(to bottom, darkorange, darkorange);
+						-webkit-border-radius: 28;
+						-moz-border-radius: 28;
+						border-radius: 28px;
+						font-family: Arial;
+						color: #ffffff;
+						font-size: 20px;
+						padding: 10px 20px 10px 20px;
+						text-decoration: none;
+					}
+
+						.btn:hover {
+							background: #3cb0fd;
+							background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+							background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+							background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+							background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+							background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+							text-decoration: none;
+						}
+				</style>
+				<script type="colorScheme" class="swatch active">
+					{
+					"name":"Default",
+					"bgBody":"ffffff",
+					"link":"382F2E",
+					"color":"999999",
+					"bgItem":"ffffff",
+					"title":"222222"
+					}
+				</script>
+
+			</head>
+			<body paddingwidth="0" paddingheight="0" style="padding-top: 0; padding-bottom: 0; padding-top: 0; padding-bottom: 0; background-repeat: repeat; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased;" offset="0" toppadding="0" leftpadding="0">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableContent bgBody" align="center" style="font-family:Helvetica, Arial,serif;">
+
+					<tr>
+						<td>
+							<table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="bgItem">
+								<tr>
+									<td width="40"></td>
+									<td width="520">
+										<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+
+											<!-- =============================== Header ====================================== -->
+											<!-- =============================== Body ====================================== -->
+
+											<tr>
+												<td class="movableContentContainer" valign="top">
+
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td valign="top" align="center">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable">
+																			<!--<p style="text-align:center;margin:0;font-family:Georgia,Time,sans-serif;font-size:26px;color:#222222;">Newsletter </p>-->
+																			<br>
+																			<img src="http://mitrarenov.com/cdn/frontend/img/logo.png" style="width:60%;" />
+																			<hr style="margin-top:30px; border: 2px solid darkorange;" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td valign="top" align="center">
+																	<div class="contentEditableContainer contentImageEditable">
+																		<div class="contentEditable" style="margin-top:20px;">
+																			<h2 style="color:dodgerblue;">SELAMAT</h2>
+																		</div>
+																		<div class="contentEditable" style="margin-top:0px;">
+																			<label style="margin-top:1500px;"><strong>Permintaan Jasa Anda Telah Kami Terima</strong></label>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</table>
+													</div>
+
+													<div class="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															
+
+															<tr><td height="15"> </td></tr>
+
+															<tr>
+																<td align="left">
+																	<div class="contentEditableContainer contentTextEditable">
+																		<div class="contentEditable" align="center">
+																			<!--<p style="text-align:center;color:#999999;font-size:14px;font-weight:normal;line-height:19px;">
+																				<img src="http://mitrarenov.com/cdn/images/photo_newsletter/<?=$image?>" style="width:50%;" />
+																			</p>-->
+																			<p style="text-align:left;color:#222222;font-size:14px;font-weight:normal;line-height:19px;">
+																				<!--<?=$description?>-->
+																				Dear Bapak/Ibu, <br /> <br />
+																				Permintaan jasa Anda telah kami terima.<br /><br />
+																				Silahkan Download dan Login pada aplikasi android mitrarenov dengan mengakses link dibawah ini : <br /><br />
+                                                                                
+      <a style="color:#337ab7" href="https://play.google.com/store/apps/details?id=hugaf.mitrarenov.com"><b><u>DOWNLOAD APLIKASI ANDROID MITRARENOV</u></b></a>	
+																			
+																				<br>
+
+																			
+																				<br>
+																				<!--Silahkan klik button "DOWNLOAD" untuk mendapatkan free ebook
+																				<br /><br /> 
+																				<a href="' . $temp[0]->link_ebook . '" style="background: darkorange;
+																					background-image: -webkit-linear-gradient(top, darkorange, darkorange);
+																					background-image: -moz-linear-gradient(top, darkorange, darkorange);
+																					background-image: -ms-linear-gradient(top, darkorange, darkorange);
+																					background-image: -o-linear-gradient(top, darkorange, darkorange);
+																					background-image: linear-gradient(to bottom, darkorange, darkorange);
+																					-webkit-border-radius: 28;
+																					-moz-border-radius: 28;
+																					border-radius: 28px;
+																					font-family: Arial;
+																					color: #ffffff;
+																					font-size: 20px;
+																					padding: 10px 20px 10px 20px;
+																					text-decoration: none;">DOWNLOAD</a>
+																				-->
+																				<br /><br />
+																				Jika memerlukan informasi lebih lanjut dapat mengirimkan ke email: <a href="mailto:info@mitrarenov.com">info@mitrarenov.com </a> atau telepon di 0822-9000-9990
+
+																				<br>
+																				<br>
+																				Terima kasih,
+																				<br>
+																				<span style="color:#222222;">Admin Mitrarenov</span>
+																			</p>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+
+															<tr>
+																<td height="20">
+																	<p style="text-align:center;color:#999999;font-size:14px;font-weight:normal;line-height:19px;">
+																		<a href="' . $temp[0]->link_iklan . '" ><img src="http://mitrarenov.com/cdn/images/email_setting/' . $temp[0]->banner_iklan . '" style="width:100%;" /> </a>
+																	</p>
+
+
+																</td>
+															</tr>
+														</table>
+													</div>
+													<hr style="margin-top:30px; margin-bottom:20px; border: 2px solid darkorange;" />
+													<div lass="movableContent">
+														<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+															<tr>
+																<td>
+																	<table width="520" border="0" cellspacing="0" cellpadding="0" align="center">
+																		<tr>
+																			<td valign="top" align="left" width="370">
+																				<div class="contentEditableContainer contentTextEditable">
+																					<div class="contentEditable" align="center">
+																						<p style="text-align:left;color:#000000;font-size:14px;font-weight:normal;line-height:20px;">
+																							<span style="font-weight:bold; ">Contact us :</span>
+																							<h3 style="text-align:left; margin-top:-1px; color:#3cb0fd;">0822-9000-9990</h3>
+																						</p>
+
+																					</div>
+																				</div>
+																			</td>
+
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentFacebookEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://www.facebook.com/Mitrarenov-1763460670555727/"><img src="http://mitrarenov.com/cdn/frontend/img/Facebook.png" alt="facebook icon" style="width:60px;" data-default="placeholder" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+
+																			<td width="16"></td>
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/twitter.png" alt="twitter icon" data-default="placeholder" style="width:70px;" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+
+																			<td width="16"></td>
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/instagram.png" alt="twitter icon" data-default="placeholder" style="width:60px;" data-max-width="52" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+
+																			<td width="16"></td>
+
+																			<td valign="top" width="52">
+																				<div class="contentEditableContainer contentTwitterEditable">
+																					<div class="contentEditable">
+																						<a target="_blank" href="https://twitter.com/mitrarenov"><img src="http://mitrarenov.com/cdn/frontend/img/gplus.png" alt="twitter icon" data-default="placeholder" style="width:70px;" data-customIcon="true"></a>
+																					</div>
+																				</div>
+																			</td>
+																		</tr>
+																	</table>
+																</td>
+															</tr>
+														</table>
+													</div>
+													<hr style="margin-top:10px; margin-bottom:20px; border: 1px solid darkorange;" />
+
+												</td>
+											</tr>
+
+
+
+											<!-- =============================== footer ====================================== -->
+
+
+
+										</table>
+									</td>
+									<td width="40"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+
+					<tr><td height="88"></td></tr>
+
+
+				</table>
+
+			</body>
+			</html>
+		';
+	}
+
 }

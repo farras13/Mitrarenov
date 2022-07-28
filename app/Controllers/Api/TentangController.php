@@ -89,6 +89,28 @@ class TentangController extends ResourceController
         return $this->respond($res, 200);
     }
 
+    public function snk_kpr()
+    {
+        $w = ['id' => 4];
+        $data = $this->model->find($w);
+        
+        if (!$data) {
+            $res = [
+                "status" => 200,
+                "messages" => "data masih kosong",
+                "data" => null
+            ];
+            return $this->respond($res, 200);
+        }   
+            
+        $res = [
+            "status" => 200,
+            "messages" => "Sukses",
+            "data" => $data
+        ];
+        return $this->respond($res, 200);
+    }
+
     public function RulesOrder()
     {
         $model = new GeneralModel();

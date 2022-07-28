@@ -76,37 +76,9 @@
       <div class="col-md-6 mb-4">
         <div class="syarat-ketentuan">
           <h5 class="mb-4">Syarat dan Ketentuan</h5>
-          <ol class="pl-3">
-            <li>
-              WNI dan berdomisili di Indonesia
-            </li>
-            <li>
-              Karyawan tetap dengan pengalaman kerja minimal 2 tahun atau Wiraswasta dengan pengalaman usaha minimal 2
-              tahun atau Profesional dengan pengalaman praktek minimal 2 tahun
-            </li>
-            <li>
-              Usia minimal pada saat pembiayaan diberikan adalah 21 tahun, dan maksimal usia pensiun untuk karyawan
-              atau
-              65 tahun untuk wiraswasta dan profesional
-            </li>
-            <li>
-              Memiliki pendapatan bersih bulanan minimum sebesar UMR (Upah Minimum Regional) untuk karyawan,
-              wiraswasta,
-              dan profesional (informasi untuk pengajuan wilayah sekitar Jabodetabek)
-            </li>
-            <li>
-              Melengkapi dokumen-dokumen yang diperlukan, antara lain: <br>
-              Karyawan: Kartu Tanda Penduduk (KTP), Sertifikat, IMB, Kartu Keluarga, dan Surat Nikah, Slip Gaji
-              terakhir
-              atau Surat Keterangan Gaji, Rekening koran tabungan 3 bulan terakhir, NPWP pribadi <br>
-              Wiraswasta: Kartu Tanda Penduduk (KTP), Sertifikat, IMB, Kartu Keluarga, dan Surat Nikah, Rekening
-              koran/tabungan 3 bulan terakhir, Laporan Keuangan 2 tahun terakhir, Legalitas Usaha (Akte Pendirian
-              berikut perubahan terakhir, TDP, SIUP, NPWP), NPWP Pribadi <br>
-              Profesional: Kartu Tanda Penduduk (KTP), Sertifikat, IMB, Kartu Keluarga, dan Surat Nikah, Rekening
-              koran/tabungan 3 bulan terakhir, izin praktek yang masih berlaku, NPWP Pribadi
-            </li>
-
-          </ol>
+          <?php foreach ($snk as $s): ?>
+              <?= $s->snk; ?>
+          <?php endforeach ?>
         </div>
       </div>
     </div>

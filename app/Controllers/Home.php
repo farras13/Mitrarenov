@@ -8,6 +8,7 @@ use App\Models\DboModel;
 use App\Models\AuthDetailModel;
 use App\Models\AuthModel;
 use App\Models\GeneralModel;
+use App\Models\PortoModel;
 
 class Home extends BaseController
 {
@@ -19,13 +20,15 @@ class Home extends BaseController
     public function index()
     {
         $model = new ArtikelModel();
-
-        $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->orderBy('created', 'DESC')->get()->getResult();
+        $data['alur'] = $this->model->getAll('rules')->getResult();
+        $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
+        $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get()->getResult();
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
-        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0])->getResult();
+        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0, 'kategori' => '2'])->getResult();
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
-        $data['merawat'] = $this->model->getAll('merawat')->getResult();
+        $data['merawat'] = $this->model->getAll('merawat', 5)->getResult();
         $data['design_rumah'] = $this->model->getAll('design_rumah')->getResult();
+        $data['liputan'] = $this->model->getAll('liputan')->getResult();
         $data['partner'] = $this->model->getOrderBy('partner', 'position', 'asc')->getResult();
         $data['lokasi'] = $this->model->getAll('location')->getResult();
         $data['kategori'] = $this->model->getWhere('category', ['id !=' => 3])->getResult();
@@ -36,22 +39,68 @@ class Home extends BaseController
         return view('index', $data);
     }
 
+    public function portofolio()
+    {
+        $model = new PortoModel();
+
+        $data['porto'] = $model->select('merawat.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = merawat.created_by')->paginate(12, 'berita');
+        $data['pager'] = $model->pager;
+        
+        return view('portofolio', $data);
+    }
+
+    public function detail_porto($id)
+    {
+        $data['porto'] = $this->model->getWhere('merawat', ['id' => $id])->getRow();
+        $id = $data['porto']->created_by; 
+        $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id])->getRow();
+        $data['lain'] = $this->model->getWhere('merawat', ['id !=' => $id], 4)->getResult();
+        $data['gambar'] = $this->model->getWhere('gambar_portofolio', ['porto_id' => $data['porto']->id])->getResult();
+        return view('porto_detail', $data);
+    }
+
     public function artikel()
     {
         $model = new ArtikelModel();
         $key = $this->request->getVar();
 
-        if ($key != null) {
+        if ($key['cari'] != null) {
             $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
         } else {
             $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->orderBy('created', 'DESC')->paginate(5, 'berita');
         }
-        $data['kategori'] = $model->kategori();
+        $data['kategori'] = $this->model->getAll('news_category')->getResult();
         $data['hot'] = $model->orderBy('created', 'ASC')->hot();
         $data['pager'] = $model->pager;
-        $data['key'] = $key;
+        $data['key'] = $key['cari'];
 
         return view("artikel", $data);
+    }
+
+    public function kategori($name)
+    {
+        $model = new ArtikelModel();
+        $key = $this->request->getVar();
+
+        $kat = str_replace('-', ' ', $name);
+
+        $kategori = $this->model->getWhere('news_category', ['category' => $kat])->getRow();
+
+        if ($key['cari'] != null) {
+            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
+        } else {
+            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('news_category', $kategori->id_news_category)->orderBy('created', 'DESC')->paginate(5, 'berita');
+            if ($data['terbaru'] == null) {
+                $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->orderBy('created', 'DESC')->paginate(5, 'berita');
+            }
+        }
+        $data['kategori'] =  $this->model->getAll('news_category')->getResult();
+        $data['judul'] = $kat;
+        $data['hot'] = $model->orderBy('created', 'ASC')->hot();
+        $data['pager'] = $model->pager;
+        $data['key'] = $key['cari'];
+
+        return view("artikel-kategori", $data);
     }
 
     public function d_artikel($id)
@@ -62,11 +111,11 @@ class Home extends BaseController
         $tagline = $model->where('id', $id)->get()->getRow();
 
         $data['terkait'] = $model->terkait($tagline->tagline);
-        if ($key != null) {
+        if ($key['cari'] != null) {
             $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
             $data['hot'] = $model->orderBy('created', 'ASC')->hot();
             $data['pager'] = $model->pager;
-            $data['key'] = $key;
+            $data['key'] = $key['cari'];
             return view("artikel", $data);
         } else {
             $data['berita'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->find($id);
@@ -231,6 +280,41 @@ class Home extends BaseController
         }
     }
 
+      public function sendEmailOrder()
+    {
+        helper('text');
+        $session = session();
+        $model = new AuthModel();
+        $mdl = new GeneralModel();
+
+        $token = random_string('alnum', 35);
+        $res = array('token_reset' => $token,);
+
+        $input = $this->request->getVar();
+        $data = ['email' => $input['email'],];
+        $to = $input['email'];
+
+        $cek = $model->where($data)->first();
+
+        // $mdl->ins('temp_reset_pass', ['member_id' => $cek['id'], 'token' => $token]);
+        $title = "Order Mitrarenov";
+        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="' . base_url('lupa_password') . '/' . $token . '">Link reset</a></b> </p>';
+
+        $email = \Config\Services::email();
+        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+        $email->setTo($to);
+        $email->setSubject($title);
+        $email->setMessage($message);
+
+        if (!$email->send()) {
+            $session->setFlashdata('toast', 'error:Email Gagal dikirim !');
+            return redirect()->back()->withInput();
+        } else {
+            $session->setFlashdata('toast', 'success:Email sudah terkirim !');
+            return redirect()->to('member/login');
+        }
+    }
+
     public function pros_log()
     {
         $model = new GeneralModel();
@@ -268,6 +352,7 @@ class Home extends BaseController
         $ses_data = [
             'user_id'       => $cek->id,
             'user_name'     => $cek_detail->name,
+            'user_phone'     => $cek_detail->telephone,
             'user_email'    => $cek->email,
             'logged_in'     => TRUE
         ];
@@ -293,17 +378,31 @@ class Home extends BaseController
         $jenis = $req['jenis'];
         $data['type'] = $type;
         $data['jenis'] = $jenis;
+        $data['nama'] = $sess->get('user_name');
+        $data['phone'] = $sess->get('user_phone');
+        $data['email'] = $sess->get('user_email');
         $data['tipe_rumah'] = $this->model->getAll('tipe_rumah')->getResult();
-        if ($type == 2) {
-            $spek = $this->model->getWhere('product', ['paket_name' => $jenis])->getResult();
-            foreach ($spek as $key => $value) {
-                $value->type_price = $value->paket_name;
-                $value->product_price = $value->start_from_text;
-                $value->spesifikasi = $value->spesifikasi_renov;
-            }
-        } else {
-            $spek = $this->model->getAll('product_price')->getResult();
+       
+        $cat = $this->model->getWhere('category', ['category_name' => $jenis])->getRow();
+        if ($cat == null) {
+            $produk = $this->model->getWhere('product', ['paket_name' => $jenis])->getRow();
+        }else{
+            $produk = $this->model->getWhere('product', ['category_id' => $cat->id])->getRow();
         }
+
+        $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
+        if($spek == null){
+            $spek = $this->model->getWhere('product_price', ['product_id' => $produk->category_id])->getResult();
+            if ($spek == null) {
+                $spek = $this->model->getWhere('product', ['paket_name' => $jenis])->getResult();
+                foreach ($spek as $key => $value) {
+                    $value->type_price = $value->paket_name;
+                    $value->product_price = $value->start_from_text;
+                    $value->spesifikasi = $value->spesifikasi_renov;
+                }
+            }
+        }
+        
         $data['spek'] = $spek;
 
         return view('order', $data);
@@ -312,136 +411,168 @@ class Home extends BaseController
     public function order_desain()
     {
         $sess = session();
-        $input = $this->request->getVar();
-        $headers = $this->request->headers();
+        $login = $sess->get('logged_in');
+        $id = 0;
+        if($sess->get('user_id') != null){
+            $id += $sess->get('user_id');
+        }else{
+            $cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();
+            if(empty($cek_member)){ 
+                $insert_h['usergroup_id'] = 5;
+                $insert_h['email'] = $input['email'];
+                $insert_d['name'] = $input['nama_lengkap'];
+                $insert_d['phone'] = $input['telepon'];
 
-        $tdate = date('Y-m-d');
-        $date = strtotime($tdate);
-        $id = $sess->get('user_id');
-
-        if ($id == null) {
-            return redirect()->to('member/login');
-        } else {
-            $rules = [
-                "customRadioInline" => "required",
-                "ruang_keluarga" => "required",
-                "kamar_tidur" => "required",
-                "kamar_mandi" => "required",
-                "dapur" => "required",
-                "luas" => "required",
-                "deskripsi" => "required",
-                "alamat" => "required",
-                "jangka_waktu" => "required",
-                "spek" => "required",
-                "nama_lengkap" => "required",
-                "telepon" => "required",
-                "email" => "required",
-                "latitude" => "required",
-                "longitude" => "required",
-                "metodpay" => "required",
-            ];
-            $msg = [
-                'gambar_rumah' => [
-                    'uploaded' => 'Harus Ada File yang diupload',
-                    'mime_in' => 'File Extention Harus Berupa jpg,jpeg,gif,png',
-                    'max_size' => 'Ukuran File Maksimal 2 MB'
-                ],
-                'denah' => [
-                    'uploaded' => 'Harus Ada File yang diupload',
-                    'mime_in' => 'File Extention Harus Berupa jpg,jpeg,gif,png',
-                    'max_size' => 'Ukuran File Maksimal 2 MB'
-                ]
-            ];
-
-            if (!$this->validate($rules, $msg)) {
-                session()->setFlashdata('toast', 'error:' . $this->validator->getErrors());
-                return redirect()->back()->withInput();
-            } else {
-                $jenis_order = $input['jenis_order'];
-                $type_order = $input['tipe_order'];
-                $tipe_rumah = $input['customRadioInline'];
-
-                $file_rumah = $this->request->getFile('gambar_rumah');
-                $file_denah = $this->request->getFile('denah');
-
-                $path = "./public/images/desain_rumah_user";
-                $uploadImgdenah = $this->uploadImage($file_denah, $path);
-                $path_uploadImg = "./public/images/projek";
-                $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
-
-                if ($uploadImg != null) {
-
-                    $img_rumah = $uploadImg['data']['file_name'];
+                $insert_h['password'] = md5('123456');
+                $insert_h['created'] = time();
+                $insert_h['last_login'] = time();
+                $insert_h['created_by'] = 2;
+                $query_h = $this->model->insB   ('member', $insert_h);
+                $id += $this->model->lastId('member', 1)->getRow()->id;
+                if ($query_h) {
+                    $insert_d['member_id'] = $id;
+                    $insert_d['created'] = time();
+                    $insert_d['city_id'] = 0;
+                    $insert_d['address'] = $input['alamat'];
+                    $insert_d['created_by'] = 2;
+                    $query_d = $this->model->insB('member_detail', $insert_d);
                 }
-
-                if ($uploadImgdenah != null) {
-
-                    $denah = $uploadImgdenah['data']['file_name'];
-                }
-
-                $temp_produk = $this->model->getData('product', ['id' => $type_order])->getRow();
-                if ($temp_produk == null) {
-                    $total = $input['totalHarga'];
-                } else {
-                    $price = $temp_produk->price;
-                    $total = $price * $input['luas'];
-                }
-
-                $insert = [
-                    'project_number' => date("dmY", time()) . "" . rand(10, 100),
-                    'type' => $jenis_order,
-                    'total' => $total,
-                    'alamat_pengerjaan' => $input['alamat'],
-                    'catatan_alamat' => $input['alamat'],
-                    'luas' => $input['luas'],
-                    'description' => $input['deskripsi'],
-                    'latitude' => $input['lat'],
-                    'longitude' => $input['long'],
-                    'metode_payment' => $input['metodpay'],
-                    'status_project' => 'quotation',
-                    'image_upload' => $img_rumah,
-                    'marketing_name' => $input['marketing'],
-                    'kode_referal' => $input['promo'],
-                    'kode_promo' => $input['referal'],
-                    'created' => time()
-                ];
-
-                $insert_data = [
-                    'name' => $input['nama_lengkap'],
-                    'address' => $input['alamat'],
-                    'email' => $input['email'],
-                    'phone' => $input['telepon'],
-                    'created' => time(),
-                    'member_id' => $id
-                ];
-
-                $idd = $this->m->lastId('projects_desain')->getRow()->id;
-
-                $insert_detail = [
-                    'product_id' => $input['type'],
-                    'product_price_id' => $input['spek'],
-                    'desain_id' => (int)$idd + 1
-                ];
-
-                $insert_design = [
-                    'tipe_rumah' => $tipe_rumah,
-                    'ruang_keluarga' => $input['ruang_keluarga'],
-                    'kamar_tidur' => $input['kamar_tidur'],
-                    'kamar_mandi' => $input['kamar_mandi'],
-                    'dapur' => $input['dapur'],
-                    'denah' => $denah,
-                    'created' => time()
-                ];
-
-                $this->m->insert('projects', $insert);
-                $this->m->insert('project_data_customer', $insert_data);
-                $this->m->insert('projects_desain', $insert_design);
-                $this->m->ins('projects_detail', $insert_detail);
-
-                session()->setFlashdata('toast', 'success:Selamat pengajuan Order berhasil dikirim !.');
-                return redirect()->to('home');
+            }else{
+                $id += $cek_member->id;
+                $this->model->upd('member', ['id' => $id], ['last_login' => time()]);
             }
         }
+        $input = $this->request->getVar();
+        $tdate = date('Y-m-d');
+        $date = strtotime($tdate);
+        
+        
+        $jenis_order = $input['jenis_order'];
+        // var_dump($jenis_order);die;
+        $type_order = $input['tipe_order'];
+        $tipe_rumah = $input['customRadioInline'];
+
+        $temp = 0;
+        $cek_area = $this->model->getAll('area')->getResult();
+        $area = "";
+        foreach ($cek_area as $c) {
+            if (strpos($input['city'], $c->nama_area) > -1) {
+                $temp += 1;
+                $area = $c->id_area;
+            }
+        }
+        
+        // var_dump($cek_area);die;
+        if($temp < 1){
+            session()->setFlashdata('toast', 'error:Maaf area anda belum kami jangkau!.');
+            return redirect()->back()->withInput(); 
+        }
+
+        $file_rumah = $this->request->getFile('gambar_rumah');
+        // $file_denah = $this->request->getFile('denah');
+
+        // $path = "./public/images/desain_rumah_user";
+        // $uploadImgdenah = $this->uploadImage($file_denah, $path);
+        $path_uploadImg = "./public/images/projek";
+        $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
+
+        if ($uploadImg != null) {
+            $img_rumah = $uploadImg['data']['file_name'];
+        }
+
+        // if ($uploadImgdenah != null) {
+        //     $denah = $uploadImgdenah['data']['file_name'];
+        // }
+
+        $temp_produk = $this->model->getWhere('product', ['paket_name' => $jenis_order])->getRow();
+        $total = $input['totalHarga'];       
+
+        $db = db_connect();
+        
+        $noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();
+        $temp_nopro = (int)$noprojek->hitung + 1;
+        $coun = strlen($noprojek->hitung);
+        if ($coun == 1) {
+            $ht = '0000' . '' . $temp_nopro;
+        } elseif ($coun == 2) {
+            $ht = '000' . '' . $temp_nopro;
+        } elseif ($coun == 3) {
+            $ht = '00' . '' . $temp_nopro;
+        } elseif ($coun == 4) {
+            $ht = '0' . '' . $temp_nopro;
+        } else {
+            $ht = $temp_nopro;
+        }
+
+        $insert = [
+            'project_number' => date("dmY", time()) . "" . $ht,
+            'type' => $jenis_order,
+            'status_project' => 'quotation',
+            'luas' => $input['luas'],
+            'alamat_pengerjaan' => $input['alamat'],
+            'description' => $input['deskripsi'],
+            'image_upload' => $img_rumah,
+            'total' => $total,
+            'total_real' => $total,
+            'marketing_name' => $input['marketing'],
+            'metode_payment' => $input['metodpay'],
+            'created' => time(),
+            'latitude' => $input['lat'],
+            'longitude' => $input['long'],
+            'catatan_alamat' => $input['alamat'],
+            'kode_referal' => $input['promo'],
+            'kode_promo' => $input['referal'],
+            'id_area' => $area,
+            'device' => 3
+        ];
+        $temp_id_projek = $this->model->lastId('projects',1)->getRow()->id;
+        $id_projek = $temp_id_projek + 1;
+        $insert_data = [
+            'project_id' => $id_projek,
+            'name' => $input['nama_lengkap'],
+            'address' => $input['alamat'],
+            'email' => $input['email'],
+            'phone' => $input['telepon'],
+            'created' => time(),
+            'member_id' => $id,
+            'device' => 3
+        ];
+
+        $idd = $this->model->lastId('projects_desain')->getRow()->id;
+
+        if($temp_produk == null){
+           $query_cat = $this->model->getWhere('category', ['category_name' => $jenis_order])->getRow();
+           $temp_produk->id = $query_cat->id;
+        }
+
+        if($temp_produk->price != 0){
+            $produkprice = 0;
+        }else{
+            $produkprice =  $input['spek'];
+        }
+
+        $insert_detail = [
+            'project_id' => $id_projek,
+            'product_id' => $temp_produk->id,
+            'product_price_id' => $produkprice,
+            'desain_id' => (int)$idd + 1
+        ];
+        
+        $insert_design = [
+            'tipe_rumah' => $tipe_rumah,
+            'created' => date('Y-m-d H:i:s')
+        ];
+
+        // var_dump($insert);die;
+
+        $this->model->ins('projects', $insert);
+        $this->model->ins('project_data_customer', $insert_data);
+        $this->model->ins('projects_desain', $insert_design);
+        $this->model->ins('projects_detail', $insert_detail);
+
+        session()->setFlashdata('toast', 'success:Selamat pengajuan Order berhasil dikirim !.');
+        return redirect()->to('order/sukses');
+        
     }
 
     public function order_non()
@@ -450,79 +581,156 @@ class Home extends BaseController
         $tdate = date('Y-m-d');
         $input = $this->request->getVar();
         $date = strtotime($tdate);
-        $id = $sess->get('user_id');
+        $login = $sess->get('logged_in');
+        $id = 0;
+        if($sess->get('user_id') != null){
+            $id += $sess->get('user_id');
+        }else{
+            $cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();
+            if(empty($cek_member)){ 
+                $insert_h['usergroup_id'] = 5;
+                $insert_h['email'] = $input['email'];
+                $insert_d['name'] = $input['nama_lengkap'];
+                $insert_d['phone'] = $input['telepon'];
 
-        if ($id == null) {
-            return redirect()->to('member/login');
-        } else {
-
-            $jenis_order = $input['jenis_order'];
-            $type_order = $input['tipe_order'];
-            $spek = $input['spek'];
-
-            $file_rumah = $this->request->getFile('gambar_rumah');
-
-            $temp_produk = $this->model->getWhere('product', ['id' => $spek])->getRow();
-            if ($temp_produk == null) {
-                $total = $input['totalHarga'];
-            } else {
-                $price = $temp_produk->price;
-                $total = $price * $input['luas'];
+                $insert_h['password'] = md5('123456');
+                $insert_h['created'] = time();
+                $insert_h['last_login'] = time();
+                $insert_h['created_by'] = 2;
+                $query_h = $this->model->insB   ('member', $insert_h);
+                $id += $this->model->lastId('member', 1)->getRow()->id;
+                if ($query_h) {
+                    $insert_d['member_id'] = $id;
+                    $insert_d['created'] = time();
+                    $insert_d['city_id'] = 0;
+                    $insert_d['address'] = $input['alamat'];
+                    $insert_d['created_by'] = 2;
+                    $query_d = $this->model->insB('member_detail', $insert_d);
+                }
+            }else{
+                $id += $cek_member->id;
+                $this->model->upd('member', ['id' => $id], ['last_login' => time()]);
             }
-
-            $path_uploadImg = "./public/images/projek";
-
-            $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
-
-            if ($uploadImg != null) {
-                $path_image = $path_uploadImg;
-                $json_text = $uploadImg['message'];
-                $img_rumah = $uploadImg['data']['file_name'];
-            }
-
-            $insert = [
-                'project_number' => date("dmY", time()) . "" . rand(10, 100),
-                'type' => $jenis_order,
-                'total' => $total,
-                'alamat_pengerjaan' => $input['alamat'],
-                'catatan_alamat' => $input['alamat'],
-                'luas' => $input['luas'],
-                'description' => $input['deskripsi'],
-                'latitude' => $input['lat'],
-                'longitude' => $input['long'],
-                'metode_payment' => $input['metodpay'],
-                'status_project' => 'quotation',
-                'image_upload' => $img_rumah,
-                'marketing_name' => $input['marketing'],
-                'kode_referal' => $input['promo'],
-                'kode_promo' => $input['referal'],
-                'device' => 3,
-                'created' => time()
-            ];
-
-            $insert_data = [
-                'name' => $input['nama_lengkap'],
-                'address' => $input['alamat'],
-                'email' => $input['email'],
-                'phone' => $input['telepon'],
-                'created' => time(),
-                'member_id' => $id
-            ];
-
-
-            $insert_detail = [
-                'product_id' => $input['type'],
-                'product_price_id' => $input['spek'],
-                'desain_id' => 0
-            ];
-
-            $this->model->ins('projects', $insert);
-            $this->model->ins('project_data_customer', $insert_data);
-            $this->model->ins('projects_detail', $insert_detail);
-
-            session()->setFlashdata('toast', 'success:Selamat pengajuan Order berhasil dikirim !.');
-            return redirect()->to('home');
         }
+       
+        // if ($login != TRUE) {
+        //     redirect('login');
+        // }
+
+        $jenis_order = $input['jenis_order'];
+        $type_order = $input['tipe_order'];
+        $spek = $input['spek'];
+        
+        $temp = 0;
+        $cek_area = $this->model->getAll('area')->getResult();
+        $area = "";
+        foreach ($cek_area as $c) {
+            if (strpos($input['city'], $c->nama_area) > -1) {
+                $temp += 1;
+                $area = $c->id_area;
+            }
+        }
+        
+        // var_dump($cek_area);die;
+        if($temp < 1){
+            session()->setFlashdata('toast', 'error:Maaf area anda belum kami jangkau!.');
+            return redirect()->back()->withInput(); 
+        }
+        // $temp = str_replace('Kota', '', $input['city']);
+        // $kota = str_replace(' ', '', $temp);
+        // $cek_area = $this->model->getWhere('area', ['nama_area' => $kota])->getRow();
+        // var_dump($cek_area);die;
+        // if($cek_area == null){
+        //     session()->setFlashdata('toast', 'error:Maaf area anda belum kami jangkau!.');
+        //     return redirect()->to('order/sukses');
+        // }
+        $file_rumah = $this->request->getFile('gambar_rumah');
+
+        $temp_produk = $this->model->getWhere('product', ['id' => $spek])->getRow();
+        $total = $input['totalHarga'];
+        // if ($temp_produk == null) {
+        //     $total = $input['totalHarga'];
+        // } else {
+        //     $price = $temp_produk->price;
+        //     $total = $price * $input['luas'];
+        // }
+        $path_uploadImg = "./public/images/projek";
+       
+        $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
+        
+        if ($uploadImg != null) {
+            $path_image = $path_uploadImg;
+            $json_text = $uploadImg['message'];
+            $img_rumah = $uploadImg['data']['file_name'];
+        }
+
+        $db = db_connect();
+        $noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();
+        $temp_nopro = (int)$noprojek->hitung + 1;
+        $coun = strlen($noprojek->hitung);
+        if ($coun == 1) {
+            $ht = '0000' . '' . $temp_nopro;
+        } elseif ($coun == 2) {
+            $ht = '000' . '' . $temp_nopro;
+        } elseif ($coun == 3) {
+            $ht = '00' . '' . $temp_nopro;
+        } elseif ($coun == 4) {
+            $ht = '0' . '' . $temp_nopro;
+        } else {
+            $ht = $temp_nopro;
+        }
+
+        $insert = [
+            'project_number' => date("dmY", time()) . "" . $ht,
+            'type' => $jenis_order,
+            'status_project' => 'quotation',
+            'luas' => $input['luas'],
+            'alamat_pengerjaan' => $input['alamat'],
+            'description' => $input['deskripsi'],
+            'image_upload' => $img_rumah,
+            'total' => $total,
+            'total_real' => $total,
+            'marketing_name' => $input['marketing'],
+            'metode_payment' => $input['metodpay'],
+            'created' => time(),
+            'latitude' => $input['lat'],
+            'longitude' => $input['long'],
+            'catatan_alamat' => $input['alamat'],
+            'kode_referal' => $input['promo'],
+            'kode_promo' => $input['referal'],
+            'id_area' => $area,
+            'device' => 3
+        ];
+
+        $temp_id_projek = $this->model->lastId('projects',1)->getRow()->id;
+        $id_projek = $temp_id_projek + 1;
+        $insert_data = [
+            'project_id' => $id_projek,
+            'name' => $input['nama_lengkap'],
+            'address' => $input['alamat'],
+            'email' => $input['email'],
+            'phone' => $input['telepon'],
+            'created' => time(),
+            'member_id' => $id,
+            'device' => 3
+        ];
+
+        $idd = $this->model->lastId('projects_desain')->getRow()->id;
+
+        $insert_detail = [
+            'project_id' => $id_projek,
+            'product_id' => $input['type'],
+            'product_price_id' => $input['spek'],
+            'desain_id' => (int)$idd + 1
+        ];
+        // var_dump($insert_detail);die;
+
+        $this->model->ins('projects', $insert);
+        $this->model->ins('project_data_customer', $insert_data);
+        $this->model->ins('projects_detail', $insert_detail);
+
+        session()->setFlashdata('toast', 'success:Selamat pengajuan Order berhasil dikirim !.');
+        return redirect()->to('order/sukses');
     }
 
     public function desain()
@@ -534,6 +742,16 @@ class Home extends BaseController
             redirect('Login');
         }
     }
+
+    public function order_sukses()
+    {
+        $sess = session();
+        $data['nama'] = $sess->get('user_name');
+        $data['phone'] = $sess->get('user_phone');
+        $data['email'] = $sess->get('user_email');
+        return view('order-sukses', $data);
+    }
+
     // TRANSAKSI
 
 
@@ -546,6 +764,7 @@ class Home extends BaseController
     {
         $model = new DboModel();
         $data['prov'] = $model->getProv();
+        $data['snk'] = $model->getSnk();
         // var_dump($data);die;
         return view("simulasi-kpr", $data);
     }
@@ -648,7 +867,7 @@ class Home extends BaseController
             'notelp' => $input['notlp'],
             'lampiran' => $fileName,
             'message' => $input['pesan'],
-            'created' => date("Y-m-d H:i:s"),
+            'created' => time(),
         );
         $insert = $model->insA('hubungi_kami', $data);
 
@@ -667,10 +886,13 @@ class Home extends BaseController
     public function akun()
     {
         $sess = session();
+        $mdl = new DboModel();
         if ($sess->get('logged_in') == FALSE) {
             return redirect()->to('/');
         }
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
+        $data['projekBerjalan'] = $mdl->getProjectUser($sess->get('user_id'), null, 'project');
+        // echo "<pre>"; print_r($data['projekBerjalan']); echo"</pre>";
         echo view("projek_berlangsung", $data);
     }
 
@@ -763,10 +985,14 @@ class Home extends BaseController
     public function riwayat_projek()
     {
         $sess = session();
+        $mdl = new DboModel();
         if ($sess->get('logged_in') == FALSE) {
             return redirect()->to('/');
         }
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
+        $data['projek'] = $mdl->getProjectUserS($sess->get('user_id'), 'done');
+        // echo "<pre>"; print_r($data['projekBerjalan']); echo"</pre>";
+        return view('riwayatProjek', $data);
     }
 
     public function changePass()

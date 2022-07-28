@@ -42,7 +42,7 @@
     height: auto;
 }
 
-.testi-slide .slick-slide > div {
+.testi-slide .slick-slide>div {
     height: 100%;
 }
 
@@ -92,7 +92,7 @@
     margin-bottom: 10px;
 }
 
-.top-banner .slick-slide > div {
+.top-banner .slick-slide>div {
     margin-left: 0;
     margin-right: 0;
 }
@@ -138,6 +138,7 @@
     width: 35px;
     height: 35px;
 }
+
 .top-banner .slick-slide .slide-item {
     overflow: unset;
 }
@@ -148,6 +149,7 @@
     overflow: hidden;
     position: relative;
 }
+
 .section-2 p {
     font-size: 16px;
 }
@@ -186,6 +188,7 @@
 }
 
 @media (max-width: 767.98px) {
+
     .nav-gallery,
     .mobile-off {
         display: none;

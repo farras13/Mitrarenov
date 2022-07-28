@@ -8,7 +8,7 @@ $(function () {
 
     $(".top-banner").slick({
         centerMode: true,
-        centerPadding: '260px',
+        centerPadding: '120px',
         slidesToShow: 1,
         prevArrow: '.btn-prev',
         nextArrow: '.btn-next',
@@ -42,15 +42,11 @@ $(function () {
 
     $('.testi-slide').slick({
         slidesToShow: 2,
+        autoplay: true,
+        autoplaySpeed: 5000,
         prevArrow: '.testi-prev',
         nextArrow: '.testi-next',
         responsive: [
-            {
-                breakpoint: 1367,
-                settings: {
-                    slidesToShow: 2,
-                }
-            },
             {
                 breakpoint: 767.98,
                 settings: {
@@ -104,18 +100,26 @@ $(function () {
             }
         ]
     })
-    $('.nav-gallery-mobile').slick({
-        slidesToShow: 2,
-        arrows: false,
+    $('.liputan-slide').slick({
+        slidesToShow: 5,
+        prevArrow: '.liputan-prev',
+        nextArrow: '.liputan-next',
         dots: true,
-        infinite: false,
-        variableWidth: true,
-        // centerMode: true,
-        focusOnSelect: true
+        responsive: [
+            {
+                breakpoint: 767.98,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 575.98,
+                settings: {
+                    slidesToShow: 2,
+                }
+            }
+        ]
     })
-    $('.nav-gallery-mobile .nav-link').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
-        console.log(nextSlide);
-    });
     $('.article-slider').slick({
         slidesToShow: 1,
         prevArrow: '.article-btn-prev',
@@ -161,10 +165,6 @@ $(function () {
 
     $('.header-nav-second .dropdown').on('hidden.bs.dropdown', function () {
         $('.dropdown-overlay').remove();
-    })
-
-    $('.nav-gallery-mobile .nav-link').click(function () {
-        $('.nav-gallery-mobile .nav-link').removeClass('active');
     })
 
 })

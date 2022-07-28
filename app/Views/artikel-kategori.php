@@ -3,37 +3,12 @@
 <?= $this->section('content') ?>
 <div class="content-wrapper">
   <div class="page-title">
-    <h1>Artikel Detail</h1>
+    <h1>Artikel</h1>
   </div>
 
   <div class="container my-5">
-    <div class="row">
-      <div class="col-lg-9 mb-5 content-article">
-        <h1 class="mb-4 article-title">
-          <?= $berita['title'] ?>
-        </h1>
-        <div class="article-img">
-          <img src="<?= base_url('public/images/news') . '/' . $berita['image'] ?>" alt="">
-        </div>
-        <div class="row align-items-center py-4">
-          <div class="col-8">
-            <p class="text-grey mb-0">Penulis <?= $berita['penulis'] ?></p>
-            <p class="text-grey mb-0">Diterbitkan <?php $time = $berita['created'];
-                                                  $date = new DateTime("@$time");
-                                                  echo $date->format('d M Y'); ?></p>
-          </div>
-          <div class="col-4 text-right">
-            <a href="#">
-              <i class="ico ico-share"></i>
-            </a>
-          </div>
-        </div>
-        <div class="article-description">
-          <?= $berita['description'] ?>
-        </div>
-
-      </div>
-      <div class="col-lg-3 mb-5">
+    <div class="row main-content">
+      <div class="col-lg-4 mb-5">
         <div class="sidebar">
           <div class="card rounded-0 sidebar-inner">
             <div class="card-body p-5 card-sidebar">
@@ -59,64 +34,62 @@
               </div>
 
               <div class="collapse dont-collapse-sm" id="catColapse">
-                <h5 class="text-primary mt-5">Artikel Populer</h5>
+                <h5 class="text-primary mt-5">Kategori Artikel</h5>
 
                 <ul class="nav nav-article-cat flex-column">
-                  <?php foreach ($hot as $h) : ?>
+                  <?php foreach ($kategori as $h) : if($h->category != null || $h->category != ''): ?>
                     <li class="nav-item">
-                      <a href="<?= base_url('artikel/' . $h->id . '/detail') ?>" class="nav-link px-0"><?= $h->title ?></a>
+                      <?php $link = str_replace(' ', '-', $h->category); ?>
+                      <a href="<?= base_url('artikel/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
                     </li>
-                  <?php endforeach; ?>
+                  <?php endif; endforeach; ?>
                 </ul>
-                <h5 class="text-primary mt-4">Kategori Artikel</h5>
-
-                <ul class="nav nav-article-cat flex-column">
-                  <?php foreach ($kategori as $k) : ?>
-                    <li class="nav-item">
-                      <a href="<?= base_url('artikel/kategori/' . $k->id . '/detail') ?>" class="nav-link px-0"><?= $k->title ?></a>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-
               </div>
 
             </div>
           </div>
         </div>
       </div>
+      <div class="col-lg-8 mb-5 content-article">
+        <div class="article-list">
 
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <h5 class="text-primary">Artikel Serupa</h5>
-        <div class="row">
+          <h5 class="mt-5 text-primary"> <?php if(!$key['cari']): ?> <?= $judul; ?>  <?php else: ?>Result Search<?php endif; ?></h5>
 
-          <?php foreach ($terkait as $tk) : ?>
-            <div class="col-md-3">
-              <div class="d-flex article-item-small is-small" style="border-bottom: 0;">
+          <div class="article-list-small">
+            <?php foreach ($terbaru as $tb) : ?>
+              <div class="d-flex article-item-small">
                 <div class="article-sm-img">
                   <div class="article-sm-img-inner">
-                    <img src="<?= base_url('public/images/news') . '/' . $tk->image ?>" alt="">
+                    <img src="<?= base_url('public/images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
                   </div>
                 </div>
                 <div class="w-100 pl-4">
-                  <h4 class="mb-2"><?= $tk->title ?></h4>
-                  <p class="text-grey mb-0">Penulis Admin</p>
-                  <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
+                  <a href="<?= base_url('artikel/' . $tb['id'] . '/detail') ?>">
+                    <h4 class="mb-2"><?= $tb['title'] ?></h4>
+                  </a>
+                  <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
+                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['created'];
+                                                        $date = new DateTime("@$time");
+                                                        echo $date->format('d M Y'); ?></p>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent aliquam odio mau
-                    ris, ut vestibulum velit auctor quis. Donec interdum pellentesque felis et ...
+                    <?= $h->meta_description ?> ...
                   </p>
                   <div class="text-right">
-                    <a href="artikel-detail.html" class="font-weight-bold">Baca Selengkapnya..</a>
+                    <a href="<?= base_url('artikel/' . $tb['id'] . '/detail') ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                   </div>
                 </div>
               </div>
-            </div>
-
-          <?php endforeach; ?>
+            <?php endforeach; ?>
+          </div>
+          <?= $pager->links('berita', 'bootstrap_pagination') ?>
+          <!-- <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center mt-4">
+                <li class="page-item"><a class="page-link active" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+              </ul>
+            </nav> -->
         </div>
-
       </div>
     </div>
   </div>
