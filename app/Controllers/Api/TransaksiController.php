@@ -300,7 +300,7 @@ class TransaksiController extends ResourceController
             $area = "";
             foreach ($cek_area as $c) {
                 if (strpos($input['city'], $c->nama_area) > -1) {
-                    $temp += 1;
+                    $temp = 1;
                     $area = $c->id_area;
                 }
             }
@@ -336,7 +336,8 @@ class TransaksiController extends ResourceController
                 'email' => $input['email'],
                 'phone' => $input['telepon'],
                 'created' => time(),
-                'member_id' => $id
+                'member_id' => $id,
+				'device' => 2
             ];
 
             $insert_detail = [
@@ -415,7 +416,21 @@ class TransaksiController extends ResourceController
 					// 'template' => $this->load->view('email_submit_job', $data, true)              
 				);
 			}
-			
+			$data2 = array(
+				'template' => $temp,
+				'nama' => $input['nama_lengkap'],
+				'no_telp' => $input['telepon'],
+				'project_number' => $insert['project_number'],
+				'nama_tukang' => '',
+				'hp_tukang' => '',
+				'subject' => "Permintaan Jasa di Mitrarenov atas nama " . $input['nama_lengkap'],
+				'ins_project' => $id_projek,
+				'product_id' => $insert_detail['product_id'],
+				'provinceVal' => $insert['longitude'] . "," . $insert['latitude'],
+				'catatan_alamat' => $insert['catatan_alamat'],
+				'marketing_name' => $insert['marketing_name']
+			);
+
 			$this->sendEmailAktifasi($emailData, $status_cust);
 			$decode_tukang = $mdl->findAllTukang($area);
 			
@@ -967,7 +982,7 @@ class TransaksiController extends ResourceController
 																			<hr style="margin-top:10px; margin-bottom:10px; border: 1px solid blue;" />
 																			<p style="text-align:left;color:#222222;font-size:14px;font-weight:normal;line-height:19px;">
 																				Project Number : ' . $data2["project_number"] . ' <br>
-																				Jasa : ' . jasaType($data2["product_id"]) . ' <br>
+																				Jasa : ' . $this->jasaType($data2["product_id"]) . ' <br>
 																				Kebutuhan : ' . $data2["ins_project"]["priority"] . ' <br>
 																				Luas : ' . $data2["ins_project"]["luas"] . ' <br>
 																				Longitude & Latitude : ' . $data2["provinceVal"] . ' <br>
@@ -1257,7 +1272,7 @@ class TransaksiController extends ResourceController
 																			<hr style="margin-top:10px; margin-bottom:10px; border: 1px solid blue;" />
 																			<p style="text-align:left;color:#222222;font-size:14px;font-weight:normal;line-height:19px;">
 																				Project Number : ' . $data2["project_number"] . ' <br>
-																				Jasa : ' . jasaType($data2["product_id"]) . ' <br>
+																				Jasa : ' . $this->jasaType($data2["product_id"]) . ' <br>
 																				Kebutuhan : ' . $data2["ins_project"]["priority"] . ' <br>
 																				Luas : ' . $data2["ins_project"]["luas"] . ' <br>
 																				Longitude & Latitude : ' . $data2["provinceVal"] . ' <br>
@@ -1993,6 +2008,37 @@ class TransaksiController extends ResourceController
 			</body>
 			</html>
 		';
+	}
+
+	private function jasaType($product_id = "") {
+		$jasa = "";
+		if($product_id == 1){
+			$jasa = "Membangun Rumah";
+		}else if($product_id == 2){
+			$jasa = "Membuat Dak";
+		}else if($product_id == 3){
+			$jasa = "Menambah Ruangan";
+		}else if($product_id == 4){
+			$jasa = "Meningkat Rumah";
+		}else if($product_id == 5){
+			$jasa = "Perbaikan Genteng";
+		}else if($product_id == 6){
+			$jasa = "Pengecatan";
+		}else if($product_id == 7){
+			$jasa = "Membuat Carport";
+		}else if($product_id == 8){
+			$jasa = "Membangun Rumah Kost";
+		}else if($product_id == 9){
+			$jasa = "Membangun Ruko";
+		}else if($product_id == 10){
+			$jasa = "Pembuatan Kolam Renang";
+		}else if($product_id == 11){
+			$jasa = "Pekerjaan Interior";
+		}else{
+			$jasa = "Pekerjaan Lain";
+		}
+		
+		return $jasa;
 	}
 
 }

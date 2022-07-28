@@ -8,7 +8,7 @@
       <?php foreach ($promo as $p) : ?>
         <div class="slick-slide slide-item">
           <div class="banner-top-container">
-            <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="<?= base_url('public/main/images/slider-1.jpg') ?>" class="w-100" alt=""></a>
+            <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="<?= base_url('main/images/slider-1.jpg') ?>" class="w-100" alt=""></a>
             <div class="slide-content">
               <div class="discount-badge">
                 Diskon <?= $p->promo ?>%
@@ -109,7 +109,7 @@
             <!-- <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="<?= base_url('order?type=Renovasi') ?>">
                 <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Renovasi</p>
                 </div>
               </a>
@@ -117,7 +117,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-03.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-03.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Perawatan Rumah</p>
                 </div>
               </a>
@@ -125,7 +125,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-04.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-04.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Interior</p>
                 </div>
               </a>
@@ -133,7 +133,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-05.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-05.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Pengurusan IMB</p>
                 </div>
               </a>
@@ -141,7 +141,7 @@
             <div class="col-lg-2 col-md-3 col-6 my-4">
               <a href="#modal-detail-category" data-toggle="modal">
                 <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-06.svg') ?>" class="img-fluid" alt="">
+                  <img src="<?= base_url('main/images/icon-mitrarenov-jasa-06.svg') ?>" class="img-fluid" alt="">
                   <p class="mb-0">Jasa Arsitek</p>
                 </div>
               </a>
@@ -215,8 +215,8 @@
           <div class="row" id="pekerjaanGallery">
             <?php foreach ($galery as $g) { ?>
               <div class="col-md-3 mb-4 col-gallery">
-                <a href="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
-                  <img src="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
+                  <img src="<?= base_url('images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $g->judul ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -234,7 +234,7 @@
              <?php foreach ($merawat as $m) { ?>
             <div class="col-md-3 mb-4" >
               <a href="<?= base_url('portofolio/'.$m->id.'/detail'); ?>" class="gallery-item">
-                <img src="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
                 <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -252,8 +252,8 @@
           <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
               <div class="col-md-3 mb-4 col-gallery-desain">
-                <a href="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
-                  <img src="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
+                  <img src="<?= base_url('images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $dr->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -354,20 +354,20 @@
     <div class="unduh-container mt-5">
       <div class="row align-items-center justify-content-center">
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('public/main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
         </div>
         <div class="col-md-4 col-10">
           <div class="d-flex download-btn">
             <a href="#">
-              <img src="<?= base_url('public/main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
             </a>
             <a href="#">
-              <img src="<?= base_url('public/main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
             </a>
           </div>
         </div>
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('public/main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
         </div>
       </div>
     </div>
@@ -384,7 +384,7 @@
 
         <div class="row align-items-center">
           <div class="col-md-6 col-4">
-            <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
           </div>
           <div class="col-md-6 col-8 text-right">
             <h4 class="mb-0 title-category-modal">Membangun</h4>
@@ -425,7 +425,7 @@
 
         <div class="row align-items-center">
           <div class="col-md-6 col-4">
-            <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
           </div>
           <div class="col-md-6 col-8 text-right">
             <h4 class="mb-0 title-category-modal">Renovasi</h4>
