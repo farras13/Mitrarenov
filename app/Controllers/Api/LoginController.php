@@ -28,7 +28,7 @@ class LoginController extends ResourceController
 
         // init request json
         $request = $this->request->getVar();
-       
+
         // get login request
         $data = array(
             'email' => $request['email'],
@@ -42,12 +42,13 @@ class LoginController extends ResourceController
         }
 
         $cek_token = $model->getWhere('token_login', ['member_id' => $cek[0]['id']], null)->getRow();
-       
-        if($cek_token != null){
-            $token = $cek_token->token; 
+
+        $model->upd('member', ['id' => $cek[0]['id']], ['last_login' => time()]);
+        if ($cek_token != null) {
+            $token = $cek_token->token;
             $fcm_id = $request['fcm_id'];
             $model->upd('token_login',  ['token' => $token], ['fcm_id' => $fcm_id]);
-        }else {
+        } else {
             $token = random_string('alnum', 30);
             $headers = $this->request->headers();
             $fcm_id = $request['fcm_id'];
@@ -69,11 +70,11 @@ class LoginController extends ResourceController
             $mtoken->ignore(true)->insert($dtoken);
         }
         $hdata = array(
-                'token' => $token,
-                'fcm_id' => $fcm_id,
-                'device' => $device,
-            );
-            $cek[0]['key'] = $hdata;
+            'token' => $token,
+            'fcm_id' => $fcm_id,
+            'device' => $device,
+        );
+        $cek[0]['key'] = $hdata;
         $res =  [
             'id' => $cek[0]['id'],
             'key' => $hdata,
@@ -82,7 +83,6 @@ class LoginController extends ResourceController
         ];
 
         return $this->respond($res, 200);
-
     }
 
     public function updateFcm()
@@ -92,20 +92,19 @@ class LoginController extends ResourceController
 
         $token = $headers['X-Auth-Token']->getValue();
         $model = new GeneralModel();
-       
+
         $cek_token = $model->getWhere('token_login', ['token' => $token])->getRow();
 
         $update_fcm = $model->upd('token_login',  ['token' => $token], ['fcm_id' => $request['fcm_id']]);
 
         $auth = $model->getWhere('token_login', ['token' => $token], null)->getRow();
 
-        if($update_fcm){
+        if ($update_fcm) {
             $res =  [
                 'message' => 'Berhasil melakukan update fcm',
                 'data' => $auth
             ];
-            
-        }else{
+        } else {
             $res =  [
                 'message' => 'Gagal melakukan update fcm',
                 'data' => $auth
@@ -167,8 +166,8 @@ class LoginController extends ResourceController
         if (!$cek) {
             return $this->failNotFound('email tidak ditemukan dan belum terdaftar');
         }
-        $mdl->ins('temp_reset_pass', ['member_id' => $cek['id'], 'token'=>$token]);
-        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://appsmitrarenov.soldig.co.id/resetpassword/'. $token . '">Link reset</a></b> </p>';
+        $mdl->ins('temp_reset_pass', ['member_id' => $cek['id'], 'token' => $token]);
+        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://appsmitrarenov.soldig.co.id/resetpassword/' . $token . '">Link reset</a></b> </p>';
         $kirim = $this->sendEmail($mail, 'reset password', $message);
 
         if ($kirim) {
@@ -190,7 +189,7 @@ class LoginController extends ResourceController
 
         $user = $mdl->getWhere('member_detail', ['member_id' => $id])->getRow();
         $user_temp = $mdl->getWhere('member', ['id' => $id])->getRow();
-        if (!$user AND !$user_temp) {
+        if (!$user and !$user_temp) {
             return $this->respond('user tidak ditemukan', 500);
         }
         $url = base_url();
@@ -242,7 +241,7 @@ class LoginController extends ResourceController
 
         $headers = $this->request->headers();
         $token = $headers["Auth-Token-Reset"]->getValue();
-        
+
         $cekUser = $mdl->getWhere('temp_reset_pass', ['token' => $token])->getRow();
         $id = $cekUser->member_id;
 
@@ -253,7 +252,7 @@ class LoginController extends ResourceController
         $data = ['password' => md5($input['password'])];
         $w = array('id' => $id);
 
-        $exc = $mdl->upd('member',$w, $data);
+        $exc = $mdl->upd('member', $w, $data);
 
         if (!$exc) {
             return  $this->fail('Reset Password gagal !');
@@ -261,7 +260,7 @@ class LoginController extends ResourceController
 
         $msg = array(
             'status' => 200,
-            'data' => $data 
+            'data' => $data
         );
 
         return $this->respondUpdated($msg);
@@ -300,11 +299,11 @@ class LoginController extends ResourceController
         if ($cekp) {
             return $this->failResourceExists('Nomor telpon sudah terdaftar');
         }
-        
+
         $singkatan = str_replace(' ', '', $request['name']);
-        $fourname = substr($singkatan, 0 , 4);
+        $fourname = substr($singkatan, 0, 4);
         $last = $auth->hitung();
-        
+
         $referal = '' . $fourname . '' . $last;
 
         $data = array(
@@ -314,7 +313,7 @@ class LoginController extends ResourceController
             'created_by' => 1,
             'modified_by' => 1,
         );
-       
+
         if ($auth->ins('member', $data)) {
             $cekk = $auth->where('email', $request['email'])->first();
             $datak = array(
@@ -385,7 +384,7 @@ class LoginController extends ResourceController
                     'message' => 'Profile updated without image success!',
                     'data' => []
                 ];
-            }else{
+            } else {
                 $response = [
                     'status' => 500,
                     'error' => true,
@@ -398,8 +397,8 @@ class LoginController extends ResourceController
             $profile_image = $file->getName();
             $temp = explode(".", $profile_image);
             $newfilename = round(microtime(true)) . '.' . end($temp);
-            
-             if ($file->move('./public/images/pp', $newfilename)) {
+
+            if ($file->move('./public/images/pp', $newfilename)) {
 
                 $data = [
                     'name' => $input['name'],
@@ -439,8 +438,8 @@ class LoginController extends ResourceController
                     'data' => []
                 ];
             }
-        } 
-       
+        }
+
 
         return $this->respond($response, 200);
     }

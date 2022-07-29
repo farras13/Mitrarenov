@@ -82,7 +82,11 @@ class ProjectController extends ResourceController
         $id_user = (int)$cekUser->member_id;
           
         $data = $models->getProjectUserD($id);
-    
+        $berkas = $models->getProjectUser($id_user, null, 'project');
+        $path_dokumen = "https://admin.mitrarenov.soldig.co.id/assets/main/berkas/";
+        $data['berkas'] = $path_dokumen . $berkas[0]->dokumen;
+        $data['berkas_rab'] = $path_dokumen . $berkas[0]->dokumen_rab;
+        
         if (!$data) {
             return $this->failNotFound('data tidak ditemukan! Belum pernah melakukan transaksi.');
         }
