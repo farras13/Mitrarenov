@@ -765,7 +765,7 @@ class TransaksiController extends ResourceController
         );
         $md->insb('history_midtrans', $ins);
 
-         $m->upd("pengajuan_finance", ["no_refrens " => $result['reference_no']], $update);
+        // $m->upd("pengajuan_finance", ["no_refrens " => $result['reference_no']], $update);
     }
 
     public function tambah_log_email_db($tipe, $email, $role, $status)

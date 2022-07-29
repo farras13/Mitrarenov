@@ -45,14 +45,14 @@ class Home extends BaseController
 
         $data['porto'] = $model->select('merawat.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = merawat.created_by')->paginate(12, 'berita');
         $data['pager'] = $model->pager;
-        
+
         return view('portofolio', $data);
     }
 
     public function detail_porto($id)
     {
         $data['porto'] = $this->model->getWhere('merawat', ['id' => $id])->getRow();
-        $id = $data['porto']->created_by; 
+        $id = $data['porto']->created_by;
         $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id])->getRow();
         $data['lain'] = $this->model->getWhere('merawat', ['id !=' => $id], 4)->getResult();
         $data['gambar'] = $this->model->getWhere('gambar_portofolio', ['porto_id' => $data['porto']->id])->getResult();
@@ -279,8 +279,7 @@ class Home extends BaseController
             return redirect()->to('member/login');
         }
     }
-
-      public function sendEmailOrder()
+    public function sendEmailOrder()
     {
         helper('text');
         $session = session();
@@ -382,16 +381,16 @@ class Home extends BaseController
         $data['phone'] = $sess->get('user_phone');
         $data['email'] = $sess->get('user_email');
         $data['tipe_rumah'] = $this->model->getAll('tipe_rumah')->getResult();
-       
+
         $cat = $this->model->getWhere('category', ['category_name' => $jenis])->getRow();
         if ($cat == null) {
             $produk = $this->model->getWhere('product', ['paket_name' => $jenis])->getRow();
-        }else{
+        } else {
             $produk = $this->model->getWhere('product', ['category_id' => $cat->id])->getRow();
         }
 
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
-        if($spek == null){
+        if ($spek == null) {
             $spek = $this->model->getWhere('product_price', ['product_id' => $produk->category_id])->getResult();
             if ($spek == null) {
                 $spek = $this->model->getWhere('product', ['paket_name' => $jenis])->getResult();
@@ -402,7 +401,7 @@ class Home extends BaseController
                 }
             }
         }
-        
+
         $data['spek'] = $spek;
 
         return view('order', $data);
@@ -414,13 +413,14 @@ class Home extends BaseController
         $login = $sess->get('logged_in');
         $id = 0;
         $input = $this->request->getVar();
-        if($sess->get('user_id') != null){
-            $id += $sess->get('user_id');
+
+        if ($sess->get('user_id') != null) {
+            $id = $sess->get('user_id');
             $status_cust = 1;
-        }else{
+        } else {
             $status_cust = 0;
             $cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();
-            if(empty($cek_member)){ 
+            if (empty($cek_member)) {
                 $insert_h['usergroup_id'] = 5;
                 $insert_h['email'] = $input['email'];
                 $insert_d['name'] = $input['nama_lengkap'];
@@ -430,8 +430,8 @@ class Home extends BaseController
                 $insert_h['created'] = time();
                 $insert_h['last_login'] = time();
                 $insert_h['created_by'] = 2;
-                $query_h = $this->model->insB   ('member', $insert_h);
-                $id += $this->model->lastId('member', 1)->getRow()->id;
+                $query_h = $this->model->insB('member', $insert_h);
+                $id = $this->model->lastId('member', 1)->getRow()->id;
                 if ($query_h) {
                     $insert_d['member_id'] = $id;
                     $insert_d['created'] = time();
@@ -440,15 +440,15 @@ class Home extends BaseController
                     $insert_d['created_by'] = 2;
                     $query_d = $this->model->insB('member_detail', $insert_d);
                 }
-            }else{
-                $id += $cek_member->id;
+            } else {
+                $id = $cek_member->id;
                 $this->model->upd('member', ['id' => $id], ['last_login' => time()]);
             }
         }
         $tdate = date('Y-m-d');
         $date = strtotime($tdate);
-        
-        
+
+
         $jenis_order = $input['jenis_order'];
         // var_dump($jenis_order);die;
         $type_order = $input['tipe_order'];
@@ -463,11 +463,11 @@ class Home extends BaseController
                 $area = $c->id_area;
             }
         }
-        
+
         // var_dump($cek_area);die;
-        if($temp < 1){
+        if ($temp < 1) {
             session()->setFlashdata('toast', 'error:Maaf area anda belum kami jangkau!.');
-            return redirect()->back()->withInput(); 
+            return redirect()->back()->withInput();
         }
 
         $file_rumah = $this->request->getFile('gambar_rumah');
@@ -487,10 +487,10 @@ class Home extends BaseController
         // }
 
         $temp_produk = $this->model->getWhere('product', ['paket_name' => $jenis_order])->getRow();
-        $total = $input['totalHarga'];       
+        $total = $input['totalHarga'];
 
         $db = db_connect();
-        
+
         $noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();
         $temp_nopro = (int)$noprojek->hitung + 1;
         $coun = strlen($noprojek->hitung);
@@ -527,7 +527,7 @@ class Home extends BaseController
             'id_area' => $area,
             'device' => 3
         ];
-        $temp_id_projek = $this->model->lastId('projects',1)->getRow()->id;
+        $temp_id_projek = $this->model->lastId('projects', 1)->getRow()->id;
         $id_projek = $temp_id_projek + 1;
         $insert_data = [
             'project_id' => $id_projek,
@@ -542,14 +542,14 @@ class Home extends BaseController
 
         $idd = $this->model->lastId('projects_desain')->getRow()->id;
 
-        if($temp_produk == null){
-           $query_cat = $this->model->getWhere('category', ['category_name' => $jenis_order])->getRow();
-           $temp_produk->id = $query_cat->id;
+        if ($temp_produk == null) {
+            $query_cat = $this->model->getWhere('category', ['category_name' => $jenis_order])->getRow();
+            $temp_produk->id = $query_cat->id;
         }
 
-        if($temp_produk->price != 0){
+        if ($temp_produk->price != 0) {
             $produkprice = 0;
-        }else{
+        } else {
             $produkprice =  $input['spek'];
         }
 
@@ -559,7 +559,7 @@ class Home extends BaseController
             'product_price_id' => $produkprice,
             'desain_id' => (int)$idd + 1
         ];
-        
+
         $insert_design = [
             'tipe_rumah' => $tipe_rumah,
             'created' => date('Y-m-d H:i:s')
@@ -621,7 +621,7 @@ class Home extends BaseController
                 $email->setSubject($subject_tukang);
                 $email->setMessage($this->contenttukang($data2, $d2));
 
-                if (!$this->email->send()) {
+                if (!$email->send()) {
                     // Generate error
                     //echo "Email is not sent!!";
                     $this->tambah_log_email_db('permintaan jasa', $d2->email_tukang, 'tukang', 'gagal');
@@ -635,7 +635,6 @@ class Home extends BaseController
 
         session()->setFlashdata('toast', 'success:Selamat pengajuan Order berhasil dikirim !.');
         return redirect()->to('order/sukses');
-        
     }
 
     public function order_non()
@@ -646,13 +645,13 @@ class Home extends BaseController
         $date = strtotime($tdate);
         $login = $sess->get('logged_in');
         $id = 0;
-        if($sess->get('user_id') != null){
+        if ($sess->get('user_id') != null) {
             $status_cust = 1;
             $id += $sess->get('user_id');
-        }else{
+        } else {
             $status_cust = 0;
             $cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();
-            if(empty($cek_member)){ 
+            if (empty($cek_member)) {
                 $insert_h['usergroup_id'] = 5;
                 $insert_h['email'] = $input['email'];
                 $insert_d['name'] = $input['nama_lengkap'];
@@ -662,7 +661,7 @@ class Home extends BaseController
                 $insert_h['created'] = time();
                 $insert_h['last_login'] = time();
                 $insert_h['created_by'] = 2;
-                $query_h = $this->model->insB   ('member', $insert_h);
+                $query_h = $this->model->insB('member', $insert_h);
                 $id += $this->model->lastId('member', 1)->getRow()->id;
                 if ($query_h) {
                     $insert_d['member_id'] = $id;
@@ -672,12 +671,12 @@ class Home extends BaseController
                     $insert_d['created_by'] = 2;
                     $query_d = $this->model->insB('member_detail', $insert_d);
                 }
-            }else{
+            } else {
                 $id += $cek_member->id;
                 $this->model->upd('member', ['id' => $id], ['last_login' => time()]);
             }
         }
-       
+
         // if ($login != TRUE) {
         //     redirect('login');
         // }
@@ -685,7 +684,7 @@ class Home extends BaseController
         $jenis_order = $input['jenis_order'];
         $type_order = $input['tipe_order'];
         $spek = $input['spek'];
-        
+
         $temp = 0;
         $cek_area = $this->model->getAll('area')->getResult();
         $area = "";
@@ -695,11 +694,11 @@ class Home extends BaseController
                 $area = $c->id_area;
             }
         }
-        
+
         // var_dump($cek_area);die;
-        if($temp < 1){
+        if ($temp < 1) {
             session()->setFlashdata('toast', 'error:Maaf area anda belum kami jangkau!.');
-            return redirect()->back()->withInput(); 
+            return redirect()->back()->withInput();
         }
         // $temp = str_replace('Kota', '', $input['city']);
         // $kota = str_replace(' ', '', $temp);
@@ -720,9 +719,9 @@ class Home extends BaseController
         //     $total = $price * $input['luas'];
         // }
         $path_uploadImg = "./public/images/projek";
-       
+
         $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
-        
+
         if ($uploadImg != null) {
             $path_image = $path_uploadImg;
             $json_text = $uploadImg['message'];
@@ -767,7 +766,7 @@ class Home extends BaseController
             'device' => 3
         ];
 
-        $temp_id_projek = $this->model->lastId('projects',1)->getRow()->id;
+        $temp_id_projek = $this->model->lastId('projects', 1)->getRow()->id;
         $id_projek = $temp_id_projek + 1;
         $insert_data = [
             'project_id' => $id_projek,
@@ -843,7 +842,7 @@ class Home extends BaseController
                 $email->setSubject($subject_tukang);
                 $email->setMessage($this->contenttukang($data2, $d2));
 
-                if (!$this->email->send()) {
+                if (!$email->send()) {
                     // Generate error
                     //echo "Email is not sent!!";
                     $this->tambah_log_email_db('permintaan jasa', $d2->email_tukang, 'tukang', 'gagal');
@@ -1859,6 +1858,7 @@ class Home extends BaseController
 
         return $jasa;
     }
+
     // TRANSAKSI
 
 
