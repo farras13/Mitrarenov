@@ -24,7 +24,7 @@ class Home extends BaseController
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
         $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get()->getResult();
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
-        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0, 'kategori' => '2'])->getResult();
+        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0])->getResult();
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
         $data['merawat'] = $this->model->getAll('merawat', 5)->getResult();
         $data['design_rumah'] = $this->model->getAll('design_rumah')->getResult();
