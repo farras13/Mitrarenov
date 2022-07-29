@@ -9,18 +9,30 @@
   <div class="container my-5">
     <div class="row">
       <div class="col-lg-9 mb-5 content-article">
-        <h1 class="mb-4 article-title">
+
+        <div class="article-img">
+          <img src="<?= base_url('public/images/news') . '/' . $berita['image'] ?>" class="w-100" alt="">
+        </div>
+        <h1 class="mt-4 article-title text-primary">
           <?= $berita['title'] ?>
         </h1>
-        <div class="article-img">
-          <img src="<?= base_url('public/images/news') . '/' . $berita['image'] ?>" alt="">
-        </div>
-        <div class="row align-items-center py-4">
+        <div class="row align-items-center py-2">
           <div class="col-8">
-            <p class="text-grey mb-0">Penulis <?= $berita['penulis'] ?></p>
-            <p class="text-grey mb-0">Diterbitkan <?php $time = $berita['created'];
-                                                  $date = new DateTime("@$time");
-                                                  echo $date->format('d M Y'); ?></p>
+            <!-- <p class="text-grey mb-0">Penulis <?= $berita['penulis'] ?></p> -->
+            <p class="text-grey mb-0">
+              <span>
+                Diterbitkan <?php $time = $berita['created'];
+                            $date = new DateTime("@$time");
+                            echo $date->format('d M Y'); ?>
+              </span>
+              <span>#</span>
+              <span>
+                <a href="#" class="text-warning">
+                  Tips & Trik
+                </a>
+              </span>
+
+            </p>
           </div>
           <div class="col-4 text-right">
             <a href="#">
@@ -28,6 +40,7 @@
             </a>
           </div>
         </div>
+        <hr>
         <div class="article-description">
           <?= $berita['description'] ?>
         </div>
@@ -36,7 +49,7 @@
       <div class="col-lg-3 mb-5">
         <div class="sidebar">
           <div class="card rounded-0 sidebar-inner">
-            <div class="card-body p-5 card-sidebar">
+            <div class="card-body p-4 card-sidebar">
               <div class="d-flex align-items-center">
                 <div class="mr-3 nav-collapse">
                   <a href="#catColapse" data-toggle="collapse">
@@ -59,12 +72,23 @@
               </div>
 
               <div class="collapse dont-collapse-sm" id="catColapse">
-                <h5 class="text-primary mt-5">Artikel Populer</h5>
+                <h5 class="text-primary mt-3">Artikel Terbaru</h5>
 
                 <ul class="nav nav-article-cat flex-column">
                   <?php foreach ($hot as $h) : ?>
                     <li class="nav-item">
-                      <a href="<?= base_url('artikel/' . $h->id . '/detail') ?>" class="nav-link px-0"><?= $h->title ?></a>
+                      <a href="<?= base_url('artikel/' . $h->id . '/detail') ?>" class="nav-link px-0">
+                        <div class="row">
+                          <div class="col-4">
+                            <div class="artikel-side-img">
+                              <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="" class="img-fluid">
+                            </div>
+                          </div>
+                          <div class="col-8 pl-0">
+                            <?= $h->title ?>
+                          </div>
+                        </div>
+                      </a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
@@ -73,10 +97,19 @@
                 <ul class="nav nav-article-cat flex-column">
                   <?php foreach ($kategori as $k) : ?>
                     <li class="nav-item">
-                      <a href="<?= base_url('artikel/kategori/' . $k->id . '/detail') ?>" class="nav-link px-0"><?= $k->title ?></a>
+                      <a href="<?= base_url('artikel/' . $k->id . '/detail') ?>" class="nav-link px-0"><?= $k->title ?></a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
+
+                <h5 class="text-primary mt-4">Tags</h5>
+                <div class="tags">
+                  <a href="#" class="nav-tags">Tag 1</a>
+                  <a href="#" class="nav-tags">Tag 2</a>
+                  <a href="#" class="nav-tags">Tag 3</a>
+                  <a href="#" class="nav-tags">Tag 4</a>
+                  <a href="#" class="nav-tags">Tag 5</a>
+                </div>
 
               </div>
 
@@ -93,14 +126,12 @@
 
           <?php foreach ($terkait as $tk) : ?>
             <div class="col-md-3">
-              <div class="d-flex article-item-small is-small" style="border-bottom: 0;">
-                <div class="article-sm-img">
-                  <div class="article-sm-img-inner">
-                    <img src="<?= base_url('public/images/news') . '/' . $tk->image ?>" alt="">
-                  </div>
+              <div class="article-item-small" style="border-bottom: 0;">
+                <div class="article-sm-img-inner">
+                  <img src="<?= base_url('public/images/news') . '/' . $tk->image ?>" alt="">
                 </div>
-                <div class="w-100 pl-4">
-                  <h4 class="mb-2"><?= $tk->title ?></h4>
+                <div class="w-100 mt-3">
+                  <h5 class="mb-2"><?= $tk->title ?></h5>
                   <p class="text-grey mb-0">Penulis Admin</p>
                   <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
                   <p>

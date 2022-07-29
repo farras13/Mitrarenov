@@ -55,6 +55,7 @@
 
           <h5 class="mt-5 text-primary"> <?php if(!$key['cari']): ?> <?= $judul; ?>  <?php else: ?>Result Search<?php endif; ?></h5>
 
+          <?php if($terbaru != null): ?>
           <div class="article-list-small">
             <?php foreach ($terbaru as $tb) : ?>
               <div class="d-flex article-item-small">
@@ -82,6 +83,9 @@
             <?php endforeach; ?>
           </div>
           <?= $pager->links('berita', 'bootstrap_pagination') ?>
+          <?php else: ?>
+            <h4>Data tidak ditemukan!</h4>
+          <?php endif; ?>
           <!-- <nav aria-label="Page navigation">
               <ul class="pagination justify-content-center mt-4">
                 <li class="page-item"><a class="page-link active" href="#">1</a></li>
