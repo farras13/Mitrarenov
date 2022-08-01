@@ -24,7 +24,7 @@ class Home extends BaseController
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
         $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get()->getResult();
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
-        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0])->getResult();
+        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
         $data['merawat'] = $this->model->getAll('merawat', 5)->getResult();
         $data['design_rumah'] = $this->model->getAll('design_rumah')->getResult();
@@ -65,9 +65,9 @@ class Home extends BaseController
         $key = $this->request->getVar();
 
         if ($key['cari'] != null) {
-            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
         } else {
-            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->orderBy('created', 'DESC')->paginate(5, 'berita');
         }
         $data['kategori'] = $this->model->getAll('news_category')->getResult();
         $data['hot'] = $model->orderBy('created', 'ASC')->hot();
@@ -87,11 +87,11 @@ class Home extends BaseController
         $kategori = $this->model->getWhere('news_category', ['category' => $kat])->getRow();
 
         if ($key['cari'] != null) {
-            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
         } else {
-            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('news_category', $kategori->id_news_category)->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('news_category', $kategori->id_news_category)->where('is_publish', '0')->orderBy('created', 'DESC')->paginate(5, 'berita');
             if ($data['terbaru'] == null) {
-                $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->orderBy('created', 'DESC')->paginate(5, 'berita');
+                $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->orderBy('created', 'DESC')->paginate(5, 'berita');
             }
         }
         $data['kategori'] =  $this->model->getAll('news_category')->getResult();
@@ -137,6 +137,11 @@ class Home extends BaseController
     {
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
         return view("promo-detail", $data);
+    }
+
+    public function chat()
+    {
+        echo view("percakapan");
     }
 
     // Login Register
@@ -185,7 +190,7 @@ class Home extends BaseController
 
             $last = $this->model->lastId('member', 1)->getRow();
             $datas = [
-                'member_id'    => $last->id,
+                'member_id' => $last->id,
                 'name'    => $this->request->getVar('name'),
                 'telephone' => $this->request->getVar('phone')
             ];
@@ -409,6 +414,7 @@ class Home extends BaseController
 
     public function order_desain()
     {
+        $auth = new AuthModel();
         $sess = session();
         $login = $sess->get('logged_in');
         $id = 0;
@@ -423,8 +429,6 @@ class Home extends BaseController
             if (empty($cek_member)) {
                 $insert_h['usergroup_id'] = 5;
                 $insert_h['email'] = $input['email'];
-                $insert_d['name'] = $input['nama_lengkap'];
-                $insert_d['phone'] = $input['telepon'];
 
                 $insert_h['password'] = md5('123456');
                 $insert_h['created'] = time();
@@ -432,14 +436,23 @@ class Home extends BaseController
                 $insert_h['created_by'] = 2;
                 $query_h = $this->model->insB('member', $insert_h);
                 $id = $this->model->lastId('member', 1)->getRow()->id;
-                if ($query_h) {
-                    $insert_d['member_id'] = $id;
-                    $insert_d['created'] = time();
-                    $insert_d['city_id'] = 0;
-                    $insert_d['address'] = $input['alamat'];
-                    $insert_d['created_by'] = 2;
-                    $query_d = $this->model->insB('member_detail', $insert_d);
-                }
+
+                $singkatan = str_replace(' ', '', $input['name']);
+                $fourname = substr($singkatan, 0, 4);
+                $last = $auth->hitung();
+
+                $referal = '' . $fourname . '' . $last;
+
+                $insert_d['name'] = $input['nama_lengkap'];
+                $insert_d['telephone'] = $input['telepon'];
+                $insert_d['handphone'] = $input['telepon'];
+                $insert_d['member_id'] = $id;
+                $insert_d['referal'] = $referal;
+                $insert_d['created'] = time();
+                $insert_d['city_id'] = 0;
+                $insert_d['address'] = $input['alamat'];
+                $insert_d['created_by'] = 2;
+                $query_d = $this->model->ins('member_detail', $insert_d);
             } else {
                 $id = $cek_member->id;
                 $this->model->upd('member', ['id' => $id], ['last_login' => time()]);
@@ -458,7 +471,10 @@ class Home extends BaseController
         $cek_area = $this->model->getAll('area')->getResult();
         $area = "";
         foreach ($cek_area as $c) {
-            if (strpos($input['city'], $c->nama_area) > -1) {
+            if (strpos(strtolower($input['city']), strtolower('bks')) > -1) {
+                $input['city'] = "Bekasi";
+            }
+            if (strpos(strtolower($input['city']), strtolower($c->nama_area)) > -1) {
                 $temp += 1;
                 $area = $c->id_area;
             }
@@ -521,7 +537,7 @@ class Home extends BaseController
             'created' => time(),
             'latitude' => $input['lat'],
             'longitude' => $input['long'],
-            'catatan_alamat' => $input['alamat'],
+            'catatan_alamat' => $input['catatan_alamat'],
             'kode_referal' => $input['promo'],
             'kode_promo' => $input['referal'],
             'id_area' => $area,
@@ -640,6 +656,7 @@ class Home extends BaseController
     public function order_non()
     {
         $sess = session();
+        $auth = new AuthModel();
         $tdate = date('Y-m-d');
         $input = $this->request->getVar();
         $date = strtotime($tdate);
@@ -654,25 +671,32 @@ class Home extends BaseController
             if (empty($cek_member)) {
                 $insert_h['usergroup_id'] = 5;
                 $insert_h['email'] = $input['email'];
-                $insert_d['name'] = $input['nama_lengkap'];
-                $insert_d['phone'] = $input['telepon'];
 
                 $insert_h['password'] = md5('123456');
                 $insert_h['created'] = time();
                 $insert_h['last_login'] = time();
                 $insert_h['created_by'] = 2;
                 $query_h = $this->model->insB('member', $insert_h);
-                $id += $this->model->lastId('member', 1)->getRow()->id;
-                if ($query_h) {
-                    $insert_d['member_id'] = $id;
-                    $insert_d['created'] = time();
-                    $insert_d['city_id'] = 0;
-                    $insert_d['address'] = $input['alamat'];
-                    $insert_d['created_by'] = 2;
-                    $query_d = $this->model->insB('member_detail', $insert_d);
-                }
+                $id = $this->model->lastId('member', 1)->getRow()->id;
+
+                $singkatan = str_replace(' ', '', $input['name']);
+                $fourname = substr($singkatan, 0, 4);
+                $last = $auth->hitung();
+
+                $referal = '' . $fourname . '' . $last;
+
+                $insert_d['name'] = $input['nama_lengkap'];
+                $insert_d['telephone'] = $input['telepon'];
+                $insert_d['handphone'] = $input['telepon'];
+                $insert_d['member_id'] = $id;
+                $insert_d['referal'] = $referal;
+                $insert_d['created'] = time();
+                $insert_d['city_id'] = 0;
+                $insert_d['address'] = $input['alamat'];
+                $insert_d['created_by'] = 2;
+                $query_d = $this->model->ins('member_detail', $insert_d);
             } else {
-                $id += $cek_member->id;
+                $id = $cek_member->id;
                 $this->model->upd('member', ['id' => $id], ['last_login' => time()]);
             }
         }
@@ -689,7 +713,10 @@ class Home extends BaseController
         $cek_area = $this->model->getAll('area')->getResult();
         $area = "";
         foreach ($cek_area as $c) {
-            if (strpos($input['city'], $c->nama_area) > -1) {
+            if (strpos(strtolower($input['city']), strtolower('bks')) > -1) {
+                $input['city'] = "Bekasi";
+            }
+            if (strpos(strtolower($input['city']), strtolower($c->nama_area)) > -1) {
                 $temp += 1;
                 $area = $c->id_area;
             }
@@ -759,7 +786,7 @@ class Home extends BaseController
             'created' => time(),
             'latitude' => $input['lat'],
             'longitude' => $input['long'],
-            'catatan_alamat' => $input['alamat'],
+            'catatan_alamat' => $input['catatan_alamat'],
             'kode_referal' => $input['promo'],
             'kode_promo' => $input['referal'],
             'id_area' => $area,

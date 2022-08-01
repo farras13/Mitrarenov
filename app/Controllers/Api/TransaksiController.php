@@ -9,193 +9,182 @@ use App\Libraries\Midtranspayment;
 
 class TransaksiController extends ResourceController
 {
-    /**
-     * Return an array of resource objects, themselves in array format
-     *
-     * @return mixed
-     */
-    public function tipe_rumah()
-    {
-        $mdl = new GeneralModel();
-        $data = $mdl->getAll('tipe_rumah')->getResult();
+	public function tipe_rumah()
+	{
+		$mdl = new GeneralModel();
+		$data = $mdl->getAll('tipe_rumah')->getResult();
 
-        if (!$data) {
-            return $this->fail('Gagal mendapatkan tipe rumah!');
-        }
+		if (!$data) {
+			return $this->fail('Gagal mendapatkan tipe rumah!');
+		}
 
-        $res = [
-            "status" => 200,
-            "messages" => "Sukses",
-            "data" => $data
-        ];
+		$res = [
+			"status" => 200,
+			"messages" => "Sukses",
+			"data" => $data
+		];
 
-        return $this->respond($res, 200);
-    }
+		return $this->respond($res, 200);
+	}
+	public function addCart()
+	{
+		$mdl = new GeneralModel();
+		$headers = $this->request->headers();
+		$token = $headers['X-Auth-Token']->getValue();
+		$cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
+		$id = (int)$cekUser->member_id;
 
-    public function addCart()
-    {
-        $mdl = new GeneralModel();
-        $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
-        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-        $id = (int)$cekUser->member_id;
+		$input = $this->request->getVar();
+		if (!$input) {
+			$this->respond('Pilih barang terlebih dahulu !', 500);
+		}
 
-        $input = $this->request->getVar();
-        if (!$input) {
-            $this->respond('Pilih barang terlebih dahulu !', 500);
-        }
+		$idm = $input['id_material'];
 
-        $idm = $input['id_material'];
+		$db = db_connect();
+		$cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$idm' and item_category = 1")->getRow();
 
-        $db = db_connect();
-        $cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$idm' and item_category = 1")->getRow();
+		if (!$cekMaterial) {
+			return $this->respond('Material tidak tersedia !', 500);
+		}
 
-        if (!$cekMaterial) {
-            return $this->respond('Material tidak tersedia !', 500);
-        }
+		if ($cekMaterial->item_qty < 1 || $cekMaterial->item_qty < $input['qty']) {
+			return $this->respond('Stok Material tidak mencukupi !', 500);
+		}
 
-        if ($cekMaterial->item_qty < 1 || $cekMaterial->item_qty < $input['qty']) {
-            return $this->respond('Stok Material tidak mencukupi !', 500);
-        }
+		$harga = $cekMaterial->item_price;
+		$total = $cekMaterial->item_price * $input['qty'];
+		$data = [
+			'id_material' => $idm,
+			'qty' => $input['qty'],
+			'sub_total' => $harga,
+			'total' => $total,
+			'id_user' => $id,
+		];
 
-        $harga = $cekMaterial->item_price;
-        $total = $cekMaterial->item_price * $input['qty'];
-        $data = [
-            'id_material' => $idm,
-            'qty' => $input['qty'],
-            'sub_total' => $harga,
-            'total' => $total,
-            'id_user' => $id,
-        ];
+		$add = $mdl->ins('cart', $data);
 
-        $add = $mdl->ins('cart', $data);
+		if (!$add) {
+			return $this->failResourceGone('gagal melakukan insert');
+		}
 
-        if (!$add) {
-            return $this->failResourceGone('gagal melakukan insert');
-        }
+		$res = [
+			'message' => 'berhasil gan!',
+			'data' => $data,
+			'status' => 200,
+		];
 
-        $res = [
-            'message' => 'berhasil gan!',
-            'data' => $data,
-            'status' => 200,
-        ];
+		return $this->respond($res, 200);
+	}
 
-        return $this->respond($res, 200);
-    }
+	public function index()
+	{
+		$mdl = new GeneralModel();
+		$headers = $this->request->headers();
+		$token = $headers['X-Auth-Token']->getValue();
+		$cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
+		$id = (int)$cekUser->member_id;
 
-    /**
-     * Return the properties of a resource object
-     *
-     * @return mixed
-     */
-    public function index()
-    {
-        $mdl = new GeneralModel();
-        $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
-        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-        $id = (int)$cekUser->member_id;
+		$data = $mdl->getWhere('cart', ['id_user' => $id])->getResult();
 
-        $data = $mdl->getWhere('cart', ['id_user' => $id])->getResult();
+		if (!$data) {
+			return $this->respond('Cart masih kosong !', 500);
+		}
 
-        if (!$data) {
-            return $this->respond('Cart masih kosong !', 500);
-        }
+		$res = [
+			'message' => 'berhasil gan!',
+			'data' => $data,
+			'error' => null,
+		];
 
-        $res = [
-            'message' => 'berhasil gan!',
-            'data' => $data,
-            'error' => null,
-        ];
+		return $this->respond($res, 200);
+	}
 
-        return $this->respond($res, 200);
-    }
+	public function add_by_qty()
+	{
+		$mdl = new GeneralModel();
+		$headers = $this->request->headers();
+		$token = $headers['X-Auth-Token']->getValue();
+		$cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
+		$id = (int)$cekUser->member_id;
 
-    public function add_by_qty()
-    {
-        $mdl = new GeneralModel();
-        $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
-        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-        $id = (int)$cekUser->member_id;
+		$input = $this->request->getVar();
+		$qty = 1;
+		$cart = $mdl->getWhere('cart', ['id_material' => $input['id_material'], 'id_user' => $id])->getRow();
+		$qty += $cart->qty;
 
-        $input = $this->request->getVar();
-        $qty = 1;
-        $cart = $mdl->getWhere('cart', ['id_material' => $input['id_material'], 'id_user' => $id])->getRow();
-        $qty += $cart->qty;
+		$db = db_connect();
+		$cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$cart->id_material' and item_category = 1")->getRow();
 
-        $db = db_connect();
-        $cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$cart->id_material' and item_category = 1")->getRow();
+		if (!$cekMaterial) {
+			return $this->respond('Material tidak tersedia !', 500);
+		}
 
-        if (!$cekMaterial) {
-            return $this->respond('Material tidak tersedia !', 500);
-        }
+		if ($cekMaterial->item_qty < 1 || $cekMaterial->item_qty < $qty) {
+			return $this->respond('Stok Material tidak mencukupi !', 500);
+		}
 
-        if ($cekMaterial->item_qty < 1 || $cekMaterial->item_qty < $qty) {
-            return $this->respond('Stok Material tidak mencukupi !', 500);
-        }
+		$total = $cart->total + $cart->sub_total;
 
-        $total = $cart->total + $cart->sub_total;
+		$data = [
+			'qty' => $qty,
+			'total' => $total,
+		];
 
-        $data = [
-            'qty' => $qty,
-            'total' => $total,
-        ];
+		if ($mdl->upd('cart', ['id' => $cart->id], $data)) {
+			return $this->respond('cart berhasil di tambahkan', 200);
+		}
+	}
 
-        if ($mdl->upd('cart', ['id' => $cart->id], $data)) {
-            return $this->respond('cart berhasil di tambahkan', 200);
-        }
-    }
+	public function del_by_qty()
+	{
+		$mdl = new GeneralModel();
+		$headers = $this->request->headers();
+		$token = $headers['X-Auth-Token']->getValue();
+		$cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
+		$id = (int)$cekUser->member_id;
 
-    public function del_by_qty()
-    {
-        $mdl = new GeneralModel();
-        $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
-        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-        $id = (int)$cekUser->member_id;
+		$input = $this->request->getVar();
+		$cart = $mdl->getWhere('cart', ['id_material' => $input['id_material'], 'id_user' => $id])->getRow();
+		$qty = $cart->qty - 1;
 
-        $input = $this->request->getVar();
-        $cart = $mdl->getWhere('cart', ['id_material' => $input['id_material'], 'id_user' => $id])->getRow();
-        $qty = $cart->qty - 1;
+		$db = db_connect();
+		$cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$cart->id_material' and item_category = 1")->getRow();
 
-        $db = db_connect();
-        $cekMaterial = $db->query("SELECT * FROM `dbo.mst_item` WHERE item_code = '$cart->id_material' and item_category = 1")->getRow();
+		if (!$cekMaterial) {
+			return $this->respond('Material tidak tersedia !', 500);
+		}
 
-        if (!$cekMaterial) {
-            return $this->respond('Material tidak tersedia !', 500);
-        }
+		if ($cekMaterial->item_qty < 1 || $cekMaterial->item_qty < $qty) {
+			return $this->respond('Stok Material tidak mencukupi !', 500);
+		}
 
-        if ($cekMaterial->item_qty < 1 || $cekMaterial->item_qty < $qty) {
-            return $this->respond('Stok Material tidak mencukupi !', 500);
-        }
+		$total = $cart->total - $cart->sub_total;
 
-        $total = $cart->total - $cart->sub_total;
+		$data = [
+			'qty' => $qty,
+			'total' => $total,
+		];
 
-        $data = [
-            'qty' => $qty,
-            'total' => $total,
-        ];
+		if ($mdl->upd('cart', ['id' => $cart->id], $data)) {
+			return $this->respond('cart berhasil di tambahkan', 200);
+		}
+	}
 
-        if ($mdl->upd('cart', ['id' => $cart->id], $data)) {
-            return $this->respond('cart berhasil di tambahkan', 200);
-        }
-    }
+	public function orderProjekDesain()
+	{
+		$uri = current_url(true);
+		$mdl = new GeneralModel();
 
-    public function orderProjekDesain()
-    {
-        $uri = current_url(true);
-        $mdl = new GeneralModel();
-
-        $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
-        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();        
+		$headers = $this->request->headers();
+		$token = $headers['X-Auth-Token']->getValue();
+		$cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
 		$input = $this->request->getVar();
 
-		if($cekUser == null){
+		if ($cekUser == null) {
 			$status_cust = 0;
 			$insert_h['usergroup_id'] = 5;
-			
+
 			$insert_h['email'] = $input['email'];
 			$insert_d['name'] = $input['nama_lengkap'];
 			$insert_d['handphone'] = $input['telepon'];
@@ -213,188 +202,190 @@ class TransaksiController extends ResourceController
 				$query_d = $mdl->insB('member_detail', $insert_d);
 			}
 			$id = $query_h;
-		}else{
+		} else {
 			$id = (int)$cekUser->member_id;
 			$status_cust = 1;
 		}
 
-        $temp_idp = $mdl->lastId('projects')->getRow();
-        $id_projek = (int)$temp_idp->id + 1;
-        // var_dump($id_projek);die;
-        $tdate = date('Y-m-d');
-        $date = strtotime($tdate);
+		$temp_idp = $mdl->lastId('projects')->getRow();
+		$id_projek = (int)$temp_idp->id + 1;
+		// var_dump($id_projek);die;
+		$tdate = date('Y-m-d');
+		$date = strtotime($tdate);
 
-        if ($input['type'] != null) {
-            $temp_produk = $mdl->getWhere('product', ['id' => $input['type']])->getRow();
-            $type = $temp_produk->paket_name;
-        } else {
-            $temp_produk = $mdl->getWhere('category', ['id' => $input['id_kategori']])->getRow();
-            $type = $temp_produk->category_name;
-        }
+		if ($input['type'] != null) {
+			$temp_produk = $mdl->getWhere('product', ['id' => $input['type']])->getRow();
+			$type = $temp_produk->paket_name;
+		} else {
+			$temp_produk = $mdl->getWhere('category', ['id' => $input['id_kategori']])->getRow();
+			$type = $temp_produk->category_name;
+		}
 
-        $file_rumah = $this->request->getFile('gambar_rumah');
-        $rules = [
-            "deskripsi" => "required",
-            "alamat" => "required",
-            "spek" => "required",
-            "nama_lengkap" => "required",
-            "telepon" => "required",
-            "email" => "required",
-            "latitude" => "required",
-            "longitude" => "required",
-            "metode_pembayaran" => "required",
-            'gambar_rumah' => 'uploaded[gambar_rumah]|mime_in[gambar_rumah,image/jpg,image/jpeg,image/gif,image/png]|max_size[gambar_rumah,2048]',
-        ];
-        $msg = [
-            'gambar_rumah' => [
-                'uploaded' => 'Harus Ada File yang diupload',
-                'mime_in' => 'File Extention Harus Berupa jpg,jpeg,gif,png',
-                'max_size' => 'Ukuran File Maksimal 2 MB'
-            ]
-        ];
+		$file_rumah = $this->request->getFile('gambar_rumah');
+		$rules = [
+			"deskripsi" => "required",
+			"alamat" => "required",
+			"spek" => "required",
+			"nama_lengkap" => "required",
+			"telepon" => "required",
+			"email" => "required",
+			"latitude" => "required",
+			"longitude" => "required",
+			"metode_pembayaran" => "required",
+			'gambar_rumah' => 'uploaded[gambar_rumah]|mime_in[gambar_rumah,image/jpg,image/jpeg,image/gif,image/png]|max_size[gambar_rumah,2048]',
+		];
+		$msg = [
+			'gambar_rumah' => [
+				'uploaded' => 'Harus Ada File yang diupload',
+				'mime_in' => 'File Extention Harus Berupa jpg,jpeg,gif,png',
+				'max_size' => 'Ukuran File Maksimal 2 MB'
+			]
+		];
 
-        if (!$this->validate($rules, $msg)) {
+		if (!$this->validate($rules, $msg)) {
 
-            $response = [
-                'status' => 500,
-                'error' => true,
-                'message' => $this->validator->getErrors(),
-                'data' => []
-            ];
-            return $this->respond($response, 500);
+			$response = [
+				'status' => 500,
+				'error' => true,
+				'message' => $this->validator->getErrors(),
+				'data' => []
+			];
+			return $this->respond($response, 500);
+		} else {
+			$price = $temp_produk->price;
+			if ($temp_produk->price == "0") {
+				$temp_price = $mdl->getWhere('product_price', ['id' => $input['spek']])->getRow();
+				if (!$temp_price) {
+					$response = [
+						'status' => 500,
+						'error' => true,
+						'message' => 'pastikan inputan spek benar',
+						'data' => []
+					];
+					return $this->respond($response, 500);
+				}
+				$price = $temp_price->product_price;
+			}
+			$total = $price * $input['luas'];
 
-        } else {
-            $price = $temp_produk->price;
-            if ($temp_produk->price == "0") {
-                $temp_price = $mdl->getWhere('product_price', ['id' => $input['spek']])->getRow();
-                if (!$temp_price) {
-                    $response = [
-                        'status' => 500,
-                        'error' => true,
-                        'message' => 'pastikan inputan spek benar',
-                        'data' => []
-                    ];
-                    return $this->respond($response, 500);
-                }
-                $price = $temp_price->product_price;
-            }
-            $total = $price * $input['luas'];
+			$db = db_connect();
+			$noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();
+			$temp_nopro = (int)$noprojek->hitung + 1;
+			$coun = strlen($noprojek->hitung);
+			if ($coun == 1) {
+				$ht = '0000' . '' . $temp_nopro;
+			} elseif ($coun == 2) {
+				$ht = '000' . '' . $temp_nopro;
+			} elseif ($coun == 3) {
+				$ht = '00' . '' . $temp_nopro;
+			} elseif ($coun == 4) {
+				$ht = '0' . '' . $temp_nopro;
+			} else {
+				$ht = $temp_nopro;
+			}
 
-            $db = db_connect();
-            $noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();
-            $temp_nopro = (int)$noprojek->hitung + 1;
-            $coun = strlen($noprojek->hitung);
-            if ($coun == 1) {
-                $ht = '0000' . '' . $temp_nopro;
-            } elseif ($coun == 2) {
-                $ht = '000' . '' . $temp_nopro;
-            } elseif ($coun == 3) {
-                $ht = '00' . '' . $temp_nopro;
-            } elseif ($coun == 4) {
-                $ht = '0' . '' . $temp_nopro;
-            } else {
-                $ht = $temp_nopro;
-            }
-
-            $cek_area = $mdl->getAll('area')->getResult();
-            $area = "";
-            foreach ($cek_area as $c) {
-                if (strpos($input['city'], $c->nama_area) > -1) {
-                    $temp = 1;
-                    $area = $c->id_area;
-                }
-            }
-            if($area == ""){
-                $response = [
-                    'status' => 200,
-                    'error' => true,
-                    'message' => "Transaksi Gagal, Area anda belum kami jangkau !",
-                    'data' => []
-                ];
-                return $this->respond($response, 200);
-            }
-            $insert = [
-                'project_number' => date("dmY", time()) . "" . $ht,
-                'type' => $type,
-                'total' => $total,
-                'alamat_pengerjaan' => $input['alamat'],
-                'catatan_alamat' => $input['alamat'],
-                'luas' => $input['luas'],
-                'description' => $input['deskripsi'],
-                'latitude' => $input['latitude'],
-                'longitude' => $input['longitude'],
-                'metode_payment' => $input['metode_pembayaran'],
-                'status_project' => 'quotation',
-                'id_area' => $area,
-                'created' => time(),
-                'device' => 2
-            ];
-           
-            $insert_data = [
-                'name' => $input['nama_lengkap'],
-                'address' => $input['alamat'],
-                'email' => $input['email'],
-                'phone' => $input['telepon'],
-                'created' => time(),
-                'member_id' => $id,
+			$temp = 0;
+			$cek_area = $mdl->getAll('area')->getResult();
+			$area = "";
+			foreach ($cek_area as $c) {
+				if (strpos(strtolower($input['city']), strtolower('bks')) > -1) {
+					$input['city'] = "Bekasi";
+				}
+				if (strpos(strtolower($input['city']), strtolower($c->nama_area)) > -1) {
+					$temp = 1;
+					$area = $c->id_area;
+				}
+			}
+			if ($area == "") {
+				$response = [
+					'status' => 200,
+					'error' => true,
+					'message' => "Transaksi Gagal, Area anda belum kami jangkau !",
+					'data' => []
+				];
+				return $this->respond($response, 200);
+			}
+			$insert = [
+				'project_number' => date("dmY", time()) . "" . $ht,
+				'type' => $type,
+				'total' => $total,
+				'alamat_pengerjaan' => $input['alamat'],
+				'catatan_alamat' => $input['alamat'],
+				'luas' => $input['luas'],
+				'description' => $input['deskripsi'],
+				'latitude' => $input['latitude'],
+				'longitude' => $input['longitude'],
+				'metode_payment' => $input['metode_pembayaran'],
+				'status_project' => 'quotation',
+				'id_area' => $area,
+				'created' => time(),
 				'device' => 2
-            ];
+			];
 
-            $insert_detail = [
-                'product_id' => $input['type'],
-                'product_price_id' => $input['spek'],
-            ];
+			$insert_data = [
+				'name' => $input['nama_lengkap'],
+				'address' => $input['alamat'],
+				'email' => $input['email'],
+				'phone' => $input['telepon'],
+				'created' => time(),
+				'member_id' => $id
+			];
 
-            $query = $mdl->ins('projects', $insert);
-            if ($query) {
+			$insert_detail = [
+				'product_id' => $input['type'],
+				'product_price_id' => $input['spek'],
+			];
 
-                $insert_data['project_id'] = $id_projek;
-                $query_data = $mdl->ins('project_data_customer', $insert_data);
+			$query = $mdl->ins('projects', $insert);
+			if ($query) {
 
-                $insert_detail['project_id'] = $id_projek;
+				$insert_data['project_id'] = $id_projek;
+				$query_data = $mdl->ins('project_data_customer', $insert_data);
 
-                if ($uri->getSegment(4) == "desain") {
-                    // $file_denah = $this->request->getFile('denah');
-                    $insert_design = [
-                        'tipe_rumah' => $input['tipe_rumah'],
-                        'created' => time()
-                    ];
-                    $idd = $mdl->lastId('projects_desain')->getRow()->id;
-                    $mdl->ins('projects_desain', $insert_design);
-                    $insert_detail['desain_id'] = (int)$idd + 1;
-                }
+				$insert_detail['project_id'] = $id_projek;
 
-                $query_detail = $mdl->ins('projects_detail', $insert_detail);
+				if ($uri->getSegment(4) == "desain") {
+					// $file_denah = $this->request->getFile('denah');
+					$insert_design = [
+						'tipe_rumah' => $input['tipe_rumah'],
+						'created' => time()
+					];
+					$idd = $mdl->lastId('projects_desain')->getRow()->id;
+					$mdl->ins('projects_desain', $insert_design);
+					$insert_detail['desain_id'] = (int)$idd + 1;
+				}
 
-                /* start upload */
-                $path = "./public/images/projek";
-                $uploadImg = $this->uploadImage($file_rumah, $path);
+				$query_detail = $mdl->ins('projects_detail', $insert_detail);
 
-                if ($uploadImg != null) {
-                    $path_image = $path;
-                    $json_text = $uploadImg['message'];
-                    // $mdl->upd('projects', ['id' => $id_projek], ['image_upload' => $uploadImg['data']['file_name']]);
-                } else {
-                    $path_image = '';
-                    $json_text = $uploadImg['message'];
-                }
-                /* end upload */
-                // $product_id = array('id' => $input['product_id']);
-                // $getProduct = $this->general_model->getfieldById('paket_name', 'product', $product_id);
+				/* start upload */
+				$path = "./public/images/projek";
+				$uploadImg = $this->uploadImage($file_rumah, $path);
 
-                // $return = array(
-                //     $query, $insert['project_number'], $getProduct->paket_name, $insert['luas'], number_format($insert['total']), $insert['metode_payment'], $insert_data['name'], $insert_data['phone'], date("d M Y", $insert_data['created']), $insert_data['email'], $insert['marketing_name'], $this->access['action'], $insert['catatan_alamat']
-                // );
-                $return = [
-                    'project'              =>    $insert,
-                    'data_customer'        =>    $insert_data,
-                    'detail_projek_desain' =>    $insert_design,
-                    'detail_projek'        =>    $insert_detail
-                ];
-                $json_status = 1;
-            } else {
-                $json_status = 0;
-            }
+				if ($uploadImg != null) {
+					$path_image = $path;
+					$json_text = $uploadImg['message'];
+					// $mdl->upd('projects', ['id' => $id_projek], ['image_upload' => $uploadImg['data']['file_name']]);
+				} else {
+					$path_image = '';
+					$json_text = $uploadImg['message'];
+				}
+				/* end upload */
+				// $product_id = array('id' => $input['product_id']);
+				// $getProduct = $this->general_model->getfieldById('paket_name', 'product', $product_id);
+
+				// $return = array(
+				//     $query, $insert['project_number'], $getProduct->paket_name, $insert['luas'], number_format($insert['total']), $insert['metode_payment'], $insert_data['name'], $insert_data['phone'], date("d M Y", $insert_data['created']), $insert_data['email'], $insert['marketing_name'], $this->access['action'], $insert['catatan_alamat']
+				// );
+				$return = [
+					'project'              =>    $insert,
+					'data_customer'        =>    $insert_data,
+					'detail_projek_desain' =>    $insert_design,
+					'detail_projek'        =>    $insert_detail
+				];
+				$json_status = 1;
+			} else {
+				$json_status = 0;
+			}
 
 			// send email
 			if ($status_cust == 1) {
@@ -404,7 +395,6 @@ class TransaksiController extends ResourceController
 					'to' => $input['email'],
 					'bcc' => "",
 					'subject' => "Permintaan Jasa di Mitrarenov.com"
-					// 'template' => $this->load->view('email_submit_job', $data, true)              
 				);
 			} else {
 				$emailData = array(
@@ -413,7 +403,6 @@ class TransaksiController extends ResourceController
 					'to' => $input['email'],
 					'bcc' => "",
 					'subject' => "Informasi Akun & Permintaan Jasa di Mitrarenov.com"
-					// 'template' => $this->load->view('email_submit_job', $data, true)              
 				);
 			}
 			$data2 = array(
@@ -433,7 +422,7 @@ class TransaksiController extends ResourceController
 
 			$this->sendEmailAktifasi($emailData, $status_cust);
 			$decode_tukang = $mdl->findAllTukang($area);
-			
+
 			$subject_tukang = "Permintaan Jasa di Mitrarenov atas nama " . $input['nama_lengkap'];
 			foreach ($decode_tukang as $key => $d2) {
 				if ($d2->email_tukang !== null or $d2->email_tukang !== '') {
@@ -444,7 +433,7 @@ class TransaksiController extends ResourceController
 					$email->setSubject($subject_tukang);
 					$email->setMessage($this->contenttukang($data2, $d2));
 
-					if (!$this->email->send()) {
+					if (!$email->send()) {
 						// Generate error
 						//echo "Email is not sent!!";
 						$this->tambah_log_email_db('permintaan jasa', $d2->email_tukang, 'tukang', 'gagal');
@@ -452,325 +441,364 @@ class TransaksiController extends ResourceController
 					} else {
 						$this->tambah_log_email_db('permintaan jasa', $d2->email_tukang, 'tukang', 'terkirim');
 						$this->tambah_log_email_db('permintaan jasa', 'info@mitrarenov.com', 'admin', 'terkirim');
-					}					
+					}
 				}
 			}
 
-            $res = array(
-                'status' => $json_status,
+			$res = array(
+				'status' => $json_status,
 				'error' => false,
-                'message' => $json_text,
-                'data' => $return,
-                'type' => $type
-            );
-            return $this->respond($res, 200);
-        }
+				'message' => $json_text,
+				'data' => $return,
+				'type' => $type
+			);
+			return $this->respond($res, 200);
+		}
+	}
 
-    }
-
-    public function uploadImage($file, $path)
-    {
-        helper(['form']);
-        $date = date('Y-m-d');
-        $profile_image = $file->getName();
-        $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20);
-        // var_dump($newfilename);die;
-        if (!$file->isValid()) {
-            return $this->fail($file->getErrorString());
-        }
-
-        if ($file->move($path, $nameNew)) {
-            $response = [
-                'status' => 200,
-                'error' => false,
-                'message' => 'File uploaded successfully',
-                'data' => [
-                    "file_name" => $profile_image,
-                    "file_path" => $path,
-                ]
-            ];
-        } else {
-            $response = [
-                'status' => 500,
-                'error' => true,
-                'message' => 'Failed to upload image',
-                'data' => []
-            ];
-        }
-
-        return $response;
-    }
-
-    public function checkout()
-    {
-        $mdl = new GeneralModel();
-        $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
-        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-        $id = (int)$cekUser->member_id;
-
-        $data = $mdl->getWhere('cart', ['id_user' => $id])->getResult();
-
-        $total = 0;
-
-        foreach ($data as $d) {
-            $total += $d->total;
-        }
-
-        if ($mdl->del('cart', ['id_user' => $id])) {
-            return $this->respond('Berhasil Checkout', 200);
-        }
-    }
-
-    public function payment()
-    {
-        $mdl = new GeneralModel();
-        $headers = $this->request->headers();
-        $input = $this->request->getVar();
-        
-        $addition = 0;
-        $deduction = 0;
-        $harga = 0;
-        $tracking_id = $input['no_invoice'];
-        $htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id], null)->getRow();
-        $trans = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
-        $projek = $mdl->getWhere('projects', ['id' => $htrans->project_id], null)->getRow();
-        $dtrans = $mdl->getWhere('projects_detail', ['project_id' => $htrans->project_id], null)->getRow();
-        $produk = $mdl->getWhere('product', ['id' => $dtrans->product_id], null)->getRow();
-        $member = $mdl->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
-        
-        // $track = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(24 / strlen($x)))), 1, 24);
-        
-        $totalpayment = 0;
-        $totalqty = 0;
-        
-        if($projek->luas == null){
-            $projek->luas = 1;
-        }
-        // if ($dtrans->product_price_id != 0) {
-        //     $cek_harga = $mdl->getWhere('product_price', ['id' => $dtrans->product_price_id], null)->getRow();
-        //     $harga += $cek_harga->product_price;
-        //     $totalpayment = $harga * $projek->luas;
-        // }else{
-        //     $harga += $produk->price;
-        //     $totalpayment = $harga * $projek->luas;
-        // }
-        $harga = $htrans->biaya;
-        $cekpromo = $mdl->getWhere('promomobile', ['promoCode' => $htrans->kode_promo], null)->getRow();
-        
-        if ($cekpromo != null ) {
-            $temp_promo = $totalpayment * $cekpromo->promo / 100;
-            $deduction += $temp_promo;
-        }
-        $totalpayment = $harga + $addition - $deduction;
-        
-        $transaction_details = array(
-            'order_id' => $trans->transaction_id,
-            'gross_amount' => $totalpayment, // no decimal allowed for creditcard
-        );
-
-        // // Optional
-        // $item1_details = array(
-        //     'id' => 'a1',
-        //     'price' => $harga,
-        //     'quantity' => $projek->luas,
-        //     'name' => $produk->paket_name
-        // );
-
-         $item1_details = array(
-            'id' => 'a1',
-            'price' => $harga,
-            'quantity' => 1,
-            'name' => $produk->paket_name
-        );
-        
-        $item_details = array ($item1_details);
-
-        // // Optional
-        $mail = str_replace(" ", "", $member->email);
-        $customer_details = array(
-            'first_name'    => "".$member->name,
-            'last_name'     => " ",
-            'email'         => "$mail",
-            'phone'         => "".$member->phone,
-        );
-        // var_dump($customer_details);die;
-        // // Optional, remove this to display all available payment methods
-        $enable_payments = array('gopay','bank_transfer');
-        // $enable_payments = array('credit_card','cimb_clicks','mandiri_clickpay','echannel');
-
-        // Fill transaction details
-        $transaction = array(
-            'enabled_payments' => $enable_payments,
-            'transaction_details' => $transaction_details,
-            'customer_details' => $customer_details,
-            'item_details' => $item_details,
-        );
-
-        // echo "<pre>";echo print_r($transaction); echo "</pre>";die;
-        $Midtranspayment = new Midtranspayment();
-        $snaptoken = $Midtranspayment->get_token($enable_payments,$transaction_details,$customer_details,$item_details);
-        $update = [
-            "token_midtrans" => $snaptoken
-        ];
-        
-        $link = "https://app.midtrans.com/snap/v2/vtweb/" . $snaptoken;
-        $mdl->upd('projects', ['id' => $htrans->project_id], $update);
-        $msg = array(
-            'status' => 1,
-            'message' => 'Token Ditemukan ',
-            'data' => [
-                "order_id" => $track,
-                "total_bayar" => $totalpayment,
-                "name" => "$member->name",
-                "email" => "$member->email",
-                "phone" => "$member->phone",
-                "token" => $snaptoken,
-                'url' => $link,
-            ]
-        );
-         return $this->respond($msg, 200);
-    }
-
-    public function paymentstatus()
-    {
-        $m = new GeneralModel();
-        $md = new GeneralModel();
-        
-        $Midtranspayment = new Midtranspayment();
-        $notif = $this->midtranspayment->notification();
-        //$notif = file_get_contents('php://input');
-        
-        $transactionstatus = $notif->transaction_status;
-        $orderid = $notif->order_id;
-        $billercode = "";
-        $payment_type = $notif->payment_type;
-        if ($payment_type == "gopay") {
-            $bank = "gopay";
-            $vanumber = "";
-            $billercode = "";
-        }
-        else if($payment_type == "bank_transfer"){
-            if (!empty($notif->va_numbers[0])) {
-                $va = $notif->va_numbers[0];
-                $vanumber = $va->va_number;
-                $bank = $va->bank;
-                $billercode = "";
-            }
-            else if(!empty($notif->permata_va_number)){
-                $vanumber = $notif->permata_va_number;
-                $bank = "permata";
-                $billercode = "";
-            }
-        }
-        else if($payment_type == "echannel"){
-            $billercode = $notif->biller_code;
-            $vanumber = $notif->bill_key;
-            $bank = "mandiri";
-        }
-        else if($payment_type == "qris"){
-            $qris = $notif->qris;
-            $bank = $qris->acquirer;
-            $vanumber = "";
-            $billercode = "";
-        }
-        else if($payment_type == "shopeepay"){
-            $bank = "shopeepay";
-            $billercode = "";
-            $vanumber = "";
-        }
-        else if($payment_type == "cstore"){
-            $cstore = $notif->cstore;
-            $bank = $cstore->store;
-            $vanumber = "";
-            $billercode = "";
-        }
-
-        // $htrans = T_htransactions::findOne($params);
-        $htrans = $m->getWhere('projects_transaction', ['transaction_id' => $orderid], null)->getRow();
-        $projek = $m->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
-        if ($htrans) {
-
-            // $member = M_members::find($htrans->member_id);
-            $member = $m->getWhere('token_login', ['member_id' => $projek->member_id], null)->getRow();
-            $dtrans = $md->dtrans($projek->project_id)->getRow();
-
-            if ($transactionstatus == "capture" || $transactionstatus == "settlement") {
-                $update = [
-                    "status" => $transactionstatus,
-                ];
-
-                $m->upd("projects_transaction", ["id" => $htrans->id], $update);
-                // $this->send_email($member, $htrans, $dtrans, "success");
-                if (!empty($member->fcm_id)) {
-                    $this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
-                }
-            } else if ($transactionstatus == "pending") {
-                $update = [
-                    "status" => $transactionstatus,
-                ];
-
-               $m->upd("projects_transaction", ["id" => $htrans->id], $update);
-            } else if ($transactionstatus == "deny" || $transactionstatus == "cancel" || $transactionstatus == "expire" || $transactionstatus == "refund") {
-                $update = [
-                    "status" => $transactionstatus,
-                ];
-
-                $m->upd("projects_transaction", ["id" => $htrans->id], $update);
-                // $this->rollback_product($htrans->htrans_id);
-
-                $update_midtrans = [
-                    "token_midtrans" => NULL,
-                ];
-                $m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
-                
-                // $this->send_email($member, $htrans, $dtrans, "cancel");
-
-                if (!empty($member->fcm_id)) {
-                    $this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
-                }
-                if ($transactionstatus == "refund") {
-                    // $this->send_email($member, $htrans, $dtrans, $transactionstatus);
-                    if (!empty($member->fcm_id)) {
-                        $this->send_notif("Dana dikembalikan", "Dana transaksi anda " . $htrans->transaction_id . " telah dikembalikan ", $member->fcm_id, array('title' => "Dana dikemblikan", 'message' => "Dana transaksi anda " . $htrans->transaction_id . " telah dikembalikan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
-                    }
-                } else {
-                    if (!empty($member->fcm_id)) {
-                        $this->send_notif("Pesanan anda dibatalakan", "Transaksi anda " . $htrans->transaction_id . " sedang dalam perjalanan", $member->fcm_id, array('title' => "Pesanan anda dibatalkan", 'message' => "Transaksi anda " . $htrans->transaction_id . " dibatalkan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
-                    }
-                }
-            }
-        }
-
-        $result = [
-            "status" => 1,
-            "message" => "payment status $transactionstatus ",
-            "data" => [
-                "payment_status" => $transactionstatus
-            ]
-        ];
-        $this->response($result);
-    }
-
-    public function irisnotif()
-    {
-        $md = new GeneralModel();
-        $json_result = file_get_contents('php://input');
-        $result = json_decode($json_result, 'true');
-        $ins = array(
-            'reference_no' => $result['reference_no'], 
-            'amount' => $result['amount'], 
-            'status' => $result['status'], 
-            'updated_at' => strtotime($result['updated_at']), 
-        );
-        $md->insb('history_midtrans', $ins);
-
-        // $m->upd("pengajuan_finance", ["no_refrens " => $result['reference_no']], $update);
-    }
-
-    public function tambah_log_email_db($tipe, $email, $role, $status)
+	public function uploadImage($file, $path)
 	{
-        $mdl = new GeneralModel();
+		helper(['form']);
+		$date = date('Y-m-d');
+		$profile_image = $file->getName();
+		$nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20);
+		// var_dump($newfilename);die;
+		if (!$file->isValid()) {
+			return $this->fail($file->getErrorString());
+		}
+
+		if ($file->move($path, $nameNew)) {
+			$response = [
+				'status' => 200,
+				'error' => false,
+				'message' => 'File uploaded successfully',
+				'data' => [
+					"file_name" => $profile_image,
+					"file_path" => $path,
+				]
+			];
+		} else {
+			$response = [
+				'status' => 500,
+				'error' => true,
+				'message' => 'Failed to upload image',
+				'data' => []
+			];
+		}
+
+		return $response;
+	}
+
+	public function checkout()
+	{
+		$mdl = new GeneralModel();
+		$headers = $this->request->headers();
+		$token = $headers['X-Auth-Token']->getValue();
+		$cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
+		$id = (int)$cekUser->member_id;
+
+		$data = $mdl->getWhere('cart', ['id_user' => $id])->getResult();
+
+		$total = 0;
+
+		foreach ($data as $d) {
+			$total += $d->total;
+		}
+
+		if ($mdl->del('cart', ['id_user' => $id])) {
+			return $this->respond('Berhasil Checkout', 200);
+		}
+	}
+
+	public function payment()
+	{
+		$mdl = new GeneralModel();
+		$headers = $this->request->headers();
+		$input = $this->request->getVar();
+
+		$addition = 0;
+		$deduction = 0;
+		$harga = 0;
+		$tracking_id = $input['no_invoice'];
+		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id], null)->getRow();
+		$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
+
+		if ($cek == null) {
+			$data_trans_ins = array(
+				'id_pembayaran' => $htrans->id,
+				'project_id' => $htrans->project_id,
+				'biaya' => $htrans->biaya,
+				'transaction_id' => $htrans->project_id . '' . time(),
+				'tanggal_dibuat' => time(),
+				'status' => 'belum dibayar',
+			);
+			$mdl->insB('projects_transaction', $data_trans_ins);
+			$trans = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
+		} else {
+			$trans = $cek;
+		}
+
+		$projek = $mdl->getWhere('projects', ['id' => $htrans->project_id], null)->getRow();
+		$dtrans = $mdl->getWhere('projects_detail', ['project_id' => $htrans->project_id], null)->getRow();
+		$produk = $mdl->getWhere('product', ['id' => $dtrans->product_id], null)->getRow();
+		$member = $mdl->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
+
+		// $track = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(24 / strlen($x)))), 1, 24);
+
+		$totalpayment = 0;
+		$totalqty = 0;
+
+		if ($projek->luas == null) {
+			$projek->luas = 1;
+		}
+		// if ($dtrans->product_price_id != 0) {
+		//     $cek_harga = $mdl->getWhere('product_price', ['id' => $dtrans->product_price_id], null)->getRow();
+		//     $harga += $cek_harga->product_price;
+		//     $totalpayment = $harga * $projek->luas;
+		// }else{
+		//     $harga += $produk->price;
+		//     $totalpayment = $harga * $projek->luas;
+		// }
+		$harga = str_replace(".", "", $htrans->biaya);
+		$cekpromo = $mdl->getWhere('promomobile', ['promoCode' => $htrans->kode_promo], null)->getRow();
+
+		if ($cekpromo != null) {
+			$temp_promo = $totalpayment * $cekpromo->promo / 100;
+			$deduction += $temp_promo;
+		}
+		$totalpayment = $harga + $addition - $deduction;
+
+		$transaction_details = array(
+			'order_id' => $trans->transaction_id,
+			'gross_amount' => $totalpayment, // no decimal allowed for creditcard
+		);
+
+		// // Optional
+		// $item1_details = array(
+		//     'id' => 'a1',
+		//     'price' => $harga,
+		//     'quantity' => $projek->luas,
+		//     'name' => $produk->paket_name
+		// );
+
+		$item1_details = array(
+			'id' => 'a1',
+			'price' => $harga,
+			'quantity' => 1,
+			'name' => $produk->paket_name
+		);
+
+		$item_details = array($item1_details);
+
+		// // Optional
+		$mail = str_replace(" ", "", $member->email);
+		$customer_details = array(
+			'first_name'    => "" . $member->name,
+			'last_name'     => " ",
+			'email'         => "$mail",
+			'phone'         => "" . $member->phone,
+		);
+		// var_dump($customer_details);die;
+		// // Optional, remove this to display all available payment methods
+		$enable_payments = array('gopay', 'bank_transfer');
+		// $enable_payments = array('credit_card','cimb_clicks','mandiri_clickpay','echannel');
+
+		// Fill transaction details
+		$transaction = array(
+			'enabled_payments' => $enable_payments,
+			'transaction_details' => $transaction_details,
+			'customer_details' => $customer_details,
+			'item_details' => $item_details,
+		);
+
+		// echo "<pre>";echo print_r($transaction); echo "</pre>";die;
+		$Midtranspayment = new Midtranspayment();
+		$snaptoken = $Midtranspayment->get_token($enable_payments, $transaction_details, $customer_details, $item_details);
+		$update = [
+			"token_midtrans" => $snaptoken
+		];
+
+		$link = "https://app.midtrans.com/snap/v2/vtweb/" . $snaptoken;
+		$mdl->upd('projects', ['id' => $htrans->project_id], $update);
+		$msg = array(
+			'status' => 1,
+			'message' => 'Token Ditemukan ',
+			'data' => [
+				"order_id" => $tracking_id,
+				"total_bayar" => $totalpayment,
+				"name" => "$member->name",
+				"email" => "$member->email",
+				"phone" => "$member->phone",
+				"token" => $snaptoken,
+				'url' => $link,
+			]
+		);
+		return $this->respond($msg, 200);
+	}
+
+	public function paymentstatus()
+	{
+		$m = new GeneralModel();
+		$md = new GeneralModel();
+
+		$Midtranspayment = new Midtranspayment();
+		$notif = $this->midtranspayment->notification();
+		//$notif = file_get_contents('php://input');
+
+		$transactionstatus = $notif->transaction_status;
+		$orderid = $notif->order_id;
+		$billercode = "";
+		$payment_type = $notif->payment_type;
+		if ($payment_type == "gopay") {
+			$bank = "gopay";
+			$vanumber = "";
+			$billercode = "";
+		} else if ($payment_type == "bank_transfer") {
+			if (!empty($notif->va_numbers[0])) {
+				$va = $notif->va_numbers[0];
+				$vanumber = $va->va_number;
+				$bank = $va->bank;
+				$billercode = "";
+			} else if (!empty($notif->permata_va_number)) {
+				$vanumber = $notif->permata_va_number;
+				$bank = "permata";
+				$billercode = "";
+			}
+		} else if ($payment_type == "echannel") {
+			$billercode = $notif->biller_code;
+			$vanumber = $notif->bill_key;
+			$bank = "mandiri";
+		} else if ($payment_type == "qris") {
+			$qris = $notif->qris;
+			$bank = $qris->acquirer;
+			$vanumber = "";
+			$billercode = "";
+		} else if ($payment_type == "shopeepay") {
+			$bank = "shopeepay";
+			$billercode = "";
+			$vanumber = "";
+		} else if ($payment_type == "cstore") {
+			$cstore = $notif->cstore;
+			$bank = $cstore->store;
+			$vanumber = "";
+			$billercode = "";
+		}
+
+		// $htrans = T_htransactions::findOne($params);
+		$htrans = $m->getWhere('projects_transaction', ['transaction_id' => $orderid], null)->getRow();
+		$projek = $m->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
+		if ($htrans) {
+
+			// $member = M_members::find($htrans->member_id);
+			$member = $m->getWhere('token_login', ['member_id' => $projek->member_id], null)->getRow();
+			$dtrans = $md->dtrans($projek->project_id)->getRow();
+
+			if ($transactionstatus == "capture" || $transactionstatus == "settlement") {
+				$update = [
+					"status" => $transactionstatus,
+				];
+
+				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
+				// $this->send_email($member, $htrans, $dtrans, "success");
+				if (!empty($member->fcm_id)) {
+					$this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+				}
+			} else if ($transactionstatus == "pending") {
+				$update = [
+					"status" => $transactionstatus,
+				];
+
+				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
+			} else if ($transactionstatus == "deny" || $transactionstatus == "cancel" || $transactionstatus == "expire" || $transactionstatus == "refund") {
+				$update = [
+					"status" => $transactionstatus,
+				];
+
+				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
+				// $this->rollback_product($htrans->htrans_id);
+
+				$update_midtrans = [
+					"token_midtrans" => NULL,
+				];
+				$m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
+
+				// $this->send_email($member, $htrans, $dtrans, "cancel");
+
+				if (!empty($member->fcm_id)) {
+					$this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+				}
+				if ($transactionstatus == "refund") {
+					// $this->send_email($member, $htrans, $dtrans, $transactionstatus);
+					if (!empty($member->fcm_id)) {
+						$this->send_notif("Dana dikembalikan", "Dana transaksi anda " . $htrans->transaction_id . " telah dikembalikan ", $member->fcm_id, array('title' => "Dana dikemblikan", 'message' => "Dana transaksi anda " . $htrans->transaction_id . " telah dikembalikan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+					}
+				} else {
+					if (!empty($member->fcm_id)) {
+						$this->send_notif("Pesanan anda dibatalakan", "Transaksi anda " . $htrans->transaction_id . " sedang dalam perjalanan", $member->fcm_id, array('title' => "Pesanan anda dibatalkan", 'message' => "Transaksi anda " . $htrans->transaction_id . " dibatalkan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+					}
+				}
+			}
+		}
+
+		$result = [
+			"status" => 1,
+			"message" => "payment status $transactionstatus ",
+			"data" => [
+				"payment_status" => $transactionstatus
+			]
+		];
+		$this->respond($result);
+	}
+
+	public function irisnotif()
+	{
+		$md = new GeneralModel();
+		$json_result = file_get_contents('php://input');
+		$result = json_decode($json_result, 'true');
+		$ins = array(
+			'reference_no' => $result['reference_no'],
+			'amount' => $result['amount'],
+			'status' => $result['status'],
+			'updated_at' => strtotime($result['updated_at']),
+		);
+		$md->insb('history_midtrans', $ins);
+		// $md->upd("pengajuan_finance", ["no_refrens " => $result['reference_no']], $update);
+	}
+
+	public function send_notif($title, $desc, $id_fcm, $data)
+	{
+		$Msg = array(
+			'body' => $desc,
+			'title' => $title
+		);
+
+		$fcmFields = array(
+			'to' => $id_fcm,
+			'notification' => $Msg,
+			'data' => $data
+		);
+		$headers = array(
+			'Authorization: key=' . "AAAADRZL39M:APA91bHmsDvyG920nTieIsEKJCMG7cmh1qBxd7Lecjp8hmZL39vIjQpCtT1qr-RtifnyrKgW2L02xsslHbgvdRIOzpl8Oixj3l4kFyK-3WL67vsIJEb9QJjBiyjND5tJCzTGuqN-LW3C",
+			'Content-Type: application/json'
+		);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, "https://fcm.googleapis.com/fcm/send");
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmFields));
+		$result = curl_exec($ch);
+		curl_close($ch);
+
+		$cek_respon = explode(',', $result);
+		$berhasil = substr($cek_respon[1], strpos($cek_respon[1], ':') + 1);
+		//echo $result."\n\n";
+	}
+
+	public function tambah_log_email_db($tipe, $email, $role, $status)
+	{
+		$mdl = new GeneralModel();
 		$inserts['tipe'] = $tipe;
 		$inserts['email'] = $email;
 		$inserts['role'] = $role;
@@ -778,31 +806,31 @@ class TransaksiController extends ResourceController
 		$query = $mdl->insB('log_email', $inserts);
 	}
 
-    public function sendEmailAktifasi($emailData = array(), $tipe)
+	public function sendEmailAktifasi($emailData = array(), $tipe)
 	{
-        $mdl = new GeneralModel();
+		$mdl = new GeneralModel();
 		$temp = $mdl->getWhere('email_ebook', array('id' => '1'))->getResult();
 		$email = \Config\Services::email();
-        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
-        $email->setTo($emailData['to']);
-        $email->setSubject($emailData['subject']);
+		$email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+		$email->setTo($emailData['to']);
+		$email->setSubject($emailData['subject']);
 		if ($tipe == 0) {
 			$msg = $this->content3($temp, $emailData['to']);
-			
+
 			$email->setMessage($msg);
 		} else {
 			$msg = $this->content2($temp, $emailData['to']);
 			$email->setMessage($msg);
 		}
 
-        if (!$email->send()) {
-            $this->tambah_log_email_db('permintaan jasa', $emailData['to'], 'customer', 'gagal');
-        } else {
-            $this->tambah_log_email_db('permintaan jasa', $emailData['to'], 'customer', 'terkirim');
-        }
+		if (!$email->send()) {
+			$this->tambah_log_email_db('permintaan jasa', $emailData['to'], 'customer', 'gagal');
+		} else {
+			$this->tambah_log_email_db('permintaan jasa', $emailData['to'], 'customer', 'terkirim');
+		}
 	}
 
-    private function content($data2)
+	private function content($data2)
 	{
 		return '
 			    <style type="text/css">
@@ -2010,35 +2038,35 @@ class TransaksiController extends ResourceController
 		';
 	}
 
-	private function jasaType($product_id = "") {
+	private function jasaType($product_id = "")
+	{
 		$jasa = "";
-		if($product_id == 1){
+		if ($product_id == 1) {
 			$jasa = "Membangun Rumah";
-		}else if($product_id == 2){
+		} else if ($product_id == 2) {
 			$jasa = "Membuat Dak";
-		}else if($product_id == 3){
+		} else if ($product_id == 3) {
 			$jasa = "Menambah Ruangan";
-		}else if($product_id == 4){
+		} else if ($product_id == 4) {
 			$jasa = "Meningkat Rumah";
-		}else if($product_id == 5){
+		} else if ($product_id == 5) {
 			$jasa = "Perbaikan Genteng";
-		}else if($product_id == 6){
+		} else if ($product_id == 6) {
 			$jasa = "Pengecatan";
-		}else if($product_id == 7){
+		} else if ($product_id == 7) {
 			$jasa = "Membuat Carport";
-		}else if($product_id == 8){
+		} else if ($product_id == 8) {
 			$jasa = "Membangun Rumah Kost";
-		}else if($product_id == 9){
+		} else if ($product_id == 9) {
 			$jasa = "Membangun Ruko";
-		}else if($product_id == 10){
+		} else if ($product_id == 10) {
 			$jasa = "Pembuatan Kolam Renang";
-		}else if($product_id == 11){
+		} else if ($product_id == 11) {
 			$jasa = "Pekerjaan Interior";
-		}else{
+		} else {
 			$jasa = "Pekerjaan Lain";
 		}
-		
+
 		return $jasa;
 	}
-
 }

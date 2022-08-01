@@ -13,40 +13,40 @@ class ArtikelController extends ResourceController
     use ResponseTrait;
     protected $modelName = 'App\Models\ArtikelModel';
     protected $format    = 'json';
-    
+
     public function index()
     {
         $db = db_connect();
         $key = $this->request->getGet();
         $page = 0;
-        
+
         // var_dump($count);die;
-        if(array_key_exists("page",$key) || array_key_exists("cari",$key)){
-            
+        if (array_key_exists("page", $key) || array_key_exists("cari", $key)) {
+
             $page  += (int) $key['page'];
             $cari  = $key['cari'];
 
             if ($page != 0 && $cari != null) {
-                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date, a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 1 AND title LIKE '%$cari%' ORDER BY a.created desc")->getResult();
+                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date, a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND title LIKE '%$cari%' ORDER BY a.created desc")->getResult();
                 $temp_count = count($default);
-                $count = round($temp_count/8);
+                $count = round($temp_count / 8);
                 $limit = 8;
                 $ofs = $page * $limit - 8;
-                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 1 AND title LIKE '%$cari%' ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
-            }elseif($page != 0){
-                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 1 ORDER BY a.created desc")->getResult();
+                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND title LIKE '%$cari%' ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
+            } elseif ($page != 0) {
+                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 ORDER BY a.created desc")->getResult();
                 $limit = 8;
                 $ofs = $page * $limit - 8;
-                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 1 ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
+                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
                 $temp_count = count($default);
-                $count = round($temp_count/8);
-            }elseif($cari != null){
-                
-                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 1 AND title LIKE '%$cari%' ORDER BY a.created desc")->getResult();
+                $count = round($temp_count / 8);
+            } elseif ($cari != null) {
+
+                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND title LIKE '%$cari%' ORDER BY a.created desc")->getResult();
                 $temp_count = count($data);
-                $count = round($temp_count/8);
-            }  
-        } 
+                $count = round($temp_count / 8);
+            }
+        }
 
         if ($data == null) {
             $res = [
@@ -56,17 +56,18 @@ class ArtikelController extends ResourceController
             ];
             return $this->respond($res, 200);
         }
-       
+
         $url = base_url();
 
-        foreach($data as $d){
-            $time = $d->created; $date = new DateTime("@$time");
-            $d->image = $url.'/public/images/news/thumbs/'. $d->image;
-            $d->date = $date->format('d M Y'); 
+        foreach ($data as $d) {
+            $time = $d->created;
+            $date = new DateTime("@$time");
+            $d->image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/news/' . $d->image;
+            $d->date = $date->format('d M Y');
         }
 
         $temp = [
-            "base_image" => $url.'/public/images/news/thumbs/',
+            "base_image" => 'https://admin.mitrarenov.soldig.co.id/assets/main/images/news/',
             "total_page" => $count,
             "page" => $page,
             "artikel" => $data
@@ -74,7 +75,7 @@ class ArtikelController extends ResourceController
 
         $res = [
             'status' => TRUE,
-            'messages' => "Sukses",         
+            'messages' => "Sukses",
             'data' => $temp
         ];
         return $this->respond($res, 200);
@@ -98,9 +99,10 @@ class ArtikelController extends ResourceController
             return $this->respond($res, 200);
         }
         $url = base_url();
-        $time = $data->created; $date = new DateTime("@$time");
-        $data->image = $url.'/public/images/news/thumbs/'. $data->image;
-        $data->date = $date->format('d M Y'); 
+        $time = $data->created;
+        $date = new DateTime("@$time");
+        $data->image = $url . '/public/images/news/thumbs/' . $data->image;
+        $data->date = $date->format('d M Y');
         $res = [
             "status" => TRUE,
             "messages" => "Sukses",
@@ -130,7 +132,7 @@ class ArtikelController extends ResourceController
         return $this->respond($res, 200);
     }
 
-    public function category_detail($id=null)
+    public function category_detail($id = null)
     {
         $db = db_connect();
         $data = $db->query("SELECT * FROM news where news_category = $id")->getResult();
@@ -143,11 +145,12 @@ class ArtikelController extends ResourceController
             return $this->respond($res, 200);
         }
         $url = base_url();
-        foreach($data as $d){
-            $time = $d->created; $date = new DateTime("@$time");
-            $d->image = $url.'/public/images/news/thumbs/'. $d->image;
-            $d->date = $date->format('d M Y'); 
-            $d->url = $url.'/artikel/'.$d->id.'/detail';
+        foreach ($data as $d) {
+            $time = $d->created;
+            $date = new DateTime("@$time");
+            $d->image = $url . '/public/images/news/thumbs/' . $d->image;
+            $d->date = $date->format('d M Y');
+            $d->url = $url . '/artikel/' . $d->id . '/detail';
         }
         $res = [
             "status" => TRUE,
