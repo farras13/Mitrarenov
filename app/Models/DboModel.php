@@ -84,7 +84,7 @@ class DboModel extends Model
         }
         foreach ($data as $key => $value) {
 
-            $value->addenum = $db->query("SELECT sum(biaya) as total FROM `projects_addendum`  
+            $value->addenum = $db->query("SELECT sum(biaya) as total, keterangan as ket_enum FROM `projects_addendum`  
                 WHERE STATUS = 'disetujui' AND project_id = $value->id
                 GROUP BY tipe
                 ORDER BY `projects_addendum`.`tipe`  DESC")->getResult();

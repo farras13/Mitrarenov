@@ -2026,6 +2026,10 @@ class Home extends BaseController
         }
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         $data['projekBerjalan'] = $mdl->getProjectUser($sess->get('user_id'), null, 'project');
+        foreach ($data['projekBerjalan'] as $pj) {
+            $dokumentasi = $this->model->getWhere('projects_update', ['project_id' => $pj->id])->getResult();
+            $pj->dokumentasi = $dokumentasi;
+        }
         // echo "<pre>"; print_r($data['projekBerjalan']); echo"</pre>";
         echo view("projek_berlangsung", $data);
     }
