@@ -426,6 +426,7 @@ class Home extends BaseController
         } else {
             $status_cust = 0;
             $cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();
+            
             if (empty($cek_member)) {
                 $insert_h['usergroup_id'] = 5;
                 $insert_h['email'] = $input['email'];
@@ -2209,5 +2210,36 @@ class Home extends BaseController
         $data['tentang'] = $model->getWhere('footer', ['id' => 4])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         echo view('snk', $data);
+    }
+
+    public function send_notif($title, $desc, $id_fcm, $data)
+    {
+        $Msg = array(
+                'body' => $desc,
+                'title' => $title
+            );
+
+        $fcmFields = array(
+            'to' => $id_fcm,
+            'notification' => $Msg,
+            'data' => $data
+        );
+        $headers = array(
+            'Authorization: key=' . "AAAADRZL39M:APA91bHmsDvyG920nTieIsEKJCMG7cmh1qBxd7Lecjp8hmZL39vIjQpCtT1qr-RtifnyrKgW2L02xsslHbgvdRIOzpl8Oixj3l4kFyK-3WL67vsIJEb9QJjBiyjND5tJCzTGuqN-LW3C",
+            'Content-Type: application/json'
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://fcm.googleapis.com/fcm/send");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmFields));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        $cek_respon = explode(',', $result);
+        $berhasil = substr($cek_respon[1], strpos($cek_respon[1], ':') + 1);
+        //echo $result."\n\n";
     }
 }

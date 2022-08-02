@@ -6,6 +6,7 @@ use App\Models\GeneralModel;
 use CodeIgniter\RESTful\ResourceController;
 
 use App\Libraries\Midtranspayment;
+use App\Models\AuthModel;
 
 class TransaksiController extends ResourceController
 {
@@ -175,6 +176,7 @@ class TransaksiController extends ResourceController
 	{
 		$uri = current_url(true);
 		$mdl = new GeneralModel();
+		$auth = new AuthModel();
 
 		$headers = $this->request->headers();
 		$token = $headers['X-Auth-Token']->getValue();
@@ -184,24 +186,42 @@ class TransaksiController extends ResourceController
 		if ($cekUser == null) {
 			$status_cust = 0;
 			$insert_h['usergroup_id'] = 5;
-
 			$insert_h['email'] = $input['email'];
-			$insert_d['name'] = $input['nama_lengkap'];
-			$insert_d['handphone'] = $input['telepon'];
-
 			$insert_h['password'] = md5('123456');
 			$insert_h['created'] = time();
 			$insert_h['created_by'] = 2;
-			$query_h = $mdl->insId('member', $insert_h);
-			if ($query_h) {
-				$insert_d['member_id'] = $query_h;
-				$insert_d['created'] = time();
-				$insert_d['city_id'] = 0;
-				$insert_d['address'] = $input['alamat'];
-				$insert_d['created_by'] = 2;
-				$query_d = $mdl->insB('member_detail', $insert_d);
+
+			$cekmail = $mdl->getWhere('member', ['email' => $input['email']])->getRow();
+			if ($cekmail != null) {
+				$query_h = $mdl->insId('member', $insert_h);
+				if ($query_h) {
+
+					$singkatan = str_replace(' ', '', $input['name']);
+					$fourname = substr($singkatan, 0, 4);
+					$last = $auth->hitung();
+					$referal = '' . $fourname . '' . $last;
+
+					$insert_d['name'] = $input['nama_lengkap'];
+					$insert_d['telephone'] = $input['telepon'];
+					$insert_d['handphone'] = $input['telepon'];
+					$insert_d['member_id'] = $query_h;
+					$insert_d['referal'] = $referal;
+					$insert_d['created'] = time();
+					$insert_d['city_id'] = 0;
+					$insert_d['address'] = $input['alamat'];
+					$insert_d['created_by'] = 2;
+
+					$insert_d['member_id'] = $query_h;
+					$insert_d['created'] = time();
+					$insert_d['city_id'] = 0;
+					$insert_d['address'] = $input['alamat'];
+					$insert_d['created_by'] = 2;
+					$query_d = $mdl->insB('member_detail', $insert_d);
+				}
+				$id = $query_h;
+			} else {
+				$id = $cekmail->id;
 			}
-			$id = $query_h;
 		} else {
 			$id = (int)$cekUser->member_id;
 			$status_cust = 1;
@@ -383,6 +403,9 @@ class TransaksiController extends ResourceController
 					'detail_projek'        =>    $insert_detail
 				];
 				$json_status = 1;
+				$this->send_notif("Pesanan anda berhasil dibuat!", "Transaksi anda " . $type . " sedang diproses oleh admin Mitrarenov!", $cekUser->fcm_id, array('title' => "Pesanan anda berhasil dibuat!", 'message' => "Transaksi anda " . $type . " berhasil dibuat! Untuk saat ini sedang diproses oleh admin Mitrarenov!", 'tipe' => 'detail_transaksi', 'content' => array("project_id" => $id_projek, "product_id" => $input['type'])));
+				$mdl->ins('notification', ['member_id' => $id, 'kategori' => 'project', 'message' => 'Hai, Anda telah mengorder '. date("dmY", time()) . $ht, 'date' => time(), 'status' => 0]);
+				$mdl->ins('notification', ['member_id' => 2, 'kategori' => 'project', 'message' => 'Hai, ada orderan baru dari customer dengan nomor project ' . date("dmY", time()) . $ht, 'date' => time(), 'status' => 0]);
 			} else {
 				$json_status = 0;
 			}
@@ -691,7 +714,7 @@ class TransaksiController extends ResourceController
 
 			// $member = M_members::find($htrans->member_id);
 			$member = $m->getWhere('token_login', ['member_id' => $projek->member_id], null)->getRow();
-			$dtrans = $md->dtrans($projek->project_id)->getRow();
+			// $dtrans = $md->dtrans($projek->project_id)->getRow();
 
 			if ($transactionstatus == "capture" || $transactionstatus == "settlement") {
 				$update = [

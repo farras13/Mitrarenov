@@ -114,10 +114,10 @@ class DboModel extends Model
             WHERE projects.id = $id
             ORDER BY id DESC")->getRow();
 
-        $addenum = $db->query("SELECT * FROM `projects_addendum`  
+        $addenum = $db->query("SELECT keterangan, tipe FROM `projects_addendum`  
             WHERE STATUS = 'disetujui' AND project_id = $id
             GROUP BY tipe
-            ORDER BY `projects_addendum`.`tipe`  DESC")->getResult();
+            ORDER BY `projects_addendum`.`id` DESC")->getResult();
 
         $customer = $db->query("SELECT member_detail.name, project_data_customer.phone, t.name as 'pic', t.telephone AS 'pic_telp' ,projects.luas, projects.metode_payment
             FROM project_data_customer 
