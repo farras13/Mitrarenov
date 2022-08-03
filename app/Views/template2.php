@@ -104,7 +104,7 @@
                             </li>
                             <?php if ($sess->get('logged_in') == TRUE) { ?>
                                 <li class="nav-item">
-                                    <a href="percakapan.html" class="nav-link">
+                                    <a href="<?= base_url('chat') ?>" class="nav-link">
                                         <i class="ico ico-chat"></i>
                                         <span class="badge">2</span>
                                     </a>
@@ -112,7 +112,7 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="#" id="notifDropdown" role="button" data-toggle="dropdown" data-offset="40" aria-expanded="false">
                                         <i class="ico ico-bell"></i>
-                                        <span class="badge">1</span>
+                                        <span class="badge"><?= $notif_total; ?></span>
                                     </a>
                                     <div class="dropdown-menu notif-dropdown dropdown-menu-right" aria-labelledby="notifDropdown">
                                         <div class="mt-3">
@@ -123,33 +123,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <a class="dropdown-item new-notif" href="#">
-                                            <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                                sed do eiusmod tempor incididunt ut labore et dolore
-                                                magna aliqua.
-                                            </p>
-                                            <p class="text-right mb-0">11.30</p>
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                                sed do eiusmod tempor incididunt ut labore et dolore
-                                                magna aliqua.
-                                            </p>
-                                            <p class="text-right mb-0">11.30</p>
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                                sed do eiusmod tempor incididunt ut labore et dolore
-                                                magna aliqua.
-                                            </p>
-                                            <p class="text-right mb-0">11.30</p>
-                                        </a>
+                                        <?php foreach ($notif as $key => $value) { ?>                                            
+                                            <a class="dropdown-item <?php if($value->status == 0){ echo 'new-notif'; }?>" href="#">
+                                                <p class="font-weight-bold"><?= $value->kategori ?></p>
+                                                <p>
+                                                    <?= $value->message; ?>
+                                                </p>
+                                                <p class="text-right mb-0"><?= $value->date ?></p>
+                                            </a>
+                                                                                      
+                                        <?php } ?>
                                     </div>
                                 </li>
                             <?php } ?>
@@ -203,13 +186,13 @@
                     <span></span>
                 </div>
             </a>
-            <h1>Akun</h1>
+            <h1><?= $currentURL == base_url('chat') ? 'Percakapan' : 'Akun'; ?></h1>
         </div>
-
         <div class="container-md account-section">
             <div class="card card-border">
                 <div class="card-body py-4">
                     <div class="row">
+                        <?php if($currentURL != base_url('chat')): ?>
                         <div class="col-lg-3 col-left">
                             <div class="card-nav card-menu-nav">
                                 <a href="#" class="close-nav">
@@ -294,6 +277,7 @@
                                 </div>
                             </div>
                         </div>
+                        <?php endif; ?>
 
                         <?= $this->renderSection('content') ?>
 

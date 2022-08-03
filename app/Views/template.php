@@ -5,10 +5,10 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<?= base_url('main/css/custom.css') ?>">
-  <link rel="stylesheet" href="<?= base_url('main/css/styles.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('public/main/css/custom.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('public/main/css/styles.css') ?>">
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-  <link rel="icon" type="image/png" href="<?= base_url('main/images/favico.png ') ?>" />
+  <link rel="icon" type="image/png" href="<?= base_url('public/main/images/favico.png ') ?>" />
   <!-- toast -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <title>Mitrarenov</title>
@@ -45,7 +45,7 @@
         <div class="d-flex align-items-center header-row">
           <div class="header-logo">
             <a href="<?= base_url('/') ?>">
-              <img src="<?= base_url('main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
             </a>
           </div>
           <div class="header-main-nav">
@@ -104,7 +104,7 @@
               <?php $sess = session(); ?>
               <?php if ($sess->get('logged_in') == TRUE) { ?>
                 <li class="nav-item">
-                  <a href="percakapan.html" class="nav-link">
+                  <a href="<?= base_url('chat') ?>" class="nav-link">
                     <i class="ico ico-chat"></i>
                     <span class="badge">2</span>
                   </a>
@@ -112,7 +112,7 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link" href="#" id="notifDropdown" role="button" data-toggle="dropdown" data-offset="40" aria-expanded="false">
                     <i class="ico ico-bell"></i>
-                    <span class="badge">1</span>
+                    <span class="badge"><?= $notif_total ?></span>
                   </a>
                   <div class="dropdown-menu notif-dropdown dropdown-menu-right" aria-labelledby="notifDropdown">
                     <div class="mt-3">
@@ -123,33 +123,16 @@
                         </div>
                       </div>
                     </div>
-                    <a class="dropdown-item new-notif" href="#">
-                      <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
-                      </p>
-                      <p class="text-right mb-0">11.30</p>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
-                      </p>
-                      <p class="text-right mb-0">11.30</p>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <p class="font-weight-bold">Lorem ipsum dolor sit amet</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
-                      </p>
-                      <p class="text-right mb-0">11.30</p>
-                    </a>
+                    <?php foreach ($notif as $key => $value) { ?>                                            
+                          <a class="dropdown-item <?php if($value->status == 0){ echo 'new-notif'; }?>" href="#">
+                              <p class="font-weight-bold"><?= $value->kategori ?></p>
+                              <p>
+                                  <?= $value->message; ?>
+                              </p>
+                              <p class="text-right mb-0"><?= $value->date ?></p>
+                          </a>
+                                                                    
+                      <?php } ?>
                   </div>
                 </li>
               <?php } ?>
@@ -216,7 +199,7 @@
       <div class="row">
         <div class="col-12 mb-4">
           <a href="#">
-            <img src="<?= base_url('main/images/logo-mitrarenov-white.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/logo-mitrarenov-white.svg') ?>" class="img-fluid" alt="">
           </a>
         </div>
         <div class="col-md-7">
@@ -408,49 +391,49 @@
       <h5>We accept:</h5>
       <div class="payment-bank">
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/mastercard-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/mastercard-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/visa-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/visa-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/shopepay-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/shopepay-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/akulaku-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/akulaku-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/uob-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/uob-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/octo-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/octo-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bca-clickpay-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bca-clickpay-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/indomaret-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/indomaret-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/alfamart-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/alfamart-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/danamon-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/danamon-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="row payment-options">
 
@@ -484,12 +467,12 @@
     </div>
   </footer>
 
-  <script type="text/javascript" src="<?= base_url('main/js/script-bundle.min.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/leaflet.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/leaflet-src.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/esri-leaflet-debug.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/script.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/script-bundle.min.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/leaflet.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/leaflet-src.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-debug.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/script.js') ?>"></script>
   <!-- toast -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <?= $this->renderSection('script') ?>
