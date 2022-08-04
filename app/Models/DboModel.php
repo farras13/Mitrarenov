@@ -139,7 +139,6 @@ class DboModel extends Model
             FROM projects_pembayaran
             WHERE project_id = $id")->getResult();
 
-
         //get
         $nm = substr($sk->name, 0, 3);
         $array_bln = array(1 => "I", 2 => "II", 3 => "III", 4 => "IV", 5 => "V", 6 => "VI", 7 => "VII", 8 => "VIII", 9 => "IX", 10 => "X", 11 => "XI", 12 => "XII");
@@ -243,15 +242,16 @@ class DboModel extends Model
             JOIN projects_detail ON projects_detail.project_id = projects.id
             JOIN product on product.id = projects_detail.product_id
             LEFT JOIN chat ON chat.project_id = projects.id
-            WHERE projects.tukang_id = $id")->getResult();
-        } else {
-            return $db->query("SELECT project_data_customer.project_id, DATE_FORMAT(FROM_UNIXTIME(project_data_customer.created), '%e %b %Y') AS 'tanggal' , product.paket_name, chat.message, chat.user FROM project_data_customer 
-            JOIN projects_detail ON projects_detail.project_id = project_data_customer.project_id
-            JOIN product on product.id = projects_detail.product_id
-            JOIN chat ON chat.project_id = project_data_customer.project_id
-            WHERE project_data_customer.member_id = $id
+            WHERE chat.date IN (select MAX(date) FROM chat GROUP BY project_id) AND projects.tukang_id = $id
             GROUP BY chat.project_id
             ORDER BY chat.id DESC")->getResult();
+        } else {
+            return $db->query("SELECT chat.id, chat.project_id, DATE_FORMAT(FROM_UNIXTIME(chat.date), '%e %b %Y') AS 'tanggal' , product.paket_name, chat.message, chat.user FROM chat
+            JOIN project_data_customer ON chat.project_id = project_data_customer.project_id
+            JOIN projects_detail ON projects_detail.project_id = chat.project_id
+            JOIN product on product.id = projects_detail.product_id
+            WHERE chat.date IN (select MAX(date) FROM chat GROUP BY project_id) AND project_data_customer.member_id = $id
+            GROUP BY chat.project_id DESC ORDER BY chat.date desc")->getResult();
         }
     }
 

@@ -123,8 +123,15 @@
                         </div>
                       </div>
                     </div>
-                    <?php foreach ($notif as $key => $value) { ?>                                            
-                          <a class="dropdown-item <?php if($value->status == 0){ echo 'new-notif'; }?>" href="#">
+                    <?php foreach ($notif as $key => $value) { ?>         
+                      <?php if($value->kategori == "chat"){ 
+                        $link=base_url('chat'); 
+                      }else if($value->kategori == "project"){ 
+                        $link=base_url('member/akun');
+                      }else{ 
+                        $link=base_url('member/akun'); 
+                      } ?>                                   
+                          <a class="dropdown-item <?php if($value->status == 0){ echo 'new-notif'; }?>" href="<?= $link ?>">
                               <p class="font-weight-bold"><?= $value->kategori ?></p>
                               <p>
                                   <?= $value->message; ?>
