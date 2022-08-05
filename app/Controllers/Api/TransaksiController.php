@@ -480,37 +480,37 @@ class TransaksiController extends ResourceController
 	}
 
 	public function uploadImage($file, $path)
-	{
-		helper(['form']);
-		$date = date('Y-m-d');
-		$profile_image = $file->getName();
-		$nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20);
-		// var_dump($newfilename);die;
-		if (!$file->isValid()) {
-			return $this->fail($file->getErrorString());
-		}
+    {
+        helper(['form']);
+        $date = date('Y-m-d');
+        $profile_image = $file->getName();
+        $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20).'.'.$file->guessExtension();
+        // var_dump($newfilename);die;
+        if (!$file->isValid()) {
+            return $this->fail($file->getErrorString());
+        }
 
-		if ($file->move($path, $nameNew)) {
-			$response = [
-				'status' => 200,
-				'error' => false,
-				'message' => 'File uploaded successfully',
-				'data' => [
-					"file_name" => $profile_image,
-					"file_path" => $path,
-				]
-			];
-		} else {
-			$response = [
-				'status' => 500,
-				'error' => true,
-				'message' => 'Failed to upload image',
-				'data' => []
-			];
-		}
+        if ($file->move($path, $nameNew)) {
+            $response = [
+                'status' => 200,
+                'error' => false,
+                'message' => 'File uploaded successfully',
+                'data' => [
+                    "file_name" => $nameNew,
+                    "file_path" => $path,
+                ]
+            ];
+        } else {
+            $response = [
+                'status' => 500,
+                'error' => true,
+                'message' => 'Failed to upload image',
+                'data' => []
+            ];
+        }
 
-		return $response;
-	}
+        return $response;
+    }
 
 	public function checkout()
 	{

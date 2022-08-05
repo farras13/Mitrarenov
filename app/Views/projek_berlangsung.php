@@ -16,7 +16,7 @@
                 </div>
                 <?php endforeach; else: ?>
                     <div class="slider-item">
-                    <img src="<?= base_url('public/main/images/project.jpg') ?>" class="img-fluid" alt="">
+                    <img src="<?= base_url('public/main/images/gambar-belum-update.png') ?>" class="img-fluid" alt="">
                     <div class="ket-project">
                         Ket. Foto : -
                     </div>
@@ -81,8 +81,8 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Tambah</p>
-                            <p class="text-23 mb-0"><?= $pb->addenum[0]->ket_enum != '' ? $pb->addenum[0]->ket_enum : "-"; ?></p>
-                            <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[0]->total, 0,',','.'); ?></p> -->
+                            <p class="text-23 mb-0"><?= $pb->addenum[1]->ket_enum != '' ? $pb->addenum[1]->ket_enum : "-"; ?></p>
+                            <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[1]->total, 0,',','.'); ?></p> -->
                         </div>
                     </div>
                 </div>
@@ -98,8 +98,8 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Kurang</p>
-                            <p class="text-23 mb-0"><?= $pb->addenum[1]->ket_enum != '' ? $pb->addenum[1]->ket_enum : "-"; ?></p>
-                            <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[1]->total, 0,',','.'); ?></p> -->
+                            <p class="text-23 mb-0"><?= $pb->addenum[0]->ket_enum != '' ? $pb->addenum[0]->ket_enum : "-"; ?></p>
+                            <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[0]->total, 0,',','.'); ?></p> -->
                         </div>
                     </div>
                 </div>

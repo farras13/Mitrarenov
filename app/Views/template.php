@@ -106,32 +106,36 @@
                 <li class="nav-item">
                   <a href="<?= base_url('chat') ?>" class="nav-link">
                     <i class="ico ico-chat"></i>
-                    <span class="badge">2</span>
+                    <span class="badge" <?= $chat_total == 0 ? "hidden": "";?>><?= $chat_total; ?></span>
                   </a>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link" href="#" id="notifDropdown" role="button" data-toggle="dropdown" data-offset="40" aria-expanded="false">
                     <i class="ico ico-bell"></i>
-                    <span class="badge"><?= $notif_total ?></span>
+                    <span class="badge" <?= $notif_total == 0 ? "hidden": "";?>><?= $notif_total ?></span>
                   </a>
                   <div class="dropdown-menu notif-dropdown dropdown-menu-right" aria-labelledby="notifDropdown">
                     <div class="mt-3">
                       <div class="row">
                         <div class="col-md-4 mb-3 pl-4 text-primary font-weight-bold">Notifikasi</div>
                         <div class="col-md-8 mb-3 text-right">
-                          <a href="#" class="read-all-notif">Tandai sudah dibaca semua <i class="ico ico-check-circle"></i></a>
+                          <a onclick="seenallnotif()" class="read-all-notif">Tandai sudah dibaca semua <i class="ico ico-check-circle"></i></a>
                         </div>
                       </div>
                     </div>
                     <?php foreach ($notif as $key => $value) { ?>         
                       <?php if($value->kategori == "chat"){ 
-                        $link=base_url('chat'); 
+                          $link=base_url('notif/chat/'.$value->id); 
                       }else if($value->kategori == "project"){ 
-                        $link=base_url('member/akun');
+                          $link=base_url('notif/project/'.$value->id);
                       }else{ 
-                        $link=base_url('member/akun'); 
-                      } ?>                                   
-                          <a class="dropdown-item <?php if($value->status == 0){ echo 'new-notif'; }?>" href="<?= $link ?>">
+                          $link=base_url('member/akun'); 
+                      } ?>                    
+                          <?php if($value->status == 0){ ?>  
+                            <a class="dropdown-item new-notif" href="<?= $link ?>">
+                          <?php }else{ ?>    
+                            <a class="dropdown-item" href="<?= $link ?>">
+                          <?php } ?>               
                               <p class="font-weight-bold"><?= $value->kategori ?></p>
                               <p>
                                   <?= $value->message; ?>
@@ -551,6 +555,18 @@
       }
     });
   </script>
+  <script>
+function seenallnotif(){
+    $.ajax({
+          method: "POST",
+          url: "<?php echo base_url('seenallnotif');?>",
+          success:function(data){
+            console.log('success');
+          },
+        });
+
+}
+</script>
 </body>
 
 </html>

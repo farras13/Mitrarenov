@@ -66,7 +66,12 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
     $routes->post('order/desain', 'Home::order_desain');
     $routes->post('order/no_desain', 'Home::order_non');
     $routes->get('order/sukses', 'Home::order_sukses');
+    
     $routes->get('chat', 'Chat::index');
+    $routes->post('chat-kirim', 'Chat::kirim');
+    $routes->get('notif/(:any)/(:any)', 'Chat::onclicknotif/$1/$2');
+    $routes->post('seenallnotif', 'Chat::seenallnotif');
+
     $routes->get('member/akun', 'Home::akun');
     $routes->get('member/edit_profile', 'Home::edit_profile');
     $routes->post('member/update_profile', 'Home::update_profile');

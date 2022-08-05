@@ -34,18 +34,22 @@ class Chat extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
                 }
+                if($value->kategori == "chat" && $value->status == 0){
+                    $chat++;
+                }
             }
-        }
-        
+        }       
 
         $cekUser = $model->getWhere('member', ['id' => $id])->getRow();
         $group = $model->getWhere('usergroup',['id' => $cekUser->usergroup_id])->getRow();
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         if($group->name == 'User'){ 
             $gn = 'customer'; 
         }else{  
@@ -87,5 +91,25 @@ class Chat extends BaseController
         );
         $model->ins('chat', $data);
         return redirect()->to('chat?83rc2kp='.$input['idcht']);
+    }
+    
+    public function onclicknotif($type,$id)
+    {
+        $model = new GeneralModel();
+        $model->upd('notifikasi', ['id' => $id], ['status' => 1]);
+        if ($type == "chat") {
+            return redirect()->to('chat');        
+        }else if($type == "project"){
+            return redirect()->to('member/akun');        
+        }
+    }
+
+    public function seenallnotif()
+    {
+        $model = new GeneralModel();
+        $sess = session();
+        $user_id = $sess->get('user_id');
+        $model->upd('notifikasi', ['id' => $user_id], ['status' => 1]);
+        return true;
     }
 }

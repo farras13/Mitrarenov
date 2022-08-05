@@ -26,21 +26,28 @@ class Home extends BaseController
             $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id")->getResult();
         
             $key = $this->request->getGet();
-        
+            
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
                 $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
                 }
+
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
+                }
+
             }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         $data['alur'] = $this->model->getAll('rules')->getResult();
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
         $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get()->getResult();
@@ -75,13 +82,19 @@ class Home extends BaseController
         }
         // var_dump($temp);die;
         $no = 0;
+        $chat = 0;
         foreach ($temp as $key => $value) {
             if($value->status == 0){
                 $no++;
             }
+            if($value->status == 0 && $value->kategori == "chat"){
+                $chat++;
+            }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
+
         $data['porto'] = $model->select('merawat.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = merawat.created_by')->paginate(12, 'berita');
         $data['pager'] = $model->pager;
 
@@ -107,13 +120,18 @@ class Home extends BaseController
         }
         // var_dump($temp);die;
         $no = 0;
+        $chat = 0;
         foreach ($temp as $key => $value) {
             if($value->status == 0){
                 $no++;
             }
+            if($value->status == 0 && $value->kategori == "chat"){
+                $chat++;
+            }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
 
         return view('porto_detail', $data);
     }
@@ -145,15 +163,20 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
 
         return view("artikel", $data);
     }
@@ -191,16 +214,22 @@ class Home extends BaseController
                 $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
+            $chat = 0;
             $no = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
        
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
+
         return view("artikel-kategori", $data);
     }
 
@@ -223,14 +252,19 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
 
         $data['terkait'] = $model->terkait($tagline->tagline);
         if ($key['cari'] != null) {
@@ -264,14 +298,19 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
 
         return view("promo-detail", $data);
     }
@@ -291,14 +330,19 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
         return view("promo-detail", $data);
     }
@@ -552,15 +596,20 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
 
         $req = $this->request->getVar();
         $type = $req['type'];
@@ -1105,14 +1154,19 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         
         $data['nama'] = $sess->get('user_name');
         $data['phone'] = $sess->get('user_phone');
@@ -2125,15 +2179,21 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
+        
         $data['prov'] = $model->getProv();
         $data['snk'] = $model->getSnk();
         // var_dump($data);die;
@@ -2215,15 +2275,21 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
+
         echo view("tentang-kami", $data);
     }
 
@@ -2243,15 +2309,20 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         $data['lokasi'] = $this->model->getAll('location')->getResult();
         $data['prov'] = $model->getProv();
         echo view("hubungi-kami", $data);
@@ -2412,7 +2483,7 @@ class Home extends BaseController
         helper(['form']);
         $date = date('Y-m-d');
         $profile_image = $file->getName();
-        $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20);
+        $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20).'.'.$file->guessExtension();
         // var_dump($newfilename);die;
         if (!$file->isValid()) {
             return $response = $file->getErrorString();
@@ -2421,7 +2492,7 @@ class Home extends BaseController
         if ($file->move($path, $nameNew)) {
             $response = [
                 'data' => [
-                    "file_name" => $profile_image,
+                    "file_name" => $nameNew,
                     "file_path" => $path,
                 ]
             ];
@@ -2456,13 +2527,19 @@ class Home extends BaseController
         }
         // var_dump($temp);die;
         $no = 0;
+        $chat = 0;
         foreach ($temp as $key => $value) {
             if($value->status == 0){
                 $no++;
             }
+            if($value->status == 0 && $value->kategori == "chat"){
+                $chat++;
+            }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
+
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         $data['projek'] = $mdl->getProjectUserS($sess->get('user_id'), 'done');
         // echo "<pre>"; print_r($data['projekBerjalan']); echo"</pre>";
@@ -2554,14 +2631,19 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         $data['tentang'] = $model->getWhere('footer', ['id' => 1])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         echo view('tentang-mitra', $data);
@@ -2583,14 +2665,19 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         $data['tentang'] = $model->getWhere('footer', ['id' => 7])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         echo view('qa', $data);
@@ -2612,16 +2699,30 @@ class Home extends BaseController
             }
             // var_dump($temp);die;
             $no = 0;
+            $chat = 0;
             foreach ($temp as $key => $value) {
                 if($value->status == 0){
                     $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
                 }
             }
         }
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         $data['tentang'] = $model->getWhere('footer', ['id' => 4])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         echo view('snk', $data);
     }
+
+    public function onclicknotif($id)
+    {
+        $model = new GeneralModel();
+        $model->upd('notifikasi', ['id' => $id], ['status' => 1]);
+        return redirect()->to('chat');        
+    }
+
+    
 }
