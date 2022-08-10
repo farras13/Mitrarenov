@@ -109,7 +109,7 @@ class Chat extends BaseController
         $model = new GeneralModel();
         $sess = session();
         $user_id = $sess->get('user_id');
-        $model->upd('notifikasi', ['id' => $user_id], ['status' => 1]);
+        $model->upd('notifikasi', ['member_id' => $user_id], ['status' => 1]);
         return true;
     }
 }
