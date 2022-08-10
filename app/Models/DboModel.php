@@ -246,10 +246,12 @@ class DboModel extends Model
             GROUP BY chat.project_id
             ORDER BY chat.id DESC")->getResult();
         } else {
-            return $db->query("SELECT chat.id, chat.project_id, DATE_FORMAT(FROM_UNIXTIME(chat.date), '%e %b %Y') AS 'tanggal' , product.paket_name, chat.message, chat.user FROM chat
+            return $db->query("SELECT chat.id, chat.project_id, DATE_FORMAT(FROM_UNIXTIME(chat.date), '%e %b %Y') AS 'tanggal' , product.paket_name, chat.message, chat.user, member_detail.name as admin FROM chat
             JOIN project_data_customer ON chat.project_id = project_data_customer.project_id
+            JOIN projects ON chat.project_id = projects.id
             JOIN projects_detail ON projects_detail.project_id = chat.project_id
             JOIN product on product.id = projects_detail.product_id
+            JOIN member_detail ON member_detail.member_id = projects.id_project_manager 
             WHERE chat.date IN (select MAX(date) FROM chat GROUP BY project_id) AND project_data_customer.member_id = $id
             GROUP BY chat.project_id DESC ORDER BY chat.date desc")->getResult();
         }
@@ -266,7 +268,7 @@ class DboModel extends Model
         $db = db_connect();
         return $db->query("SELECT DISTINCT projects.type, projects.id FROM project_data_customer
                         JOIN projects on project_data_customer.project_id = projects.id 
-                        WHERE projects.id ");
+                        WHERE projects.id = $id ");
     }
 
     public function chat_tukang($id)
@@ -278,11 +280,12 @@ class DboModel extends Model
     public function dchat($id)
     {
         $db = db_connect();
-        return $db->query("SELECT DISTINCT chat.*, member_detail.name as tukang, project_data_customer.name as customer 
+        return $db->query("SELECT DISTINCT chat.*, member_detail.name as tukang, project_data_customer.name as customer, c.name as admin 
                                     FROM chat 
                                     JOIN projects on chat.project_id = projects.id 
                                     LEFT JOIN member_detail ON projects.tukang_id = member_detail.member_id 
                                     LEFT JOIN project_data_customer on chat.project_id = project_data_customer.project_id 
+                                    LEFT JOIN member_detail as c ON projects.id_project_manager = c.member_id 
                                     WHERE chat.project_id = $id
                                 ")->getResult();
     }

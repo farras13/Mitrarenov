@@ -123,28 +123,28 @@
                         </div>
                       </div>
                     </div>
-                    <?php foreach ($notif as $key => $value) { ?>         
-                        <?php if($value->kategori == "chat"){ 
-                            $link=base_url('notif/chat/'.$value->id); 
-                        }else if($value->kategori == "project"){ 
-                            $link=base_url('notif/project/'.$value->id);
-                        }else{ 
-                            $link=base_url('member/akun'); 
-                        } ?>
-                        <div class="notif-list">                    
+                    <div class="notif-list">
+                      <?php foreach ($notif as $key => $value) { ?>
+                          <?php if($value->kategori == "chat"){ 
+                              $link=base_url('notif/chat/'.$value->id); 
+                          }else if($value->kategori == "Project"){ 
+                              $link=base_url('notif/project/'.$value->id);
+                          }else if($value->kategori == "promo"){ 
+                              $link=base_url('notif/promo/'.$value->id); 
+                          } ?>                                   
                           <?php if($value->status == 0){ ?>  
-                            <a class="dropdown-item new-notif" href="<?= $link ?>">
+                              <a class="dropdown-item new-notif" href="<?= $link ?>">
                           <?php }else{ ?>    
-                            <a class="dropdown-item" href="<?= $link ?>">
-                          <?php } ?>               
-                            <p class="font-weight-bold"><?= $value->kategori ?></p>
-                            <p>
-                                <?= $value->message; ?>
-                            </p>
-                            <p class="text-right mb-0"><?= $value->date ?></p>
+                              <a class="dropdown-item" href="<?= $link ?>">
+                          <?php } ?>  
+                              <p class="font-weight-bold"><?= $value->kategori ?></p>
+                              <p>
+                                  <?= $value->message; ?>
+                              </p>
+                              <p class="text-right mb-0"><?= $value->date ?></p>
                           </a>
-                        </div>                                      
                       <?php } ?>
+                    </div>                                            
                   </div>
                 </li>
               <?php } ?>
@@ -562,7 +562,8 @@ function seenallnotif(){
           method: "POST",
           url: "<?php echo base_url('seenallnotif');?>",
           success:function(data){
-            console.log('success');
+            console.log("remove class");
+            $("a").removeClass("new-notif");
           },
         });
 

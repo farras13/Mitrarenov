@@ -43,7 +43,7 @@ class Chat extends BaseController
                     $chat++;
                 }
             }
-        }       
+        }        
 
         $cekUser = $model->getWhere('member', ['id' => $id])->getRow();
         $group = $model->getWhere('usergroup',['id' => $cekUser->usergroup_id])->getRow();
@@ -59,7 +59,7 @@ class Chat extends BaseController
         $data_chat = $dbo->getListChat($group->name, $id);
         $data['list_chat'] = $data_chat;
         if($detail['83rc2kp'] != null){
-            $data_chat = $model->getWhere('chat', ['project_id' => base64_decode($detail['83rc2kp'])])->getResult();
+            $data_chat = $dbo->dchat(base64_decode($detail['83rc2kp']));
             $data['detail_chat'] = $data_chat;
             $data['idlist'] = $detail['83rc2kp']; 
         }else{
@@ -92,7 +92,7 @@ class Chat extends BaseController
         $model->ins('chat', $data);
         return redirect()->to('chat?83rc2kp='.$input['idcht']);
     }
-    
+
     public function onclicknotif($type,$id)
     {
         $model = new GeneralModel();
@@ -101,6 +101,8 @@ class Chat extends BaseController
             return redirect()->to('chat');        
         }else if($type == "project"){
             return redirect()->to('member/akun');        
+        }else if($type == "promo"){
+            return redirect()->to('/');        
         }
     }
 
@@ -110,6 +112,6 @@ class Chat extends BaseController
         $sess = session();
         $user_id = $sess->get('user_id');
         $model->upd('notifikasi', ['member_id' => $user_id], ['status' => 1]);
-        return true;
+        return $user_id;
     }
 }
