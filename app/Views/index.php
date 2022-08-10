@@ -254,7 +254,7 @@
           </div>
         </div>
         <div class="tab-pane fade" id="portofolio">
-          <div class="row mt-5">
+          <div>
             <?php foreach ($merawat as $m) { ?>
               <div class="col-md-3 mb-4">
                 <a href="<?= base_url('portofolio/' . $m->id . '/detail'); ?>" class="gallery-item">

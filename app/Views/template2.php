@@ -124,25 +124,26 @@
                                             </div>
                                         </div>
                                         <?php foreach ($notif as $key => $value) { ?>
-                                            <?php if($value->kategori == "chat"){ 
-                                                $link=base_url('notif/chat/'.$value->id); 
-                                            }else if($value->kategori == "project"){ 
-                                                $link=base_url('notif/project/'.$value->id);
-                                            }else{ 
-                                                $link=base_url('member/akun'); 
-                                            } ?>
-                                            <?php if($value->status == 1){ ?>  
-                                                <a class="dropdown-item new-notif" href="<?= $link ?>">
-                                            <?php }else{ ?>    
-                                                <a class="dropdown-item" href="<?= $link ?>">
-                                            <?php } ?>                                       
+                                                <?php if($value->kategori == "chat"){ 
+                                                    $link=base_url('notif/chat/'.$value->id); 
+                                                }else if($value->kategori == "project"){ 
+                                                    $link=base_url('notif/project/'.$value->id);
+                                                }else{ 
+                                                    $link=base_url('member/akun'); 
+                                                } ?>
+                                            <div class="notif-list">
+                                                <?php if($value->status == 1){ ?>  
+                                                    <a class="dropdown-item new-notif" href="<?= $link ?>">
+                                                <?php }else{ ?>    
+                                                    <a class="dropdown-item" href="<?= $link ?>">
+                                                <?php } ?>                                       
                                                 <p class="font-weight-bold"><?= $value->kategori ?></p>
                                                 <p>
                                                     <?= $value->message; ?>
                                                 </p>
                                                 <p class="text-right mb-0"><?= $value->date ?></p>
-                                            </a>
-                                                                                      
+                                                </a>                                                                                      
+                                            </div>
                                         <?php } ?>
                                     </div>
                                 </li>
