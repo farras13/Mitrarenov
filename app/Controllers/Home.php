@@ -52,14 +52,16 @@ class Home extends BaseController
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
         $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get()->getResult();
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
-        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
+        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'id', 'asc')->getResult();
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
         $data['merawat'] = $this->model->getAll('merawat', 5)->getResult();
         $data['design_rumah'] = $this->model->getAll('design_rumah')->getResult();
         $data['liputan'] = $this->model->getAll('liputan')->getResult();
         $data['partner'] = $this->model->getOrderBy('partner', 'position', 'asc')->getResult();
         $data['lokasi'] = $this->model->getAll('location')->getResult();
-        $data['kategori'] = $this->model->getWhere('category', ['id !=' => 3])->getResult();
+        $data['kategori_old'] = $this->model->getWhere('category', ['id !=' => 3])->getResult();
+        $data['kategori'] = $this->model->getQuery("SELECT category.*, COUNT(product.id) as total, product.paket_name FROM `category` JOIN product ON product.category_id = category.id WHERE category.id != 3 GROUP BY category.id")->getResult();
+        $data['jasa'] = $this->model->getQuery("SELECT product.* FROM `category` JOIN product ON product.category_id = category.id WHERE category.id != 3")->getResult();
         $data['membangun'] = $this->model->getWhere('product', ['category_id' => 1])->getResult();
         $data['renovasi'] = $this->model->getWhere('product', ['category_id' => 2])->getResult();
 

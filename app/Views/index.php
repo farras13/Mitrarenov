@@ -118,9 +118,9 @@
           <div class="row row-sm">
             <?php foreach ($kategori as $k) : ?>
               <div class="col-lg-2 col-md-3 col-6 my-4">
-                <?php if ($k->id != 1 && $k->id != 2) : ?>
-                  <a href="<?= base_url('order?type=' . $k->id . '&jenis=' . $k->category_name) ?>" target="__BLANK">
-                  <?php else : ?>
+                <?php if ($k->total == 1) : ?>
+                  <a href="<?= base_url('order?type=' . $k->id . '&jenis=' . $k->paket_name) ?>" target="__BLANK">
+                  <?php elseif($k->total > 1) : ?>
                     <a href="#modal-detail-category<?= $k->id ?>" data-toggle="modal">
                     <?php endif; ?>
                     <div class="jasa-container">
@@ -398,7 +398,8 @@
   </div>
 </div>
 <!-- Modal Detail Category -->
-<div class="modal fade" id="modal-detail-category1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<?php foreach($kategori as $kt): ?>
+<div class="modal fade" id="modal-detail-category<?= $kt->id ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-category modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
@@ -411,7 +412,7 @@
             <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
           </div>
           <div class="col-md-6 col-8 text-right">
-            <h4 class="mb-0 title-category-modal">Membangun</h4>
+            <h4 class="mb-0 title-category-modal"><?= $kt->category_name ?></h4>
           </div>
         </div>
         <hr class="my-5">
@@ -419,7 +420,7 @@
         <h5 class="sub-title-cat">Pilihan Jasa</h5>
 
         <div class="row">
-          <?php foreach ($membangun as $m) : ?>
+          <?php foreach ($jasa as $m) : if($kt->id == $m->category_id):?>
             <div class="col-md-6 my-4">
               <div class="d-flex align-items-center">
 
@@ -432,12 +433,14 @@
 
               </div>
             </div>
+            <?php endif; ?>
           <?php endforeach; ?>
         </div>
       </div>
     </div>
   </div>
 </div>
+<?php endforeach; ?>
 
 <div class="modal fade" id="modal-detail-category2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-category modal-dialog-centered">
@@ -502,6 +505,32 @@
       }
     });
   });
+  function produkbyKategori(id){
+    save_method = 'update';
+    $('#form')[0].reset(); // reset form on modals
+    <?php header('Content-type: application/json'); ?>
+    //Ajax Load data from ajax
+    $.ajax({
+      url : "<?php echo site_url('public/index.php/book/ajax_edit/')?>/" + id,
+      type: "GET",
+      dataType: "JSON",
+      success: function(data)
+      {
+        console.log(data);
+        $('[name="book_id"]').val(data.book_id);
+        $('[name="book_isbn"]').val(data.book_isbn);
+        $('[name="book_title"]').val(data.book_title);
+        $('[name="book_author"]').val(data.book_author);
+        $('[name="book_category"]').val(data.book_category);
+        $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
+        $('.modal-title').text('Edit Book'); // Set title to Bootstrap modal title
+      },
+      error: function (jqXHR, textStatus, errorThrown){
+        console.log(jqXHR);
+        alert('Error get data from ajax');
+      }
+    });
+  }
 </script>
 <?= $this->endSection() ?>
 <?= $this->endSection() ?>

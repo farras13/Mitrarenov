@@ -20,7 +20,7 @@ class Chat extends BaseController
     public function index()
     {
         $model = new GeneralModel();
-        $mdle = new DboModel();
+        $dbo = new DboModel();
         $sess = session();
         $id = $sess->get('user_id');
         if($id != null){
@@ -56,7 +56,7 @@ class Chat extends BaseController
             $gn = $group->name; 
         }
         $data['group'] = $gn;
-        $data_chat = $mdle->getListChat($group->name, $id);
+        $data_chat = $dbo->getListChat($group->name, $id);
         $data['list_chat'] = $data_chat;
         if($detail['83rc2kp'] != null){
             $data_chat = $model->getWhere('chat', ['project_id' => base64_decode($detail['83rc2kp'])])->getResult();
