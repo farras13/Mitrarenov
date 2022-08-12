@@ -60,6 +60,14 @@ class QaController extends ResourceController
             ];
             return $this->respond($res, 200);
         }
+
+        foreach ($data_chat as $key => $value) {
+            if($value->user == "customer"){
+                $value->bolean_user = TRUE;
+            }else{
+                $value->bolean_user = FALSE;
+            }
+        }
         
         if($group->name == 'User'){ 
             $gn = 'Customer'; 
@@ -81,7 +89,7 @@ class QaController extends ResourceController
         return $this->respond($res, 200);
         
     }
-
+    
     public function listChat()
     {
         $mdl = new GeneralModel();

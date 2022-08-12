@@ -19,14 +19,16 @@ class Home extends ResourceController
         $headers = $this->request->headers();
         // $token = $headers['X-Auth-Token']->getValue();
         $model = new GeneralModel();
-
-        $data = $model->getWhere('category', ['id !=' => 3])->getResult();
+        $db = db_connect();
+        // $data = $model->getWhere('category', ['id !=' => 3])->getResult();
+        $data = $db->query("SELECT category.* FROM category join product on category.id = product.category_id where category.id != 3 group by category.id")->getResult();
 
         $key = $this->request->getGet();
-
-        if (array_key_exists("limit", $key)) {
+    
+        if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
-            $data = $model->getWhere('category', ['id !=' => 3], $limit)->getResult();
+            // $data = $model->getWhere('category', ['id !=' => 3], $limit)->getResult();
+            $data = $db->query("SELECT category.* FROM category join product on category.id = product.category_id where category.id != 3 group by category.id LIMIT $limit")->getResult();
         }
 
         if (!$data) {
