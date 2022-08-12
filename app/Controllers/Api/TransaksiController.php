@@ -772,19 +772,40 @@ class TransaksiController extends ResourceController
 	}
 
 	public function irisnotif()
-	{
-		$md = new GeneralModel();
-		$json_result = file_get_contents('php://input');
-		$result = json_decode($json_result, 'true');
-		$ins = array(
-			'reference_no' => $result['reference_no'],
-			'amount' => $result['amount'],
-			'status' => $result['status'],
-			'updated_at' => strtotime($result['updated_at']),
-		);
-		$md->insb('history_midtrans', $ins);
-		// $md->upd("pengajuan_finance", ["no_refrens " => $result['reference_no']], $update);
-	}
+    {
+        $md = new GeneralModel();
+        $json_result = file_get_contents('php://input');
+        $result = json_decode($json_result, 'true');
+        $ins = array(
+            'reference_no' => $result['reference_no'], 
+            'amount' => $result['amount'], 
+            'status' => $result['status'], 
+            'updated_at' => strtotime($result['updated_at']), 
+        );
+        $md->insb('history_midtrans', $ins);
+		$ho = $md->getWhere('pengajuan_ho', ['no_refrens' => $result['reference_no']])->getRow();
+		$finance = $md->getWhere('pengajuan_finance', ['no_refrens' => $result['reference_no']])->getRow();
+
+		if ($result['status'] == "completed") {
+			$status = 1;
+		} elseif ($result['status'] == "rejected") {
+			$status = 3;
+		} elseif ($result['status'] == "queued") {
+			$status = 0;
+		}
+		
+		$update = [
+			'status' => $status
+		];
+
+		if($ho != null){			
+			$md->upd("pengajuan_ho", ["no_refrens " => $result['reference_no']], $update);
+		}
+
+		if($finance != null){
+			$md->upd("pengajuan_finance", ["no_refrens " => $result['reference_no']], $update);
+		}
+    }
 
 	public function send_notif($title, $desc, $id_fcm, $data)
 	{
