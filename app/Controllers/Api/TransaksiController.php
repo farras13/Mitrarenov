@@ -662,10 +662,8 @@ class TransaksiController extends ResourceController
 	public function paymentstatus()
 	{
 		$m = new GeneralModel();
-		$md = new GeneralModel();
-
 		$Midtranspayment = new Midtranspayment();
-		$notif = $this->midtranspayment->notification();
+		$notif = $Midtranspayment->notification();
 		//$notif = file_get_contents('php://input');
 
 		$transactionstatus = $notif->transaction_status;
