@@ -177,7 +177,13 @@ $routes->group('api', function ($routes) {
                 $routes->post('/', 'Api\QaController::detail_chat');
                 $routes->get('list', 'Api\QaController::listChat');
                 $routes->post('kirim', 'Api\QaController::store_chat');
-            });           
+            });  
+            
+            $routes->group('cctv', function ($routes) {
+                $routes->get('token', 'Api\Cctv::accessToken');
+                $routes->get('list', 'Api\QaController::listChat');
+                $routes->post('kirim', 'Api\QaController::store_chat');
+            });
         });
     });
 });
