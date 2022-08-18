@@ -24,13 +24,13 @@ class Chat extends BaseController
         $sess = session();
         $id = $sess->get('user_id');
         if($id != null){
-            $temp = $model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id")->getResult();
+            $temp = $model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
             $detail = $this->request->getVar();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
+                $temp = $model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -43,7 +43,8 @@ class Chat extends BaseController
                     $chat++;
                 }
             }
-        }        
+        }
+        
 
         $cekUser = $model->getWhere('member', ['id' => $id])->getRow();
         $group = $model->getWhere('usergroup',['id' => $cekUser->usergroup_id])->getRow();

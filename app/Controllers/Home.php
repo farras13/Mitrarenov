@@ -23,13 +23,13 @@ class Home extends BaseController
         $sess = session();
         $id = $sess->get('user_id');
         if ($id != null) {
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
         
             $key = $this->request->getGet();
             
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -52,7 +52,7 @@ class Home extends BaseController
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
         $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get()->getResult();
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
-        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'id', 'asc')->getResult();
+        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
         $data['merawat'] = $this->model->getAll('merawat', 5)->getResult();
         $data['design_rumah'] = $this->model->getAll('design_rumah')->getResult();
@@ -75,12 +75,12 @@ class Home extends BaseController
         $sess = session();
         $id = $sess->get('user_id');
         
-        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id")->getResult();
+        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
         $key = $this->request->getGet();
     
         if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
         }
         // var_dump($temp);die;
         $no = 0;
@@ -113,12 +113,12 @@ class Home extends BaseController
         $sess = session();
         $id = $sess->get('user_id');
         
-        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id")->getResult();
+        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
         $key = $this->request->getGet();
     
         if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
         }
         // var_dump($temp);die;
         $no = 0;
@@ -156,12 +156,12 @@ class Home extends BaseController
         $sess = session();
         $id = $sess->get('user_id');
         if($id != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -208,12 +208,12 @@ class Home extends BaseController
         $sess = session();
         $id = $sess->get('user_id');
         if($id != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $chat = 0;
@@ -245,12 +245,12 @@ class Home extends BaseController
         $sess = session();
         $idn = $sess->get('user_id');
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -291,12 +291,12 @@ class Home extends BaseController
         $idn = $sess->get('user_id');
         
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -323,12 +323,12 @@ class Home extends BaseController
         $idn = $sess->get('user_id');
         
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -589,12 +589,12 @@ class Home extends BaseController
         $sess = session();
         $idn = $sess->get('user_id');
         if ($idn != null) {
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -623,24 +623,16 @@ class Home extends BaseController
         $data['email'] = $sess->get('user_email');
         $data['tipe_rumah'] = $this->model->getAll('tipe_rumah')->getResult();
 
-        $cat = $this->model->getWhere('category', ['category_name' => $jenis])->getRow();
-        if ($cat == null) {
-            $produk = $this->model->getWhere('product', ['paket_name' => $jenis])->getRow();
-        } else {
-            $produk = $this->model->getWhere('product', ['category_id' => $cat->id])->getRow();
-        }
-
+        $produk = $this->model->getWhere('product', ['category_id' => $type])->getRow();
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
-        if ($spek == null) {
-            $spek = $this->model->getWhere('product_price', ['product_id' => $produk->category_id])->getResult();
-            if ($spek == null) {
-                $spek = $this->model->getWhere('product', ['paket_name' => $jenis])->getResult();
-                foreach ($spek as $key => $value) {
-                    $value->type_price = $value->paket_name;
-                    $value->product_price = $value->start_from_text;
-                    $value->spesifikasi = $value->spesifikasi_renov;
-                }
-            }
+        
+        if ($spek == null) {            
+            $spek = $this->model->getWhere('product', ['paket_name' => $jenis])->getResult();
+            foreach ($spek as $key => $value) {
+                $value->type_price = $value->paket_name;
+                $value->product_price = $value->start_from_text;
+                $value->spesifikasi = $value->spesifikasi_renov;
+            }            
         }
 
         $data['spek'] = $spek;
@@ -798,7 +790,7 @@ class Home extends BaseController
         ];
 
         $idd = $this->model->lastId('projects_desain')->getRow()->id;
-
+        
         if ($temp_produk == null) {
             $query_cat = $this->model->getWhere('category', ['category_name' => $jenis_order])->getRow();
             $temp_produk->id = $query_cat->id;
@@ -1147,12 +1139,12 @@ class Home extends BaseController
         $idn = $sess->get('user_id');
         
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -2172,12 +2164,12 @@ class Home extends BaseController
         $sess = session();
         $idn = $sess->get('user_id');
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -2268,12 +2260,12 @@ class Home extends BaseController
         $sess = session();
         $idn = $sess->get('user_id');
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -2302,12 +2294,12 @@ class Home extends BaseController
         $sess = session();
         $idn = $sess->get('user_id');
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -2385,12 +2377,12 @@ class Home extends BaseController
         }
 
         $id = $sess->get('user_id');
-        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id")->getResult();
+        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
         $key = $this->request->getGet();
     
         if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id LIMIT $limit")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
         }
         // var_dump($temp);die;
         $no = 0;
@@ -2414,12 +2406,12 @@ class Home extends BaseController
             return redirect()->to('/');
         }
         
-        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
         $key = $this->request->getGet();
     
         if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
         }
         // var_dump($temp);die;
         $no = 0;
@@ -2520,12 +2512,12 @@ class Home extends BaseController
         
         $idn = $sess->get('user_id');
         
-        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+        $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
         $key = $this->request->getGet();
     
         if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
         }
         // var_dump($temp);die;
         $no = 0;
@@ -2624,12 +2616,12 @@ class Home extends BaseController
         $idn = $sess->get('user_id');
         
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -2658,12 +2650,12 @@ class Home extends BaseController
         $idn = $sess->get('user_id');
         
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -2692,12 +2684,12 @@ class Home extends BaseController
         $idn = $sess->get('user_id');
         
         if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;

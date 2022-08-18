@@ -23,12 +23,12 @@ class NotifikasiController extends ResourceController
         $model = new GeneralModel();
       
         $user = $model->getWhere('token_login', ['token' => $token])->getRow();
-        $temp = $model->getQuery("SELECT id, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE id_member = $user->member_id  OR tipe = 'global'")->getResult();
+        $temp = $model->getQuery("SELECT id, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE id_member = $user->member_id  OR tipe = 'global' ORDER BY id desc")->getResult();
         $key = $this->request->getGet();
     
         if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
-            $temp = $model->getQuery("SELECT id, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE id_member = $user->member_id  OR tipe = 'global' LIMIT $limit")->getResult();
+            $temp = $model->getQuery("SELECT id, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE id_member = $user->member_id  OR tipe = 'global' ORDER BY id desc LIMIT $limit")->getResult();
             for ($i=0; $i < $limit; $i++) { 
                 $temp[0]->title = "Mitrarenov";       
             }

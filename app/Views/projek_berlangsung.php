@@ -81,7 +81,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Tambah</p>
-                            <p class="text-23 mb-0"><?= $pb->addenum[1]->ket_enum != '' ? $pb->addenum[1]->ket_enum : "-"; ?></p>
+                            <p class="text-23 mb-0"><?= $pb->tambah[0]->ket_enum != '' ? $pb->tambah[0]->ket_enum : "-"; ?></p>
                             <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[1]->total, 0,',','.'); ?></p> -->
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Kurang</p>
-                            <p class="text-23 mb-0"><?= $pb->addenum[0]->ket_enum != '' ? $pb->addenum[0]->ket_enum : "-"; ?></p>
+                            <p class="text-23 mb-0"><?= $pb->kurang[0]->ket_enum != '' ? $pb->kurang[0]->ket_enum : "-"; ?></p>
                             <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[0]->total, 0,',','.'); ?></p> -->
                         </div>
                     </div>

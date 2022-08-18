@@ -5,49 +5,49 @@
 <div class="content-wrapper">
   <div class="main-banner position-relative">
     <div class="top-banner">
-      <?php foreach ($promo as $p) : if ($p->kategori == 2) : ?>
-          <div class="slick-slide slide-item">
-            <div class="banner-top-container">
-              <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
-              <div class="slide-content">
-                <div class="discount-badge">
-                  Diskon <?= $p->promo ?>%
-                </div>
-                <div class="slide-text">
-                  <div class="row">
-                    <div class="col-md-8">
-                      <h1><?= $p->title ?></h1>
-                      <?php $date = new DateTime($p->expired); ?>
-                      <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
-                    </div>
-
+      <?php foreach ($promo as $p) : if($p->kategori == 2):?>
+        <div class="slick-slide slide-item">
+          <div class="banner-top-container">
+            <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
+            <div class="slide-content">
+              <div class="discount-badge">
+                Diskon <?= $p->promo ?>%
+              </div>
+              <div class="slide-text">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h1><?= $p->title ?></h1>
+                    <?php $date = new DateTime($p->expired); ?>
+                    <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
                   </div>
+
                 </div>
               </div>
             </div>
           </div>
-        <?php else : ?>
-          <div class="slick-slide slide-item">
-            <div class="banner-top-container">
-              <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
-              <div class="slide-content">
-                <!-- <div class="discount-badge">
+        </div>
+      <?php else: ?>
+        <div class="slick-slide slide-item">
+          <div class="banner-top-container">
+            <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
+            <div class="slide-content">
+              <!-- <div class="discount-badge">
                 Diskon <?= $p->promo ?>%
               </div> -->
-                <div class="slide-text">
-                  <div class="row">
-                    <div class="col-md-8">
-                      <h1><?= $p->title ?></h1>
-                      <!-- <?php $date = new DateTime($p->expired); ?>
+              <div class="slide-text">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h1><?= $p->title ?></h1>
+                    <!-- <?php $date = new DateTime($p->expired); ?>
                     <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p> -->
-                    </div>
-
                   </div>
+
                 </div>
               </div>
             </div>
           </div>
-        <?php endif; ?>
+        </div>
+      <?php endif; ?>
       <?php endforeach; ?>
 
     </div>
@@ -61,8 +61,7 @@
     </div>
     <div class="section-inner">
       <div class="row align-items-center">
-        <?php $no = 1;
-        foreach ($alur as $a) { ?>
+        <?php $no=1; foreach($alur as $a){ ?>
           <div class="col-md-6 my-4">
             <div class="d-flex align-items-center">
               <div class="icon-how">
@@ -71,14 +70,13 @@
               <div class="w-100 pl-4">
                 <h4><span><?= $no; ?>.</span> <?= $a->type; ?></h4>
                 <p class="mb-0">
-                  <?= $a->description; ?>
+                 <?= $a->description; ?>
                 </p>
               </div>
             </div>
           </div>
-
-        <?php $no++;
-        } ?>
+         
+        <?php $no++; } ?>
       </div>
     </div>
   </div>
@@ -89,7 +87,7 @@
     </h3>
     <div class="section-inner">
       <div class="row">
-        <?php foreach ($keunggulan as $k) { ?>
+        <?php foreach($keunggulan as $k){ ?>
           <div class="col-md-4 col-6 text-center">
             <div class="image-keunggulan mb-4">
               <img src="<?= $k->image ?>" class="img-fluid" alt="">
@@ -254,24 +252,24 @@
           </div>
         </div>
         <div class="tab-pane fade" id="portofolio">
-          <div>
-            <?php foreach ($merawat as $m) { ?>
-              <div class="col-md-3 mb-4">
-                <a href="<?= base_url('portofolio/' . $m->id . '/detail'); ?>" class="gallery-item">
-                  <img src="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
-                  <div class="gallery-cnt">
+          <div class="row">
+             <?php foreach ($merawat as $m) { ?>
+            <div class="col-md-3 mb-4" >
+              <a href="<?= base_url('portofolio/'.$m->id.'/detail'); ?>" class="gallery-item">
+                <img src="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
+                <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
-                  </div>
-                </a>
-              </div>
+                </div>
+              </a>
+            </div>
             <?php } ?>
           </div>
           <div class="text-center mt-4">
             <a href="<?= base_url('portofolio'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
           </div>
         </div>
-
+       
         <div class="tab-pane fade" id="desain_rumah">
           <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
@@ -302,7 +300,7 @@
       <?php foreach ($liputan as $lp) { ?>
         <div class="client-item">
           <a href="<?= $lp->judul; ?>" target="_blank"> <img src="<?= $lp->image; ?>" class="img-fluid" alt=""></a>
-        </div>
+        </div>      
       <?php } ?>
     </div>
     <div class="btn-slide liputan-prev"><i class="ico ico-prev"></i></div>
@@ -409,7 +407,7 @@
 
         <div class="row align-items-center">
           <div class="col-md-6 col-4">
-            <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-01.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= $kt->image ?>" class="img-fluid" alt="">
           </div>
           <div class="col-md-6 col-8 text-right">
             <h4 class="mb-0 title-category-modal"><?= $kt->category_name ?></h4>
@@ -463,21 +461,21 @@
         <h5 class="sub-title-cat">Pilihan Jasa</h5>
 
         <div class="row">
-          <?php foreach ($renovasi as $rn) : ?>
+          <?php foreach($renovasi as $rn): ?>
             <div class="col-md-6 my-4">
-              <div class="d-flex align-items-center">
-                <div class="cat-img-i">
-                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $rn->image_icon ?>" class="img-fluid" alt="">
+                <div class="d-flex align-items-center">
+                  <div class="cat-img-i">
+                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $rn->image_icon ?>" class="img-fluid" alt="">
+                  </div>
+                  <div class="w-100 text-19 pl-3">
+                    <a href="<?= base_url('order?type='.$rn->category_id.'&jenis='.$rn->paket_name) ?>" target="_blank">
+                      <?= $rn->paket_name ?>
+                   </a>
+                  </div>
                 </div>
-                <div class="w-100 text-19 pl-3">
-                  <a href="<?= base_url('order?type=' . $rn->category_id . '&jenis=' . $rn->paket_name) ?>" target="_blank">
-                    <?= $rn->paket_name ?>
-                  </a>
-                </div>
-              </div>
             </div>
           <?php endforeach; ?>
-
+         
         </div>
       </div>
     </div>
@@ -485,52 +483,26 @@
 </div>
 
 <?= $this->section('script') ?>
-<script>
-  $(document).ready(function() {
-    $(".col-gallery").slice(0, 8).show();
-    $("#morePekerjaan").on('click', function(e) {
-      e.preventDefault();
-      $(".col-gallery:hidden").slice(0, 8).slideDown();
-      if ($(".col-gallery:hidden").length == 0) {
-        $("#morePekerjaan").fadeOut('slow');
-      }
+  <script>
+    $(document).ready(function() {
+      $(".col-gallery").slice(0, 8).show();
+      $("#morePekerjaan").on('click', function(e) {
+        e.preventDefault();
+        $(".col-gallery:hidden").slice(0, 8).slideDown();
+        if ($(".col-gallery:hidden").length == 0) {
+          $("#morePekerjaan").fadeOut('slow');
+        }
+      });
+     
+      $(".col-gallery-desain").slice(0, 8).show();
+      $("#moreDesain").on('click', function(e) {
+        e.preventDefault();
+        $(".col-gallery-desain:hidden").slice(0, 8).slideDown();
+        if ($(".col-gallery-desain:hidden").length == 0) {
+          $("#moreDesain").fadeOut('slow');
+        }
+      });
     });
-
-    $(".col-gallery-desain").slice(0, 8).show();
-    $("#moreDesain").on('click', function(e) {
-      e.preventDefault();
-      $(".col-gallery-desain:hidden").slice(0, 8).slideDown();
-      if ($(".col-gallery-desain:hidden").length == 0) {
-        $("#moreDesain").fadeOut('slow');
-      }
-    });
-  });
-  function produkbyKategori(id){
-    save_method = 'update';
-    $('#form')[0].reset(); // reset form on modals
-    <?php header('Content-type: application/json'); ?>
-    //Ajax Load data from ajax
-    $.ajax({
-      url : "<?php echo site_url('public/index.php/book/ajax_edit/')?>/" + id,
-      type: "GET",
-      dataType: "JSON",
-      success: function(data)
-      {
-        console.log(data);
-        $('[name="book_id"]').val(data.book_id);
-        $('[name="book_isbn"]').val(data.book_isbn);
-        $('[name="book_title"]').val(data.book_title);
-        $('[name="book_author"]').val(data.book_author);
-        $('[name="book_category"]').val(data.book_category);
-        $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
-        $('.modal-title').text('Edit Book'); // Set title to Bootstrap modal title
-      },
-      error: function (jqXHR, textStatus, errorThrown){
-        console.log(jqXHR);
-        alert('Error get data from ajax');
-      }
-    });
-  }
-</script>
+  </script>
 <?= $this->endSection() ?>
 <?= $this->endSection() ?>

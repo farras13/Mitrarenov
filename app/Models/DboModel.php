@@ -84,10 +84,12 @@ class DboModel extends Model
         }
         foreach ($data as $key => $value) {
 
-            $value->addenum = $db->query("SELECT sum(biaya) as total, keterangan as ket_enum FROM `projects_addendum`  
-                WHERE STATUS = 'disetujui' AND project_id = $value->id
-                GROUP BY tipe
-                ORDER BY `projects_addendum`.`tipe`  DESC")->getResult();
+            $value->tambah = $db->query("SELECT sum(biaya) as total, keterangan as ket_enum, tipe FROM `projects_addendum`  
+                WHERE STATUS = 'disetujui' AND project_id = $value->id and tipe = 0
+                ORDER BY `projects_addendum`.`id`  DESC")->getResult();
+            $value->kurang = $db->query("SELECT sum(biaya) as total, keterangan as ket_enum, tipe FROM `projects_addendum`  
+                WHERE STATUS = 'disetujui' AND project_id = $value->id and tipe = 1
+                ORDER BY `projects_addendum`.`id`  DESC")->getResult();
         }
 
 
@@ -114,10 +116,11 @@ class DboModel extends Model
             WHERE projects.id = $id
             ORDER BY id DESC")->getRow();
 
-        $addenum = $db->query("SELECT keterangan, tipe FROM `projects_addendum`  
-            WHERE STATUS = 'disetujui' AND project_id = $id
-            GROUP BY tipe
-            ORDER BY `projects_addendum`.`id` DESC")->getResult();
+            $addenum = $db->query("SELECT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis FROM `projects_addendum` as a
+                JOIN projects_pembayaran as b on a.project_id = b.project_id
+                WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan'
+                GROUP BY a.tipe
+                ORDER BY a.`id` DESC")->getResult();
 
         $customer = $db->query("SELECT member_detail.name, project_data_customer.phone, t.name as 'pic', t.telephone AS 'pic_telp' ,projects.luas, projects.metode_payment
             FROM project_data_customer 
