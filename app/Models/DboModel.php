@@ -134,9 +134,12 @@ class DboModel extends Model
             ORDER BY projects_update.id DESC
             LIMIT 1")->getRow();
 
-        $termin = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
+        $termin_unpaid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
             FROM projects_pembayaran
-            WHERE project_id = $id AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00")->getResult();
+            WHERE project_id = $id AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status = 'belum dibayar'")->getResult();
+        $termin_paid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
+            FROM projects_pembayaran
+            WHERE project_id = $id AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status != 'belum dibayar'")->getResult();
 
         //get
         $nm = substr($sk->name, 0, 3);
@@ -147,25 +150,47 @@ class DboModel extends Model
         $nsk = $sk->id . '/' . $nm . '/' . $bln . '/' . $sk->tahun;
         // $projek->no_sk = $nsk;
 
-        if ($termin == null) {
-            $termin = [null];
+        if ($termin_paid == null) {
+            $termin_paid = [null];
         } else {
             $a=1;
-            foreach ($termin as $kt => $t) {
-                $akhir = substr($termin[$kt+1]->nomor_invoice,5, 4);
+            foreach ($termin_paid as $key => $tp) {
+                $akhir = substr($termin_paid[$key+1]->nomor_invoice,5, 4);
+                $awal = substr($tp->nomor_invoice,5, 4);
+                $selisih = (int)$akhir - (int)$awal;
+                $tp->biaya_tambahan = '-';
+                $tp->title = "Pembayaran Termin " . $tp->keterangan;
+                if($selisih != 1){
+                    unset($termin_paid[$key+1]);
+                }
+                if($a > 7){
+                    unset($termin_paid[$key]);
+                }
+                $a++;
+            }
+        }
+
+        if ($termin_unpaid == null) {
+            $termin_unpaid = [null];
+        } else {
+            $a=1;
+            foreach ($termin_unpaid as $kt => $t) {
+                $akhir = substr($termin_unpaid[$kt+1]->nomor_invoice,5, 4);
                 $awal = substr($t->nomor_invoice,5, 4);
                 $selisih = (int)$akhir - (int)$awal;
                 $t->biaya_tambahan = '-';
                 $t->title = "Pembayaran Termin " . $t->keterangan;
                 if($selisih != 1){
-                    unset($termin[$kt+1]);
+                    unset($termin_unpaid[$kt+1]);
                 }
                 if($a > 7){
-                    unset($termin[$kt]);
+                    unset($termin_unpaid[$kt]);
                 }
                 $a++;
             }
         }
+
+        $termin = ['unpaid' => $termin_unpaid, 'paid' => $termin_paid ];
 
         if ($addenum == null) {
             $addenum = null;
