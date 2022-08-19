@@ -74,6 +74,7 @@
                                         <input type="hidden" id="order" name="tipe_order">
                                         <input type="hidden" id="lang" name="lat">
                                         <input type="hidden" id="long" name="long">
+                                        <input type="hidden" id="dataspek" name="spek">
                                         <input type="hidden" id="jenis" name="jenis_order" value="<?= $jenis ?>">
                                         <div class="collapse show" id="designOrder">
                                             <div class="mb-5">
@@ -82,7 +83,7 @@
                                                 <div class="type-rumah">
                                                     <?php foreach ($tipe_rumah as $tr) : ?>
                                                         <div class="custom-control custom-radio type-radio">
-                                                            <input type="radio" id="type<?= $tr->id ?>" name="customRadioInline" class="custom-control-input">
+                                                            <input type="radio" id="type<?= $tr->id ?>" name="tiperumah" class="custom-control-input">
                                                             <label class="custom-control-label" for="type<?= $tr->id ?>">
                                                                 <?= $tr->type ?>
                                                             </label>
@@ -90,70 +91,6 @@
                                                     <?php endforeach; ?>
                                                 </div>
                                             </div>
-                                            <!-- <div class="mb-5">
-                                                <p class="text-22 text-primary font-weight-bold">Denah Rumah</p>
-                                                <div class="row align-items-center">
-                                                    <div class="col-sm-6 mb-4">
-                                                        <div class="images-upload">
-                                                            <input type="file" id="denahRumah" name="denah" hidden="" accept="image/*">
-                                                            <label for="denahRumah" class="btn box-label">
-                                                                <div class="label-inner">
-                                                                    <i class="ico ico-picture"></i>
-                                                                    <div class="mt-2">Upload Denah Rumah</div>
-                                                                </div>
-                                                                <div class="img-holder" data-image="denahRumah"></div>
-                                                            </label>
-                                                        </div>
-                                                        <div class="text-grey mt-3"><i>*Format ( JPG/JPEG/PNG )</i></div>
-                                                    </div>
-                                                    <div class="col-sm-6 mb-4">
-                                                        <div class="row mb-4">
-                                                            <div class="col-6 text-grey">
-                                                                Ruang Keluarga
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="d-flex">
-                                                                    <div class="pr-3">:</div>
-                                                                    <div style="width: 68px;"><input type="text" class="form-denah" name="ruang_keluarga"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-4">
-                                                            <div class="col-6 text-grey">
-                                                                Kamar Tidur
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="d-flex">
-                                                                    <div class="pr-3">:</div>
-                                                                    <div style="width: 68px;"><input type="text" class="form-denah" name="kamar_tidur"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-4">
-                                                            <div class="col-6 text-grey">
-                                                                Kamar Mandi
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="d-flex">
-                                                                    <div class="pr-3">:</div>
-                                                                    <div style="width: 68px;"><input type="text" class="form-denah" name="kamar_mandi"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-4">
-                                                            <div class="col-6 text-grey">
-                                                                Dapur
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="d-flex">
-                                                                    <div class="pr-3">:</div>
-                                                                    <div style="width: 68px;"><input type="text" class="form-denah" name="dapur"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
                                         </div>
                                         <div class="mb-5">
                                             <p class="text-22 text-primary font-weight-bold">Detail Bangunan</p>
@@ -203,7 +140,7 @@
                                                         <?php $no = 0;
                                                         $bnyk = count($spek);
                                                         foreach ($spek as $s) : ?>
-                                                            <option value="spesifikasi<?= $no ?>" data-harga="<?= $s->product_price ?>">Spesifikasi <?= ucfirst($s->type_price); ?></option>
+                                                            <option value="spesifikasi<?= $no ?>" data-spekid="<?= $s->id ?>" data-harga="<?= $s->product_price ?>">Spesifikasi <?= ucfirst($s->type_price); ?></option>
                                                         <?php $no++;
                                                         endforeach; ?>
                                                     </select>
@@ -325,9 +262,10 @@
     var type = url.searchParams.get("type");
     var awal = document.getElementById("lang");
     var akhir = document.getElementById("long");
-    var link_desain = base_url + '/order/desain';
+    var link_order = base_url + '/order/add';
+    // var link_desain = base_url + '/order/desain';
+    // var link_nodesain = base_url + '/order/no_desain';
     var order = document.getElementById("order");
-    var link_nodesain = base_url + '/order/no_desain';
     var action; 
     
     const formatRupiah = (money) => {
@@ -512,8 +450,10 @@
             var data = e.params.data.element;
             $('.spec-lst').hide();
             $('.spec-lst[data-spec=' + data.value).show();
-           
+            
             nharga = $('option:selected', this).attr('data-harga');
+            const idspek = $('option:selected', this).attr('data-spekid');
+            
             console.log(nharga);
             nluas = $("#luasbang").val();
             if (nluas == null || nluas == 0) {
@@ -521,6 +461,7 @@
             }
             var total = nluas * nharga;
             $("#totalHarga").val(total);
+            $("#dataspek").val(idspek);
             $('#nharga').text(': ' + formatRupiah(total));
             
       });;
@@ -533,11 +474,11 @@
             $('.nav-non-design').addClass('active');
             $('#designOrder').collapse('hide');
             order.value = "nondesain";          
-            action = link_nodesain;
+            action = link_order;
         } else {
             $('.nav-design').addClass('active');
             order.value = "desain";
-            action = link_desain;
+            action = link_order;
         }
     });
     $('.nav-design').click(function (e) {
@@ -545,17 +486,14 @@
       $('.nav-tab-rounded .nav-link').removeClass('active');
       $(this).addClass('active');
       $('#designOrder').collapse('show')
-      action = link_desain;
-
+      action = link_order;
     })
     $('.nav-non-design').click(function (e) {
       e.preventDefault();
       $('.nav-tab-rounded .nav-link').removeClass('active');
       $(this).addClass('active');
       $('#designOrder').collapse('hide')
-      action = link_nodesain;
-
-
+      action = link_order;
     })
    
 

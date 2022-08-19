@@ -10,7 +10,7 @@
         <?php foreach($porto as $p){ ?>
             <div class="col-md-3 mb-4">
                 <a href="<?= base_url('portofolio/'.$p["id"].'/detail'); ?>" class="gallery-item">
-                <img src="<?= base_url('public/images/merawat') . '/' . $p["image"] ?>" class="img-fluid" alt="">
+                <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/thumbs/<?= $p["image"] ?>" class="img-fluid" alt="">
                 <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $p["title"] ?></h5>
                     <p class="mb-0">diliput oleh <?= $p["penulis"]; ?></p>

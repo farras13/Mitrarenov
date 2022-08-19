@@ -16,7 +16,7 @@
                 </div>
                 <?php endforeach; else: ?>
                     <div class="slider-item">
-                    <img src="<?= base_url('public/main/images/gambar-belum-update.png') ?>" class="img-fluid" alt="">
+                    <img src="<?= base_url('public/main/images/gambar-blum-update.png') ?>" class="img-fluid" alt="">
                     <div class="ket-project">
                         Ket. Foto : -
                     </div>
@@ -80,7 +80,7 @@
                             <i class="ico ico-plus-circle"></i>
                         </div>
                         <div class="w-100 pl-3">
-                            <p class="text-grey mb-0">Pekerjaan Tambah</p>
+                            <p class="text-grey mb-0">Pekerjaan Tambah</p>                            
                             <p class="text-23 mb-0"><?= $pb->tambah[0]->ket_enum != '' ? $pb->tambah[0]->ket_enum : "-"; ?></p>
                             <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[1]->total, 0,',','.'); ?></p> -->
                         </div>

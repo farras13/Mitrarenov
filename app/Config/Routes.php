@@ -60,12 +60,13 @@ $routes->get('tentang-kami', 'Home::tentang_kami');
 $routes->get('simulasi-kpr', 'Home::simulasi');
 
 // $routes->group('',['filter' => 'auth'], function ($routes) {
-    $routes->get('order', 'Home::order');
+    $routes->get('order', 'Order::index');
     $routes->post('kategori', 'Home::getKategori');
     $routes->post('getHarga', 'Home::getHarga');
+    $routes->post('order/add', 'Order::order_ins');
     $routes->post('order/desain', 'Home::order_desain');
     $routes->post('order/no_desain', 'Home::order_non');
-    $routes->get('order/sukses', 'Home::order_sukses');
+    $routes->get('order/sukses', 'Order::order_sukses');
     
     $routes->get('chat', 'Chat::index');
     $routes->post('chat-kirim', 'Chat::kirim');

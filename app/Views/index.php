@@ -256,7 +256,7 @@
              <?php foreach ($merawat as $m) { ?>
             <div class="col-md-3 mb-4" >
               <a href="<?= base_url('portofolio/'.$m->id.'/detail'); ?>" class="gallery-item">
-                <img src="<?= base_url('public/images/merawat') . '/' . $m->image ?>" class="img-fluid" alt="">
+                <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $m->image ?>" class="img-fluid" alt="">
                 <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>

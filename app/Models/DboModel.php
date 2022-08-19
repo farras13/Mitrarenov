@@ -33,8 +33,6 @@ class DboModel extends Model
         return $json;
     }
 
-
-
     public function updateData($t, $id, $data)
     {
         return $this->db->table($t)->where($id)->update($data);
@@ -97,8 +95,6 @@ class DboModel extends Model
         return $data;
     }
 
-
-
     public function getProjectUserD($id)
     {
         $db = db_connect();
@@ -116,7 +112,7 @@ class DboModel extends Model
             WHERE projects.id = $id
             ORDER BY id DESC")->getRow();
 
-            $addenum = $db->query("SELECT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis FROM `projects_addendum` as a
+        $addenum = $db->query("SELECT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis FROM `projects_addendum` as a
                 JOIN projects_pembayaran as b on a.project_id = b.project_id
                 WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan'
                 GROUP BY a.tipe
@@ -129,7 +125,7 @@ class DboModel extends Model
             JOIN member_detail as t on t.member_id = projects.tukang_id
             WHERE project_id = $id limit 1")->getResult();
 
-        $projek = $db->query("SELECT projects.id, projects.nomor_kontrak as no_sk, projects.project_number, projects.presentase_progress, product.paket_name, projects_update.tanggal,projects_persetujuan.dokumen, projects_persetujuan.dokumen_rab  FROM projects
+        $projek = $db->query("SELECT projects.id, projects.nomor_kontrak as no_sk, projects_persetujuan.rab, projects.project_number, projects.presentase_progress, product.paket_name, projects_update.tanggal,projects_persetujuan.dokumen, projects_persetujuan.dokumen_rab  FROM projects
             JOIN projects_detail on projects_detail.project_id = projects.id
             JOIN product on product.id = projects_detail.product_id
             LEFT JOIN projects_update on projects_update.project_id = projects.id
@@ -138,9 +134,9 @@ class DboModel extends Model
             ORDER BY projects_update.id DESC
             LIMIT 1")->getRow();
 
-        $termin = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(ADDDATE(DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%Y-%m-%d'), INTERVAL 7 DAY), '%e %b %Y') as jatuh_tempo, status
+        $termin = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
             FROM projects_pembayaran
-            WHERE project_id = $id")->getResult();
+            WHERE project_id = $id AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00")->getResult();
 
         //get
         $nm = substr($sk->name, 0, 3);
@@ -152,12 +148,22 @@ class DboModel extends Model
         // $projek->no_sk = $nsk;
 
         if ($termin == null) {
-            $termin = [["title" => 'Hubungi Admin untuk pembuatan invoice']];
+            $termin = [null];
         } else {
-            $a = 1;
-            foreach ($termin as $t) {
+            $a=1;
+            foreach ($termin as $kt => $t) {
+                $akhir = substr($termin[$kt+1]->nomor_invoice,5, 4);
+                $awal = substr($t->nomor_invoice,5, 4);
+                $selisih = (int)$akhir - (int)$awal;
                 $t->biaya_tambahan = '-';
-                $t->title = "Pembayaran Termin " . $a++;
+                $t->title = "Pembayaran Termin " . $t->keterangan;
+                if($selisih != 1){
+                    unset($termin[$kt+1]);
+                }
+                if($a > 7){
+                    unset($termin[$kt]);
+                }
+                $a++;
             }
         }
 
