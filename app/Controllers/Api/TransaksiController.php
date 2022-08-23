@@ -519,8 +519,12 @@ class TransaksiController extends ResourceController
 			$trans = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
 			
 		}else{
+			if($cek->status == "expire" || $cek->status == "failure"){
+				$mdl->upd('projects_transaction', ['id_pembayaran' => $htrans->id], ['transaction_id' => $htrans->project_id . '' . time()]);
+				$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
+			}
 			$trans = $cek;
-		}
+		}		
 		
         $projek = $mdl->getWhere('projects', ['id' => $htrans->project_id], null)->getRow();
         $dtrans = $mdl->getWhere('projects_detail', ['project_id' => $htrans->project_id], null)->getRow();
@@ -565,7 +569,7 @@ class TransaksiController extends ResourceController
         //     'name' => $produk->paket_name
         // );
 
-         $item1_details = array(
+        $item1_details = array(
             'id' => 'a1',
             'price' => $harga,
             'quantity' => 1,
@@ -595,7 +599,7 @@ class TransaksiController extends ResourceController
             'item_details' => $item_details,
         );
 
-        // echo "<pre>";echo print_r($transaction); echo "</pre>";die;
+        // echo "<pre>";echo print_r($snaptoken); echo "</pre>";die;
         $Midtranspayment = new Midtranspayment();
         $snaptoken = $Midtranspayment->get_token($enable_payments,$transaction_details,$customer_details,$item_details);
         $update = [
