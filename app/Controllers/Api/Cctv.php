@@ -23,20 +23,35 @@ class Cctv extends ResourceController
         return $tuya;
     }
 
-    public function accessToken()
+    public function getToken()
     {
         $tuya = $this->configtuya();
         $data = $tuya->token->get_new( );	
         $data = $tuya->token->get_refresh( $data->result->refresh_token );
-        $res = array('error' => false, 'token_tuya' => $data);
+        return $data;
+    }
+
+    public function accessToken()
+    {   
+        $res = $this->getToken();
         return $this->respond($res, 200);
     }
 
     public function getAlldevice()
     {
-        $tuya = $this->configtuya();
+        $tuya = $this->configtuya();  
+        $app_id = 'az1592366336242TcxIR'; 
+        $token = $tuya->token->get_new( )->result->access_token;
+        // Get list of devices connected with android app
+        $data = $tuya->devices( $token )->get_app_list( $app_id );
+        $res = $data;
+        return $this->respond($res, 200);
+        // Get device status
+        // $tuya->devices( $token )->get_status( $device_id );
+
+        // Set device name
+        // $tuya->devices( $token )->put_name( $device_id , [ 'name' => 'FAN' ] );	
         // $device = $tuya->devices( $token )->post_commands( $device_id , [ 'commands' => [ $payload ] ] );
-    }
-    
+    }   
     
 }
