@@ -493,7 +493,7 @@ class TransaksiController extends ResourceController
         }
     }
 
-    public function payment()
+	public function payment()
     {
         $mdl = new GeneralModel();
         $headers = $this->request->headers();
@@ -504,7 +504,7 @@ class TransaksiController extends ResourceController
         $harga = 0;
         $tracking_id = $input['no_invoice'];
 		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id], null)->getRow();
-		$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
+		$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
 		
 		if($cek == null){
 			$data_trans_ins = array(
@@ -516,12 +516,20 @@ class TransaksiController extends ResourceController
 				'status' => 'belum dibayar',
 			);
 			$mdl->insB('projects_transaction', $data_trans_ins);
-			$trans = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
+			$trans = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null,'id', 'desc')->getRow();
 			
 		}else{
-			if($cek->status == "expire" || $cek->status == "failure"){
-				$mdl->upd('projects_transaction', ['id_pembayaran' => $htrans->id], ['transaction_id' => $htrans->project_id . '' . time()]);
-				$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null)->getRow();
+			if($cek->status == "expire" || $cek->status == "failure" || $cek->status == "cancel"){
+				$data_trans_ins = array(
+					'id_pembayaran' => $htrans->id, 
+					'project_id' => $htrans->project_id,
+					'biaya' => $htrans->biaya,
+					'transaction_id' => $htrans->project_id . '' . time(),
+					'tanggal_dibuat' => time(),
+					'status' => 'belum dibayar',
+				);
+				$mdl->insB('projects_transaction', $data_trans_ins);
+				$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
 			}
 			$trans = $cek;
 		}		
@@ -600,12 +608,19 @@ class TransaksiController extends ResourceController
         );
 
         // echo "<pre>";echo print_r($snaptoken); echo "</pre>";die;
-        $Midtranspayment = new Midtranspayment();
-        $snaptoken = $Midtranspayment->get_token($enable_payments,$transaction_details,$customer_details,$item_details);
+		if($projek->token_midtrans != null){
+			$snaptoken = $projek->token_midtrans;
+		}else{
+			$Midtranspayment = new Midtranspayment();
+			$snaptoken = $Midtranspayment->get_token($enable_payments,$transaction_details,$customer_details,$item_details);
+		}
         $update = [
             "token_midtrans" => $snaptoken
         ];
         
+		if($projek->token_midtrans != null){
+			$snaptoken = $projek->token_midtrans;
+		}
         $link = "https://app.midtrans.com/snap/v2/vtweb/" . $snaptoken;
         $mdl->upd('projects', ['id' => $htrans->project_id], $update);
         $msg = array(
