@@ -10,7 +10,7 @@ class Cctv extends ResourceController
 {
     use RequestTrait;
     use ResponseTrait;
-
+    
     public function configtuya()
     {
         $config =
@@ -21,6 +21,12 @@ class Cctv extends ResourceController
         ];
         $tuya = new \tuyapiphp\TuyaApi($config);
         return $tuya;
+    }
+
+    private function app_id()
+    {
+        $app_id = 'az1592366336242TcxIR'; 
+        return $app_id;
     }
 
     public function getToken()
@@ -38,20 +44,39 @@ class Cctv extends ResourceController
     }
 
     public function getAlldevice()
-    {
-        $tuya = $this->configtuya();  
-        $app_id = 'az1592366336242TcxIR'; 
-        $token = $tuya->token->get_new( )->result->access_token;
+    {   
+        $data =  $this->request->getVar();
+        $tuya = $this->configtuya();
+        
+        $token = $data['token'];  
+        // $token = $tuya->token->get_new( )->result->access_token;
         // Get list of devices connected with android app
-        $data = $tuya->devices( $token )->get_app_list( $app_id );
+        $data = $tuya->devices( $token )->get_app_list( $this->app_id() );
         $res = $data;
         return $this->respond($res, 200);
-        // Get device status
-        // $tuya->devices( $token )->get_status( $device_id );
+    }
 
-        // Set device name
-        // $tuya->devices( $token )->put_name( $device_id , [ 'name' => 'FAN' ] );	
-        // $device = $tuya->devices( $token )->post_commands( $device_id , [ 'commands' => [ $payload ] ] );
-    }   
+    public function getDevice()
+    {
+        $data =  $this->request->getVar();
+        $tuya = $this->configtuya();  
+
+        $device_id = $data['id'];
+        $token = $data['token'];
+        // $res = [$device_id, $token];
+        $res = $tuya->devices( $token )->get_details( $device_id );
+        return $this->respond($res, 200);
+    }
+
+    public function stream()
+    {
+        $data =  $this->request->getVar();
+        $tuya = $this->configtuya();  
+        $device_id = $data['id'];
+        $token = $data['token'];
+        // $res = [$device_id, $token];
+        $res = $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $device_id , [ 'type' => 'rtsp' ] );
+        return $this->respond($res, 200);
+    }    
     
 }
