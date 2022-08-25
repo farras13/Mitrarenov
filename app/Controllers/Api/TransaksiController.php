@@ -698,8 +698,11 @@ class TransaksiController extends ResourceController
 				$update = [
 					"status" => $transactionstatus,
 				];
-
+				$update_pembayaran = [
+					"status" => 'sudah dibayar',
+				];
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
+				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 				// $this->send_email($member, $htrans, $dtrans, "success");
 				if (!empty($member->fcm_id)) {
 					$this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
@@ -708,14 +711,20 @@ class TransaksiController extends ResourceController
 				$update = [
 					"status" => $transactionstatus,
 				];
-
+				$update_pembayaran = [
+					"status" => 'belum dibayar',
+				];
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
+				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 			} else if ($transactionstatus == "deny" || $transactionstatus == "cancel" || $transactionstatus == "expire" || $transactionstatus == "refund") {
 				$update = [
 					"status" => $transactionstatus,
 				];
-
+				$update_pembayaran = [
+					"status" => 'belum dibayar',
+				];
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
+				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 				// $this->rollback_product($htrans->htrans_id);
 
 				$update_midtrans = [
