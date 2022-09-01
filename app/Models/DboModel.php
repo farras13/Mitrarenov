@@ -112,10 +112,15 @@ class DboModel extends Model
             WHERE projects.id = $id
             ORDER BY id DESC")->getRow();
 
-        $addenum = $db->query("SELECT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis FROM `projects_addendum` as a
+        $addenum_tambah = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
                 JOIN projects_pembayaran as b on a.project_id = b.project_id
-                WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan'
-                GROUP BY a.tipe
+                WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND b.tipe = 1
+                -- GROUP BY a.tipe
+                ORDER BY a.`id` DESC")->getResult();
+        $addenum_kurang = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
+                JOIN projects_pembayaran as b on a.project_id = b.project_id
+                WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND b.tipe = 2
+                -- GROUP BY a.tipe
                 ORDER BY a.`id` DESC")->getResult();
 
         $customer = $db->query("SELECT member_detail.name, project_data_customer.phone, t.name as 'pic', t.telephone AS 'pic_telp' ,projects.luas, projects.metode_payment
@@ -125,7 +130,7 @@ class DboModel extends Model
             JOIN member_detail as t on t.member_id = projects.tukang_id
             WHERE project_id = $id limit 1")->getResult();
 
-        $projek = $db->query("SELECT projects.id, projects.nomor_kontrak as no_sk, projects_persetujuan.rab, projects.project_number, projects.presentase_progress, product.paket_name, projects_update.tanggal,projects_persetujuan.dokumen, projects_persetujuan.dokumen_rab  FROM projects
+        $projek = $db->query("SELECT projects.id, projects.nomor_kontrak as no_sk,projects_persetujuan.rab, projects.project_number, projects.presentase_progress, product.paket_name, projects_update.tanggal,projects_persetujuan.dokumen, projects_persetujuan.dokumen_rab  FROM projects
             JOIN projects_detail on projects_detail.project_id = projects.id
             JOIN product on product.id = projects_detail.product_id
             LEFT JOIN projects_update on projects_update.project_id = projects.id
@@ -134,21 +139,22 @@ class DboModel extends Model
             ORDER BY projects_update.id DESC
             LIMIT 1")->getRow();
 
+        $rab = str_replace('.','',$projek->rab);
+        $projek->rab = $rab;
+
         $termin_unpaid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
             FROM projects_pembayaran
             WHERE project_id = $id AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status = 'belum dibayar'")->getResult();
+
         $termin_paid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
-            FROM projects_pembayaran
-            WHERE project_id = $id AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status != 'belum dibayar'")->getResult();
+             FROM projects_pembayaran
+             WHERE project_id = $id AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status != 'belum dibayar'")->getResult();
 
         //get
         $nm = substr($sk->name, 0, 3);
         $array_bln = array(1 => "I", 2 => "II", 3 => "III", 4 => "IV", 5 => "V", 6 => "VI", 7 => "VII", 8 => "VIII", 9 => "IX", 10 => "X", 11 => "XI", 12 => "XII");
-        // // if($sk->bulan == null){ $sk->bulan = 1;}
-        // var_dump($sk->bulan);
         $bln = $array_bln[$sk->bulan];
         $nsk = $sk->id . '/' . $nm . '/' . $bln . '/' . $sk->tahun;
-        // $projek->no_sk = $nsk;
 
         if ($termin_paid == null) {
             $termin_paid = [null];
@@ -160,13 +166,13 @@ class DboModel extends Model
                 $selisih = (int)$akhir - (int)$awal;
                 $tp->biaya_tambahan = '-';
                 $tp->title = "Pembayaran Termin " . $tp->keterangan;
-                if($selisih != 1){
-                    unset($termin_paid[$key+1]);
-                }
-                if($a > 7){
-                    unset($termin_paid[$key]);
-                }
-                $a++;
+                // if($selisih != 1){
+                //     unset($termin_paid[$key+1]);
+                // }
+                // if($a > 7){
+                //     unset($termin_paid[$key]);
+                // }
+                // $a++;
             }
         }
 
@@ -180,29 +186,34 @@ class DboModel extends Model
                 $selisih = (int)$akhir - (int)$awal;
                 $t->biaya_tambahan = '-';
                 $t->title = "Pembayaran Termin " . $t->keterangan;
-                if($selisih != 1){
-                    unset($termin_unpaid[$kt+1]);
-                }
-                if($a > 7){
-                    unset($termin_unpaid[$kt]);
-                }
-                $a++;
+                // if($selisih != 1){
+                //     unset($termin_unpaid[$kt+1]);
+                // }
+                // if($a > 7){
+                //     unset($termin_unpaid[$kt]);
+                // }
+                // $a++;
             }
         }
 
         $termin = ['unpaid' => $termin_unpaid, 'paid' => $termin_paid ];
-
-        if ($addenum == null) {
-            $addenum = null;
+        
+        if ($addenum_tambah == null) {
+            $addenum_tambah = null;
         } else {
-            foreach ($addenum as $a) {
-                if ($a->tipe == 1) {
-                    $a->tipe = 'kurang';
-                } else {
-                    $a->tipe = 'tambah';
-                }
+            foreach ($addenum_tambah as $a) {               
+                $a->tipe = 'tambah';
             }
         }
+
+        if ($addenum_kurang == null) {
+            $addenum_kurang = null;
+        } else {
+            foreach ($addenum_kurang as $a) {               
+                $a->tipe = 'kurang';
+            }
+        }
+        $exten = ['tambah' => $addenum_tambah, 'kurang' => $addenum_kurang ];
 
         $url = base_url();
         $path = "https://admin.mitrarenov.soldig.co.id/assets/main/images/project_update/";
@@ -224,7 +235,7 @@ class DboModel extends Model
         $data = [
             'image_progress' => $progres,
             'projek' => $projek,
-            'exten' => $addenum,
+            'exten' => $exten,
             'data_customer' => $customer,
             'termin' => $termin,
 

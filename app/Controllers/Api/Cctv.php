@@ -39,7 +39,12 @@ class Cctv extends ResourceController
 
     public function accessToken()
     {   
-        $res = $this->getToken();
+        $data = $this->getToken();
+        $res = [
+            "status" => 200,
+            "messages" => "Sukses",
+            "data" => $data
+        ];
         return $this->respond($res, 200);
     }
 
@@ -52,7 +57,11 @@ class Cctv extends ResourceController
         // $token = $tuya->token->get_new( )->result->access_token;
         // Get list of devices connected with android app
         $data = $tuya->devices( $token )->get_app_list( $this->app_id() );
-        $res = $data;
+        $res = [
+            "status" => 200,
+            "messages" => "Sukses",
+            "data" => $data
+        ];
         return $this->respond($res, 200);
     }
 
@@ -64,18 +73,28 @@ class Cctv extends ResourceController
         $device_id = $data['id'];
         $token = $data['token'];
         // $res = [$device_id, $token];
-        $res = $tuya->devices( $token )->get_details( $device_id );
+        $data = $tuya->devices( $token )->get_details( $device_id );
+        $res = [
+            "status" => 200,
+            "messages" => "Sukses",
+            "data" => $data
+        ];
         return $this->respond($res, 200);
     }
 
     public function stream()
     {
-        $data =  $this->request->getVar();
+        $input =  $this->request->getVar();
         $tuya = $this->configtuya();  
-        $device_id = $data['id'];
-        $token = $data['token'];
+        $device_id = $input['id'];
+        $token = $input['token'];
         // $res = [$device_id, $token];
-        $res = $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $device_id , [ 'type' => 'rtsp' ] );
+        $data = $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $device_id , [ 'type' => 'rtsp' ] );
+        $res = [
+            "status" => 200,
+            "messages" => "Sukses",
+            "data" => $data
+        ];
         return $this->respond($res, 200);
     }    
     

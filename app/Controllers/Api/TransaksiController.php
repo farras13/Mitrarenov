@@ -9,36 +9,15 @@ use App\Libraries\Midtranspayment;
 
 class TransaksiController extends ResourceController
 {
-	public function index()
-    {
-        $mdl = new GeneralModel();
-        $headers = $this->request->headers();
-        $token = $headers['X-Auth-Token']->getValue();
-        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-        $id = (int)$cekUser->member_id;
-
-        $data = $mdl->getWhere('cart', ['id_user' => $id])->getResult();
-
-        if (!$data) {
-            return $this->respond('Cart masih kosong !', 500);
-        }
-
-        $res = [
-            'message' => 'berhasil gan!',
-            'data' => $data,
-            'error' => null,
-        ];
-
-        return $this->respond($res, 200);
-    }
-
 	public function tipe_rumah()
     {
         $mdl = new GeneralModel();
         $data = $mdl->getAll('tipe_rumah')->getResult();
+
         if (!$data) {
             return $this->fail('Gagal mendapatkan tipe rumah!');
         }
+
         $res = [
             "status" => 200,
             "messages" => "Sukses",
@@ -47,7 +26,6 @@ class TransaksiController extends ResourceController
 
         return $this->respond($res, 200);
     }
-	
     public function addCart()
     {
         $mdl = new GeneralModel();
@@ -94,6 +72,29 @@ class TransaksiController extends ResourceController
             'message' => 'berhasil gan!',
             'data' => $data,
             'status' => 200,
+        ];
+
+        return $this->respond($res, 200);
+    }
+
+	public function index()
+    {
+        $mdl = new GeneralModel();
+        $headers = $this->request->headers();
+        $token = $headers['X-Auth-Token']->getValue();
+        $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
+        $id = (int)$cekUser->member_id;
+
+        $data = $mdl->getWhere('cart', ['id_user' => $id])->getResult();
+
+        if (!$data) {
+            return $this->respond('Cart masih kosong !', 500);
+        }
+
+        $res = [
+            'message' => 'berhasil gan!',
+            'data' => $data,
+            'error' => null,
         ];
 
         return $this->respond($res, 200);
@@ -180,20 +181,19 @@ class TransaksiController extends ResourceController
         $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();        
 		$input = $this->request->getVar();
 
-		// cek Akun
 		if($cekUser == null){
 			$status_cust = 0;
-			$insert_h['usergroup_id'] = 5;			
+			$insert_h['usergroup_id'] = 5;
+			
 			$insert_h['email'] = $input['email'];
+			$insert_d['name'] = $input['nama_lengkap'];
+			$insert_d['handphone'] = $input['telepon'];
+
 			$insert_h['password'] = md5('123456');
 			$insert_h['created'] = time();
 			$insert_h['created_by'] = 2;
-			
 			$query_h = $mdl->insId('member', $insert_h);
 			if ($query_h) {
-				$insert_d['name'] = $input['nama_lengkap'];
-				$insert_d['handphone'] = $input['telepon'];
-				$insert_d['telephone'] = $input['telepon'];
 				$insert_d['member_id'] = $query_h;
 				$insert_d['created'] = time();
 				$insert_d['city_id'] = 0;
@@ -207,29 +207,21 @@ class TransaksiController extends ResourceController
 			$status_cust = 1;
 		}
 
-		// cek area mitrarenov
-		$temp = 0;
-		$cek_area = $mdl->getAll('area')->getResult();
-		$area = "";
-		foreach ($cek_area as $c) {
-			if(strpos(strtolower($input['city']), strtolower('bks')) > -1){
-				$input['city'] = "Bekasi";
-			}
-			if (strpos(strtolower($input['city']), strtolower($c->nama_area)) > -1) {
-				$temp = 1;
-				$area = $c->id_area;
-			}		              
-		}
-		if($area == ""){
-			$response = [
-				'status' => 200,
-				'error' => true,
-				'message' => "Transaksi Gagal, Area anda belum kami jangkau !",
-				'data' => []
-			];
-			return $this->respond($response, 200);
-		}
-        
+        $temp_idp = $mdl->lastId('projects')->getRow();
+        $id_projek = (int)$temp_idp->id + 1;
+        // var_dump($id_projek);die;
+        $tdate = date('Y-m-d');
+        $date = strtotime($tdate);
+
+        if ($input['type'] != null) {
+            $temp_produk = $mdl->getWhere('product', ['id' => $input['type']])->getRow();
+            $type = $temp_produk->paket_name;
+        } else {
+            $temp_produk = $mdl->getWhere('category', ['id' => $input['id_kategori']])->getRow();
+            $type = $temp_produk->category_name;
+        }
+
+        $file_rumah = $this->request->getFile('gambar_rumah');
         $rules = [
             "deskripsi" => "required",
             "alamat" => "required",
@@ -251,6 +243,7 @@ class TransaksiController extends ResourceController
         ];
 
         if (!$this->validate($rules, $msg)) {
+
             $response = [
                 'status' => 500,
                 'error' => true,
@@ -258,27 +251,24 @@ class TransaksiController extends ResourceController
                 'data' => []
             ];
             return $this->respond($response, 500);
+
         } else {
-			$file_rumah = $this->request->getFile('gambar_rumah');
-			// id projek sekarang
-			$temp_idp = $mdl->lastId('projects')->getRow();
-			$id_projek = (int)$temp_idp->id + 1;
-			// produk dan harga produk
-			$temp_produk = $mdl->getWhere('product', ['id' => $input['type']])->getRow();
-			$type = $temp_produk->paket_name;
-			$temp_price = $mdl->getWhere('product_price', ['id' => $input['spek']])->getRow();		
-            if (!$temp_price) {
-				$response = [
-					'status' => 500,
-					'error' => true,
-					'message' => 'pastikan inputan spek benar',
-					'data' => []
-				];
-				return $this->respond($response, 500);
-			}
-			$price = $temp_price->product_price;
+            $price = $temp_produk->price;
+            if ($temp_produk->price == "0") {
+                $temp_price = $mdl->getWhere('product_price', ['id' => $input['spek']])->getRow();
+                if (!$temp_price) {
+                    $response = [
+                        'status' => 500,
+                        'error' => true,
+                        'message' => 'pastikan inputan spek benar',
+                        'data' => []
+                    ];
+                    return $this->respond($response, 500);
+                }
+                $price = $temp_price->product_price;
+            }
             $total = $price * $input['luas'];
-			// pembuatan no projek
+
             $db = db_connect();
             $noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();
             $temp_nopro = (int)$noprojek->hitung + 1;
@@ -293,8 +283,30 @@ class TransaksiController extends ResourceController
                 $ht = '0' . '' . $temp_nopro;
             } else {
                 $ht = $temp_nopro;
-            }			
+            }
 
+			$temp = 0;
+            $cek_area = $mdl->getAll('area')->getResult();
+            $area = "";
+            foreach ($cek_area as $c) {
+				if(strpos(strtolower($input['city']), strtolower('bks')) > -1){
+					$input['city'] = "Bekasi";
+				}
+				if (strpos(strtolower($input['city']), strtolower($c->nama_area)) > -1) {
+					$temp = 1;
+					$area = $c->id_area;
+				}			
+               
+            }
+            if($area == ""){
+                $response = [
+                    'status' => 200,
+                    'error' => true,
+                    'message' => "Transaksi Gagal, Area anda belum kami jangkau !",
+                    'data' => []
+                ];
+                return $this->respond($response, 200);
+            }
             $insert = [
                 'project_number' => date("dmY", time()) . "" . $ht,
                 'type' => $type,
@@ -318,8 +330,7 @@ class TransaksiController extends ResourceController
                 'email' => $input['email'],
                 'phone' => $input['telepon'],
                 'created' => time(),
-                'member_id' => $id,
-				'device' => 2
+                'member_id' => $id
             ];
 
             $insert_detail = [
@@ -329,12 +340,14 @@ class TransaksiController extends ResourceController
 
             $query = $mdl->ins('projects', $insert);
             if ($query) {
+
                 $insert_data['project_id'] = $id_projek;
                 $query_data = $mdl->ins('project_data_customer', $insert_data);
 
                 $insert_detail['project_id'] = $id_projek;
 
                 if ($uri->getSegment(4) == "desain") {
+                    // $file_denah = $this->request->getFile('denah');
                     $insert_design = [
                         'tipe_rumah' => $input['tipe_rumah'],
                         'created' => time()
@@ -358,6 +371,13 @@ class TransaksiController extends ResourceController
                     $path_image = '';
                     $json_text = $uploadImg['message'];
                 }
+                /* end upload */
+                // $product_id = array('id' => $input['product_id']);
+                // $getProduct = $this->general_model->getfieldById('paket_name', 'product', $product_id);
+
+                // $return = array(
+                //     $query, $insert['project_number'], $getProduct->paket_name, $insert['luas'], number_format($insert['total']), $insert['metode_payment'], $insert_data['name'], $insert_data['phone'], date("d M Y", $insert_data['created']), $insert_data['email'], $insert['marketing_name'], $this->access['action'], $insert['catatan_alamat']
+                // );
                 $return = [
                     'project'              =>    $insert,
                     'data_customer'        =>    $insert_data,
@@ -493,7 +513,7 @@ class TransaksiController extends ResourceController
         }
     }
 
-	public function payment()
+    public function payment()
     {
         $mdl = new GeneralModel();
         $headers = $this->request->headers();
@@ -519,7 +539,14 @@ class TransaksiController extends ResourceController
 			$trans = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null,'id', 'desc')->getRow();
 			
 		}else{
-			if($cek->status == "expire" || $cek->status == "failure" || $cek->status == "cancel"){
+			$date_cek = $cek->tanggal_dibuat;
+			$expired_cek = strtotime("+1 day", $cek->tanggal_dibuat);
+			if($cek->tanggal_dibuat > $expired_cek){
+				$new = true;
+			}else{
+				$new = false;
+			}
+			if($cek->status == "expire" || $cek->status == "failure" || $cek->status == "cancel" || $new == true){
 				$data_trans_ins = array(
 					'id_pembayaran' => $htrans->id, 
 					'project_id' => $htrans->project_id,
@@ -689,7 +716,6 @@ class TransaksiController extends ResourceController
 		$htrans = $m->getWhere('projects_transaction', ['transaction_id' => $orderid], null)->getRow();
 		$projek = $m->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
 		if ($htrans) {
-
 			// $member = M_members::find($projek->member_id);
 			$member = $m->getWhere('token_login', ['member_id' => $projek->member_id], null)->getRow();
 			// $dtrans = $md->dtrans($projek->project_id)->getRow();
@@ -701,6 +727,7 @@ class TransaksiController extends ResourceController
 				$update_pembayaran = [
 					"status" => 'sudah dibayar',
 				];
+
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 				// $this->send_email($member, $htrans, $dtrans, "success");
@@ -725,6 +752,7 @@ class TransaksiController extends ResourceController
 				];
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
+				
 				// $this->rollback_product($htrans->htrans_id);
 
 				$update_midtrans = [
@@ -759,6 +787,8 @@ class TransaksiController extends ResourceController
 		];
 		$this->respond($result);
 	}
+
+	
 
     public function irisnotif()
     {

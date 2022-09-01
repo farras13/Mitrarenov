@@ -66,7 +66,7 @@ class Order extends BaseController
         $input = $this->request->getVar();
         
         // cek akun
-        if($sess != null){
+        if(!empty($sess->get('user_id'))){
             $log_sign = TRUE;
             $id = $sess->get('user_id');
         }else{
@@ -153,7 +153,13 @@ class Order extends BaseController
             $ht = '0' . '' . $temp_nopro;
         } else {
             $ht = $temp_nopro;
-        }       
+        }   
+
+		if($input['promo'] != null || $input['promo'] != '' ){
+			$promo = $this->model->getWhere('promomobile',['promocode' => $input['promo']])->getRow();
+			$nilai_promo = $total * $promo->promo / 100;
+			$total = $total - $nilai_promo;
+		}
        
         // insert projects
         $insert = [
@@ -172,8 +178,8 @@ class Order extends BaseController
             'latitude' => $input['lat'],
             'longitude' => $input['long'],
             'catatan_alamat' => $input['catatan_alamat'],
-            'kode_referal' => $input['promo'],
-            'kode_promo' => $input['referal'],
+            'kode_referal' => $input['referal'],
+            'kode_promo' => $input['promo'],
             'id_area' => $area,
             'device' => 3
         ];
