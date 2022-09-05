@@ -523,7 +523,8 @@ class TransaksiController extends ResourceController
         $deduction = 0;
         $harga = 0;
         $tracking_id = $input['no_invoice'];
-		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id], null)->getRow();
+		$projek_id = $input['id_projek'];
+		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id, 'project_id' => $projek_id], null)->getRow();
 		$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
 		
 		if($cek == null){
