@@ -87,6 +87,30 @@ class ProjectController extends ResourceController
         
     }
 
+    public function listProgresImage($id)
+    {
+        $headers = $this->request->headers();
+        $token = $headers['X-Auth-Token']->getValue();
+        $model = new GeneralModel();
+        $models = new DboModel();
+
+        $cekUser = $model->getWhere('token_login', ['token' => $token])->getRow();
+        $id_user = (int)$cekUser->member_id;
+
+        $path_dokumen = "https://admin.mitrarenov.soldig.co.id/assets/main/berkas/";
+        $data = $model->getWhere('projects_update', ['project_id' => $id])->getResult();
+        if (!$data) {
+            return $this->failNotFound('data tidak ditemukan!');         
+        }
+      
+        $res = [
+            'message' => 'Sukses',
+            'data' => $data,
+            'error' => null
+        ];
+        return $this->respond($res, 200);
+    }
+
     public function detail($id)
     {
         $headers = $this->request->headers();

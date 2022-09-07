@@ -1,7 +1,6 @@
 <?= $this->extend('template2') ?>
 
-<?= $this->section('content') ?>
- 
+<?= $this->section('content') ?> 
 
     <div class="container" id="vapp">
       <div class="bg-grey">
@@ -23,7 +22,7 @@
                           </div>
                         </div>
                         <div class="chat-content">
-                          <p class="chat-name">Admin - <?= $lc->admin != '' ? $lc->admin : "Mitrarenov" ; ?> </p>
+                          <p class="chat-name">Admin - Mitrarenov </p>
                           <p class="chat-sort"><?= $lc->message; ?></p>
                         </div>
                         <div class="chat-time">
@@ -45,7 +44,7 @@
                             </div>
                           </div>
                           <div class="chat-content">
-                            <p class="chat-name">Admin - <?= $detail_chat[0]->admin != '' ? $detail_chat[0]->admin : "Mitrarenov";?></p>
+                            <p class="chat-name">Admin - Mitrarenov</p>
                           </div>
                         </div>
                         <div class="chat-body">

@@ -172,6 +172,7 @@ $routes->group('api', function ($routes) {
                 $routes->get('done', 'Api\ProjectController::projectDone');
                 $routes->get('progres', 'Api\ProjectController::projectProgres');
                 $routes->get('(:num)/detail', 'Api\ProjectController::detail/$1');
+                $routes->get('(:num)/listprogres', 'Api\ProjectController::listProgresImage/$1');
             });
             
             $routes->group('chat', function ($routes) {
