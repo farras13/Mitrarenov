@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a href="#" class="text-warning">Lihat Selengkapnya</a>
+                    <a href="<?= 'https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'.$pb->dokumen; ?>" target="_BLANK" class="text-warning">Lihat Selengkapnya</a>
                 </div>
             </div>
             <div class="row align-items-center py-3">
@@ -162,7 +162,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">PIC</p>
-                            <p class="text-23 mb-0"><?= $pb->pic; ?></p>
+                            <p class="text-23 mb-0"><?= $pb->subkon; ?></p>
                         </div>
                     </div>
                 </div>
@@ -173,7 +173,7 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">No. Telepon PIC</p>
-                            <p class="text-23 mb-0"><?= $pb->phone_pic; ?></p>
+                            <p class="text-23 mb-0"><?= $pb->phone_subkon; ?></p>
                         </div>
                     </div>
                 </div>
@@ -210,6 +210,18 @@
 
     $slickElement.slick({
         arrows: false
+    });
+</script>
+<script>
+    
+    $.ajax({  
+        url:<?php echo base_url('search'); ?>,
+        type: 'post',
+        dataType:'json',
+        data:{query:query},
+        success:function(data){
+            alert(data);
+        }  
     });
 </script>
 <?= $this->endSection() ?>

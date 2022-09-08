@@ -715,6 +715,7 @@ class TransaksiController extends ResourceController
 
 		// $htrans = T_htransactions::findOne($params);
 		$htrans = $m->getWhere('projects_transaction', ['transaction_id' => $orderid], null)->getRow();
+		$dtrans = $m->getWhere('projects_pembayaran', ['id' => $htrans->id_pembayaran], null)->getRow();
 		$projek = $m->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
 		if ($htrans) {
 			// $member = M_members::find($projek->member_id);
@@ -728,7 +729,15 @@ class TransaksiController extends ResourceController
 				$update_pembayaran = [
 					"status" => 'sudah dibayar',
 				];
-
+				$notif = [
+					'member_id' => $projek->member_id,
+					'kategori' => 'transaction',
+					'id_kategori' => $dtrans->nomor_invoice,
+					'message' => 'Pesanan anda telah diverifikasi',
+					'date' => time(),
+					'status' => 0
+				];
+				$m->ins('notifikasi', $notif);
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 				// $this->send_email($member, $htrans, $dtrans, "success");
@@ -736,6 +745,15 @@ class TransaksiController extends ResourceController
 					$this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
 				}
 			} else if ($transactionstatus == "pending") {
+				$notif = [
+					'member_id' => $projek->member_id,
+					'kategori' => 'transaction',
+					'id_kategori' => $dtrans->nomor_invoice,
+					'message' => 'Pesanan anda belum di bayar, Silahkan lakukan pembayaran',
+					'date' => time(),
+					'status' => 0
+				];
+				$m->ins('notifikasi', $notif);
 				$update = [
 					"status" => $transactionstatus,
 				];
@@ -751,6 +769,7 @@ class TransaksiController extends ResourceController
 				$update_pembayaran = [
 					"status" => 'belum dibayar',
 				];
+				
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 				
@@ -762,7 +781,6 @@ class TransaksiController extends ResourceController
 				$m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
 
 				// $this->send_email($member, $htrans, $dtrans, "cancel");
-
 				if (!empty($member->fcm_id)) {
 					$this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
 				}
@@ -771,11 +789,28 @@ class TransaksiController extends ResourceController
 					if (!empty($member->fcm_id)) {
 						$this->send_notif("Dana dikembalikan", "Dana transaksi anda " . $htrans->transaction_id . " telah dikembalikan ", $member->fcm_id, array('title' => "Dana dikemblikan", 'message' => "Dana transaksi anda " . $htrans->transaction_id . " telah dikembalikan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
 					}
+					$notif = [
+						'member_id' => $projek->member_id,
+						'kategori' => 'transaction',
+						'id_kategori' => $dtrans->nomor_invoice,
+						'message' => 'Dana anda dikembalikan',
+						'date' => time(),
+						'status' => 0
+					];
 				} else {
+					$notif = [
+						'member_id' => $projek->member_id,
+						'kategori' => 'transaction',
+						'id_kategori' => $dtrans->nomor_invoice,
+						'message' => 'Pesanan anda dibatalkan',
+						'date' => time(),
+						'status' => 0
+					];
 					if (!empty($member->fcm_id)) {
 						$this->send_notif("Pesanan anda dibatalakan", "Transaksi anda " . $htrans->transaction_id . " sedang dalam perjalanan", $member->fcm_id, array('title' => "Pesanan anda dibatalkan", 'message' => "Transaksi anda " . $htrans->transaction_id . " dibatalkan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
 					}
 				}
+				$m->ins('notifikasi', $notif);
 			}
 		}
 
@@ -788,8 +823,6 @@ class TransaksiController extends ResourceController
 		];
 		$this->respond($result);
 	}
-
-	
 
     public function irisnotif()
     {
