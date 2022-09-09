@@ -114,7 +114,6 @@ class Home extends BaseController
         $sess = session();
         $key = $this->request->getGet();
         $id = $sess->get('user_id');
-        
         if($id != null){
             $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
             
@@ -484,7 +483,7 @@ class Home extends BaseController
         $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="' . base_url('lupa_password') . '/' . $token . '">Link reset</a></b> </p>';
 
         $email = \Config\Services::email();
-        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
         $email->setTo($to);
         $email->setSubject($title);
         $email->setMessage($message);
@@ -518,7 +517,7 @@ class Home extends BaseController
         $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="' . base_url('lupa_password') . '/' . $token . '">Link reset</a></b> </p>';
 
         $email = \Config\Services::email();
-        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
         $email->setTo($to);
         $email->setSubject($title);
         $email->setMessage($message);
@@ -793,7 +792,7 @@ class Home extends BaseController
         ];
 
         $idd = $this->model->lastId('projects_desain')->getRow()->id;
-        
+
         if ($temp_produk == null) {
             $query_cat = $this->model->getWhere('category', ['category_name' => $jenis_order])->getRow();
             $temp_produk->id = $query_cat->id;
@@ -826,8 +825,8 @@ class Home extends BaseController
 
         if ($status_cust == 1) {
             $emailData = array(
-                'from' => 'noreply@mitrarenov.com',
-                'name' => 'noreply@mitrarenov.com',
+                'from' => 'notifikasi@mitrarenov.com',
+                'name' => 'notifikasi@mitrarenov.com',
                 'to' => $input['email'],
                 'bcc' => "",
                 'subject' => "Permintaan Jasa di Mitrarenov.com"
@@ -835,8 +834,8 @@ class Home extends BaseController
             );
         } else {
             $emailData = array(
-                'from' => 'noreply@mitrarenov.com',
-                'name' => 'noreply@mitrarenov.com',
+                'from' => 'notifikasi@mitrarenov.com',
+                'name' => 'notifikasi@mitrarenov.com',
                 'to' => $input['email'],
                 'bcc' => "",
                 'subject' => "Informasi Akun & Permintaan Jasa di Mitrarenov.com"
@@ -868,7 +867,7 @@ class Home extends BaseController
             if ($d2->email_tukang !== null or $d2->email_tukang !== '') {
 
                 $email = \Config\Services::email();
-                $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+                $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
                 $email->setTo($d2->email_tukang);
                 $email->setSubject($subject_tukang);
                 $email->setMessage($this->contenttukang($data2, $d2));
@@ -972,8 +971,9 @@ class Home extends BaseController
         //     return redirect()->to('order/sukses');
         // }
         $file_rumah = $this->request->getFile('gambar_rumah');
-
-        $temp_produk = $this->model->getWhere('product', ['id' => $spek])->getRow();
+        $temp_produk = $this->model->getWhere('product', ['paket_name' => $jenis_order])->getRow();
+        
+        // $temp_produk = $this->model->getWhere('product', ['id' => $spek])->getRow();
         $total = $input['totalHarga'];
         // if ($temp_produk == null) {
         //     $total = $input['totalHarga'];
@@ -1046,14 +1046,24 @@ class Home extends BaseController
             'member_id' => $id,
             'device' => 3
         ];
+        if ($temp_produk == null) {
+            $query_cat = $this->model->getWhere('category', ['category_name' => $jenis_order])->getRow();
+            $temp_produk->id = $query_cat->id;
+        }
 
-        $idd = $this->model->lastId('projects_desain')->getRow()->id;
+        if ($temp_produk->price != 0) {
+            $produkprice = 0;
+        } else {
+            $produkprice =  $input['spek'];
+        }
+
+        // $idd = $this->model->lastId('projects_desain')->getRow()->id;
 
         $insert_detail = [
             'project_id' => $id_projek,
-            'product_id' => $input['type'],
-            'product_price_id' => $input['spek'],
-            'desain_id' => (int)$idd + 1
+            'product_id' => $temp_produk->id,
+            'product_price_id' => $produkprice,
+            'desain_id' => 0
         ];
         // var_dump($insert_detail);die;
 
@@ -1063,8 +1073,8 @@ class Home extends BaseController
 
         if ($status_cust == 1) {
             $emailData = array(
-                'from' => 'noreply@mitrarenov.com',
-                'name' => 'noreply@mitrarenov.com',
+                'from' => 'notifikasi@mitrarenov.com',
+                'name' => 'notifikasi@mitrarenov.com',
                 'to' => $input['email'],
                 'bcc' => "",
                 'subject' => "Permintaan Jasa di Mitrarenov.com"
@@ -1072,8 +1082,8 @@ class Home extends BaseController
             );
         } else {
             $emailData = array(
-                'from' => 'noreply@mitrarenov.com',
-                'name' => 'noreply@mitrarenov.com',
+                'from' => 'notifikasi@mitrarenov.com',
+                'name' => 'notifikasi@mitrarenov.com',
                 'to' => $input['email'],
                 'bcc' => "",
                 'subject' => "Informasi Akun & Permintaan Jasa di Mitrarenov.com"
@@ -1105,7 +1115,7 @@ class Home extends BaseController
             if ($d2->email_tukang !== null or $d2->email_tukang !== '') {
 
                 $email = \Config\Services::email();
-                $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+                $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
                 $email->setTo($d2->email_tukang);
                 $email->setSubject($subject_tukang);
                 $email->setMessage($this->contenttukang($data2, $d2));
@@ -1175,7 +1185,7 @@ class Home extends BaseController
     {
         $temp = $this->model->getWhere('email_ebook', array('id' => '1'))->getResult();
         $email = \Config\Services::email();
-        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
         $email->setTo($emailData['to']);
         $email->setSubject($emailData['subject']);
         if ($tipe == 0) {
@@ -2373,6 +2383,8 @@ class Home extends BaseController
         }
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         $data['projekBerjalan'] = $mdl->getProjectUser($sess->get('user_id'), null, 'project');
+        $detail = $mdl->getProjectUserD($sess->get('user_id'), null, 'project');
+        $data['kurang'] = $mdl->getProjectUserD($sess->get('user_id'), null, 'project');
         
         foreach($data['projekBerjalan'] as $pj){
             $dokumentasi = $this->model->getWhere('projects_update', ['project_id' => $pj->id])->getResult();
@@ -2399,6 +2411,21 @@ class Home extends BaseController
         $data['notif_total'] = $no;
         // echo "<pre>"; print_r($data['projekBerjalan']); echo"</pre>";
         echo view("projek_berlangsung", $data);
+    }
+    
+    public function projektambah()
+    {
+        $mdl = new DboModel();
+        $input = $this->request->getVar();
+        $id = $input['id'];
+        $data = $mdl->addenum("tambah", $id);
+       
+        echo json_encode($data);
+    }
+
+    public function projekkurang()
+    {
+        # code...
     }
 
     public function edit_profile()

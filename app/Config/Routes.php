@@ -50,6 +50,10 @@ $routes->get('member/logout', 'Home::logout');
 $routes->get('portofolio/(:any)/detail', 'Home::detail_porto/$1');
 $routes->get('portofolio', 'Home::portofolio');
 
+$routes->get('chat', 'Chat::index');
+$routes->post('chat-kirim', 'Chat::kirim');
+$routes->get('notif/(:any)/(:any)', 'Chat::onclicknotif/$1/$2');
+$routes->post('seenallnotif', 'Chat::seenallnotif');
 
 $routes->get('artikel', 'Home::artikel');
 $routes->get('artikel/(:any)/detail', 'Home::d_artikel/$1');
@@ -64,16 +68,13 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
     $routes->post('kategori', 'Home::getKategori');
     $routes->post('getHarga', 'Home::getHarga');
     $routes->post('order/add', 'Order::order_ins');
+    $routes->get('order/sukses', 'Order::order_sukses');
     $routes->post('order/desain', 'Home::order_desain');
     $routes->post('order/no_desain', 'Home::order_non');
-    $routes->get('order/sukses', 'Order::order_sukses');
-    
-    $routes->get('chat', 'Chat::index');
-    $routes->post('chat-kirim', 'Chat::kirim');
-    $routes->get('notif/(:any)/(:any)', 'Chat::onclicknotif/$1/$2');
-    $routes->post('seenallnotif', 'Chat::seenallnotif');
 
     $routes->get('member/akun', 'Home::akun');
+    $routes->get('member/projek/tambah', 'Home::projektambah');
+    $routes->get('member/projek/kurang', 'Home::projekkurang');
     $routes->get('member/edit_profile', 'Home::edit_profile');
     $routes->post('member/update_profile', 'Home::update_profile');
     $routes->get('member/tentang-mitra', 'Home::tentang_mitra');
@@ -86,11 +87,12 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
 
 $routes->group('api', function ($routes) {
     $routes->group('v1', function ($routes) {
-       
+        $routes->post('notifios', 'Api\TransaksiController::notifios');
 //  $routes->post('merawat', 'Api\SimulasiKpr::merawat');
         $routes->group('auth', function ($routes) {
             $routes->post('login', 'Api\LoginController::login');
             $routes->post('register', 'Api\LoginController::register');
+            $routes->get('updreferal', 'Api\LoginController::updReferal');
             $routes->post('reset_pass', 'Api\LoginController::resetPass_luar');
         });
         
@@ -143,7 +145,7 @@ $routes->group('api', function ($routes) {
         $routes->get('testimoni', 'Api\Testimoni::index');
         $routes->post('notifmidtrans', 'Api\TransaksiController::paymentstatus');        
         $routes->post('notifiris', 'Api\TransaksiController::irisnotif');        
-
+        
         $routes->group('', ['filter' => 'token'], function ($routes) {
             $routes->group('auth', function ($routes) {
                 
@@ -152,7 +154,7 @@ $routes->group('api', function ($routes) {
                 $routes->post('reset_password', 'Api\LoginController::resetPass');
                 $routes->post('logout', 'Api\LoginController::signout');
             });
-
+            
             $routes->group('pemberitauan', function ($routes) {
                 $routes->get('/', 'Api\NotifikasiController::index');
             });            
@@ -164,14 +166,14 @@ $routes->group('api', function ($routes) {
                 $routes->post('del_qty', 'Api\TransaksiController::del_by_qty'); 
             });
             
-            $routes->post('bayar', 'Api\TransaksiController::payment');
-            // $routes->post('notifmidtrans', 'Api\TransaksiController::paymentstatus');           
-
+            $routes->post('bayar', 'Api\TransaksiController::payment');          
+            
             $routes->group('projek', function ($routes) {
                 $routes->get('/', 'Api\ProjectController::index');
                 $routes->get('done', 'Api\ProjectController::projectDone');
                 $routes->get('progres', 'Api\ProjectController::projectProgres');
                 $routes->get('(:num)/detail', 'Api\ProjectController::detail/$1');
+                $routes->post('detail_invoice', 'Api\ProjectController::detailInvoice');
                 $routes->get('(:num)/listprogres', 'Api\ProjectController::listProgresImage/$1');
             });
             
@@ -179,13 +181,13 @@ $routes->group('api', function ($routes) {
                 $routes->post('/', 'Api\QaController::detail_chat');
                 $routes->get('list', 'Api\QaController::listChat');
                 $routes->post('kirim', 'Api\QaController::store_chat');
-            });  
-            
+            });   
             $routes->group('cctv', function ($routes) {
                 $routes->get('token', 'Api\Cctv::accessToken');
-                $routes->get('list', 'Api\QaController::listChat');
-                $routes->post('kirim', 'Api\QaController::store_chat');
-            });
+                $routes->post('listDevice', 'Api\Cctv::getAlldevice');
+                $routes->post('device', 'Api\Cctv::getDevice');
+                $routes->post('stream_device', 'Api\Cctv::stream');
+            });        
         });
     });
 });

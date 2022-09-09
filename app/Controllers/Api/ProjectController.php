@@ -189,6 +189,21 @@ class ProjectController extends ResourceController
         return $this->respond($res, 200);
     }
 
+    public function detailInvoice()
+    {
+        $models = new DboModel();
+        $key = $this->request->getVar();
+
+        $data = $models->detailInvoice($key->no_invoice);
+
+        $res = [
+            'message' => 'Sukses',
+            'data' => $data,
+            'error' => null
+        ];
+
+        return $this->respond($res, 200);
+    }
 
     public function projectDone()
     {

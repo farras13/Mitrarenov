@@ -221,6 +221,7 @@ class DboModel extends Model
             foreach ($progres as $p) {
                 if ($p->image != null) {
                     $p->image = $path . $p->image;
+                    
                 } else {
                     $p->image = $url . '/public/images/no-picture/no_logo.png';
                 }
@@ -245,6 +246,24 @@ class DboModel extends Model
         return $data;
     }
 
+    public function addenum($tipe, $id)
+    {
+        $db = db_connect();
+        if($tipe == "tambah"){
+            $addenum = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
+            JOIN projects_pembayaran as b on a.project_id = b.project_id
+            WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND b.tipe = 1
+            ORDER BY a.`id` DESC")->getResult();
+    
+        }else{
+            $addenum = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
+            JOIN projects_pembayaran as b on a.project_id = b.project_id
+            WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND b.tipe = 2           
+            ORDER BY a.`id` DESC")->getResult();
+        }
+        return $addenum;
+    }
+
     public function getProjectUserS($id, $s, $l = null)
     {
         $db = db_connect();
@@ -254,6 +273,52 @@ class DboModel extends Model
             $data = $db->query("SELECT a.member_id, a.name, a.dob, b.* FROM `project_data_customer` as a join projects as  b on b.id = a.project_id  WHERE member_id = $id AND b.status_project = '$s'")->getResult();
         }
         return $data;
+    }
+
+    public function detailInvoice($invoice)
+    {
+        $db = db_connect();
+        $termin_unpaid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
+            FROM projects_pembayaran
+            WHERE project_id = $id AND nomor_invoice = $invoice AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status = 'belum dibayar'")->getResult();
+
+        $termin_paid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
+             FROM projects_pembayaran
+             WHERE project_id = $id AND nomor_invoice = $invoice AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status != 'belum dibayar'")->getResult();
+
+        if ($termin_paid == null) {
+            $termin_paid = [null];
+        } else {
+            $a=1;
+            foreach ($termin_paid as $key => $tp) {
+                $akhir = substr($termin_paid[$key+1]->nomor_invoice,5, 4);
+                $awal = substr($tp->nomor_invoice,5, 4);
+                $selisih = (int)$akhir - (int)$awal;
+                $tp->biaya_tambahan = '-';
+                $tp->title = "Pembayaran Termin " . $tp->keterangan;      
+            }
+        }
+
+        if ($termin_unpaid == null) {
+            $termin_unpaid = [null];
+        } else {
+            $a=1;
+            foreach ($termin_unpaid as $kt => $t) {
+                $akhir = substr($termin_unpaid[$kt+1]->nomor_invoice,5, 4);
+                $awal = substr($t->nomor_invoice,5, 4);
+                $selisih = (int)$akhir - (int)$awal;
+                $t->biaya_tambahan = '-';
+                $t->title = "Pembayaran Termin " . $t->keterangan;
+            }
+        }
+
+        if($termin_paid != null){
+            $termin = $termin_paid;
+        }else{
+            $termin = $termin_unpaid;
+        }
+
+        return $termin;
     }
 
     public function ins($t, $object)

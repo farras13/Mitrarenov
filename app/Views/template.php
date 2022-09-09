@@ -129,6 +129,8 @@
                               $link=base_url('notif/chat/'.$value->id); 
                           }else if($value->kategori == "Project"){ 
                               $link=base_url('notif/project/'.$value->id);
+                          }else if($value->kategori == "ProjectUpdate"){ 
+                              $link=base_url('notif/project/'.$value->id); 
                           }else if($value->kategori == "promo"){ 
                               $link=base_url('notif/promo/'.$value->id); 
                           } ?>                                   

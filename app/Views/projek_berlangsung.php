@@ -87,7 +87,8 @@
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a href="<?= 'https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'.$pb->dokumen; ?>" target="_BLANK" class="text-warning">Lihat Selengkapnya</a>
+                    <a id="pt" class="text-warning" data-id="<?= $pb->id ?>">Lihat Selengkapnya</a>
+                    <!-- <a href="#" class="text-warning" id="pt"> -->
                 </div>
             </div>
             <div class="row align-items-center py-3">
@@ -104,7 +105,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a href="#" class="text-warning">Lihat Selengkapnya</a>
+                    <a href="#" class="text-warning" data-toggle="modal" data-target="projekkurang">Lihat Selengkapnya</a>
                 </div>
             </div>
             <hr>
@@ -178,18 +179,75 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center">
+            <!-- <div class="text-center">
                 <a href="#" class="btn btn-primary btn-lg px-5 py-3 btn-rounded">LIHAT DOKUMENTASI</a>
-            </div>
+            </div> -->
         </div>
     </div>
     <?php endforeach; ?>
 </div>
 
+<div class="modal fade" id="projektambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-category modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="ico ico-close"></i>
+        </button>
+
+        <div class="row align-items-center">          
+          <div class="col-md-12 col-8">
+            <h4 class="mb-0 title-category-modal">List Pekerjaan Tambah</h4>
+          </div>
+        </div>
+        <hr class="my-5">
+
+        <!-- <h5 class="sub-title-cat">List Pekerjaan tambah</h5> -->
+
+        <div class="row" id="showresult">
+          
+            <!-- <div class="col-md-6 my-4">
+              <div class="d-flex align-items-center">
+
+                <div class="cat-img-i">
+                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
+                </div>
+                <div class="w-100 text-15 pl-3">
+                  <a href="#" target="_blank" style="color:black;"> Download PDF </a>
+                </div>
+
+              </div>
+            </div> -->
+           
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <?= $this->endSection() ?>
 <?= $this->section('script') ?>
 
 <script>
+    $('#pt').on('click',function(){
+       var SITEURL = "<?php echo base_url(); ?>";
+       var id = $('#pt').attr('data-id');
+      
+        $.ajax({
+            type  : 'GET',
+            url   : '<?php echo base_url()?>/member/projek/tambah',
+            data: {id:id},               
+            dataType : 'JSON',
+            success : function(data){
+                
+                console.log(data);
+            }                   
+        });
+       
+    
+    });
     function copyToClipboard(element) {
         var $temp = $("<input>");
         $("body").append($temp);
@@ -210,18 +268,6 @@
 
     $slickElement.slick({
         arrows: false
-    });
-</script>
-<script>
-    
-    $.ajax({  
-        url:<?php echo base_url('search'); ?>,
-        type: 'post',
-        dataType:'json',
-        data:{query:query},
-        success:function(data){
-            alert(data);
-        }  
     });
 </script>
 <?= $this->endSection() ?>
