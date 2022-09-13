@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a id="pt" class="text-warning" data-id="<?= $pb->id ?>">Lihat Selengkapnya</a>
+                    <a onclick="tambah(<?= $pb->id ?>)" class="text-warning" data-id="<?= $pb->id ?>">Lihat Selengkapnya</a>
                     <!-- <a href="#" class="text-warning" id="pt"> -->
                 </div>
             </div>
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a href="#" class="text-warning" data-toggle="modal" data-target="projekkurang">Lihat Selengkapnya</a>
+                    <a onclick="kurang(<?= $pb->id ?>)" class="text-warning">Lihat Selengkapnya</a>
                 </div>
             </div>
             <hr>
@@ -197,7 +197,7 @@
 
         <div class="row align-items-center">          
           <div class="col-md-12 col-8">
-            <h4 class="mb-0 title-category-modal">List Pekerjaan Tambah</h4>
+            <h4 class="mb-0 title-category-modal">List Pekerjaan</h4>
           </div>
         </div>
         <hr class="my-5">
@@ -231,23 +231,62 @@
 <?= $this->section('script') ?>
 
 <script>
-    $('#pt').on('click',function(){
-       var SITEURL = "<?php echo base_url(); ?>";
-       var id = $('#pt').attr('data-id');
-      
+    function tambah(id) {
+        var SITEURL = "<?php echo base_url(); ?>";  
         $.ajax({
             type  : 'GET',
             url   : '<?php echo base_url()?>/member/projek/tambah',
             data: {id:id},               
             dataType : 'JSON',
             success : function(data){
-                
-                console.log(data);
-            }                   
-        });
-       
+                var html = '';
+                for (let i = 0; i < data.length; i++) {
+                    if(data[i].berkas != ''){
+                        html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                    '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
+                    'Download PDF </a> </div> </div> </div>';
+                    }else{
+                        html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                    '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
+                    }
     
-    });
+                }
+                $("#showresult").html(html);
+                $("#projektambah").modal('show');
+                // console.log(html);
+            }                   
+        });   
+    };
+    function kurang(id) {
+        var SITEURL = "<?php echo base_url(); ?>";  
+        $.ajax({
+            type  : 'GET',
+            url   : '<?php echo base_url()?>/member/projek/kurang',
+            data: {id:id},               
+            dataType : 'JSON',
+            success : function(data){
+                var html = '';
+                for (let i = 0; i < data.length; i++) {
+                    if(data[i].berkas != ''){
+                        html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                    '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
+                    'Download PDF </a> </div> </div> </div>';
+                    }else{
+                        html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                    '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
+                    }
+    
+                }
+                $("#showresult").html(html);
+                $("#projektambah").modal('show');
+                console.log(html);
+            }                   
+        });   
+    };
     function copyToClipboard(element) {
         var $temp = $("<input>");
         $("body").append($temp);

@@ -1124,7 +1124,7 @@ class Home extends BaseController
                     // Generate error
                     //echo "Email is not sent!!";
                     $this->tambah_log_email_db('permintaan jasa', $d2->email_tukang, 'tukang', 'gagal');
-                    $this->tambah_log_email_db('permintaan jasa', 'info@mitrarenov.com', 'admin', 'terkirim');
+                    $this->tambah_log_email_db('permintaan jasa', 'info@mitrarenov.com', 'admin', 'gagal');
                 } else {
                     $this->tambah_log_email_db('permintaan jasa', $d2->email_tukang, 'tukang', 'terkirim');
                     $this->tambah_log_email_db('permintaan jasa', 'info@mitrarenov.com', 'admin', 'terkirim');
@@ -2425,7 +2425,12 @@ class Home extends BaseController
 
     public function projekkurang()
     {
-        # code...
+        $mdl = new DboModel();
+        $input = $this->request->getVar();
+        $id = $input['id'];
+        $data = $mdl->addenum("kurang", $id);
+       
+        echo json_encode($data);
     }
 
     public function edit_profile()
