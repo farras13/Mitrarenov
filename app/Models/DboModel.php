@@ -44,7 +44,7 @@ class DboModel extends Model
         // var_dump($id);
         // $data = $db->query("SELECT b.* FROM `projects` as b join project_data_customer as  a on a.project_id = b.id  WHERE member_id = $id")->getResult();
         if ($l != null && $w != null) {
-            $data = $db->query("SELECT b.id, a.member_id, a.name,a.phone,b.luas,b.metode_payment, b.project_number,b.nomor_kontrak, e.rab,e.dokumen,e.dokumen_rab, b.alamat_pengerjaan,f.name as subkon,f.telephone as phone_subkon, b.status_project, DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
+            $data = $db->query("SELECT b.id, a.member_id, a.name, a.phone,b.luas,b.metode_payment, b.project_number,b.nomor_kontrak, e.rab,e.dokumen,e.dokumen_rab, b.alamat_pengerjaan,f.name as subkon,f.telephone as phone_subkon, b.status_project, DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
 			FROM `project_data_customer` as a 
             join projects as  b on b.id = a.project_id  
             join projects_detail as c on c.project_id = b.id  
@@ -123,7 +123,7 @@ class DboModel extends Model
                 -- GROUP BY a.tipe
                 ORDER BY a.`id` DESC")->getResult();
 
-        $customer = $db->query("SELECT member_detail.name, project_data_customer.phone, t.name as 'pic', t.telephone AS 'pic_telp' ,projects.luas, projects.metode_payment
+        $customer = $db->query("SELECT project_data_customer.name, project_data_customer.phone, t.name as 'pic', t.telephone AS 'pic_telp' ,projects.luas, projects.metode_payment
             FROM project_data_customer 
             JOIN projects on projects.id = project_data_customer.project_id
             JOIN member_detail on member_detail.member_id = project_data_customer.member_id

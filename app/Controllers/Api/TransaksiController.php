@@ -807,7 +807,7 @@ class TransaksiController extends ResourceController
 						'status' => 0
 					];
 					if (!empty($member->fcm_id)) {
-						$this->send_notif("Pesanan anda dibatalakan", "Transaksi anda " . $htrans->transaction_id . " sedang dalam perjalanan", $member->fcm_id, array('title' => "Pesanan anda dibatalkan", 'message' => "Transaksi anda " . $htrans->transaction_id . " dibatalkan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
+						$this->send_notif("Pesanan anda dibatalakan", "Transaksi anda " . $htrans->transaction_id . " telah dibatalakan", $member->fcm_id, array('title' => "Pesanan anda dibatalkan", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah dibatalkan", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));
 					}
 				}
 				$m->ins('notifikasi', $notif);
