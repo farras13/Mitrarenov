@@ -426,7 +426,7 @@
                   <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
                 </div>
                 <div class="w-100 text-15 pl-3">
-                  <a href="<?= base_url('order?type=' . $m->category_id . '&jenis=' . $m->paket_name) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
+                  <a href="<?= base_url('order?type=' . $m->category_id . '&jenis=' . rawurlencode($m->paket_name)) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
                 </div>
 
               </div>

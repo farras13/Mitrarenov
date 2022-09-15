@@ -104,6 +104,8 @@ class Chat extends BaseController
             return redirect()->to('member/akun');        
         }else if($type == "promo"){
             return redirect()->to('/');        
+        }else if($type == "transaction"){
+            return redirect()->to('member/akun');        
         }
     }
 

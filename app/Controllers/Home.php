@@ -401,10 +401,16 @@ class Home extends BaseController
             $model->save($data);
 
             $last = $this->model->lastId('member', 1)->getRow();
+            $singkatan = str_replace(' ', '', $this->request->getVar('name'));
+            $fourname = substr($singkatan, 0, 4);
+            $count = $model->hitung();
+
+            $referal = '' . $fourname . '' . $count;
             $datas = [
                 'member_id' => $last->id,
                 'name'    => $this->request->getVar('name'),
-                'telephone' => $this->request->getVar('phone')
+                'telephone' => $this->request->getVar('phone'),
+                'referal' => $referal
             ];
             $models->save($datas);
             session()->setFlashdata('toast', 'success:Akun berhasil dibuat! Silakan melakukan login.');

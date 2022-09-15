@@ -14,9 +14,9 @@
           <div class="promo-detail-container">
 
             <?php if ($promo->image == null) { ?>
-              <img src="<?= base_url('public/main/images/slider-1.jpg') ?>" alt="">
+              <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/slider-1.jpg" alt="">
             <?php } else { ?>
-              <img src="<?= base_url('public/images/promo') .'/'. $promo->image ?>" alt="">
+              <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $promo->image ?>" alt="">
             <?php } ?>
             <div class="discount">
               Diskon <?= $promo->promo ?>%
@@ -34,10 +34,11 @@
             <h5>Kode Promo</h5>
 
             <input type="text" class="form-control" value="<?= $promo->promoCode ?>" disabled id="codePromo">
-
-            <button type="button" class="btn btn-success btn-lg btn-block btn-rounded" onclick="copyToClipboard('#codePromo')">SALIN KODE PROMO</button>
-            <?php $date = new DateTime($promo->expired); ?>
-            <p>Masa Berlaku s/d <?= $date->format('F Y'); ?></p>
+            <?php if(time() < strtotime($promo->expired)){ ?>
+              <button type="button" class="btn btn-success btn-lg btn-block btn-rounded" onclick="copyToClipboard('#codePromo')">SALIN KODE PROMO</button>
+            <?php } ?>
+              <?php $date = strtotime($promo->expired); ?>
+            <p>Masa Berlaku s/d <?= date('F Y', $date); ?></p>
           </div>
         </div>
       </div>

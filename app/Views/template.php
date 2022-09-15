@@ -133,6 +133,8 @@
                               $link=base_url('notif/project/'.$value->id); 
                           }else if($value->kategori == "promo"){ 
                               $link=base_url('notif/promo/'.$value->id); 
+                          }else if($value->kategori == "transaction"){ 
+                            $link=base_url('notif/transaction/'.$value->id); 
                           } ?>                                   
                           <?php if($value->status == 0){ ?>  
                               <a class="dropdown-item new-notif" href="<?= $link ?>">
