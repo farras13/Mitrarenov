@@ -44,7 +44,10 @@ class Order extends BaseController
         
         $produk = $this->model->getWhere('product', ['category_id' => $type])->getRow();
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
-        
+        $tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => $produk->id])->getResult();
+		if(empty($tipe_rumah)){
+			$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => 0])->getResult();
+		}
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
@@ -53,7 +56,7 @@ class Order extends BaseController
         $data['nama'] = $sess->get('user_name');
         $data['phone'] = $sess->get('user_phone');
         $data['email'] = $sess->get('user_email');
-        $data['tipe_rumah'] = $this->model->getAll('tipe_rumah')->getResult();
+        $data['tipe_rumah'] = $tipe_rumah;
         $data['spek'] = $spek;
 
         return view('order', $data);

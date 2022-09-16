@@ -82,12 +82,20 @@
 
                                                 <div class="type-rumah">
                                                     <?php foreach ($tipe_rumah as $tr) : ?>
-                                                        <div class="custom-control custom-radio type-radio">
-                                                            <input type="radio" id="type<?= $tr->id ?>" name="tiperumah" class="custom-control-input">
-                                                            <label class="custom-control-label" for="type<?= $tr->id ?>">
-                                                                <?= $tr->type ?>
-                                                            </label>
-                                                        </div>
+                                                        <?php if($tr->product_id == 0): ?>
+                                                            <div class="custom-control custom-radio type-radio">
+                                                                <input type="radio" id="type<?= $tr->id ?>" name="customRadioInline" class="custom-control-input">
+                                                                <label class="custom-control-label" for="type<?= $tr->id ?>">
+                                                                    <?= $tr->type ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php else: ?>
+                                                            <div class="custom-control custom-radio type-radio">
+                                                                <input type="radio" id="type<?= $tr->id ?>" name="customRadioInline" class="custom-control-input">
+                                                                <label class="custom-control-label" for="type<?= $tr->id ?>" style="background-image: url('<?= $tr->image_type ?>');  background-size: cover;">
+                                                                </label>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     <?php endforeach; ?>
                                                 </div>
                                             </div>
