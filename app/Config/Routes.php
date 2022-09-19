@@ -119,6 +119,7 @@ $routes->group('api', function ($routes) {
         $routes->group('promo', function ($routes) {
             $routes->get('/', 'Api\Home::PromoAll');
             $routes->get('(:num)/detail', 'Api\Home::showPromo/$1');
+            $routes->get('cek', 'cekPromo');
         });
 
         $routes->group('order', function ($routes) {

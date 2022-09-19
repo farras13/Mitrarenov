@@ -155,4 +155,49 @@ class Home extends ResourceController
 
         return $this->respond($res, 200);
     }
+    
+    public function cekPromo()
+    {
+        $model = new GeneralModel();
+        
+        $data = $model->getWhere('promomobile', ['is_publish' => 0, 'kategori' => 2])->getResult();
+        
+        $url = base_url();
+        $base_image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/';
+        
+        $key = $this->request->getGet();
+        $cari = $key['code'];
+        
+        $w = array('promoCode' => $cari, 'is_publish' => 0);
+        $data = $model->getWhere('promomobile', $w)->getRow();
+        
+        if (!$data) {
+           $res = [
+                "status" => 200,
+                "messages" => "data tidak ditemukan",
+                "data" => null
+            ];
+            return $this->respond($res, 200);
+        }  
+
+        $url = base_url();
+        $base_image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/';
+        if($data->image != null){
+            $data->image = $base_image.$data->image;
+            $data->imagecontent = $base_image.$data->imagecontent;
+        }else{
+            $data->image = $url.'/public/main/images/slider-1.jpg';
+            $data->imagecontent = $url.'/public/main/images/slider-2.jpg';
+        } 
+        
+        $date = new DateTime($data->expired);
+        $data->expired = $date->format('F Y');
+
+        $res = [
+            "status" => 200,
+            "messages" => "Sukses",
+            "data" => $data,
+        ];
+       
+    }
 }

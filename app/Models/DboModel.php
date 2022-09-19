@@ -44,7 +44,7 @@ class DboModel extends Model
         // var_dump($id);
         // $data = $db->query("SELECT b.* FROM `projects` as b join project_data_customer as  a on a.project_id = b.id  WHERE member_id = $id")->getResult();
         if ($l != null && $w != null) {
-            $data = $db->query("SELECT b.id, a.member_id, a.name, a.phone,b.luas,b.metode_payment, b.project_number,b.nomor_kontrak, e.rab,e.dokumen,e.dokumen_rab, b.alamat_pengerjaan,f.name as subkon,f.telephone as phone_subkon, b.status_project, DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
+            $data = $db->query("SELECT b.id, a.member_id, a.name,a.phone,b.luas,b.metode_payment, b.project_number,b.nomor_kontrak, e.rab,e.dokumen,e.dokumen_rab, b.alamat_pengerjaan,f.name as subkon,f.telephone as phone_subkon, b.status_project, DATE_FORMAT(FROM_UNIXTIME(b.created), '%e %b %Y') AS 'created', b.presentase_progress, d.paket_name, b.image_upload 
 			FROM `project_data_customer` as a 
             join projects as  b on b.id = a.project_id  
             join projects_detail as c on c.project_id = b.id  
@@ -164,6 +164,7 @@ class DboModel extends Model
                 $akhir = substr($termin_paid[$key+1]->nomor_invoice,5, 4);
                 $awal = substr($tp->nomor_invoice,5, 4);
                 $selisih = (int)$akhir - (int)$awal;
+                $tp->biaya = str_replace('.', '', $tp->biaya);
                 $tp->biaya_tambahan = '-';
                 $tp->title = "Pembayaran Termin " . $tp->keterangan;
                 // if($selisih != 1){
@@ -184,6 +185,7 @@ class DboModel extends Model
                 $akhir = substr($termin_unpaid[$kt+1]->nomor_invoice,5, 4);
                 $awal = substr($t->nomor_invoice,5, 4);
                 $selisih = (int)$akhir - (int)$awal;
+                $t->biaya = str_replace('.', '', $t->biaya);
                 $t->biaya_tambahan = '-';
                 $t->title = "Pembayaran Termin " . $t->keterangan;
                 // if($selisih != 1){
@@ -277,7 +279,6 @@ class DboModel extends Model
 
     public function detailInvoice($invoice)
     {
-        $db = db_connect();
         $termin_unpaid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
             FROM projects_pembayaran
             WHERE project_id = $id AND nomor_invoice = $invoice AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status = 'belum dibayar'")->getResult();

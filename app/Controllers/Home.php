@@ -401,6 +401,7 @@ class Home extends BaseController
             $model->save($data);
 
             $last = $this->model->lastId('member', 1)->getRow();
+            
             $singkatan = str_replace(' ', '', $this->request->getVar('name'));
             $fourname = substr($singkatan, 0, 4);
             $count = $model->hitung();
@@ -631,9 +632,8 @@ class Home extends BaseController
         $data['email'] = $sess->get('user_email');
         $data['tipe_rumah'] = $this->model->getAll('tipe_rumah')->getResult();
 
-        $produk = $this->model->getWhere('product', ['category_id' => $type])->getRow();
+        $produk = $this->model->getWhere('product', ['paket_name' => $jenis, 'category_id' => $type])->getRow();
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
-        
         if ($spek == null) {            
             $spek = $this->model->getWhere('product', ['paket_name' => $jenis])->getResult();
             foreach ($spek as $key => $value) {
@@ -2425,6 +2425,7 @@ class Home extends BaseController
         $input = $this->request->getVar();
         $id = $input['id'];
         $data = $mdl->addenum("tambah", $id);
+        
        
         echo json_encode($data);
     }

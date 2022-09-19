@@ -14,7 +14,7 @@ class AuthDetailModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['member_id', 'name', 'photo', 'telephone', 'created_by', 'modified_by'];
+    protected $allowedFields    = ['member_id', 'name', 'photo', 'telephone', 'created_by', 'modified_by', 'referal'];
 
     // Dates
     protected $useTimestamps = true;

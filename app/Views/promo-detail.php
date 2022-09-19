@@ -36,9 +36,12 @@
             <input type="text" class="form-control" value="<?= $promo->promoCode ?>" disabled id="codePromo">
             <?php if(time() < strtotime($promo->expired)){ ?>
               <button type="button" class="btn btn-success btn-lg btn-block btn-rounded" onclick="copyToClipboard('#codePromo')">SALIN KODE PROMO</button>
-            <?php } ?>
               <?php $date = strtotime($promo->expired); ?>
-            <p>Masa Berlaku s/d <?= date('F Y', $date); ?></p>
+              <p>Masa Berlaku s/d <?= date('F Y', $date); ?></p>
+            <?php }else{ ?>
+              <h5>Masa berlaku sudah habis, Promo tidak dapat digunakan !</h5>
+            <?php } ?>
+              
           </div>
         </div>
       </div>

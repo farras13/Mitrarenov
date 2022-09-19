@@ -11,7 +11,7 @@ class Order extends BaseController
 {
     function __construct()
     {
-        $this->model = new GeneralModel();
+		$this->model = new GeneralModel();
     }   
     
     // ORDER PROJECT
@@ -42,9 +42,9 @@ class Order extends BaseController
         $type = $req['type'];
         $jenis = $req['jenis'];
         
-        $produk = $this->model->getWhere('product', ['category_id' => $type])->getRow();
+        $produk = $this->model->getWhere('product', ['paket_name' => $jenis, 'category_id' => $type])->getRow();
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
-        $tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => $produk->id])->getResult();
+		$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => $produk->id])->getResult();
 		if(empty($tipe_rumah)){
 			$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => 0])->getResult();
 		}
@@ -62,6 +62,23 @@ class Order extends BaseController
         return view('order', $data);
     }
 
+	public function searchPromo()
+	{
+		$req = $this->request->getVar();
+        $temp = $req['promo'];
+		$data = $this->model->getWhere("promomobile", ['promoCode' => $temp])->getRow();		
+		if(empty($data)){
+			$data = false;
+		}else{
+			if(strtotime($data->expired) > time()){
+				$data = true;
+			}else{
+				$data = false;
+			}
+		}
+		echo json_encode($data);
+	}
+
     public function order_ins()
     {
         $auth = new AuthModel();
@@ -75,6 +92,7 @@ class Order extends BaseController
         }else{
             $log_sign = FALSE;
             $cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();
+			
             if(empty($cek_member)){
                 $insert_h['usergroup_id'] = 5;
                 $insert_h['email'] = $input['email'];
@@ -156,10 +174,19 @@ class Order extends BaseController
             $ht = '0' . '' . $temp_nopro;
         } else {
             $ht = $temp_nopro;
-        }   
+        }
 
+		//promo 
 		if($input['promo'] != null || $input['promo'] != '' ){
 			$promo = $this->model->getWhere('promomobile',['promocode' => $input['promo']])->getRow();
+			if (strtotime($promo->expired) < time()) {
+				session()->setFlashdata('toast', 'error:Maaf promo expired!.');
+            	return redirect()->back()->withInput();
+			}
+			if(empty($promo)){
+				session()->setFlashdata('toast', 'error:Maaf promo tidak tersedia!.');
+            	return redirect()->back()->withInput();
+			}
 			$nilai_promo = $total * $promo->promo / 100;
 			$total = $total - $nilai_promo;
 		}
@@ -181,7 +208,7 @@ class Order extends BaseController
             'latitude' => $input['lat'],
             'longitude' => $input['long'],
             'catatan_alamat' => $input['catatan_alamat'],
-            'kode_referal' => $input['referal'],
+            'kode_referal' =>  $input['referal'],
             'kode_promo' => $input['promo'],
             'id_area' => $area,
             'device' => 3
@@ -228,16 +255,16 @@ class Order extends BaseController
         // send email 
         if ($log_sign == TRUE) {
             $emailData = array(
-                'from' => 'noreply@mitrarenov.com',
-                'name' => 'noreply@mitrarenov.com',
+                'from' => 'notifikasi@mitrarenov.com',
+                'name' => 'notifikasi@mitrarenov.com',
                 'to' => $input['email'],
                 'bcc' => "",
                 'subject' => "Permintaan Jasa di Mitrarenov.com"             
             );
         } else {
             $emailData = array(
-                'from' => 'noreply@mitrarenov.com',
-                'name' => 'noreply@mitrarenov.com',
+                'from' => 'notifikasi@mitrarenov.com',
+                'name' => 'notifikasi@mitrarenov.com',
                 'to' => $input['email'],
                 'bcc' => "",
                 'subject' => "Informasi Akun & Permintaan Jasa di Mitrarenov.com"            
@@ -267,7 +294,7 @@ class Order extends BaseController
             if ($d2->email_tukang !== null or $d2->email_tukang !== '') {
 
                 $email = \Config\Services::email();
-                $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+                $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
                 $email->setTo($d2->email_tukang);
                 $email->setSubject($subject_tukang);
                 $email->setMessage($this->contenttukang($data2, $d2));
@@ -327,7 +354,7 @@ class Order extends BaseController
     {
         $temp = $this->model->getWhere('email_ebook', array('id' => '1'))->getResult();
         $email = \Config\Services::email();
-        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
         $email->setTo($emailData['to']);
         $email->setSubject($emailData['subject']);
         if ($tipe == 0) {

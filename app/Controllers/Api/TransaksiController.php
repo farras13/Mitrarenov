@@ -12,7 +12,13 @@ class TransaksiController extends ResourceController
 	public function tipe_rumah()
     {
         $mdl = new GeneralModel();
-        $data = $mdl->getAll('tipe_rumah')->getResult();
+		$input = $this->request->getVar();
+
+		if(!empty($input)){
+			$data = $mdl-> getWhere('tipe_rumah', ['product_id' => $input['id']])->getResult();
+		}else{
+			$data = $mdl-> getAll('tipe_rumah')->getResult();
+		}
 
         if (!$data) {
             return $this->fail('Gagal mendapatkan tipe rumah!');
@@ -267,7 +273,14 @@ class TransaksiController extends ResourceController
                 }
                 $price = $temp_price->product_price;
             }
-            $total = $price * $input['luas'];
+			$total = $price * $input['luas'];
+			if($input['kode_promo'] != null && $input['kode_promo'] != ""){
+				$temp_promo = $mdl->getWhere('promomobile', ['promoCode' => $input['kode_promo']])->getRow();
+				if(!empty($temp_promo)){
+					$promo = $total * $temp_promo->promo / 100;
+					$total = $total - $promo;
+				}
+			}
 
             $db = db_connect();
             $noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();
@@ -320,6 +333,8 @@ class TransaksiController extends ResourceController
                 'metode_payment' => $input['metode_pembayaran'],
                 'status_project' => 'quotation',
                 'id_area' => $area,
+				'kode_promo' => $input['kode_promo'],
+				'kode_referal' =>  $input['kode_referal'],
                 'created' => time(),
                 'device' => 2
             ];
@@ -392,16 +407,16 @@ class TransaksiController extends ResourceController
 			// send email
 			if ($status_cust == 1) {
 				$emailData = array(
-					'from' => 'noreply@mitrarenov.com',
-					'name' => 'noreply@mitrarenov.com',
+					'from' => 'notifikasi@mitrarenov.com',
+					'name' => 'notifikasi@mitrarenov.com',
 					'to' => $input['email'],
 					'bcc' => "",
 					'subject' => "Permintaan Jasa di Mitrarenov.com"  
 				);
 			} else {
 				$emailData = array(
-					'from' => 'noreply@mitrarenov.com',
-					'name' => 'noreply@mitrarenov.com',
+					'from' => 'notifikasi@mitrarenov.com',
+					'name' => 'notifikasi@mitrarenov.com',
 					'to' => $input['email'],
 					'bcc' => "",
 					'subject' => "Informasi Akun & Permintaan Jasa di Mitrarenov.com"             
@@ -430,7 +445,7 @@ class TransaksiController extends ResourceController
 				if ($d2->email_tukang !== null or $d2->email_tukang !== '') {
 
 					$email = \Config\Services::email();
-					$email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+					$email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
 					$email->setTo($d2->email_tukang);
 					$email->setSubject($subject_tukang);
 					$email->setMessage($this->contenttukang($data2, $d2));
@@ -523,8 +538,8 @@ class TransaksiController extends ResourceController
         $deduction = 0;
         $harga = 0;
         $tracking_id = $input['no_invoice'];
-		$projek_id = $input['id_projek'];
-		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id, 'project_id' => $projek_id], null)->getRow();
+        $projek_id = $input['id_projek'];
+		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id, 	], null)->getRow();
 		$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
 		
 		if($cek == null){
@@ -584,6 +599,7 @@ class TransaksiController extends ResourceController
         //     $totalpayment = $harga * $projek->luas;
         // }
         $harga = str_replace(".","",$htrans->biaya);
+		
         $cekpromo = $mdl->getWhere('promomobile', ['promoCode' => $htrans->kode_promo], null)->getRow();
         
         if ($cekpromo != null ) {
@@ -822,7 +838,7 @@ class TransaksiController extends ResourceController
 			]
 		];
 		$this->respond($result);
-	}
+	}	
 
     public function irisnotif()
     {
@@ -906,7 +922,7 @@ class TransaksiController extends ResourceController
         $mdl = new GeneralModel();
 		$temp = $mdl->getWhere('email_ebook', array('id' => '1'))->getResult();
 		$email = \Config\Services::email();
-        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
         $email->setTo($emailData['to']);
         $email->setSubject($emailData['subject']);
 		if ($tipe == 0) {
