@@ -136,6 +136,7 @@ $routes->group('api', function ($routes) {
         });
 
         $routes->get('projek/spek', 'Api\ProjectController::spek');
+        $routes->get('projek/detail_spek', 'Api\ProjectController::detailSpek');
         $routes->get('type_order', 'Api\ProjectController::type_order');
         $routes->get('Area', 'Api\SimulasiKpr::index_area');            
         $routes->get('Prov', 'Api\SimulasiKpr::province');            

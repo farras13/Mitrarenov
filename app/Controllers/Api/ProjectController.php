@@ -175,6 +175,19 @@ class ProjectController extends ResourceController
         return $this->respond($res, 200);
     }
 
+    public function detailSpek()
+    {
+        $models = new GeneralModel();        
+        $key = $this->request->getGet();       
+        $spek =  $models->getWhere('product_price', ['id' => $key['id']])->getRow();
+        $res = [
+            'data' => $spek,
+            'error' => null
+        ];
+
+        return $this->respond($res, 200);
+    }
+
     public function type_order()
     {
         $models = new GeneralModel();
