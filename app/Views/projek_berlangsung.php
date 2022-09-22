@@ -81,8 +81,8 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Tambah</p>                            
-                            <p class="text-23 mb-0"><?= $pb->tambah[0]->ket_enum != '' ? $pb->tambah[0]->ket_enum : "-"; ?></p>
-                            <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[1]->total, 0,',','.'); ?></p> -->
+                            <!-- <p class="text-23 mb-0"><?= $pb->tambah[0]->ket_enum != '' ? $pb->tambah[0]->ket_enum : "-"; ?></p> -->
+                            <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[1]->total, 0,',','.'); ?></p>
                         </div>
                     </div>
                 </div>
@@ -99,8 +99,8 @@
                         </div>
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Kurang</p>
-                            <p class="text-23 mb-0"><?= $pb->kurang[0]->ket_enum != '' ? $pb->kurang[0]->ket_enum : "-"; ?></p>
-                            <!-- <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[0]->total, 0,',','.'); ?></p> -->
+                            <!-- <p class="text-23 mb-0"><?= $pb->kurang[0]->ket_enum != '' ? $pb->kurang[0]->ket_enum : "-"; ?></p> -->
+                            <p class="text-23 mb-0">Rp. <?= number_format($pb->addenum[0]->total, 0,',','.'); ?></p>
                         </div>
                     </div>
                 </div>
@@ -231,7 +231,7 @@
 <?= $this->section('script') ?>
 
 <script>
-    function tambah(id) {
+   function tambah(id) {
         var SITEURL = "<?php echo base_url(); ?>";  
         $.ajax({
             type  : 'GET',
@@ -244,11 +244,13 @@
                     if(data[i].berkas != ''){
                         html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
                     '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                    '<p style="color:black;">'+ data[i].biaya +'</p>'+ 
                     '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
                     'Download PDF </a> </div> </div> </div>';
                     }else{
                         html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
                     '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                    '<p style="color:black;">'+ data[i].biaya +'</p>'+  
                     '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
                     }
     

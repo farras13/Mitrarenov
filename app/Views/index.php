@@ -16,7 +16,21 @@
               <div class="slide-text">
                 <div class="row">
                   <div class="col-md-8">
-                    <h1><?= $p->title ?></h1>
+                    <?php if($p->head == 1){ ?>  
+                      <h1><?= $p->title ?></h1>
+                    <?php }elseif($p->head == 2){ ?>  
+                      <h2><?= $p->title ?></h2>
+                    <?php }elseif($p->head == 3){ ?>  
+                      <h3><?= $p->title ?></h3>
+                    <?php }elseif($p->head == 4){ ?>  
+                      <h4><?= $p->title ?></h4>
+                    <?php }elseif($p->head == 5){ ?>  
+                      <h5><?= $p->title ?></h5>
+                    <?php }elseif($p->head == 6){ ?>  
+                      <h6><?= $p->title ?></h6>
+                    <?php }elseif($p->head == 7){ ?>  
+                      <p><?= $p->title ?></p>
+                    <?php }?>
                     <?php $date = new DateTime($p->expired); ?>
                     <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
                   </div>
@@ -37,7 +51,21 @@
               <div class="slide-text">
                 <div class="row">
                   <div class="col-md-8">
-                    <h1><?= $p->title ?></h1>
+                  <?php if($p->head == 1){ ?>  
+                      <h1><?= $p->title ?></h1>
+                    <?php }elseif($p->head == 2){ ?>  
+                      <h2><?= $p->title ?></h2>
+                    <?php }elseif($p->head == 3){ ?>  
+                      <h3><?= $p->title ?></h3>
+                    <?php }elseif($p->head == 4){ ?>  
+                      <h4><?= $p->title ?></h4>
+                    <?php }elseif($p->head == 5){ ?>  
+                      <h5><?= $p->title ?></h5>
+                    <?php }elseif($p->head == 6){ ?>  
+                      <h6><?= $p->title ?></h6>
+                    <?php }elseif($p->head == 7){ ?>  
+                      <p><?= $p->title ?></p>
+                    <?php }?>
                     <!-- <?php $date = new DateTime($p->expired); ?>
                     <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p> -->
                   </div>

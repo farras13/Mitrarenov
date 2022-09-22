@@ -81,13 +81,8 @@ class DboModel extends Model
             WHERE a.member_id = $id ORDER BY b.id DESC")->getResult();
         }
         foreach ($data as $key => $value) {
-
-            $value->tambah = $db->query("SELECT sum(biaya) as total, keterangan as ket_enum, tipe FROM `projects_addendum`  
-                WHERE STATUS = 'disetujui' AND project_id = $value->id and tipe = 0
-                ORDER BY `projects_addendum`.`id`  DESC")->getResult();
-            $value->kurang = $db->query("SELECT sum(biaya) as total, keterangan as ket_enum, tipe FROM `projects_addendum`  
-                WHERE STATUS = 'disetujui' AND project_id = $value->id and tipe = 1
-                ORDER BY `projects_addendum`.`id`  DESC")->getResult();
+            $value->tambah = $this->addenum('tambah', $value->id);
+            $value->kurang = $this->addenum('kurang', $value->id);
         }
 
 
