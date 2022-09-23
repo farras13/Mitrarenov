@@ -249,13 +249,13 @@ class DboModel extends Model
         if($tipe == "tambah"){
             $addenum = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
             JOIN projects_pembayaran as b on a.project_id = b.project_id
-            WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND b.tipe = 1
+            WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND a.tipe = 0
             ORDER BY a.`id` DESC")->getResult();
     
         }else{
             $addenum = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
             JOIN projects_pembayaran as b on a.project_id = b.project_id
-            WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND b.tipe = 2           
+            WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND a.tipe = 1           
             ORDER BY a.`id` DESC")->getResult();
         }
         return $addenum;
