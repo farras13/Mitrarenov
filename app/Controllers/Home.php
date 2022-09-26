@@ -557,11 +557,19 @@ class Home extends BaseController
         $cek_detail = $model->getWhere('member_detail', ['member_id' => $cek->id])->getRow();
 
         $ctoken = $model->getWhere('token_login', ['member_id' => $cek->id])->getRow();
-        $model->upd('member', ['id' => $cek->id], ['last_login' => time()]);
+        $agent = $this->request->getUserAgent();
+        if ($agent->isMobile('iphone')) {
+            $device = 1;
+        } elseif ($agent->isMobile()) {
+            $device = 2;
+        } else {
+            $device = 3;
+        }
+        $model->upd('member', ['id' => $cek->id], ['last_login' => time(), 'device' => $device]);
 
         $headers = $this->request->headers();
-        $device = $headers['User-Agent']->getValue();
-
+       
+       
         // if (!$ctoken) {
         //     $token = random_string('alnum', 30);
         //     $dtoken = array(
@@ -2201,8 +2209,7 @@ class Home extends BaseController
                     $chat++;
                 }
             }
-        }
-        
+        }        
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;

@@ -40,10 +40,17 @@ class LoginController extends ResourceController
         if (!$cek) {
             return $this->failNotFound('data tidak ditemukan');
         }
+        $agent = $this->request->getUserAgent();
+        if ($agent->isMobile('iphone')) {
+            $device = 1;
+        } elseif ($agent->isMobile()) {
+            $device = 2;
+        } else {
+            $device = 3;
+        }
 
         $cek_token = $model->getWhere('token_login', ['member_id' => $cek[0]['id']], null)->getRow();
-
-        $model->upd('member', ['id' => $cek[0]['id']], ['last_login' => time()]);
+        $model->upd('member', ['id' => $cek[0]['id']], ['last_login' => time(), 'device' => $device ]);
         if ($cek_token != null) {
             $token = $cek_token->token;
             $fcm_id = $request['fcm_id'];
@@ -133,14 +140,15 @@ class LoginController extends ResourceController
     private function sendEmail($to, $title, $message)
     {
         $email = \Config\Services::email();
-        $email->setFrom('noreply@mitrarenov.com', 'noreply@mitrarenov.com');
+        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
         $email->setTo($to);
         $email->setSubject($title);
         $email->setMessage($message);
 
-        if (!$email->send()) {
+        if (! $email->send()) {
             return false;
         } else {
+            // var_dump($email->printDebugger());die;
             return true;
         }
     }
@@ -155,7 +163,7 @@ class LoginController extends ResourceController
         );
 
         $input = $this->request->getVar();
-        $data = ['telephone' => $input['email']];
+        // $data = ['telephone' => $input['email']];
         $dt = ['email' => $input['email'],];
         $mail = $input['email'];
 
@@ -266,6 +274,26 @@ class LoginController extends ResourceController
         return $this->respondUpdated($msg);
     }
 
+    public function updReferal()
+    {
+        $auth = new AuthModel();
+        $authdt = new AuthDetailModel();
+        $model = new GeneralModel();
+        $cek = $authdt->where('referal', '')->get()->getResult();
+        foreach ($cek as $key => $value) {
+            $singkatan = str_replace(' ', '', $value->name);
+            $fourname = substr($singkatan, 0, 4);
+            $last = $auth->hitung();
+            $referal = '' . $fourname . '' . $last;
+            $model->upd('member_detail', ['id' => $value->id], ['referal' => $referal]);
+        }
+
+        $msg = array(
+            'status' => 200,
+        );
+
+        return $this->respondUpdated($msg);
+    }
 
     public function register()
     {
@@ -439,8 +467,6 @@ class LoginController extends ResourceController
                 ];
             }
         }
-
-
         return $this->respond($response, 200);
     }
 }
