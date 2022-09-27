@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a onclick="tambah(<?= $pb->id ?>)" class="text-warning" data-id="<?= $pb->id ?>">Lihat Selengkapnya</a>
+                    <button onclick="tambah(<?= $pb->id; ?>)" class="text-warning btn btn-link" data-id="<?= $pb->id ?>">Lihat Selengkapnya</button>
                     <!-- <a href="#" class="text-warning" id="pt"> -->
                 </div>
             </div>
@@ -100,12 +100,12 @@
                         <div class="w-100 pl-3">
                             <p class="text-grey mb-0">Pekerjaan Kurang</p>
                             <!-- <p class="text-23 mb-0"><?= $pb->kurang[0]->ket_enum != '' ? $pb->kurang[0]->ket_enum : "-"; ?></p> -->
-                            <p class="text-23 mb-0">Rp. <?= number_format($pb->kuramg[0]->total, 0,',','.'); ?></p>
+                            <p class="text-23 mb-0">Rp. <?= number_format($pb->kurang[0]->total, 0,',','.'); ?></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-5 text-right">
-                    <a onclick="kurang(<?= $pb->id ?>)" class="text-warning">Lihat Selengkapnya</a>
+                    <button onclick="kurang(<?= $pb->id; ?>)" class="text-warning btn btn-link" data-id="<?= $pb->id ?>">Lihat Selengkapnya</button>
                 </div>
             </div>
             <hr>
@@ -240,21 +240,29 @@
             dataType : 'JSON',
             success : function(data){
                 var html = '';
-                for (let i = 0; i < data.length; i++) {
-                    if(data[i].berkas != ''){
-                        html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
-                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
-                    '<p style="color:black;">'+ data[i].biaya +'</p>'+ 
-                    '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
-                    'Download PDF </a> </div> </div> </div>';
-                    }else{
-                        html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
-                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
-                    '<p style="color:black;">'+ data[i].biaya +'</p>'+  
-                    '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
-                    }
+                if(data.length === 0){
+                    html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center">'+
+                        '<div class="w-100 text-15 pl-3">'+
+                        '<img src="https://mitrarenov.soldig.co.id/public/main/images/tidak-ada-pekerjaan-tambah-atau-kurang.png" class="img-fluid" alt="">'+ 
+                        '</div></div> </div>';
+                }else{
+                    for (let i = 0; i < data.length; i++) {
+                        if(data[i].berkas != ''){
+                            html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                                    '<p style="color:black;">'+ data[i].biaya +'</p>'+ 
+                                    '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
+                                    'Download PDF </a> </div> </div> </div>';
+                        }else{
+                            html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                                    '<p style="color:black;">'+ data[i].biaya +'</p>'+  
+                                    '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
+                        }
     
+                    }
                 }
+                console.log('masuk');
                 $("#showresult").html(html);
                 $("#projektambah").modal('show');
                 // console.log(html);
@@ -270,18 +278,25 @@
             dataType : 'JSON',
             success : function(data){
                 var html = '';
-                for (let i = 0; i < data.length; i++) {
-                    if(data[i].berkas != ''){
-                        html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
-                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
-                    '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
-                    'Download PDF </a> </div> </div> </div>';
-                    }else{
-                        html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
-                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
-                    '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
+                if(data.length === 0){
+                    html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center">'+
+                        '<div class="w-100 text-15 pl-3">'+
+                        '<img src="https://mitrarenov.soldig.co.id/public/main/images/tidak-ada-pekerjaan-tambah-atau-kurang.png" class="img-fluid" alt="">'+ 
+                        '</div></div> </div>';
+                }else{
+                    for (let i = 0; i < data.length; i++) {
+                        if(data[i].berkas != ''){
+                            html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                                    '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
+                                    'Download PDF </a> </div> </div> </div>';
+                        }else{
+                            html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                                    '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
+                                    '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
+                        }
+        
                     }
-    
                 }
                 $("#showresult").html(html);
                 $("#projektambah").modal('show');

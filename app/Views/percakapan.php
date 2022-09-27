@@ -1,6 +1,6 @@
 <?= $this->extend('template2') ?>
 
-<?= $this->section('content') ?> 
+<?= $this->section('content') ?>
 
     <div class="container" id="vapp">
       <div class="bg-grey">
@@ -23,7 +23,7 @@
                         </div>
                         <div class="chat-content">
                           <p class="chat-name">Admin - Mitrarenov </p>
-                          <p class="chat-sort"><?= $lc->message; ?></p>
+                          <p class="chat-sort"><?= substr($lc->message, 0, 30)."..."; ?></p>
                         </div>
                         <div class="chat-time">
                           <?= $lc->tanggal ?>

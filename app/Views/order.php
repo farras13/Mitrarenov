@@ -3,9 +3,9 @@
 <?= $this->section('content') ?>
  <div class="content-wrapper">
         <div class="page-title">
-            <h1>Order Jasa</h1>
+             <!-- <h1>Order Jasa</h1> -->
+             <h1>Order <?= $jenis ?></h1>
         </div>
-
         <div class="container-md account-section">
             <div class="card card-border">
                 <div class="card-body py-5">
