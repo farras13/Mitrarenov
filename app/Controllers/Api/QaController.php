@@ -51,7 +51,9 @@ class QaController extends ResourceController
         $url = base_url();
 
         $data_chat = $mdl->getWhere('chat', ['project_id' => $input['project_id']])->getResult();
-        
+        foreach ($data_chat as $key => $chat) {
+            $chat->date = date('d F Y', $chat->date);
+        }
         if (!$data_chat) {
             $res = [
                 "status" => 200,
@@ -89,7 +91,7 @@ class QaController extends ResourceController
         return $this->respond($res, 200);
         
     }
-    
+
     public function listChat()
     {
         $mdl = new GeneralModel();
@@ -131,6 +133,7 @@ class QaController extends ResourceController
         ];
         return $this->respond($res, 200);
     }
+    
     public function store_chat()
     {
         $mdl = new GeneralModel();
@@ -169,7 +172,7 @@ class QaController extends ResourceController
                 $data = [
                     'project_id' => $input['project_id'],
                     'user' => $user,
-                    'message' => $profile_image,
+                    'message' => $url.''.'/public/images/chat/'.$profile_image,
                     'date' => time(),
                     'type' => 'image'
                 ];

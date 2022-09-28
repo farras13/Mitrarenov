@@ -539,7 +539,7 @@ class TransaksiController extends ResourceController
         $harga = 0;
         $tracking_id = $input['no_invoice'];
         $projek_id = $input['id_projek'];
-		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id, 	], null)->getRow();
+		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id, 'project_id' => $projek_id], null)->getRow();
 		$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
 		
 		if($cek == null){
@@ -562,7 +562,7 @@ class TransaksiController extends ResourceController
 			}else{
 				$new = false;
 			}
-			if($cek->status == "expire" || $cek->status == "failure" || $cek->status == "cancel" || $new == true){
+			if($cek->status == "expire" || $cek->status == "failure" || $cek->status == "cancel" || $new == false){
 				$data_trans_ins = array(
 					'id_pembayaran' => $htrans->id, 
 					'project_id' => $htrans->project_id,
@@ -662,9 +662,6 @@ class TransaksiController extends ResourceController
             "token_midtrans" => $snaptoken
         ];
         
-		if($projek->token_midtrans != null){
-			$snaptoken = $projek->token_midtrans;
-		}
         $link = "https://app.midtrans.com/snap/v2/vtweb/" . $snaptoken;
         $mdl->upd('projects', ['id' => $htrans->project_id], $update);
         $msg = array(
@@ -922,7 +919,7 @@ class TransaksiController extends ResourceController
         $mdl = new GeneralModel();
 		$temp = $mdl->getWhere('email_ebook', array('id' => '1'))->getResult();
 		$email = \Config\Services::email();
-        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
+        $email->setFrom('testing@mitrarenov.com', 'testing@mitrarenov.com');
         $email->setTo($emailData['to']);
         $email->setSubject($emailData['subject']);
 		if ($tipe == 0) {
