@@ -159,6 +159,8 @@ $routes->group('api', function ($routes) {
             
             $routes->group('pemberitauan', function ($routes) {
                 $routes->get('/', 'Api\NotifikasiController::index');
+                $routes->post('read/(:num)', 'Api\NotifikasiController::updateNotif/$1');
+                $routes->post('readAll', 'Api\NotifikasiController::updateAll');
             });            
 
             $routes->group('cart', function ($routes) {

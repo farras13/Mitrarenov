@@ -248,13 +248,13 @@
                 }else{
                     for (let i = 0; i < data.length; i++) {
                         if(data[i].berkas != ''){
-                            html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                            html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="w-100">'+
                                     '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
                                     '<p style="color:black;">'+ data[i].biaya +'</p>'+ 
                                     '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
                                     'Download PDF </a> </div> </div> </div>';
                         }else{
-                            html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="cat-img-i">'+
+                            html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="w-100">'+
                                     '<h4>'+data[i].keterangan+'</h4></div><div class="w-100 text-15 pl-3">'+
                                     '<p style="color:black;">'+ data[i].biaya +'</p>'+  
                                     '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';

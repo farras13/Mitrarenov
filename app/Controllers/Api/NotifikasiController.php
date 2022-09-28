@@ -24,14 +24,17 @@ class NotifikasiController extends ResourceController
       
         $user = $model->getWhere('token_login', ['token' => $token])->getRow();
         $temp = $model->getQuery("SELECT id, kategori as title, id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $user->member_id  OR kategori = 'global' ORDER BY id desc")->getResult();
+        $unread = $model->getQuery("SELECT count(id) as unread FROM notifikasi WHERE (member_id = $user->member_id  OR kategori = 'global') and status = 0  ORDER BY id desc")->getRow();
         $key = $this->request->getGet();
     
         if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
             $temp = $model->getQuery("SELECT id, kategori as title, id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $user->member_id  OR kategori = 'global' ORDER BY id desc LIMIT $limit")->getResult();
+            $unread = $model->getQuery("SELECT count(id) as unread FROM notifikasi WHERE (member_id = $user->member_id  OR kategori = 'global') and status = 0  ORDER BY id desc")->getRow();
         }
        
         $data = $temp;
+        
 
         if (!$data) {
             $res = [
@@ -43,6 +46,8 @@ class NotifikasiController extends ResourceController
         }
         
         $res = [
+            "status" => 200,
+            "messages" => "data ditemukan !",
             'data' => $data,
             'error' => null
         ];
@@ -95,9 +100,33 @@ class NotifikasiController extends ResourceController
      *
      * @return mixed
      */
-    public function update($id = null)
+    public function updateNotif($id)
     {
-        //
+        $model = new GeneralModel();
+        $model->upd('notifikasi', ['id' => $id], ['status' => 1]);
+        $res = [
+            "status" => 200,
+            "messages" => "Berhasil update status notif!",
+            'error' => null
+        ];
+
+        return $this->respond($res, 200);
+    }
+
+    public function updateAll()
+    {
+        $model = new GeneralModel();
+        $headers = $this->request->headers();
+        $token = $headers['X-Auth-Token']->getValue();
+        $user = $model->getWhere('token_login', ['token' => $token])->getRow();
+        $model->upd('notifikasi', ['member_id' => $user->member_id], ['status' => 1]);
+        $res = [
+            "status" => 200,
+            "messages" => "Berhasil tandai baca semua notif!",
+            'error' => null
+        ];
+
+        return $this->respond($res, 200);
     }
 
     /**

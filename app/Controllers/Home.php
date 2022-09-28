@@ -2414,14 +2414,19 @@ class Home extends BaseController
         }
         // var_dump($temp);die;
         $no = 0;
+        $chat = 0;
         foreach ($temp as $key => $value) {
             if($value->status == 0){
                 $no++;
+            }
+            if($value->status == 0 && $value->kategori == "chat"){
+                $chat++;
             }
         }
 
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         // echo "<pre>"; print_r($data['projekBerjalan']); echo"</pre>";
         echo view("projek_berlangsung", $data);
     }
