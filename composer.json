@@ -14,7 +14,8 @@
         "laminas/laminas-escaper": "^2.9",
         "psr/log": "^1.1",
         "midtrans/midtrans-php": "^2.5",
-        "tuyapiphp/tuyapiphp": "*"
+        "tuyapiphp/tuyapiphp": "*",
+        "dompdf/dompdf": "^2.0"
     },
     "require-dev": {
         "codeigniter/coding-standard": "^1.1",

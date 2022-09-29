@@ -585,7 +585,7 @@ class Home extends BaseController
             'user_name'     => $cek_detail->name,
             'user_phone'     => $cek_detail->telephone,
             'user_email'    => $cek->email,
-            'logged_in'     => TRUE
+            'logged_in'     => TRUE,
         ];
         $session->set($ses_data);
         $session->setFlashdata('toast', 'success:Welcome to Mitrarenov !');

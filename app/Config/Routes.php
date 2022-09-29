@@ -65,6 +65,7 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
 
 // $routes->group('',['filter' => 'auth'], function ($routes) {
     $routes->get('order', 'Order::index');
+    $routes->post('searchPromo', 'Order::searchPromo');    
     $routes->post('kategori', 'Home::getKategori');
     $routes->post('getHarga', 'Home::getHarga');
     $routes->post('order/add', 'Order::order_ins');
@@ -149,6 +150,7 @@ $routes->group('api', function ($routes) {
         $routes->post('notifiris', 'Api\TransaksiController::irisnotif');        
         
         $routes->group('', ['filter' => 'token'], function ($routes) {
+            $routes->get('lihatinvoice/(:num)', 'Api\ProjectController::generatePDF/$1');
             $routes->group('auth', function ($routes) {
                 
                 $routes->get('profile', 'Api\LoginController::profile');

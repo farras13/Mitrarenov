@@ -539,9 +539,11 @@ class TransaksiController extends ResourceController
         $harga = 0;
         $tracking_id = $input['no_invoice'];
         $projek_id = $input['id_projek'];
-		$htrans = $mdl->getWhere('projects_pembayaran', ['nomor_invoice' => $tracking_id, 'project_id' => $projek_id], null)->getRow();
-		$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
-		
+        $orderid = $input['orderid'];
+		// $cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
+		$cek = $mdl->getWhere('projects_transaction', ['transaction_id' => $orderid], null, 'id', 'desc')->getRow();
+		$htrans = $mdl->getWhere('projects_pembayaran', ['id' => $cek->id_pembayaran,], null)->getRow();
+
 		if($cek == null){
 			$data_trans_ins = array(
 				'id_pembayaran' => $htrans->id, 
@@ -652,8 +654,8 @@ class TransaksiController extends ResourceController
         );
 
         // echo "<pre>";echo print_r($snaptoken); echo "</pre>";die;
-		if($projek->token_midtrans != null){
-			$snaptoken = $projek->token_midtrans;
+		if($cek->reference_no != null){
+			$snaptoken = $cek->reference_no;
 		}else{
 			$Midtranspayment = new Midtranspayment();
 			$snaptoken = $Midtranspayment->get_token($enable_payments,$transaction_details,$customer_details,$item_details);
@@ -661,9 +663,12 @@ class TransaksiController extends ResourceController
         $update = [
             "token_midtrans" => $snaptoken
         ];
-        
+        $updated = [
+            "reference_no" => $snaptoken
+        ];
         $link = "https://app.midtrans.com/snap/v2/vtweb/" . $snaptoken;
         $mdl->upd('projects', ['id' => $htrans->project_id], $update);
+        $mdl->upd('projects_transaction', ['id' => $cek->id], $updated);
         $msg = array(
             'status' => 200,
             'message' => 'Token Ditemukan ',
@@ -787,11 +792,15 @@ class TransaksiController extends ResourceController
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 				
 				// $this->rollback_product($htrans->htrans_id);
-
+				
+				// $update_midtrans = [
+				// 	"token_midtrans" => NULL,
+				// ];
 				$update_midtrans = [
-					"token_midtrans" => NULL,
+					"reference_no" => NULL,
 				];
-				$m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
+				// $m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
+				$m->upd("projects_transaction", ["id" => $htrans->project_id], $update_midtrans);
 
 				// $this->send_email($member, $htrans, $dtrans, "cancel");
 				if (!empty($member->fcm_id)) {

@@ -81,8 +81,13 @@ class DboModel extends Model
             WHERE a.member_id = $id ORDER BY b.id DESC")->getResult();
         }
         foreach ($data as $key => $value) {
-            $value->tambah = $this->addenum('tambah', $value->id);
-            $value->kurang = $this->addenum('kurang', $value->id);
+
+            $value->tambah = $db->query("SELECT sum(biaya) as total, keterangan as ket_enum, tipe FROM `projects_addendum` 
+                WHERE STATUS = 'disetujui' AND project_id = $value->id and tipe = 0
+                ORDER BY `projects_addendum`.`id`  DESC")->getResult();
+            $value->kurang = $db->query("SELECT sum(biaya) as total, keterangan as ket_enum, tipe FROM `projects_addendum`  
+                WHERE STATUS = 'disetujui' AND project_id = $value->id and tipe = 1
+                ORDER BY `projects_addendum`.`id`  DESC")->getResult();
         }
 
 
@@ -152,18 +157,20 @@ class DboModel extends Model
         $nsk = $sk->id . '/' . $nm . '/' . $bln . '/' . $sk->tahun;
 
         if ($termin_paid == null) {
-            $termin_paid = [null];
+            $termin_paid = [];
         } else {
             $a=1;
             foreach ($termin_paid as $key => $tp) {
                 $akhir = substr($termin_paid[$key+1]->nomor_invoice,5, 4);
                 $awal = substr($tp->nomor_invoice,5, 4);
                 $selisih = (int)$akhir - (int)$awal;
+                $getorderid = $this->db->table('projects_transaction')->where(['id_pembayaran' => $tp->id])->orderBy('id', 'DESC')->get()->getRow();
+                $tp->orderid = $getorderid->transaction_id;
                 $tp->biaya = str_replace('.', '', $tp->biaya);
                 $tp->biaya_tambahan = '-';
                 $tp->title = "Pembayaran Termin " . $tp->keterangan;
-                // if($selisih != 1){
-                //     unset($termin_paid[$key+1]);
+                // if($tp->jatuh_tempo == "01 Jan 1970"){
+                //     $tp->jatuh_tempo = "-";
                 // }
                 // if($a > 7){
                 //     unset($termin_paid[$key]);
@@ -173,16 +180,21 @@ class DboModel extends Model
         }
 
         if ($termin_unpaid == null) {
-            $termin_unpaid = [null];
+            $termin_unpaid = [];
         } else {
             $a=1;
             foreach ($termin_unpaid as $kt => $t) {
                 $akhir = substr($termin_unpaid[$kt+1]->nomor_invoice,5, 4);
                 $awal = substr($t->nomor_invoice,5, 4);
                 $selisih = (int)$akhir - (int)$awal;
+                $getorderid = $this->db->table('projects_transaction')->where(['id_pembayaran' => $t->id])->orderBy('id', 'DESC')->get()->getRow();
+                $t->orderid = $getorderid->transaction_id;
                 $t->biaya = str_replace('.', '', $t->biaya);
                 $t->biaya_tambahan = '-';
                 $t->title = "Pembayaran Termin " . $t->keterangan;
+                // if($t->jatuh_tempo == "01 Jan 1970"){
+                //     $t->jatuh_tempo = "-";
+                // }
                 // if($selisih != 1){
                 //     unset($termin_unpaid[$kt+1]);
                 // }
@@ -251,12 +263,16 @@ class DboModel extends Model
             JOIN projects_pembayaran as b on a.project_id = b.project_id
             WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND a.tipe = 0
             ORDER BY a.`id` DESC")->getResult();
-    
+            
         }else{
             $addenum = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
             JOIN projects_pembayaran as b on a.project_id = b.project_id
             WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND a.tipe = 1           
             ORDER BY a.`id` DESC")->getResult();
+        }
+        foreach ($addenum as $key => $value) {
+           $biaya = str_replace('.','',$value->biaya);
+           $value->biaya = number_format($biaya, 0, ',', '.');
         }
         return $addenum;
     }
