@@ -461,7 +461,18 @@ class TransaksiController extends ResourceController
 					}					
 				}
 			}
-
+			$notif = [
+				'member_id' =>  $id,
+				'kategori' => 'transaction',
+				'id_kategori' => $id_projek,
+				'message' => 'Permintaan Jasa anda telah dikirim !',
+				'date' => time(),
+				'status' => 0
+			];
+			$member = $mdl->getWhere('token_login', ['member_id' => $id], null)->getRow();
+			if (!empty($member->fcm_id)) {
+				$this->send_notif("Permintaan Jasa anda telah dikirim !", "Permintaan Jasa anda telah dikirim ! Mohon tunggu konfrimasi dari admin kami!", $member->fcm_id, array('title' => "Pesanan anda telah dikirim", 'message' => "Permintaan Jasa anda telah dikirim ! Mohon tunggu konfrimasi dari admin kami!", 'tipe' => 'transaksi', 'content' => array("id_projek" => $id_projek)));
+			}
             $res = array(
                 'status' => $json_status,
 				'error' => false,
@@ -602,7 +613,7 @@ class TransaksiController extends ResourceController
         // }
         $harga = str_replace(".","",$htrans->biaya);
 		
-        $cekpromo = $mdl->getWhere('promomobile', ['promoCode' => $htrans->kode_promo], null)->getRow();
+        $cekpromo = $mdl->getWhere('promomobile', ['promoCode' => $projek->kode_promo], null)->getRow();
         
         if ($cekpromo != null ) {
             $temp_promo = $totalpayment * $cekpromo->promo / 100;
@@ -781,14 +792,11 @@ class TransaksiController extends ResourceController
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 			} else if ($transactionstatus == "deny" || $transactionstatus == "cancel" || $transactionstatus == "expire" || $transactionstatus == "refund") {
-				$update = [
-					"status" => $transactionstatus,
-				];
+				
 				$update_pembayaran = [
 					"status" => 'belum dibayar',
 				];
 				
-				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 				
 				// $this->rollback_product($htrans->htrans_id);
@@ -798,6 +806,7 @@ class TransaksiController extends ResourceController
 				// ];
 				$update_midtrans = [
 					"reference_no" => NULL,
+					"status" => $transactionstatus,
 				];
 				// $m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
 				$m->upd("projects_transaction", ["id" => $htrans->project_id], $update_midtrans);

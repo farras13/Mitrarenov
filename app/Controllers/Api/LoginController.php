@@ -175,7 +175,7 @@ class LoginController extends ResourceController
             return $this->failNotFound('email tidak ditemukan dan belum terdaftar');
         }
         $mdl->ins('temp_reset_pass', ['member_id' => $cek['id'], 'token' => $token]);
-        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://appsmitrarenov.soldig.co.id/resetpassword/' . $token . '">Link reset</a></b> </p>';
+        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://mitrarenov.soldig.co.id/resetpassword/' . $token . '">Link reset</a></b> </p>';
         $kirim = $this->sendEmail($mail, 'reset password', $message);
 
         if ($kirim) {

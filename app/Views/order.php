@@ -3,9 +3,9 @@
 <?= $this->section('content') ?>
  <div class="content-wrapper">
         <div class="page-title">
-             <!-- <h1>Order Jasa</h1> -->
-             <h1>Order <?= $jenis ?></h1>
+            <h1>Order <?= $jenis ?></h1>
         </div>
+
         <div class="container-md account-section">
             <div class="card card-border">
                 <div class="card-body py-5">
@@ -78,8 +78,7 @@
                                         <input type="hidden" id="jenis" name="jenis_order" value="<?= $jenis ?>">
                                         <div class="collapse show" id="designOrder">
                                             <div class="mb-5">
-                                                <p class="text-22 text-primary font-weight-bold">Pilih Tipe Rumah</p>
-
+                                                <p class="text-22 text-primary font-weight-bold">Pilih Tipe Rumah</p> 
                                                 <div class="type-rumah">
                                                     <?php foreach ($tipe_rumah as $tr) : ?>
                                                         <?php if($tr->product_id == 0): ?>
@@ -99,6 +98,70 @@
                                                     <?php endforeach; ?>
                                                 </div>
                                             </div>
+                                            <!-- <div class="mb-5">
+                                                <p class="text-22 text-primary font-weight-bold">Denah Rumah</p>
+                                                <div class="row align-items-center">
+                                                    <div class="col-sm-6 mb-4">
+                                                        <div class="images-upload">
+                                                            <input type="file" id="denahRumah" name="denah" hidden="" accept="image/*">
+                                                            <label for="denahRumah" class="btn box-label">
+                                                                <div class="label-inner">
+                                                                    <i class="ico ico-picture"></i>
+                                                                    <div class="mt-2">Upload Denah Rumah</div>
+                                                                </div>
+                                                                <div class="img-holder" data-image="denahRumah"></div>
+                                                            </label>
+                                                        </div>
+                                                        <div class="text-grey mt-3"><i>*Format ( JPG/JPEG/PNG )</i></div>
+                                                    </div>
+                                                    <div class="col-sm-6 mb-4">
+                                                        <div class="row mb-4">
+                                                            <div class="col-6 text-grey">
+                                                                Ruang Keluarga
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="d-flex">
+                                                                    <div class="pr-3">:</div>
+                                                                    <div style="width: 68px;"><input type="text" class="form-denah" name="ruang_keluarga"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-6 text-grey">
+                                                                Kamar Tidur
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="d-flex">
+                                                                    <div class="pr-3">:</div>
+                                                                    <div style="width: 68px;"><input type="text" class="form-denah" name="kamar_tidur"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-6 text-grey">
+                                                                Kamar Mandi
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="d-flex">
+                                                                    <div class="pr-3">:</div>
+                                                                    <div style="width: 68px;"><input type="text" class="form-denah" name="kamar_mandi"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-6 text-grey">
+                                                                Dapur
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="d-flex">
+                                                                    <div class="pr-3">:</div>
+                                                                    <div style="width: 68px;"><input type="text" class="form-denah" name="dapur"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
                                         </div>
                                         <div class="mb-5">
                                             <p class="text-22 text-primary font-weight-bold">Detail Bangunan</p>
@@ -134,7 +197,10 @@
                                             <div class="form-group mb-4">
                                                 <div id="mapSearch"></div>
                                             </div>
-
+                                            <div class="mb-3">
+                                                <textarea class="form-control form-shadow" cols="30" rows="4" placeholder="Catatan Alamat" name="catatan_alamat" ></textarea>
+                                               
+                                            </div>           
                                             <div class="py-4 text-center">
                                                 <p class="text-20">Ingin tahu harga real?</p>
                                                 <p class="text-20 mb-0">Yuk Konsultasi dan Survey <b>GRATIS !</b></p>
@@ -148,7 +214,7 @@
                                                         <?php $no = 0;
                                                         $bnyk = count($spek);
                                                         foreach ($spek as $s) : ?>
-                                                            <option value="spesifikasi<?= $no ?>" data-spekid="<?= $s->id ?>" data-harga="<?= $s->product_price ?>">Spesifikasi <?= ucfirst($s->type_price); ?></option>
+                                                            <option value="spesifikasi<?= $no ?>" data-spekid="<?= $s->id ?>" data-spekid="<?= $s->id ?>" data-harga="<?= $s->product_price ?>">Spesifikasi <?= ucfirst($s->type_price); ?></option>
                                                         <?php $no++;
                                                         endforeach; ?>
                                                     </select>
@@ -177,6 +243,7 @@
                                                         <option></option>
                                                         <option value="cash">Cash</option>
                                                         <option value="kredit">KPR</option>
+                                                        <option value="online">Online Payment</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -198,7 +265,8 @@
 
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control form-shadow" placeholder="Kode Promo" name="promo">
+                                                    <input type="text" class="form-control form-shadow" placeholder="Kode Promo" name="promo" id="promo">
+                                                    <small style="color:red;" id="alertpromo">Maaf promo tidak tersedia !</small>
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control form-shadow" placeholder="Kode Referal" name="referal">
@@ -296,6 +364,25 @@
         var total = nluas * nharga;
         $("#totalHarga").val(total);
         $('#nharga').text(': ' + formatRupiah(total));
+    });
+
+    $('#promo').on('keyup', function() {
+        var promo = $("#promo").val();
+        console.log(promo);
+        $.ajax({  
+            url : "<?php echo site_url('searchPromo');?>",
+            method : "POST",
+            data : {promo: promo},
+            async : true,
+            dataType : 'json',           
+            success:function(data){
+                if(data == false){
+                    $("#alertpromo").show();
+                }else{
+                    $("#alertpromo").hide();
+                }
+            }  
+        });
     });
 
     function get_action(form) {
@@ -442,6 +529,7 @@
       // variableWidth: true
     });
     $(document).ready(function () {
+      $("#alertpromo").hide();
       $("#form-order").on("keypress", function (event) {
         var keyPressed = event.keyCode || event.which;
         if (keyPressed === 13) {
@@ -461,7 +549,6 @@
             
             nharga = $('option:selected', this).attr('data-harga');
             const idspek = $('option:selected', this).attr('data-spekid');
-            
             console.log(nharga);
             nluas = $("#luasbang").val();
             if (nluas == null || nluas == 0) {
@@ -496,6 +583,7 @@
       $('#designOrder').collapse('show')
       action = link_order;
     })
+    
     $('.nav-non-design').click(function (e) {
       e.preventDefault();
       $('.nav-tab-rounded .nav-link').removeClass('active');
