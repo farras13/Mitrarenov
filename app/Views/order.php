@@ -582,14 +582,16 @@
       $(this).addClass('active');
       $('#designOrder').collapse('show')
       action = link_order;
+
     })
-    
     $('.nav-non-design').click(function (e) {
       e.preventDefault();
       $('.nav-tab-rounded .nav-link').removeClass('active');
       $(this).addClass('active');
       $('#designOrder').collapse('hide')
       action = link_order;
+
+
     })
    
 

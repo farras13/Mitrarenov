@@ -568,24 +568,28 @@ class TransaksiController extends ResourceController
 			$trans = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null,'id', 'desc')->getRow();
 			
 		}else{
+			$htrans = $mdl->getWhere('projects_pembayaran', ['id' => $cek->id_pembayaran,], null)->getRow();
 			$date_cek = $cek->tanggal_dibuat;
 			$expired_cek = strtotime("+1 day", $cek->tanggal_dibuat);
+			$due_date = strtotime($htrans->due_date);
 			if($cek->tanggal_dibuat > $expired_cek){
 				$new = true;
 			}else{
 				$new = false;
 			}
 			if($cek->status == "expire" || $cek->status == "failure" || $cek->status == "cancel" || $new == false){
-				$data_trans_ins = array(
-					'id_pembayaran' => $htrans->id, 
-					'project_id' => $htrans->project_id,
-					'biaya' => $htrans->biaya,
-					'transaction_id' => $htrans->project_id . '' . time(),
-					'tanggal_dibuat' => time(),
-					'status' => 'belum dibayar',
-				);
-				$mdl->insB('projects_transaction', $data_trans_ins);
-				$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
+				if(time() > $due_date){
+					$data_trans_ins = array(
+						'id_pembayaran' => $htrans->id, 
+						'project_id' => $htrans->project_id,
+						'biaya' => $htrans->biaya,
+						'transaction_id' => $htrans->project_id . '' . time(),
+						'tanggal_dibuat' => time(),
+						'status' => 'belum dibayar',
+					);
+					$mdl->insB('projects_transaction', $data_trans_ins);
+					$cek = $mdl->getWhere('projects_transaction', ['id_pembayaran' => $htrans->id], null, 'id', 'desc')->getRow();
+				}
 			}
 			$trans = $cek;
 		}		

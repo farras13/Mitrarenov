@@ -97,8 +97,11 @@ class ProjectController extends ResourceController
         $cekUser = $model->getWhere('token_login', ['token' => $token])->getRow();
         $id_user = (int)$cekUser->member_id;
 
-        $path_dokumen = "https://admin.mitrarenov.soldig.co.id/assets/main/berkas/";
+        $path_dokumen = "https://admin.mitrarenov.soldig.co.id/assets/main/images/project_update/";
         $data = $model->getWhere('projects_update', ['project_id' => $id])->getResult();
+        foreach ($data as $key => $value) {
+            $value->image = $path_dokumen.$value->image;
+        }
         if (!$data) {
             return $this->failNotFound('data tidak ditemukan!');         
         }

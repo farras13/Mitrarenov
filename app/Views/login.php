@@ -33,7 +33,10 @@
                         <span class="input-icon">
                             <i class="ico ico-password"></i>
                         </span>
-                        <input type="text" name="password" class="form-control" placeholder="Password">
+                        <input type="password" name="password" class="form-control" placeholder="Password" id="myInput">
+                    </div>
+                    <div class="text-right mb-4 text-grey">
+                        Show Password <input type="checkbox" onclick="myFunction()">
                     </div>
                     <div class="text-right mb-4">
                         <a href="<?= base_url('lupa_password') ?>" class="text-grey">Lupa Password ?</a>
@@ -65,6 +68,15 @@
             }
       <?php } ?>
 	});
+    function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
 </script>
 </body>
 

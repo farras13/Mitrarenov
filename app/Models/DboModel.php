@@ -112,15 +112,13 @@ class DboModel extends Model
             WHERE projects.id = $id
             ORDER BY id DESC")->getRow();
 
-        $addenum_tambah = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
-                JOIN projects_pembayaran as b on a.project_id = b.project_id
-                WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND b.tipe = 1
-                -- GROUP BY a.tipe
+        $addenum_tambah = $db->query("SELECT DISTINCT a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, a.berkas FROM `projects_addendum` as a
+               
+                WHERE a.status = 'disetujui' AND a.project_id = $id AND a.tipe = 0
                 ORDER BY a.`id` DESC")->getResult();
-        $addenum_kurang = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
-                JOIN projects_pembayaran as b on a.project_id = b.project_id
-                WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND b.tipe = 2
-                -- GROUP BY a.tipe
+        $addenum_kurang = $db->query("SELECT DISTINCT a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, a.berkas FROM `projects_addendum` as a
+               
+                WHERE a.status = 'disetujui' AND a.project_id = $id AND a.tipe = 1
                 ORDER BY a.`id` DESC")->getResult();
 
         $customer = $db->query("SELECT project_data_customer.name, project_data_customer.phone, t.name as 'pic', t.telephone AS 'pic_telp' ,projects.luas, projects.metode_payment
@@ -138,7 +136,7 @@ class DboModel extends Model
             WHERE projects.id = $id
             ORDER BY projects_update.id DESC
             LIMIT 1")->getRow();
-
+    
         $rab = str_replace('.','',$projek->rab);
         $projek->rab = $rab;
 
@@ -153,7 +151,13 @@ class DboModel extends Model
         //get
         $nm = substr($sk->name, 0, 3);
         $array_bln = array(1 => "I", 2 => "II", 3 => "III", 4 => "IV", 5 => "V", 6 => "VI", 7 => "VII", 8 => "VIII", 9 => "IX", 10 => "X", 11 => "XI", 12 => "XII");
-        $bln = $array_bln[$sk->bulan];
+        $temp_bulan = substr($sk->bulan, 0, 1);
+        if($temp_bulan == 0){
+            $temp_bulan = str_replace('0', '', $sk->bulan);
+        }else{
+            $temp_bulan = $sk->bulan;
+        }
+        $bln = $array_bln[$temp_bulan];
         $nsk = $sk->id . '/' . $nm . '/' . $bln . '/' . $sk->tahun;
 
         if ($termin_paid == null) {
@@ -184,9 +188,9 @@ class DboModel extends Model
         } else {
             $a=1;
             foreach ($termin_unpaid as $kt => $t) {
-                $akhir = substr($termin_unpaid[$kt+1]->nomor_invoice,5, 4);
-                $awal = substr($t->nomor_invoice,5, 4);
-                $selisih = (int)$akhir - (int)$awal;
+                // $akhir = substr($termin_unpaid[$kt+1]->nomor_invoice,5, 4);
+                // $awal = substr($t->nomor_invoice,5, 4);
+                // $selisih = (int)$akhir - (int)$awal;
                 $getorderid = $this->db->table('projects_transaction')->where(['id_pembayaran' => $t->id])->orderBy('id', 'DESC')->get()->getRow();
                 $t->orderid = $getorderid->transaction_id;
                 $t->biaya = str_replace('.', '', $t->biaya);
@@ -285,12 +289,16 @@ class DboModel extends Model
         } else {
             $data = $db->query("SELECT a.member_id, a.name, a.dob, b.* FROM `project_data_customer` as a join projects as  b on b.id = a.project_id  WHERE member_id = $id AND b.status_project = '$s'")->getResult();
         }
+        foreach ($data as $key => $value) {
+            if($value->image_upload){
+                $value->image_upload = "https://mitrarenov.soldig.co.id/public/images/projek/".$value->image_upload;
+            }
+        }
         return $data;
     }
 
     public function detailInvoice($invoice)
     {
-        $db = db_connect();
         $termin_unpaid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
             FROM projects_pembayaran
             WHERE project_id = $id AND nomor_invoice = $invoice AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status = 'belum dibayar'")->getResult();

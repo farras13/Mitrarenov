@@ -7,16 +7,16 @@
         <div class="slider-section">
             <span class="pagingInfo"></span>
             <div class="slideshow">
-                <?php if($pb->dokumentasi != null): foreach($pb->dokumentasi as $dk): ?>
+                <?php if($pb->dokumentasi != null): $countslide = count($pb->dokumentasi); foreach($pb->dokumentasi as $dk): ?>
                 <div class="slider-item">
-                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/project_update/<?= $dk->image ?>" class="img-fluid" alt="">
+                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/project_update/<?= $dk->image ?>" style="width: inherit;" class="img-fluid" alt="">
                     <div class="ket-project">
                         Ket. Foto : <?= $dk->description; ?>
                     </div>
                 </div>
-                <?php endforeach; else: ?>
+                <?php endforeach; else: $countslide = 1;?>
                     <div class="slider-item">
-                    <img src="<?= base_url('public/main/images/gambar-blum-update.png') ?>" class="img-fluid" alt="">
+                    <img src="<?= base_url('public/main/images/gambar-blum-update.png') ?>" class="img-fluid" style="width: inherit;" alt="">
                     <div class="ket-project">
                         Ket. Foto : -
                     </div>
@@ -317,7 +317,7 @@
 
     var $status = $('.pagingInfo');
     var $slickElement = $('.slideshow');
-
+    
     $slickElement.on('init reInit afterChange', function(event, slick, currentSlide, nextSlide) {
         //currentSlide is undefined on init -- set it to 0 in this case (currentSlide is 0 based)
         var i = (currentSlide ? currentSlide : 0) + 1;
