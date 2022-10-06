@@ -262,18 +262,12 @@ class DboModel extends Model
     public function addenum($tipe, $id)
     {
         $db = db_connect();
-        if($tipe == "tambah"){
-            $addenum = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
-            JOIN projects_pembayaran as b on a.project_id = b.project_id
-            WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND a.tipe = 0
-            ORDER BY a.`id` DESC")->getResult();
-            
-        }else{
-            $addenum = $db->query("SELECT DISTINCT b.status as status_bayar, a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, b.jenis, a.berkas FROM `projects_addendum` as a
-            JOIN projects_pembayaran as b on a.project_id = b.project_id
-            WHERE a.status = 'disetujui' AND a.project_id = $id AND b.jenis = 'tambahan' AND a.tipe = 1           
-            ORDER BY a.`id` DESC")->getResult();
-        }
+        $tp = $tipe == "tambah" ? 0 : 1;
+    
+        $addenum = $db->query("SELECT DISTINCT a.biaya, a.tipe, a.status,  DATE_FORMAT(FROM_UNIXTIME(a.tanggal_selesai), '%d/%m/%Y') AS 'tanggal_selesai', a.keterangan, a.berkas FROM `projects_addendum` as a
+        WHERE a.status = 'disetujui' AND a.project_id = $id AND a.tipe = $tp
+        ORDER BY a.`id` DESC")->getResult();
+
         foreach ($addenum as $key => $value) {
            $biaya = str_replace('.','',$value->biaya);
            $value->biaya = number_format($biaya, 0, ',', '.');

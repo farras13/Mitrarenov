@@ -249,20 +249,21 @@
                     for (let i = 0; i < data.length; i++) {
                         if(data[i].berkas != ''){
                             html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="w-100">'+
-                                    '<h5>'+data[i].keterangan+'</h5></div><div class="w-100 text-15 pl-3">'+
-                                    '<p style="color:black;">'+ data[i].biaya +'</p>'+ 
+                                    '<h5>'+data[i].keterangan+'</h5>'+
+                                    '<p style="color:black;">'+ data[i].biaya +
+                                    '</p></div><div class="w-100 text-15 pl-3">'+
                                     '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
                                     'Download PDF </a> </div> </div> </div>';
                         }else{
                             html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="w-100">'+
-                                    '<h5>'+data[i].keterangan+'</h5></div><div class="w-100 text-15 pl-3">'+
-                                    '<p style="color:black;">'+ data[i].biaya +'</p>'+  
+                                    '<h5>'+data[i].keterangan+'</h5>'+
+                                    '<p style="color:black;">'+ data[i].biaya +
+                                    '</p></div><div class="w-100 text-15 pl-3">'+
                                     '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
                         }
     
                     }
                 }
-                console.log('masuk');
                 $("#showresult").html(html);
                 $("#projektambah").modal('show');
                 // console.log(html);
@@ -286,15 +287,17 @@
                 }else{
                     for (let i = 0; i < data.length; i++) {
                         if(data[i].berkas != ''){
-                            html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="w-100">'+
-                                    '<h5>'+data[i].keterangan+'</h5></div><div class="w-100 text-15 pl-3">'+
-                                    '<p style="color:black;">'+ data[i].biaya +'</p>'+ 
+                            html += '<div class="col-md-12 my-4"><div class="d-flex align-items-center"><div class="w-100 pl-3">'+
+                                    '<h5>'+data[i].keterangan+'</h5>'+
+                                    '<p style="color:black;">'+ data[i].biaya +
+                                    '</p></div><div class="w-100 text-15 pl-3">'+
                                     '<a href="https://admin.mitrarenov.soldig.co.id/assets/main/berkas/'+ data[i].berkas +'" target="_blank" style="color:black;">'+ 
                                     'Download PDF </a> </div> </div> </div>';
                         }else{
                             html += '<div class="col-md-6 my-4"><div class="d-flex align-items-center"><div class="w-100">'+
-                                    '<h5>'+data[i].keterangan+'</h5></div><div class="w-100 text-15 pl-3">'+
-                                    '<p style="color:black;">'+ data[i].biaya +'</p>'+ 
+                                    '<h5>'+data[i].keterangan+'</h5>'+
+                                    '<p style="color:black;">'+ data[i].biaya +
+                                    '</p></div><div class="w-100 text-15 pl-3">'+
                                     '<a href="#" style="color:black;"> Download PDF </a> </div> </div> </div>';
                         }
         
