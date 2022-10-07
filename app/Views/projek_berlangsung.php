@@ -5,7 +5,7 @@
     <?php foreach($projekBerjalan as $key => $pb): ?>
     <div class="card-nav">
         <div class="slider-section">
-            <span class="pagingInfo"></span>
+            <!-- <span class="pagingInfo"></span> -->
             <div class="slideshow">
                 <?php if($pb->dokumentasi != null): $countslide = count($pb->dokumentasi); foreach($pb->dokumentasi as $dk): ?>
                 <div class="slider-item">
@@ -184,6 +184,7 @@
             </div> -->
         </div>
     </div>
+    <hr>
     <?php endforeach; ?>
 </div>
 
@@ -323,6 +324,7 @@
     
     $slickElement.on('init reInit afterChange', function(event, slick, currentSlide, nextSlide) {
         //currentSlide is undefined on init -- set it to 0 in this case (currentSlide is 0 based)
+        console.log(this);
         var i = (currentSlide ? currentSlide : 0) + 1;
         $status.text(i + '/' + slick.slideCount);
     });

@@ -1,6 +1,11 @@
 <?= $this->extend('template') ?>
 
 <?= $this->section('content') ?>
+<style>
+    .pencetgambar {
+        box-shadow: 0px 0px 10px 7px #606060;
+    }
+</style>
  <div class="content-wrapper">
         <div class="page-title">
             <h1>Order <?= $jenis ?></h1>
@@ -83,7 +88,7 @@
                                                     <?php foreach ($tipe_rumah as $tr) : ?>
                                                         <?php if($tr->product_id == 0): ?>
                                                             <div class="custom-control custom-radio type-radio">
-                                                                <input type="radio" id="type<?= $tr->id ?>" name="customRadioInline" class="custom-control-input">
+                                                                <input type="radio" id="type<?= $tr->id ?>" name="customRadioInline" class="custom-control-input" onclick="klikgambar(<?php echo $tr->id; ?>)">
                                                                 <label class="custom-control-label" for="type<?= $tr->id ?>">
                                                                     <?= $tr->type ?>
                                                                 </label>
@@ -91,7 +96,8 @@
                                                         <?php else: ?>
                                                             <div class="custom-control custom-radio type-radio">
                                                                 <input type="radio" id="type<?= $tr->id ?>" name="customRadioInline" class="custom-control-input">
-                                                                <label class="custom-control-label" for="type<?= $tr->id ?>" style="background-image: url('<?= $tr->image_type ?>');  background-size: cover;">
+                                                                <!-- <label class="custom-control-label" for="type<?= $tr->id ?>" style="background-image: url('<?= $tr->image_type ?>');  background-size: cover;"> -->
+                                                                <label class="custom-control-label" id="<?= $tr->id ?>" for="type<?= $tr->id ?>" style="background-image: url('<?= $tr->image_type ?>');  background-size: cover;">
                                                                 </label>
                                                             </div>
                                                         <?php endif; ?>
@@ -350,7 +356,15 @@
             currency: 'IDR',
             minimumFractionDigits: 0
         }).format(money);
-    };  
+    }; 
+    $('.custom-control-label').on('click', function() {
+        var array = $('.custom-control-label');
+         for (let index = 0; index < array.length; index++) {
+            const element = array[index];
+            element.style.removeProperty('box-shadow')            
+         }
+        this.style.setProperty('box-shadow', '0px 0px 10px 7px #606060');
+    });
 
     $('#luasbang').on('keyup', function() {
         nluas = $("#luasbang").val();
