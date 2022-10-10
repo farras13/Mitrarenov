@@ -51,9 +51,15 @@
                     </div>
                     <div class="header-main-nav">
                         <div class="login-mobile">
-                            <a href="<?= base_url('member/login') ?>" class="nav-link px-0">
+                            <?php $sess = session(); if ($sess->get('logged_in') != TRUE) { ?>
+                                <a href="<?= base_url('member/login') ?>" class="nav-link px-0">
                                 <i class="ico ico-user"></i> Login / Daftar
-                            </a>
+                                </a>
+                            <?php }else { ?>
+                                <a href="#" class="nav-link px-0">
+                                <i class="ico ico-user"></i> <?= $sess->get('user_name') ?>
+                                </a>
+                            <?php } ?>
                         </div>
                         <?php $currentURL = current_url(); ?>
                         <ul class="nav main-nav">

@@ -50,9 +50,15 @@
           </div>
           <div class="header-main-nav">
             <div class="login-mobile">
-              <a href="<?= base_url('member/login') ?>" class="nav-link px-0">
-                <i class="ico ico-user"></i> Login / Daftar
-              </a>
+              <?php $sess = session(); if ($sess->get('logged_in') != TRUE) { ?>
+                <a href="<?= base_url('member/login') ?>" class="nav-link px-0">
+                  <i class="ico ico-user"></i> Login / Daftar
+                </a>
+              <?php }else { ?>
+                <a href="#" class="nav-link px-0">
+                  <i class="ico ico-user"></i> <?= $sess->get('user_name') ?>
+                </a>
+              <?php } ?>
             </div>
             <?php $currentURL = current_url(); ?>
             <ul class="nav main-nav">
@@ -101,12 +107,11 @@
                   <span class="badge">1</span>
                 </a> -->
               </li>
-              <?php $sess = session(); ?>
               <?php if ($sess->get('logged_in') == TRUE) { ?>
                 <li class="nav-item">
                   <a href="<?= base_url('chat') ?>" class="nav-link">
                     <i class="ico ico-chat"></i>
-                    <span class="badge" <?= $chat_total == 0 ? "hidden": "";?>><?= $chat_total; ?></span>
+                      
                   </a>
                 </li>
                 <li class="nav-item dropdown">
@@ -130,12 +135,12 @@
                           }else if($value->kategori == "Project"){ 
                               $link=base_url('notif/project/'.$value->id);
                           }else if($value->kategori == "ProjectUpdate"){ 
-                              $link=base_url('notif/project/'.$value->id); 
+                            $link=base_url('notif/project/'.$value->id); 
                           }else if($value->kategori == "promo"){ 
-                              $link=base_url('notif/promo/'.$value->id); 
+                            $link=base_url('notif/promo/'.$value->id); 
                           }else if($value->kategori == "transaction"){ 
                             $link=base_url('notif/transaction/'.$value->id); 
-                          } ?>                                   
+                        } ?>                                   
                           <?php if($value->status == 0){ ?>  
                               <a class="dropdown-item new-notif" href="<?= $link ?>">
                           <?php }else{ ?>    

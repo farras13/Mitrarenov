@@ -546,6 +546,7 @@ class Home extends BaseController
         $w = array(
             'email' => $request['email'],
             'password' => md5($request['password']),
+            'usergroup_id' => 5,
         );
 
         $cek = $model->getWhere('member', $w)->getRow();

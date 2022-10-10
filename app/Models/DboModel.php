@@ -136,9 +136,11 @@ class DboModel extends Model
             WHERE projects.id = $id
             ORDER BY projects_update.id DESC
             LIMIT 1")->getRow();
-    
-        $rab = str_replace('.','',$projek->rab);
-        $projek->rab = $rab;
+            
+        if($projek){
+            $rab = str_replace('.','',$projek->rab);
+            $projek->rab = $rab;    
+        }
 
         $termin_unpaid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
             FROM projects_pembayaran

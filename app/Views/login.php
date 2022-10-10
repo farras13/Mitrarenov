@@ -35,8 +35,9 @@
                         </span>
                         <input type="password" name="password" class="form-control" placeholder="Password" id="myInput">
                     </div>
-                   
-                    <input type="checkbox" onclick="myFunction()"> Show Password 
+                   <div class="input-group text-grey">
+                       <input type="checkbox" class="mr-2" onclick="myFunction()"> Show Password 
+                   </div>
                     
                     <div class="text-right mb-4">
                         <a href="<?= base_url('lupa_password') ?>" class="text-grey">Lupa Password ?</a>
