@@ -12,8 +12,8 @@ $(function () {
         slidesToShow: 1,
         prevArrow: '.btn-prev',
         nextArrow: '.btn-next',
-        // autoplay: true,
-        // autoplaySpeed: 3000,
+        autoplay: true,
+        autoplaySpeed: 5000,
         dots: true,
         responsive: [
             {

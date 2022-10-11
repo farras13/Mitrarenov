@@ -572,13 +572,10 @@ class TransaksiController extends ResourceController
 			$date_cek = $cek->tanggal_dibuat;
 			$expired_cek = strtotime("+1 day", $cek->tanggal_dibuat);
 			$due_date = strtotime($htrans->due_date);
-			if($cek->tanggal_dibuat > $expired_cek){
-				$new = true;
-			}else{
-				$new = false;
-			}
-			if($cek->status == "expire" || $cek->status == "failure" || $cek->status == "cancel" || $new == false){
-				if(time() > $due_date){
+			$now = time();
+			
+			if($cek->status == "expire" || $cek->status == "failure" || $cek->status == "cancel"){
+				if($now >= $due_date){
 					$data_trans_ins = array(
 						'id_pembayaran' => $htrans->id, 
 						'project_id' => $htrans->project_id,
@@ -669,34 +666,50 @@ class TransaksiController extends ResourceController
         );
 
         // echo "<pre>";echo print_r($snaptoken); echo "</pre>";die;
-		if($cek->reference_no != null){
-			$snaptoken = $cek->reference_no;
+		if(strtotime($cek->expired_date) < time()){
+			if($cek->reference_no != null){
+				$snaptoken = $cek->reference_no;
+			}else{
+				$Midtranspayment = new Midtranspayment();
+				$snaptoken = $Midtranspayment->get_token($enable_payments,$transaction_details,$customer_details,$item_details);
+			}
+			$update = [
+				"token_midtrans" => $snaptoken
+			];
+			$updated = [
+				"reference_no" => $snaptoken
+			];
+			$link = "https://app.midtrans.com/snap/v2/vtweb/" . $snaptoken;
+			$mdl->upd('projects', ['id' => $htrans->project_id], $update);
+			$mdl->upd('projects_transaction', ['id' => $cek->id], $updated);
+			$msg = array(
+				'status' => 200,
+				'message' => 'Token Ditemukan ',
+				'data' => [
+					"order_id" => $tracking_id,
+					"total_bayar" => $totalpayment,
+					"name" => "$member->name",
+					"email" => "$member->email",
+					"phone" => "$member->phone",
+					"token" => $snaptoken,
+					'url' => $link,
+				]
+			);
 		}else{
-			$Midtranspayment = new Midtranspayment();
-			$snaptoken = $Midtranspayment->get_token($enable_payments,$transaction_details,$customer_details,$item_details);
+			$snaptoken = $cek->reference_no;
+			$msg = array(
+				'status' => 500,
+				'message' => 'Expired Payment !',
+				'data' => [
+					"order_id" => $tracking_id,
+					"total_bayar" => $totalpayment,
+					"name" => "$member->name",
+					"email" => "$member->email",
+					"phone" => "$member->phone",
+					"token" => $snaptoken,
+				],				
+			);
 		}
-        $update = [
-            "token_midtrans" => $snaptoken
-        ];
-        $updated = [
-            "reference_no" => $snaptoken
-        ];
-        $link = "https://app.midtrans.com/snap/v2/vtweb/" . $snaptoken;
-        $mdl->upd('projects', ['id' => $htrans->project_id], $update);
-        $mdl->upd('projects_transaction', ['id' => $cek->id], $updated);
-        $msg = array(
-            'status' => 200,
-            'message' => 'Token Ditemukan ',
-            'data' => [
-                "order_id" => $tracking_id,
-                "total_bayar" => $totalpayment,
-                "name" => "$member->name",
-                "email" => "$member->email",
-                "phone" => "$member->phone",
-                "token" => $snaptoken,
-                'url' => $link,
-            ]
-        );
          return $this->respond($msg, 200);
     }
 
@@ -761,6 +774,7 @@ class TransaksiController extends ResourceController
 				];
 				$update_pembayaran = [
 					"status" => 'sudah dibayar',
+					"status_midtrans" => $transactionstatus,
 				];
 				$notif = [
 					'member_id' => $projek->member_id,
@@ -792,6 +806,7 @@ class TransaksiController extends ResourceController
 				];
 				$update_pembayaran = [
 					"status" => 'belum dibayar',
+					"status_midtrans" => $transactionstatus,
 				];
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
@@ -799,6 +814,7 @@ class TransaksiController extends ResourceController
 				
 				$update_pembayaran = [
 					"status" => 'belum dibayar',
+					"status_midtrans" => $transactionstatus,
 				];
 				
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
@@ -814,7 +830,7 @@ class TransaksiController extends ResourceController
 				];
 				// $m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
 				$m->upd("projects_transaction", ["id" => $htrans->project_id], $update_midtrans);
-
+				
 				// $this->send_email($member, $htrans, $dtrans, "cancel");
 				if (!empty($member->fcm_id)) {
 					$this->send_notif("Pesanan anda telah diverifikasi", "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", $member->fcm_id, array('title' => "Pesanan anda telah diverifikasi", 'message' => "Transaksi anda " . $htrans->transaction_id . " telah diverifikasi", 'tipe' => 'detail_transaksi', 'content' => array("id_transaksi" => $htrans->id, "order_id" => $htrans->transaction_id)));

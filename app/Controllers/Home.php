@@ -50,7 +50,7 @@ class Home extends BaseController
         $data['chat_total'] = $chat;
         $data['alur'] = $this->model->getAll('rules')->getResult();
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
-        $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get()->getResult();
+        $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get(9)->getResult();
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
         $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
@@ -64,7 +64,17 @@ class Home extends BaseController
         $data['jasa'] = $this->model->getQuery("SELECT DISTINCT product.* FROM product_price JOIN product ON product.id = product_price.product_id WHERE product.category_id != 3 ORDER BY product.category_id")->getResult();
         $data['membangun'] = $this->model->getWhere('product', ['category_id' => 1])->getResult();
         $data['renovasi'] = $this->model->getWhere('product', ['category_id' => 2])->getResult();
-
+        $agent = $this->request->getUserAgent();
+        if ($agent->isMobile()) {
+            $currentAgent = $agent->getBrowser() . ' ' . $agent->getMobile();
+        } elseif ($agent->isRobot()) {
+            $currentAgent = $agent->getRobot();
+        } elseif ($agent->isBrowser()) {
+            $currentAgent = $agent->getMobile();
+        } else {
+            $currentAgent = 'Unidentified User Agent';
+        }
+        $data['agen'] = $currentAgent;
         // var_dump($temp_lokasi);
         return view('index', $data);
     }

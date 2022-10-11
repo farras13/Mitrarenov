@@ -11,12 +11,12 @@
             <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
             <div class="slide-content">
               <div class="discount-badge">
-                Diskon <?= $p->promo ?>%
+               Diskon <?= $p->promo ?>%
               </div>
               <div class="slide-text">
                 <div class="row">
                   <div class="col-md-8">
-                    <?php if($p->head == 1){ ?>  
+                  <?php if($p->head == 1){ ?>  
                       <h1><?= $p->title ?></h1>
                     <?php }elseif($p->head == 2){ ?>  
                       <h2><?= $p->title ?></h2>
