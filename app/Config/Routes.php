@@ -50,6 +50,9 @@ $routes->get('member/logout', 'Home::logout');
 $routes->get('portofolio/(:any)/detail', 'Home::detail_porto/$1');
 $routes->get('portofolio', 'Home::portofolio');
 
+$routes->get('design_rumah', 'Home::design_rumah');
+$routes->get('design_rumah/(:any)/detail', 'Home::detail_design_rumah/$1');
+
 $routes->get('chat', 'Chat::index');
 $routes->post('chat-kirim', 'Chat::kirim');
 $routes->get('notif/(:any)/(:any)', 'Chat::onclicknotif/$1/$2');

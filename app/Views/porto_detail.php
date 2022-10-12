@@ -14,7 +14,7 @@
                         <div class="img-detail">
                             <?php foreach ($gambar as $g) : ?>
                                 <div>
-                                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $g->image ?>" class="img-fluid" alt="">
+                                    <img src="<?= $link_gambar.$g->image ?>" class="img-fluid" alt="">
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -22,7 +22,7 @@
                             <div class="img-nav">
                                 <?php foreach ($gambar as $g) : ?>
                                     <div>
-                                        <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $g->image ?>" class="img-fluid" alt="">
+                                        <img src="<?= $link_gambar.$g->image ?>" class="img-fluid" alt="">
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -45,7 +45,7 @@
                         <?php foreach($lain as $l): ?>
                         <div class="col-md-3 mb-3">
                             <a href="<?= base_url('portofolio/'.$l->id.'/detail'); ?>" class="gallery-item">
-                                <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $l->image ?>" class="img-fluid" alt="">
+                                <img src="<?= $link_gambar.$l->image ?>" class="img-fluid" alt="">
                                 <div class="gallery-cnt">
                                     <h5 class="mb-1"><?= $l->title; ?></h5>
                                     <p class="mb-0">diliput oleh Admin</p>

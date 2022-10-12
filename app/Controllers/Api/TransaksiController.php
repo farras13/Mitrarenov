@@ -188,26 +188,32 @@ class TransaksiController extends ResourceController
 		$input = $this->request->getVar();
 
 		if($cekUser == null){
-			$status_cust = 0;
-			$insert_h['usergroup_id'] = 5;
+			$cekEmail = $mdl->getWhere('member', ['email' => $input['email']])->getRow();        
 			
-			$insert_h['email'] = $input['email'];
-			$insert_d['name'] = $input['nama_lengkap'];
-			$insert_d['handphone'] = $input['telepon'];
-
-			$insert_h['password'] = md5('123456');
-			$insert_h['created'] = time();
-			$insert_h['created_by'] = 2;
-			$query_h = $mdl->insId('member', $insert_h);
-			if ($query_h) {
-				$insert_d['member_id'] = $query_h;
-				$insert_d['created'] = time();
-				$insert_d['city_id'] = 0;
-				$insert_d['address'] = $input['alamat'];
-				$insert_d['created_by'] = 2;
-				$query_d = $mdl->insB('member_detail', $insert_d);
+			if(!$cekEmail){
+				$status_cust = 0;
+				$insert_h['usergroup_id'] = 5;
+				
+				$insert_h['email'] = $input['email'];
+				$insert_d['name'] = $input['nama_lengkap'];
+				$insert_d['handphone'] = $input['telepon'];
+	
+				$insert_h['password'] = md5('123456');
+				$insert_h['created'] = time();
+				$insert_h['created_by'] = 2;
+				$query_h = $mdl->insId('member', $insert_h);
+				if ($query_h) {
+					$insert_d['member_id'] = $query_h;
+					$insert_d['created'] = time();
+					$insert_d['city_id'] = 0;
+					$insert_d['address'] = $input['alamat'];
+					$insert_d['created_by'] = 2;
+					$query_d = $mdl->insB('member_detail', $insert_d);
+				}
+				$id = $query_h;
+			}else{
+				$id = $cekEmail->id;
 			}
-			$id = $query_h;
 		}else{
 			$id = (int)$cekUser->member_id;
 			$status_cust = 1;

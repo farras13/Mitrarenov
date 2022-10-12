@@ -3,14 +3,14 @@
 <?= $this->section('content') ?>
 <<div class="content-wrapper">
   <div class="page-title">
-    <h1>Portofolio </h1>
+    <h1><?= $title ?> </h1>
   </div>
   <div class="container my-5">
     <div class="row mt-5">
         <?php foreach($porto as $p){ ?>
             <div class="col-md-3 mb-4">
-                <a href="<?= base_url('portofolio/'.$p["id"].'/detail'); ?>" class="gallery-item">
-                <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/thumbs/<?= $p["image"] ?>" class="img-fluid" alt="">
+                <a href="<?= current_url().'/'.$p["id"].'/detail'; ?>" class="gallery-item">
+                <img src="<?= $link_gambar.$p["image"] ?>" class="img-fluid" alt="">
                 <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $p["title"] ?></h5>
                     <p class="mb-0">diliput oleh <?= $p["penulis"]; ?></p>

@@ -313,7 +313,7 @@
             <?php } ?>
           </div>
           <div class="text-center mt-4">
-            <a href="#" class="readmore" id="moreDesain">Lihat Selengkapnya</a>
+            <a href="<?= base_url('design_rumah'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
           </div>
         </div>
       </div>

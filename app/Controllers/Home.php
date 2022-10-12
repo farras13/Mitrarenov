@@ -9,6 +9,7 @@ use App\Models\AuthDetailModel;
 use App\Models\AuthModel;
 use App\Models\GeneralModel;
 use App\Models\PortoModel;
+use App\Models\DesignModel;
 
 class Home extends BaseController
 {
@@ -104,9 +105,11 @@ class Home extends BaseController
                 }
             }
         }
+        $data['title'] = "Portofolio";
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
+        $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/";
 
         $data['porto'] = $model->select('merawat.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = merawat.created_by')->paginate(12, 'berita');
         $data['pager'] = $model->pager;
@@ -120,6 +123,79 @@ class Home extends BaseController
         $id = $data['porto']->created_by;
         $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id])->getRow();
         $data['lain'] = $this->model->getWhere('merawat', ['id !=' => $id], 4)->getResult();
+        $data['gambar'] = $this->model->getWhere('gambar_portofolio', ['porto_id' => $data['porto']->id])->getResult();
+        $sess = session();
+        $key = $this->request->getGet();
+        $id = $sess->get('user_id');
+        if($id != null){
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
+            
+            if(array_key_exists("limit",$key) ){
+                $limit  = (int) $key['limit'];
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
+            }
+            // var_dump($temp);die;
+            $no = 0;
+            $chat = 0;
+            foreach ($temp as $key => $value) {
+                if($value->status == 0){
+                    $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
+                }
+            }
+        }
+        $data['notif'] = $temp;
+        $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
+        $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/";
+
+        return view('porto_detail', $data);
+    }
+
+    public function design_rumah()
+    {
+        $model = new DesignModel();
+        $sess = session();
+        $id = $sess->get('user_id');
+        if($id != null){
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
+            $key = $this->request->getGet();
+        
+            if(array_key_exists("limit",$key) ){
+                $limit  = (int) $key['limit'];
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
+            }
+            // var_dump($temp);die;
+            $no = 0;
+            $chat = 0;
+            foreach ($temp as $key => $value) {
+                if($value->status == 0){
+                    $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
+                }
+            }
+        }
+        $data['title'] = "Design Rumah";
+        $data['notif'] = $temp;
+        $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;        
+        $data['porto'] = $model->select('*')->paginate(12, 'berita');
+        $data['pager'] = $model->pager;
+        $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/";
+
+        return view('portofolio', $data);
+    }
+
+    public function detail_design_rumah($id)
+    {
+        $data['porto'] = $this->model->getWhere('design_rumah', ['id' => $id])->getRow();
+        $id_member = $data['porto']->created_by;
+        $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id_member])->getRow();
+        $data['lain'] = $this->model->getWhere('design_rumah', ['id !=' => $id], 4)->getResult();
         $data['gambar'] = $this->model->getWhere('gambar_portofolio', ['porto_id' => $data['porto']->id])->getResult();
         $sess = session();
         $key = $this->request->getGet();
