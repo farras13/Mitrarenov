@@ -265,6 +265,7 @@ class TransaksiController extends ResourceController
             return $this->respond($response, 500);
 
         } else {
+			
             $price = $temp_produk->price;
             if ($temp_produk->price == "0") {
                 $temp_price = $mdl->getWhere('product_price', ['id' => $input['spek']])->getRow();

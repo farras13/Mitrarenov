@@ -196,7 +196,7 @@ class Home extends BaseController
         $id_member = $data['porto']->created_by;
         $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id_member])->getRow();
         $data['lain'] = $this->model->getWhere('design_rumah', ['id !=' => $id], 4)->getResult();
-        $data['gambar'] = $this->model->getWhere('gambar_portofolio', ['porto_id' => $data['porto']->id])->getResult();
+        $data['gambar'] = $this->model->getWhere('gambar_portofolio', ['porto_id' => $id])->getResult();
         $sess = session();
         $key = $this->request->getGet();
         $id = $sess->get('user_id');
@@ -222,6 +222,7 @@ class Home extends BaseController
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
+        $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/";
 
         return view('porto_detail', $data);
     }

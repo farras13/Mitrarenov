@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 
 <div class="content-wrapper">
-  <div class="main-banner position-relative">
+  <div class="main-banner position-relative desktop-slider">
     <div class="top-banner">
       <?php foreach ($promo as $p) : if($p->kategori == 2):?>
         <div class="slick-slide slide-item">
@@ -82,7 +82,85 @@
     <div class="btn-slide btn-prev"><i class="ico ico-prev"></i></div>
     <div class="btn-slide btn-next"><i class="ico ico-next"></i></div>
   </div>
+  <div class="main-banner position-relative mobile-slider">
+    <div class="top-banner">
+      <?php foreach ($promo as $p) : if($p->kategori == 2):?>
+        <div class="slick-slide slide-item">
+          <div class="banner-top-container">
+            <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
+            <div class="slide-content">
+              <div class="discount-badge">
+               Diskon <?= $p->promo ?>%
+              </div>
+              <div class="slide-text">
+                <div class="row">
+                  <div class="col-md-8">
+                  <?php if($p->head == 1){ ?>  
+                      <h1><?= $p->title ?></h1>
+                    <?php }elseif($p->head == 2){ ?>  
+                      <h2><?= $p->title ?></h2>
+                    <?php }elseif($p->head == 3){ ?>  
+                      <h3><?= $p->title ?></h3>
+                    <?php }elseif($p->head == 4){ ?>  
+                      <h4><?= $p->title ?></h4>
+                    <?php }elseif($p->head == 5){ ?>  
+                      <h5><?= $p->title ?></h5>
+                    <?php }elseif($p->head == 6){ ?>  
+                      <h6><?= $p->title ?></h6>
+                    <?php }elseif($p->head == 7){ ?>  
+                      <p><?= $p->title ?></p>
+                    <?php }?>
+                    <?php $date = new DateTime($p->expired); ?>
+                    <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
+                  </div>
 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <?php else: ?>
+        <div class="slick-slide slide-item">
+          <div class="banner-top-container">
+            <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
+            <div class="slide-content">
+              <!-- <div class="discount-badge">
+                Diskon <?= $p->promo ?>%
+              </div> -->
+              <div class="slide-text">
+                <div class="row">
+                  <div class="col-md-8">
+                  <?php if($p->head == 1){ ?>  
+                      <h1><?= $p->title ?></h1>
+                    <?php }elseif($p->head == 2){ ?>  
+                      <h2><?= $p->title ?></h2>
+                    <?php }elseif($p->head == 3){ ?>  
+                      <h3><?= $p->title ?></h3>
+                    <?php }elseif($p->head == 4){ ?>  
+                      <h4><?= $p->title ?></h4>
+                    <?php }elseif($p->head == 5){ ?>  
+                      <h5><?= $p->title ?></h5>
+                    <?php }elseif($p->head == 6){ ?>  
+                      <h6><?= $p->title ?></h6>
+                    <?php }elseif($p->head == 7){ ?>  
+                      <p><?= $p->title ?></p>
+                    <?php }?>
+                    <!-- <?php $date = new DateTime($p->expired); ?>
+                    <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p> -->
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <?php endif; ?>
+      <?php endforeach; ?>
+
+    </div>
+    <div class="btn-slide btn-prev"><i class="ico ico-prev"></i></div>
+    <div class="btn-slide btn-next"><i class="ico ico-next"></i></div>
+  </div>
   <div class="section section-1 pt-4 pb-5" id="ckk">
     <div class="text-center">
       <h2 class="title text-primary">Cara Kerja Kami</h2>

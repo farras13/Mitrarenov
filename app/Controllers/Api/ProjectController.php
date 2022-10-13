@@ -83,8 +83,7 @@ class ProjectController extends ResourceController
     }
 
     public function projekBerjalan()
-    {
-        
+    {  
     }
 
     public function listProgresImage($id)
@@ -185,142 +184,141 @@ class ProjectController extends ResourceController
         }
     }
 
-    public function numberToWordsID($number) 
-        {
-            $max_size = pow(10,18);
-            if (!$number) return "nol";
-            $suffix = ""; //add suffix to fix scope problem
+    public function numberToWordsID($number) {
+        $max_size = pow(10,18);
+        if (!$number) return "nol";
+        $suffix = ""; //add suffix to fix scope problem
 
-            if (is_int($number) && $number < abs($max_size)) 
-            {            
-                switch ($number) 
-                {
-                    case $number < 0:
-                        $prefix = "negatif";
-                        $suffix = $this->numberToWordsID(-1*$number);
-                        $string = $prefix . " " . $suffix;
-                        break;
-                    case 1:
-                        $string = "satu";
-                        break;
-                    case 2:
-                        $string = "dua";
-                        break;
-                    case 3:
-                        $string = "tiga";
-                        break;
-                    case 4: 
-                        $string = "empat";
-                        break;
-                    case 5:
-                        $string = "lima";
-                        break;
-                    case 6:
-                        $string = "enam";
-                        break;
-                    case 7:
-                        $string = "tujuh";
-                        break;
-                    case 8:
-                        $string = "delapan";
-                        break;
-                    case 9:
-                        $string = "sembilan";
-                        break;                
-                    case 10:
-                        $string = "sepuluh";
-                        break;            
-                    case 11:
-                        $string = "sebelas";
-                        break;            
-                    case 12:
-                        $string = "dua belas";
-                        break;            
-                    case 13:
-                        $string = "tiga belas";
-                        break;            
-                    case 15:
-                        $string = "lima belas";
-                        break;            
-                    case $number < 20:
-                        $string = $this->numberToWordsID($number%10);
-                        if ($number == 18)
-                        {
-                        $suffix = " belas";
-                        } else 
-                        {
-                        $suffix = " belas";
-                        }
-                        $string .= $suffix;
-                        break;            
-                    case 20:
-                        $string = "dua puluh";
-                        break;            
-                    case 30:
-                        $string = "tiga puluh";
-                        break;            
-                    case 40:
-                        $string = "empat puluh";
-                        break;            
-                    case 50:
-                        $string = "lima puluh";
-                        break;            
-                    case 60:
-                        $string = "enam puluh";
-                        break;            
-                    case 70:
-                        $string = "tujuh puluh";
-                        break;            
-                    case 80:
-                        $string = "delapan puluh";
-                        break;            
-                    case 90:
-                        $string = "sembilan puluh";
-                        break;                
-                    case $number < 100:
-                        $prefix = $this->numberToWordsID($number-$number%10);
-                        $suffix = $this->numberToWordsID($number%10);
-                        $string = $prefix . "-" . $suffix;
-                        break;
-                    case $number < pow(10,3):                
-                        $getNumber = $this->numberToWordsID(intval(floor($number/pow(10,2))));
-                        $getNumber = $getNumber == "satu" ? "se" : $getNumber . " ";
-                        $prefix = $getNumber . "ratus";
-                        if ($number%pow(10,2)) $suffix = " " . $this->numberToWordsID($number%pow(10,2));
-                        $string = $prefix . $suffix;
-                        break;
-                    case $number < pow(10,6):
-                        $prefix = $this->numberToWordsID(intval(floor($number/pow(10,3)))) . " ribu";
-                        if ($number%pow(10,3)) $suffix = $this->numberToWordsID($number%pow(10,3));
-                        $string = $prefix . " " . $suffix;
-                        break;
-                    case $number < pow(10,9):
-                        $prefix = $this->numberToWordsID(intval(floor($number/pow(10,6)))) . " juta";
-                        if ($number%pow(10,6)) $suffix = $this->numberToWordsID($number%pow(10,6));
-                        $string = $prefix . " " . $suffix;
-                        break;                    
-                    case $number < pow(10,12):
-                        $prefix = $this->numberToWordsID(intval(floor($number/pow(10,9)))) . " milliar";
-                        if ($number%pow(10,9)) $suffix = $this->numberToWordsID($number%pow(10,9));
-                        $string = $prefix . " " . $suffix;    
-                        break;
-                    case $number < pow(10,15):
-                        $prefix = $this->numberToWordsID(intval(floor($number/pow(10,12)))) . " triliun";
-                        if ($number%pow(10,12)) $suffix = $this->numberToWordsID($number%pow(10,12));
-                        $string = $prefix . " " . $suffix;    
-                        break;        
-                    case $number < pow(10,18):
-                        $prefix = $this->numberToWordsID(intval(floor($number/pow(10,15)))) . " kuadraliun";
-                        if ($number%pow(10,15)) $suffix = $this->numberToWordsID($number%pow(10,15));
-                        $string = $prefix . " " . $suffix;    
-                        break;                    
-                }
-            }else{
-                return "ERROR - $number<br/> Number must be an integer between -" . number_format($max_size, 0, ".", ",") . " and " . number_format($max_size, 0, ".", ",");
+        if (is_int($number) && $number < abs($max_size)) 
+        {            
+            switch ($number) 
+            {
+                case $number < 0:
+                    $prefix = "negatif";
+                    $suffix = $this->numberToWordsID(-1*$number);
+                    $string = $prefix . " " . $suffix;
+                    break;
+                case 1:
+                    $string = "satu";
+                    break;
+                case 2:
+                    $string = "dua";
+                    break;
+                case 3:
+                    $string = "tiga";
+                    break;
+                case 4: 
+                    $string = "empat";
+                    break;
+                case 5:
+                    $string = "lima";
+                    break;
+                case 6:
+                    $string = "enam";
+                    break;
+                case 7:
+                    $string = "tujuh";
+                    break;
+                case 8:
+                    $string = "delapan";
+                    break;
+                case 9:
+                    $string = "sembilan";
+                    break;                
+                case 10:
+                    $string = "sepuluh";
+                    break;            
+                case 11:
+                    $string = "sebelas";
+                    break;            
+                case 12:
+                    $string = "dua belas";
+                    break;            
+                case 13:
+                    $string = "tiga belas";
+                    break;            
+                case 15:
+                    $string = "lima belas";
+                    break;            
+                case $number < 20:
+                    $string = $this->numberToWordsID($number%10);
+                    if ($number == 18)
+                    {
+                    $suffix = " belas";
+                    } else 
+                    {
+                    $suffix = " belas";
+                    }
+                    $string .= $suffix;
+                    break;            
+                case 20:
+                    $string = "dua puluh";
+                    break;            
+                case 30:
+                    $string = "tiga puluh";
+                    break;            
+                case 40:
+                    $string = "empat puluh";
+                    break;            
+                case 50:
+                    $string = "lima puluh";
+                    break;            
+                case 60:
+                    $string = "enam puluh";
+                    break;            
+                case 70:
+                    $string = "tujuh puluh";
+                    break;            
+                case 80:
+                    $string = "delapan puluh";
+                    break;            
+                case 90:
+                    $string = "sembilan puluh";
+                    break;                
+                case $number < 100:
+                    $prefix = $this->numberToWordsID($number-$number%10);
+                    $suffix = $this->numberToWordsID($number%10);
+                    $string = $prefix . "-" . $suffix;
+                    break;
+                case $number < pow(10,3):                
+                    $getNumber = $this->numberToWordsID(intval(floor($number/pow(10,2))));
+                    $getNumber = $getNumber == "satu" ? "se" : $getNumber . " ";
+                    $prefix = $getNumber . "ratus";
+                    if ($number%pow(10,2)) $suffix = " " . $this->numberToWordsID($number%pow(10,2));
+                    $string = $prefix . $suffix;
+                    break;
+                case $number < pow(10,6):
+                    $prefix = $this->numberToWordsID(intval(floor($number/pow(10,3)))) . " ribu";
+                    if ($number%pow(10,3)) $suffix = $this->numberToWordsID($number%pow(10,3));
+                    $string = $prefix . " " . $suffix;
+                    break;
+                case $number < pow(10,9):
+                    $prefix = $this->numberToWordsID(intval(floor($number/pow(10,6)))) . " juta";
+                    if ($number%pow(10,6)) $suffix = $this->numberToWordsID($number%pow(10,6));
+                    $string = $prefix . " " . $suffix;
+                    break;                    
+                case $number < pow(10,12):
+                    $prefix = $this->numberToWordsID(intval(floor($number/pow(10,9)))) . " milliar";
+                    if ($number%pow(10,9)) $suffix = $this->numberToWordsID($number%pow(10,9));
+                    $string = $prefix . " " . $suffix;    
+                    break;
+                case $number < pow(10,15):
+                    $prefix = $this->numberToWordsID(intval(floor($number/pow(10,12)))) . " triliun";
+                    if ($number%pow(10,12)) $suffix = $this->numberToWordsID($number%pow(10,12));
+                    $string = $prefix . " " . $suffix;    
+                    break;        
+                case $number < pow(10,18):
+                    $prefix = $this->numberToWordsID(intval(floor($number/pow(10,15)))) . " kuadraliun";
+                    if ($number%pow(10,15)) $suffix = $this->numberToWordsID($number%pow(10,15));
+                    $string = $prefix . " " . $suffix;    
+                    break;                    
             }
-
-            return $string;    
+        }else{
+            return "ERROR - $number<br/> Number must be an integer between -" . number_format($max_size, 0, ".", ",") . " and " . number_format($max_size, 0, ".", ",");
         }
+
+        return $string;    
+    }
 
     public function spek()
     {
@@ -472,5 +470,4 @@ class ProjectController extends ResourceController
         ];
         return $this->respond($res, 200);
     }
-
 }

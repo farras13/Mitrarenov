@@ -65,6 +65,8 @@ $(function () {
         slidesToShow: 3,
         prevArrow: '.article-prev',
         nextArrow: '.article-next',
+        autoplay: true,
+        autoplaySpeed: 5000,
         responsive: [
             {
                 breakpoint: 767.98,
@@ -85,6 +87,8 @@ $(function () {
         prevArrow: '.client-prev',
         nextArrow: '.client-next',
         dots: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
         responsive: [
             {
                 breakpoint: 767.98,
@@ -105,6 +109,8 @@ $(function () {
         prevArrow: '.liputan-prev',
         nextArrow: '.liputan-next',
         dots: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
         responsive: [
             {
                 breakpoint: 767.98,

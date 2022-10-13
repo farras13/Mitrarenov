@@ -27,20 +27,20 @@ class NotifikasiController extends ResourceController
         $unread = $model->getQuery("SELECT count(id) as unread FROM notifikasi WHERE (member_id = $user->member_id  OR kategori = 'global') and status = 0  ORDER BY id desc")->getRow();
         $key = $this->request->getGet();
     
-        if(array_key_exists("limit",$key) ){
+        if(array_key_exists("limit", $key) ){
             $limit  = (int) $key['limit'];
             $temp = $model->getQuery("SELECT id, kategori as title, id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $user->member_id  OR kategori = 'global' ORDER BY id desc LIMIT $limit")->getResult();
             $unread = $model->getQuery("SELECT count(id) as unread FROM notifikasi WHERE (member_id = $user->member_id  OR kategori = 'global') and status = 0  ORDER BY id desc")->getRow();
         }
        
-        $data = $temp;
-        
-
+        $data = $temp;    
+        // $data = ["unread" => $unread->unread, "notif" => $temp];    
         if (!$data) {
             $res = [
                 "status" => 200,
                 "messages" => "data masih kosong",
-                "data" => null
+                "unread" => null,
+                "data" => null,
             ];
             return $this->respond($res, 200);
         }
@@ -48,8 +48,9 @@ class NotifikasiController extends ResourceController
         $res = [
             "status" => 200,
             "messages" => "data ditemukan !",
+            "unread" => $unread->unread,
             'data' => $data,
-            'error' => null
+            'error' => null            
         ];
 
         return $this->respond($res, 200);

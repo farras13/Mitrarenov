@@ -52,13 +52,14 @@ class Home extends ResourceController
     {
         $model = new GeneralModel();
         $subdata = $model->getWhere('product', ['category_id' => $id])->getResult();
-
+        
         if (!$subdata) {
             return $this->respondNoContent('data tidak ditemukan');
         }
+        
         $url = base_url();
         foreach ($subdata as $key => $value) {
-            $value->image_icon = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/' . $value->image_icon;
+            $value->image_icon = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/'.$value->image_icon;
         }
         $data = [
             "base_image" => 'https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/',
@@ -72,6 +73,7 @@ class Home extends ResourceController
         ];
 
         return $this->respond($res, 200);
+
     }
 
     public function PromoAll()
@@ -79,36 +81,36 @@ class Home extends ResourceController
         $headers = $this->request->headers();
         // $token = $headers['X-Auth-Token']->getValue();
         $model = new GeneralModel();
-
+        
         $data = $model->getWhere('promomobile', ['is_publish' => 0, 'kategori' => 2])->getResult();
-
+        
         $url = base_url();
         $base_image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/';
-
+        
         $key = $this->request->getGet();
-
-        if (array_key_exists("limit", $key)) {
+    
+        if(array_key_exists("limit",$key) ){
             $limit  = (int) $key['limit'];
             $data = $model->getWhere('promomobile', ['is_publish' => 0], $limit)->getResult();
         }
-
+       
         if (!$data) {
-            $res = [
+             $res = [
                 "status" => 200,
                 "messages" => "data masih kosong",
                 "data" => null
             ];
             return $this->respond($res, 200);
-        }
-        foreach ($data as $d) {
+        }       
+        foreach($data as $d){
             $date = new DateTime($d->expired);
             $d->expired = $date->format('F Y');
-            if ($d->image != null) {
-                $d->image = $base_image . $d->image;
-                $d->imagecontent = $base_image . $d->imagecontent;
-            } else {
-                $d->image = $url . '/public/main/images/slider-1.jpg';
-                $d->imagecontent = $url . '/public/main/images/slider-2.jpg';
+            if($d->image != null){
+                $d->image = $base_image.$d->image;
+                $d->imagecontent = $base_image.$d->imagecontent;
+            }else{
+                $d->image = $url.'/public/main/images/slider-1.jpg';
+                $d->imagecontent = $url.'/public/main/images/slider-2.jpg';
             }
         }
         $res = [
@@ -124,26 +126,26 @@ class Home extends ResourceController
         $model = new GeneralModel();
         $w = array('id' => (int)$id, 'is_publish' => 0);
         $data = $model->getWhere('promomobile', $w)->getRow();
-
+        
         if (!$data) {
-            $res = [
+           $res = [
                 "status" => 200,
                 "messages" => "data tidak ditemukan",
                 "data" => null
             ];
             return $this->respond($res, 200);
-        }
+        }  
 
         $url = base_url();
         $base_image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/';
-        if ($data->image != null) {
-            $data->image = $base_image . $data->image;
-            $data->imagecontent = $base_image . $data->imagecontent;
-        } else {
-            $data->image = $url . '/public/main/images/slider-1.jpg';
-            $data->imagecontent = $url . '/public/main/images/slider-2.jpg';
-        }
-
+        if($data->image != null){
+            $data->image = $base_image.$data->image;
+            $data->imagecontent = $base_image.$data->imagecontent;
+        }else{
+            $data->image = $url.'/public/main/images/slider-1.jpg';
+            $data->imagecontent = $url.'/public/main/images/slider-2.jpg';
+        } 
+        
         $date = new DateTime($data->expired);
         $data->expired = $date->format('F Y');
 
@@ -152,10 +154,10 @@ class Home extends ResourceController
             "messages" => "Sukses",
             "data" => $data,
         ];
-
+       
         return $this->respond($res, 200);
     }
-    
+
     public function cekPromo()
     {
         $model = new GeneralModel();
