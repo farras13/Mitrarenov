@@ -175,6 +175,7 @@ class DboModel extends Model
                 $tp->biaya = str_replace('.', '', $tp->biaya);
                 $tp->biaya_tambahan = '-';
                 $tp->title = "Pembayaran Termin " . $tp->keterangan;
+            
                 // if($tp->jatuh_tempo == "01 Jan 1970"){
                 //     $tp->jatuh_tempo = "-";
                 // }
@@ -198,6 +199,7 @@ class DboModel extends Model
                 $t->biaya = str_replace('.', '', $t->biaya);
                 $t->biaya_tambahan = '-';
                 $t->title = "Pembayaran Termin " . $t->keterangan;
+               
                 // if($t->jatuh_tempo == "01 Jan 1970"){
                 //     $t->jatuh_tempo = "-";
                 // }

@@ -89,7 +89,7 @@
                                                         <?php if($tr->product_id == 0): ?>
                                                             <div class="custom-control custom-radio type-radio">
                                                                 <input type="radio" id="type<?= $tr->id ?>" name="customRadioInline" class="custom-control-input" onclick="klikgambar(<?php echo $tr->id; ?>)">
-                                                                <label class="custom-control-label" for="type<?= $tr->id ?>">
+                                                                <label class="custom-control-label customRadioInlinegambar" for="type<?= $tr->id ?>">
                                                                     <?= $tr->type ?>
                                                                 </label>
                                                             </div>
@@ -97,7 +97,7 @@
                                                             <div class="custom-control custom-radio type-radio">
                                                                 <input type="radio" id="type<?= $tr->id ?>" name="customRadioInline" class="custom-control-input">
                                                                 <!-- <label class="custom-control-label" for="type<?= $tr->id ?>" style="background-image: url('<?= $tr->image_type ?>');  background-size: cover;"> -->
-                                                                <label class="custom-control-label" id="<?= $tr->id ?>" for="type<?= $tr->id ?>" style="background-image: url('<?= $tr->image_type ?>');  background-size: cover;">
+                                                                <label class="custom-control-label customRadioInlinegambar" id="<?= $tr->id ?>" for="type<?= $tr->id ?>" style="background-image: url('<?= $tr->image_type ?>');  background-size: cover;">
                                                                 </label>
                                                             </div>
                                                         <?php endif; ?>
@@ -357,8 +357,8 @@
             minimumFractionDigits: 0
         }).format(money);
     }; 
-    $('.custom-control-label').on('click', function() {
-        var array = $('.custom-control-label');
+    $('.customRadioInlinegambar').on('click', function() {
+        var array = $('.customRadioInlinegambar');
          for (let index = 0; index < array.length; index++) {
             const element = array[index];
             element.style.removeProperty('box-shadow')            

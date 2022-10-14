@@ -354,7 +354,7 @@
             <?php } ?>
           </div>
           <div class="text-center mt-4">
-            <a href="#" class="readmore" id="morePekerjaan">Lihat Selengkapnya</a>
+            <a href="<?= base_url('gallery'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
           </div>
         </div>
         <div class="tab-pane fade" id="portofolio">

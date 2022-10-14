@@ -726,6 +726,7 @@ class TransaksiController extends ResourceController
 		$Midtranspayment = new Midtranspayment();
 		$notif = $Midtranspayment->notification();
 		//$notif = file_get_contents('php://input');
+		$now = date('Y-m-d');
 
 		$transactionstatus = $notif->transaction_status;
 		$orderid = $notif->order_id;
@@ -818,25 +819,28 @@ class TransaksiController extends ResourceController
 				$m->upd("projects_transaction", ["id" => $htrans->id], $update);
 				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
 			} else if ($transactionstatus == "deny" || $transactionstatus == "cancel" || $transactionstatus == "expire" || $transactionstatus == "refund") {
+				if(strtotime($dtrans->due_date) < strtotime($now)){   
+					$update_pembayaran = [
+						"status" => 'expired',
+						"status_midtrans" => $transactionstatus,
+					];
+					$update_midtrans = [
+						"reference_no" => NULL,
+						"status" => 'expired',
+					];
+				}else{
+					$update_pembayaran = [
+						"status" => 'belum dibayar',
+						"status_midtrans" => $transactionstatus,
+					];
+					$update_midtrans = [
+						"reference_no" => NULL,
+						"status" => $transactionstatus,
+					];
+				}				
 				
-				$update_pembayaran = [
-					"status" => 'belum dibayar',
-					"status_midtrans" => $transactionstatus,
-				];
-				
-				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);
-				
-				// $this->rollback_product($htrans->htrans_id);
-				
-				// $update_midtrans = [
-				// 	"token_midtrans" => NULL,
-				// ];
-				$update_midtrans = [
-					"reference_no" => NULL,
-					"status" => $transactionstatus,
-				];
-				// $m->upd("projects", ["id" => $htrans->project_id], $update_midtrans);
-				$m->upd("projects_transaction", ["id" => $htrans->project_id], $update_midtrans);
+				$m->upd("projects_pembayaran", ["id" => $htrans->id_pembayaran], $update_pembayaran);				
+				$m->upd("projects_transaction", ["id" => $htrans->id], $update_midtrans);
 				
 				// $this->send_email($member, $htrans, $dtrans, "cancel");
 				if (!empty($member->fcm_id)) {

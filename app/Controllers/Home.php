@@ -10,6 +10,7 @@ use App\Models\AuthModel;
 use App\Models\GeneralModel;
 use App\Models\PortoModel;
 use App\Models\DesignModel;
+use App\Models\GalleryModel;
 
 class Home extends BaseController
 {
@@ -408,16 +409,16 @@ class Home extends BaseController
 
     public function gallery()
     {
+        $model = new GalleryModel();
         $sess = session();
-        $idn = $sess->get('user_id');
-        
-        if($idn != null){
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
+        $id = $sess->get('user_id');
+        if($id != null){
+            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -431,11 +432,15 @@ class Home extends BaseController
                 }
             }
         }
+        $data['title'] = "Gallery Progress";
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
-        $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
-        return view("promo-detail", $data);
+
+        $data['porto'] = $model->select('gallery_pekerjaan.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = gallery_pekerjaan.created_by')->paginate(12, 'gallery');
+        $data['pager'] = $model->pager;
+
+        return view('gallery', $data);
     }
 
     public function chat()
