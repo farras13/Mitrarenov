@@ -38,7 +38,12 @@ class LoginController extends ResourceController
         // cek data login
         $cek = $auth->MemberLogin($data);
         if (!$cek) {
-            return $this->failNotFound('data tidak ditemukan');
+            $res = [
+                "status" => 401,
+                "message" => "data tidak ditemukan !",
+                "data" => null
+            ];
+            return $this->respond($res, 401);
         }
         $agent = $this->request->getUserAgent();
         if ($agent->isMobile('iphone')) {
@@ -175,7 +180,7 @@ class LoginController extends ResourceController
             return $this->failNotFound('email tidak ditemukan dan belum terdaftar');
         }
         $mdl->ins('temp_reset_pass', ['member_id' => $cek['id'], 'token' => $token]);
-        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://mitrarenov.soldig.co.id/lupa_password/' . $token . '">Link reset</a></b> </p>';
+        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://mitrarenov.page.link/' . $token . '">Link reset</a></b> </p>';
         // $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://mitrarenov.soldig.co.id/resetpassword/' . $token . '">Link reset</a></b> </p>';
         $kirim = $this->sendEmail($mail, 'reset password', $message);
 
@@ -220,27 +225,26 @@ class LoginController extends ResourceController
         $headers = $this->request->headers();
         $token = $headers['X-Auth-Token']->getValue();
         $cekUser = $mdl->getWhere('token_login', ['token' => $token])->getRow();
-        $id = (int)$cekUser->member_id;
-
+        $id = $cekUser->member_id;
         $input = $this->request->getVar();
         $oldcek = $model->Where('password', md5($input['old_password']))->first();
-
+        
         if ($oldcek != null) {
             if ($input['password'] != $input['temp_pass']) {
                 return $this->fail('Password tidak match , pastikan sama antar kedua nya');
             }
-            $data = ['password' => md5($input['password'])];
+            
         } else {
             return  $this->fail('Pastikan anda memasukkan password anda yang masih berlaku dengan benar !');
         }
 
-        $exc = $model->update(['id', $id], $data);
-
+        $data = ['password' => md5($input['password'])];
+        $exc = $mdl->upd('member', ['id' => $id], $data);
         if (!$exc) {
             return  $this->fail('Reset Password gagal !');
         }
 
-        return $this->respondUpdated($data);
+        return $this->respond($data, 200);
     }
 
     public function resetPass_luar()
@@ -322,11 +326,21 @@ class LoginController extends ResourceController
         $cekp = $dtl->where('telephone', $request['phone'])->first();
 
         if ($cek) {
-            return $this->failResourceExists('Email sudah terdaftar');
+            $res = [
+                "status" => 500,
+                "message" => "Email sudah terdaftar",
+                "data" => null
+            ];
+            return $this->respond($res, 500);
         }
-
+        
         if ($cekp) {
-            return $this->failResourceExists('Nomor telpon sudah terdaftar');
+            $res = [
+                "status" => 500,
+                "message" => "Nomor telpon sudah terdaftar",
+                "data" => null
+            ];
+            return $this->respond($res, 500);
         }
 
         $singkatan = str_replace(' ', '', $request['name']);
@@ -351,6 +365,7 @@ class LoginController extends ResourceController
                 'referal' => $referal,
                 'photo' => null,
                 'telephone' => $request['phone'],
+                'handphone' => $request['phone'],
                 'created_by' => $cekk['id'],
                 'modified_by' => 1,
             );
@@ -373,10 +388,20 @@ class LoginController extends ResourceController
         ];
         if ($q) {
             $this->sendEmail($request['email'], 'Akun APLIKASI MITRARENOV telah dibuat', view('v_email_register', $dmsg));
-            return $this->respondCreated($all);
+            $res = [
+                "status" => 200,
+                "message" => "Register Gagal !",
+                "data" => $all
+            ];
+            return $this->respond($res, 200);
+            // return $this->respondCreated($all);
         }
-
-        return $this->fail('data gagal');
+        $res = [
+            "status" => 500,
+            "message" => "Register Gagal !",
+            "data" => null
+        ];
+        return $this->respond($res, 500);
     }
 
     public function uploadImage()
@@ -397,10 +422,11 @@ class LoginController extends ResourceController
             $data = [
                 'name' => $input['name'],
                 'telephone' => $input['telephone'],
+                'handphone' => $input['telephone'],
             ];
             // var_dump($model->updateData('member_detail', ['member_id' => $id], $data));die;
             $dt = ['email' => $input['email']];
-
+            
             $model = new DboModel();
             //   var_dump($model->updateData('member_detail', ['member_id' => $id], $data));die;
 
@@ -432,7 +458,8 @@ class LoginController extends ResourceController
                 $data = [
                     'name' => $input['name'],
                     'telephone' => $input['telephone'],
-                    "photo" => $newfilename,
+                    'handphone' => $input['telephone'],
+                    'photo' => $newfilename,
                 ];
                 // var_dump($model->updateData('member_detail', ['member_id' => $id], $data));die;
                 $dt = ['email' => $input['email']];
