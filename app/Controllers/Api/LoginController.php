@@ -158,6 +158,15 @@ class LoginController extends ResourceController
         }
     }
 
+    public function page_link()
+	{
+        $input = $this->request->getVar();
+        $token = $input['token'];
+		$link = "https://mitrarenov.page.link/resetpassword?token=$token";
+        // echo $link;
+		return redirect()->to($link);
+	}
+
     public function send_email_reset()
     {
         // create token
@@ -180,7 +189,7 @@ class LoginController extends ResourceController
             return $this->failNotFound('email tidak ditemukan dan belum terdaftar');
         }
         $mdl->ins('temp_reset_pass', ['member_id' => $cek['id'], 'token' => $token]);
-        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://mitrarenov.page.link/' . $token . '">Link reset</a></b> </p>';
+        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://mitrarenov.soldig.co.id/member/page_link?token=' . $token . '">Link reset</a></b> </p>';
         // $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="https://mitrarenov.soldig.co.id/resetpassword/' . $token . '">Link reset</a></b> </p>';
         $kirim = $this->sendEmail($mail, 'reset password', $message);
 

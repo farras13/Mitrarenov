@@ -21,14 +21,18 @@ class TransaksiController extends ResourceController
 		}
 
         if (!$data) {
-            return $this->fail('Gagal mendapatkan tipe rumah!');
-        }
-
-        $res = [
-            "status" => 200,
-            "messages" => "Sukses",
-            "data" => $data
-        ];
+			$res = [
+				"status" => 200,
+				"messages" => "tipe rumah kosong!",
+				"data" => null
+			];
+        }else{
+			$res = [
+				"status" => 200,
+				"messages" => "Sukses",
+				"data" => $data
+			];
+		}
 
         return $this->respond($res, 200);
     }
