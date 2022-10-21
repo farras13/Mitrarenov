@@ -259,17 +259,13 @@ class TransaksiController extends ResourceController
         ];
 
         if (!$this->validate($rules, $msg)) {
-
             $response = [
                 'status' => 500,
-                'error' => true,
-                'message' => $this->validator->getErrors(),
-                'data' => []
+                'message' => "Failed to upload image!",
+                'data' => null
             ];
             return $this->respond($response, 500);
-
         } else {
-			
             $price = $temp_produk->price;
             if ($temp_produk->price == "0") {
                 $temp_price = $mdl->getWhere('product_price', ['id' => $input['spek']])->getRow();
@@ -504,7 +500,13 @@ class TransaksiController extends ResourceController
         $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20).'.'.$file->guessExtension();
         // var_dump($newfilename);die;
         if (!$file->isValid()) {
-            return $this->fail($file->getErrorString());
+			$response = [
+                'status' => 500,
+                'error' => true,
+                'message' => 'Fail not valid',
+                'data' => []
+            ];
+            return $this->respond($response, 500);
         }
 
         if ($file->move($path, $nameNew)) {
