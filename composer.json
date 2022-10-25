@@ -14,7 +14,6 @@
         "laminas/laminas-escaper": "^2.9",
         "psr/log": "^1.1",
         "midtrans/midtrans-php": "^2.5",
-        "tuyapiphp/tuyapiphp": "*",
         "dompdf/dompdf": "^2.0"
     },
     "require-dev": {
@@ -31,7 +30,8 @@
     },
     "autoload": {
         "psr-4": {
-            "CodeIgniter\\": "system/"
+            "CodeIgniter\\": "system/",
+            "tuyapiphp\\":"src/"
         },
         "exclude-from-classmap": [
             "**/Database/Migrations/**"

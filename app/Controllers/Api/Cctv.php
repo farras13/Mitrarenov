@@ -15,9 +15,10 @@ class Cctv extends ResourceController
     {
         $config =
         [
-            'accessKey' 	=> 'kjk8nwr83x3typ9v4edg' ,
             'secretKey' 	=> '604f14060b5e457dad9d411ed58ed6d9' ,
-            'baseUrl'	=> 'https://openapi.tuyaus.com'
+            'accessKey' 	=> 'kjk8nwr83x3typ9v4edg' ,
+            'baseUrl'	=> 'https://openapi.tuyaus.com', 
+            'debug' => false
         ];
         $tuya = new \tuyapiphp\TuyaApi($config);
         return $tuya;
@@ -89,7 +90,8 @@ class Cctv extends ResourceController
         $device_id = $input['id'];
         $token = $input['token'];
         // $res = [$device_id, $token];
-        $data = $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $device_id , [ 'type' => 'rtsp' ] );
+        $data = $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $device_id , [ 'type' => 'hls' ] );
+        // $data = $tuya->devices( $token )->get_webrtc( $device_id );
         $res = [
             "status" => 200,
             "messages" => "Sukses",
