@@ -90,6 +90,7 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
     $routes->post('member/change_password', 'Home::updPass');
     $routes->get('member/qa', 'Home::qa');
     $routes->get('member/syarat', 'Home::snk');
+    $routes->get('member/page_link', 'Api\LoginController::page_link');
 // });
 
 $routes->group('api', function ($routes) {
@@ -198,7 +199,8 @@ $routes->group('api', function ($routes) {
                 $routes->get('token', 'Api\Cctv::accessToken');
                 $routes->post('listDevice', 'Api\Cctv::getAlldevice');
                 $routes->post('device', 'Api\Cctv::getDevice');
-                $routes->post('stream_device', 'Api\Cctv::stream');
+                $routes->post('stream_device', 'Api\Cctv::streamAll');
+                $routes->post('stream_device_detail', 'Api\Cctv::stream');
             });        
         });
     });

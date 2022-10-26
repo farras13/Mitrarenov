@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Models\GeneralModel;
+use App\Models\AuthModel;
 use CodeIgniter\RESTful\ResourceController;
 
 use App\Libraries\Midtranspayment;
@@ -185,6 +186,7 @@ class TransaksiController extends ResourceController
     {
         $uri = current_url(true);
         $mdl = new GeneralModel();
+		$auth = new AuthModel();
 
         $headers = $this->request->headers();
         $token = $headers['X-Auth-Token']->getValue();
@@ -196,18 +198,23 @@ class TransaksiController extends ResourceController
 			
 			if(!$cekEmail){
 				$status_cust = 0;
+
 				$insert_h['usergroup_id'] = 5;
-				
 				$insert_h['email'] = $input['email'];
 				$insert_d['name'] = $input['nama_lengkap'];
 				$insert_d['handphone'] = $input['telepon'];
-	
 				$insert_h['password'] = md5('123456');
 				$insert_h['created'] = time();
 				$insert_h['created_by'] = 2;
 				$query_h = $mdl->insId('member', $insert_h);
 				if ($query_h) {
+					$singkatan = str_replace(' ', '', $input['nama_lengkap']);
+					$fourname = substr($singkatan, 0, 4);
+					$last = $auth->hitung();
+					$referal = '' . $fourname . '' . $last;
+
 					$insert_d['member_id'] = $query_h;
+					$insert_d['referal'] = $referal;
 					$insert_d['created'] = time();
 					$insert_d['city_id'] = 0;
 					$insert_d['address'] = $input['alamat'];
