@@ -800,7 +800,7 @@ class TransaksiController extends ResourceController
 				$notif = [
 					'member_id' => $projek->member_id,
 					'kategori' => 'transaction',
-					'id_kategori' => $dtrans->nomor_invoice,
+					'id_kategori' => $htrans->project_id,
 					'message' => 'Pesanan anda telah diverifikasi',
 					'date' => time(),
 					'status' => 0
@@ -816,7 +816,7 @@ class TransaksiController extends ResourceController
 				$notif = [
 					'member_id' => $projek->member_id,
 					'kategori' => 'transaction',
-					'id_kategori' => $dtrans->nomor_invoice,
+					'id_kategori' => $htrans->project_id,
 					'message' => 'Pesanan anda belum di bayar, Silahkan lakukan pembayaran',
 					'date' => time(),
 					'status' => 0
@@ -867,7 +867,7 @@ class TransaksiController extends ResourceController
 					$notif = [
 						'member_id' => $projek->member_id,
 						'kategori' => 'transaction',
-						'id_kategori' => $dtrans->nomor_invoice,
+						'id_kategori' => $htrans->project_id,
 						'message' => 'Dana anda dikembalikan',
 						'date' => time(),
 						'status' => 0
@@ -876,7 +876,7 @@ class TransaksiController extends ResourceController
 					$notif = [
 						'member_id' => $projek->member_id,
 						'kategori' => 'transaction',
-						'id_kategori' => $dtrans->nomor_invoice,
+						'id_kategori' => $htrans->project_id,
 						'message' => 'Pesanan anda dibatalkan',
 						'date' => time(),
 						'status' => 0
