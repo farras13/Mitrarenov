@@ -137,7 +137,7 @@
                           }else if($value->kategori == "ProjectUpdate"){ 
                             $link=base_url('notif/project/'.$value->id); 
                           }else if($value->kategori == "promo"){ 
-                            $link=base_url('notif/promo/'.$value->id); 
+                            $link=base_url('detail-promo/'.$value->id_kategori); 
                           }else if($value->kategori == "transaction"){ 
                             $link=base_url('notif/transaction/'.$value->id); 
                         } ?>                                   

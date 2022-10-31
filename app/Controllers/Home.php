@@ -25,14 +25,14 @@ class Home extends BaseController
         $sess = session();
         $id = $sess->get('user_id');
         if ($id != null) {
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori,id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
         
             $key = $this->request->getGet();
             
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
-            }
+                $temp = $this->model->getQuery("SELECT id, kategori, id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
+            } 
             // var_dump($temp);die;
             $no = 0;
             $chat = 0;
@@ -2734,12 +2734,12 @@ class Home extends BaseController
         $cek = $model->getWhere('member', $where)->getRow();
 
         if (!$cek) {
-            $session->setFlashdata('toast', 'errorr:Password lama anda salah!');
+            $session->setFlashdata('toast', 'error:Password lama anda salah!');
             return redirect()->back()->withInput();
         }
 
         if ($newK != $new) {
-            $session->setFlashdata('toast', 'errorr:Password dan password konfrimasi tidak match!');
+            $session->setFlashdata('toast', 'error:Password dan password konfrimasi tidak match!');
             return redirect()->back()->withInput();
         }
 

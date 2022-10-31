@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link rel="icon" type="image/png" href="<?= base_url('public/main/images/favico.png ') ?>" />
      <!-- toast -->
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <title>Mitrarenov</title>
 </head>
 
@@ -562,9 +562,10 @@
     <script type="text/javascript" src="<?= base_url('public/main/js/script.js') ?>"></script>
     <!-- toast -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    
     <script>
-	$(document).ready(() => {
-	<?php if (session()->get('toast')) { ?>
+        $(document).ready(() => {
+        <?php if (session()->get('toast')) { ?>
             toastr.options.closeButton = true;
             var toastvalue = "<?php echo session()->get('toast') ?>";
             var status = toastvalue.split(":")[0];
@@ -576,8 +577,11 @@
             } else if (status == "warn") {
             toastr.warning(message, status);
             }
-      <?php } ?>
-	});
+        <?php } ?>
+        });
+    </script>
+    <script>
+	
     function seenallnotif(){
     $.ajax({
           method: "POST",

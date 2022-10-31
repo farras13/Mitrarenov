@@ -12,10 +12,11 @@
                             <input type="text" class="form-control form-material" placeholder="Password Lama" name="passlama">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control form-material" placeholder="Password Baru" name="passbaru">
+                            <input type="text" id="pass" class="form-control form-material" placeholder="Password Baru" name="passbaru">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control form-material" placeholder="Konfirmasi Password" name="passK">
+                            <input type="text" id="passk" class="form-control form-material" placeholder="Konfirmasi Password" name="passK">
+                            <small style="color:red;"> password anda tidak sama! </small>
                         </div>
 
                         <div class="mt-5 text-center">
@@ -27,4 +28,18 @@
         </div>
     </div>
 </div>
+<?= $this->endSection() ?>
+
+<?= $this->section('script') ?>
+<script>
+    $('small').hide();
+    $("#passk").keyup(function(){
+    if($("#passk").val() != $('#pass').val()){
+        $('small').show();
+    } else{
+        $('small').hide();
+    } 
+    });
+</script>
+
 <?= $this->endSection() ?>

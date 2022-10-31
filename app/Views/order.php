@@ -330,7 +330,7 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCn4Ah0LbR1ArWtKBbXUZm6Sovv85JDlqU&callback=initialize&libraries=places&v=weekly"
     defer></script> -->
   <script
-    src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initialize&key=AIzaSyCn4Ah0LbR1ArWtKBbXUZm6Sovv85JDlqU"
+    src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initialize&key=AIzaSyC-cK7kr1VeKQPDDCf-_RoA53ZGZLN6LaE"
     defer></script>
 <script>
     var baseURL = "<?php echo base_url(); ?>";
