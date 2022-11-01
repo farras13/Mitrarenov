@@ -334,6 +334,16 @@ class TransaksiController extends ResourceController
                 ];
                 return $this->respond($response, 200);
             }
+			
+			$agent = $this->request->getUserAgent();
+			if ($agent->isBrowser()) {
+				$currentAgent = 0;
+			} elseif ($agent->isMobile('iphone')) {
+				$currentAgent = 1;
+			} elseif ($agent->isMobile()) {
+				$currentAgent = 2;
+			}
+
             $insert = [
                 'project_number' => date("dmY", time()) . "" . $ht,
                 'type' => $type,
@@ -350,7 +360,7 @@ class TransaksiController extends ResourceController
 				'kode_promo' => $input['kode_promo'],
 				'kode_referal' =>  $input['kode_referal'],
                 'created' => time(),
-                'device' => 2
+                'device' => $currentAgent
             ];
            
             $insert_data = [
