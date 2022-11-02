@@ -62,8 +62,8 @@ $routes->get('notif/(:any)/(:any)', 'Chat::onclicknotif/$1/$2');
 $routes->post('seenallnotif', 'Chat::seenallnotif');
 
 $routes->get('artikel', 'Home::artikel');
-$routes->get('artikel/(:any)/detail', 'Home::d_artikel/$1');
 $routes->get('artikel/kategori/(:any)', 'Home::kategori/$1');
+$routes->get('artikel/(:any)', 'Home::d_artikel/$1');
 $routes->get('detail-promo/(:any)', 'Home::d_promo/$1');
 $routes->get('kontak', 'Home::hubungi');
 $routes->get('tentang-kami', 'Home::tentang_kami');

@@ -431,7 +431,7 @@
               <p>Diterbitkan <?php $time = $art->created;
                               $date = new DateTime("@$time");
                               echo $date->format('d F Y'); ?></p>
-              <a href="<?= base_url('artikel/' . $art->id . '/detail') ?>">Baca Selengkapnya...</a>
+              <a href="<?= base_url('artikel/' . $art->slug) ?>">Baca Selengkapnya...</a>
             </div>
           </div>
         <?php endforeach; ?>

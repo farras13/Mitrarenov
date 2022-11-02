@@ -65,7 +65,7 @@
                   </div>
                 </div>
                 <div class="w-100 pl-4">
-                  <a href="<?= base_url('artikel/' . $tb['id'] . '/detail') ?>">
+                  <a href="<?= base_url('artikel/' . $tb['slug']) ?>">
                     <h4 class="mb-2"><?= $tb['title'] ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
@@ -76,7 +76,7 @@
                     <?= $h->meta_description ?> ...
                   </p>
                   <div class="text-right">
-                    <a href="<?= base_url('artikel/' . $tb['id'] . '/detail') ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                    <a href="<?= base_url('artikel/' . $tb['slug']) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                   </div>
                 </div>
               </div>
@@ -86,6 +86,35 @@
           <?php else: ?>
             <h4>Data tidak ditemukan!</h4>
           <?php endif; ?>
+          <?php if(count($terbaru)< 5){ ?>
+            <h5 class="mt-5 text-primary"> Rekomendasi Artikel </h5>
+            <div class="article-list-small">
+              <?php foreach ($artikel as $tb) : ?>
+                <div class="d-flex article-item-small">
+                  <div class="article-sm-img">
+                    <div class="article-sm-img-inner">
+                      <img src="<?= base_url('public/images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
+                    </div>
+                  </div>
+                  <div class="w-100 pl-4">
+                    <a href="<?= base_url('artikel/' . $tb['slug']) ?>">
+                      <h4 class="mb-2"><?= $tb['title'] ?></h4>
+                    </a>
+                    <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
+                    <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['created'];
+                                                          $date = new DateTime("@$time");
+                                                          echo $date->format('d M Y'); ?></p>
+                    <p>
+                      <?= $h->meta_description ?> ...
+                    </p>
+                    <div class="text-right">
+                      <a href="<?= base_url('artikel/' . $tb['slug']) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                    </div>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          <?php } ?>
           <!-- <nav aria-label="Page navigation">
               <ul class="pagination justify-content-center mt-4">
                 <li class="page-item"><a class="page-link active" href="#">1</a></li>

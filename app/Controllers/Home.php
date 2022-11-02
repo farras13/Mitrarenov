@@ -287,8 +287,10 @@ class Home extends BaseController
         } else {
             $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('news_category', $kategori->id_news_category)->where('is_publish', '0')->orderBy('created', 'DESC')->paginate(5, 'berita');
         }
-        if ($data['terbaru'] == null) {
-            $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->orderBy('created', 'DESC')->paginate(5, 'berita');
+        
+        if (count($data['terbaru']) < 5) {
+            $limit = 5 - count($data['terbaru']);
+            $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->orderBy('id', 'random')->paginate($limit, 'otherberita');
         }
         $data['kategori'] =  $this->model->getAll('news_category')->getResult();
         $data['judul'] = $kat;
@@ -321,7 +323,6 @@ class Home extends BaseController
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
-
         return view("artikel-kategori", $data);
     }
 
@@ -330,7 +331,7 @@ class Home extends BaseController
         $model = new ArtikelModel();
         $key = $this->request->getVar();
         $data['kategori'] = $model->kategori();
-        $tagline = $model->where('id', $id)->get()->getRow();
+        $tagline = $model->where('slug', $id)->get()->getRow();
 
         $sess = session();
         $idn = $sess->get('user_id');
@@ -366,7 +367,7 @@ class Home extends BaseController
             $data['key'] = $key['cari'];
             return view("artikel", $data);
         } else {
-            $data['berita'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->find($id);
+            $data['berita'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->find($tagline->id);
             $data['hot'] = $model->orderBy('created', 'ASC')->hot();
             return view("artikel-detail", $data);
         }
@@ -2436,7 +2437,7 @@ class Home extends BaseController
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
-        $data['lokasi'] = $this->model->getAll('location')->getResult();
+        $data['lokasi'] = $this->model->getWhere('location', ['maps !=' => ''])->getResult();
         $data['prov'] = $model->getProv();
         echo view("hubungi-kami", $data);
     }

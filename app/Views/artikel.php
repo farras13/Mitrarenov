@@ -61,7 +61,7 @@
                   <div class="article-img">
                     <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="">
                   </div>
-                  <a href="<?= base_url('artikel') . '/' . $h->id . '/detail' ?>">
+                  <a href="<?= base_url('artikel') . '/' . $h->slug ?>">
                     <h4 class="mt-3 mb-2"><?= $h->title ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= $h->penulis ?></p>
@@ -72,7 +72,7 @@
                     <?= $h->meta_description ?> ...
                   </p>
                   <div class="text-right">
-                    <a href="<?= base_url('artikel') . '/' . $h->id . '/detail' ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                    <a href="<?= base_url('artikel') . '/' . $h->slug ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                   </div>
                 </div>
               <?php endforeach; ?>
@@ -94,7 +94,7 @@
                   </div>
                 </div>
                 <div class="w-100 pl-4">
-                  <a href="<?= base_url('artikel') . '/' . $h->id . '/detail' ?>">
+                  <a href="<?= base_url('artikel') . '/' . $tb['slug'] ?>">
                     <h4 class="mb-2"><?= $tb['title'] ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
@@ -105,7 +105,7 @@
                     <?= $h->meta_description ?> ...
                   </p>
                   <div class="text-right">
-                    <a href="<?= base_url('artikel/' . $tb['id'] . '/detail') ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                    <a href="<?= base_url('artikel/' . $tb['slug'] ) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                   </div>
                 </div>
               </div>
