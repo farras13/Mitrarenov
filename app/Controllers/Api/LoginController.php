@@ -25,10 +25,17 @@ class LoginController extends ResourceController
         $auth = new AuthModel();
         $mtoken = new AuthTokenModel();
         $model = new GeneralModel();
-
         // init request json
         $request = $this->request->getVar();
-
+        if($request['email'] == null || $request['password'] == null){
+            $res = [
+                "status" => 500,
+                "message" => "Email atau pass anda kosong!",
+                "data" => null
+            ];
+            return $this->respond($res, 500);
+        }
+        
         // get login request
         $data = array(
             'email' => $request['email'],
@@ -196,7 +203,12 @@ class LoginController extends ResourceController
         if ($kirim) {
             return $this->respond($res, 200);
         } else {
-            return $this->fail('Ada kesalahan pada server , mohon coba lagi nanti');
+            $res = [
+                "status" => 500,
+                "message" => "Ada kesalahan pada server , mohon coba lagi nanti",
+                "data" => null
+            ];
+            return $this->respond($res, 500);
         }
     }
 
@@ -244,13 +256,33 @@ class LoginController extends ResourceController
             }
             
         } else {
-            return  $this->fail('Pastikan anda memasukkan password anda yang masih berlaku dengan benar !');
+            $res = [
+                "status" => 500,
+                "message" => "Pastikan anda memasukkan password anda yang masih berlaku dengan benar !",
+                "data" => null
+            ];
+            return $this->respond($res, 500);
+            // return  $this->fail('Pastikan anda memasukkan password anda yang masih berlaku dengan benar !');
         }
-
-        $data = ['password' => md5($input['password'])];
-        $exc = $mdl->upd('member', ['id' => $id], $data);
-        if (!$exc) {
-            return  $this->fail('Reset Password gagal !');
+        if($input['password'] != null && $input['password'] != ''){
+            $data = ['password' => md5($input['password'])];
+            $exc = $mdl->upd('member', ['id' => $id], $data);
+            if (!$exc) {
+                // return  $this->fail('Reset Password gagal !');
+                $res = [
+                    "status" => 500,
+                    "message" => "Reset Password gagal !",
+                    "data" => null
+                ];
+                return $this->respond($res, 500);
+            }
+        }else{
+            $res = [
+                "status" => 500,
+                "message" => "Password tidak boleh kosong !",
+                "data" => null
+            ];
+            return $this->respond($res, 500);
         }
 
         return $this->respond($data, 200);

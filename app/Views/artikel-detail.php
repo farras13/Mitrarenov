@@ -128,7 +128,7 @@
             <div class="col-md-3">
               <div class="article-item-small" style="border-bottom: 0;">
                 <div class="article-sm-img-inner">
-                  <img src="<?= base_url('public/images/news') . '/' . $tk->image ?>" alt="">
+                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/<?= $tk->image ?>" alt="">
                 </div>
                 <div class="w-100 mt-3">
                   <h5 class="mb-2"><?= $tk->title ?></h5>

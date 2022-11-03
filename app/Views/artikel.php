@@ -90,7 +90,7 @@
               <div class="d-flex article-item-small">
                 <div class="article-sm-img">
                   <div class="article-sm-img-inner">
-                    <img src="<?= base_url('public/images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
+                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/<?= $tb['image'] ?>" alt="">
                   </div>
                 </div>
                 <div class="w-100 pl-4">
@@ -102,7 +102,7 @@
                                                         $date = new DateTime("@$time");
                                                         echo $date->format('d M Y'); ?></p>
                   <p>
-                    <?= $h->meta_description ?> ...
+                    <?= $tb['meta_description'] ?> ...
                   </p>
                   <div class="text-right">
                     <a href="<?= base_url('artikel/' . $tb['slug'] ) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
