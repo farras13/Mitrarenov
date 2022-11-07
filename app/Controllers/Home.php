@@ -54,7 +54,7 @@ class Home extends BaseController
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
         $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get(9)->getResult();
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
-        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], NULL, 'posisi', 'asc')->getResult();
+        $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
         $data['merawat'] = $this->model->getAll('merawat', 8)->getResult();
         $data['design_rumah'] = $this->model->getAll('design_rumah')->getResult();
@@ -330,7 +330,8 @@ class Home extends BaseController
     {
         $model = new ArtikelModel();
         $key = $this->request->getVar();
-        $data['kategori'] = $model->kategori();
+        // $data['kategori'] = $model->kategori();
+        $data['kategori'] = $this->model->getAll('news_category')->getResult();
         $tagline = $model->where('slug', $id)->get()->getRow();
 
         $sess = session();

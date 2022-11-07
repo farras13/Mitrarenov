@@ -25,12 +25,14 @@
                             $date = new DateTime("@$time");
                             echo $date->format('d M Y'); ?>
               </span>
+              <?php if($bertia['kategori'] != ''){ ?>
               <span>#</span>
               <span>
                 <a href="#" class="text-warning">
-                  Tips & Trik
+                  <?= $berita['kategori']; ?>
                 </a>
               </span>
+              <?php } ?>
 
             </p>
           </div>
@@ -77,7 +79,7 @@
                 <ul class="nav nav-article-cat flex-column">
                   <?php foreach ($hot as $h) : ?>
                     <li class="nav-item">
-                      <a href="<?= base_url('artikel/' . $h->id . '/detail') ?>" class="nav-link px-0">
+                      <a href="<?= base_url('artikel') . '/' . $h->slug ?>" class="nav-link px-0">
                         <div class="row">
                           <div class="col-4">
                             <div class="artikel-side-img">
@@ -97,19 +99,20 @@
                 <ul class="nav nav-article-cat flex-column">
                   <?php foreach ($kategori as $k) : ?>
                     <li class="nav-item">
-                      <a href="<?= base_url('artikel/' . $k->id . '/detail') ?>" class="nav-link px-0"><?= $k->title ?></a>
+                    <?php $link = str_replace(' ', '-', $k->category); ?>
+                      <a href="<?= base_url('artikel/kategori/' . $link) ?>" class="nav-link px-0"><?= $k->category ?></a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
 
-                <h5 class="text-primary mt-4">Tags</h5>
+                <!-- <h5 class="text-primary mt-4">Tags</h5>
                 <div class="tags">
                   <a href="#" class="nav-tags">Tag 1</a>
                   <a href="#" class="nav-tags">Tag 2</a>
                   <a href="#" class="nav-tags">Tag 3</a>
                   <a href="#" class="nav-tags">Tag 4</a>
                   <a href="#" class="nav-tags">Tag 5</a>
-                </div>
+                </div> -->
 
               </div>
 
@@ -131,15 +134,18 @@
                   <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/<?= $tk->image ?>" alt="">
                 </div>
                 <div class="w-100 mt-3">
-                  <h5 class="mb-2"><?= $tk->title ?></h5>
-                  <p class="text-grey mb-0">Penulis Admin</p>
-                  <p class="text-grey mb-0">Diterbitkan 22 Maret 2021</p>
+                  <a href="<?= base_url('artikel') . '/' . $tk->slug ?>">
+                    <h4 class="mt-3 mb-2"><?= $tk->title ?></h4>
+                  </a>
+                  <p class="text-grey mb-0"><?= $tk->penulis ?></p>
+                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tk->created;
+                                                        $date = new DateTime("@$time");
+                                                        echo $date->format('d M Y'); ?></p>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent aliquam odio mau
-                    ris, ut vestibulum velit auctor quis. Donec interdum pellentesque felis et ...
+                    <?= $tk->meta_description ?> ...
                   </p>
                   <div class="text-right">
-                    <a href="artikel-detail.html" class="font-weight-bold">Baca Selengkapnya..</a>
+                    <a href="<?= base_url('artikel/' . $tk->slug ) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                   </div>
                 </div>
               </div>

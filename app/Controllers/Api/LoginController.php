@@ -26,7 +26,17 @@ class LoginController extends ResourceController
         $mtoken = new AuthTokenModel();
         $model = new GeneralModel();
         // init request json
+        $headers = $this->request->headers();
         $request = $this->request->getVar();
+        
+        $device = $headers['User-Agent']->getValue();
+
+        if(strpos("Okhttp/3.12.12", $device) != ""){
+            $cekdev = 2;
+        }else{
+            $cekdev = 1; 
+        }
+
         if($request['email'] == null || $request['password'] == null){
             $res = [
                 "status" => 500,
@@ -52,27 +62,19 @@ class LoginController extends ResourceController
             ];
             return $this->respond($res, 401);
         }
-        $agent = $this->request->getUserAgent();
-        if ($agent->isMobile('iphone')) {
-            $device = 1;
-        } elseif ($agent->isMobile()) {
-            $device = 2;
-        } else {
-            $device = 3;
-        }
-
+        
+        // var_dump($agent);die;
         $cek_token = $model->getWhere('token_login', ['member_id' => $cek[0]['id']], null)->getRow();
-        $model->upd('member', ['id' => $cek[0]['id']], ['last_login' => time(), 'device' => $device ]);
+        $model->upd('member', ['id' => $cek[0]['id']], ['last_login' => time(), 'device' => $cekdev ]);
         if ($cek_token != null) {
             $token = $cek_token->token;
             $fcm_id = $request['fcm_id'];
             $model->upd('token_login',  ['token' => $token], ['fcm_id' => $fcm_id]);
         } else {
             $token = random_string('alnum', 30);
-            $headers = $this->request->headers();
+            
             $fcm_id = $request['fcm_id'];
-            $device = $headers['User-Agent']->getValue();
-
+          
             // ins log
             $hdata = array(
                 'token' => $token,
