@@ -120,7 +120,7 @@ class ArtikelController extends ResourceController
         $url = base_url();
         $time = $data->created;
         $date = new DateTime("@$time");
-        $data->image = $url . '/public/images/news/thumbs/' . $data->image;
+        $data->image ='https://admin.mitrarenov.soldig.co.id/assets/main/images/news/' . $data->image;
         $data->date = $date->format('d M Y');
         $res = [
             "status" => TRUE,

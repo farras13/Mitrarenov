@@ -291,8 +291,18 @@ class TransaksiController extends ResourceController
 			if($input['kode_promo'] != null && $input['kode_promo'] != ""){
 				$temp_promo = $mdl->getWhere('promomobile', ['promoCode' => $input['kode_promo']])->getRow();
 				if(!empty($temp_promo)){
-					$promo = $total * $temp_promo->promo / 100;
-					$total = $total - $promo;
+					if(strtotime($temp_promo->expired) >= time()){
+						$promo = $total * $temp_promo->promo / 100;
+						$total = $total - $promo;
+					}else{
+						$response = [
+							'status' => 500,
+							'error' => true,
+							'message' => 'Promo sudah Expired!',
+							'data' => []
+						];
+						return $this->respond($response, 500);
+					}
 				}
 			}
 
@@ -335,13 +345,12 @@ class TransaksiController extends ResourceController
                 return $this->respond($response, 200);
             }
 			
-			$agent = $this->request->getUserAgent();
-			if ($agent->isBrowser()) {
-				$currentAgent = 0;
-			} elseif ($agent->isMobile('iphone')) {
-				$currentAgent = 1;
-			} elseif ($agent->isMobile()) {
+			$device = $headers['User-Agent']->getValue();
+
+			if(strpos("Okhttp", $device) != "" || strpos("okhttp", $device) != "" ){
 				$currentAgent = 2;
+			}else{
+				$currentAgent = 1; 
 			}
 
             $insert = [

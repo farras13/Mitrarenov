@@ -18,7 +18,7 @@
                       <?php } ?>
                         <div class="chat-img">
                           <div class="chat-img-inner">
-                            <img src="<?= base_url('public/main/images/article-sd.jpg') ?>" alt="">
+                            <img style="object-fit: contain !important;" src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" alt="">
                           </div>
                         </div>
                         <div class="chat-content">
@@ -40,7 +40,7 @@
                         <div class="chat-header">
                           <div class="chat-img">
                             <div class="chat-img-inner">
-                              <img src="<?= base_url('public/main/images/article-sd.jpg') ?>" alt="">
+                              <img style="object-fit: contain !important;" src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" alt="">
                             </div>
                           </div>
                           <div class="chat-content">
@@ -52,14 +52,22 @@
                             <?php if($dc->user == $group){ ?>
                             <div class="chat-message d-flex">
                               <div class="chat-message-content is-me">
-                                <p><?= $dc->message; ?></p>
+                                <?php if($dc->type == 'image'){ ?>
+                                  <img src="<?= $dc->message ?>" width="256px" alt="">
+                                <?php }else{ ?>
+                                  <p><?= $dc->message; ?></p>
+                                <?php } ?>
                                 <p class="chat-time-content"><?= date('d F Y, H:i', $dc->date) ?></p>
                               </div>
                             </div>
                             <?php } else {  ?>
                             <div class="chat-message d-flex">
                               <div class="chat-message-content">
-                                <p><?= $dc->message; ?></p>
+                                <?php if($dc->type == 'image'){ ?>
+                                  <img src="<?= $dc->message ?>" width="256px" alt="">
+                                <?php }else{ ?>
+                                  <p><?= $dc->message; ?></p>
+                                <?php } ?>
                                 <p class="chat-time-content"><?= date('d F Y, H:i', $dc->date) ?></p>
                               </div>
                             </div>

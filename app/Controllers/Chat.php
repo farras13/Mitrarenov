@@ -24,13 +24,12 @@ class Chat extends BaseController
         $sess = session();
         $id = $sess->get('user_id');
         if($id != null){
-            $temp = $model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
+            $temp = $model->getQuery("SELECT id, kategori,id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
             $key = $this->request->getGet();
-            $detail = $this->request->getVar();
         
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
+                $temp = $model->getQuery("SELECT id, kategori,id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
             }
             // var_dump($temp);die;
             $no = 0;
@@ -39,7 +38,7 @@ class Chat extends BaseController
                 if($value->status == 0){
                     $no++;
                 }
-                if($value->kategori == "chat" && $value->status == 0){
+                if($value->status == 0 && $value->kategori == "chat"){
                     $chat++;
                 }
             }

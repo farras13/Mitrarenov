@@ -114,6 +114,10 @@ class QaController extends ResourceController
                 "data" => null
             ];
             return $this->respond($res, 200);
+        }else{
+            foreach ($data_chat as $key => $value) {
+                $value->image_profile = "https://mitrarenov.soldig.co.id/public/main/images/logo-mitrarenov.png";
+            }
         }
        
         if($group->name == 'User'){ 

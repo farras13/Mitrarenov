@@ -285,7 +285,7 @@ class DboModel extends Model
         if ($l != null) {
             $data = $db->query("SELECT a.member_id, a.name, a.dob, b.* FROM `project_data_customer` as a join projects as  b on b.id = a.project_id  WHERE member_id = $id AND b.status_project = '$s' ORDER BY b.id DESC LIMIT $l ")->getResult();
         } else {
-            $data = $db->query("SELECT a.member_id, a.name, a.dob, b.* FROM `project_data_customer` as a join projects as  b on b.id = a.project_id  WHERE member_id = $id AND b.status_project = '$s'")->getResult();
+            $data = $db->query("SELECT a.member_id, a.name, a.dob, b.* FROM `project_data_customer` as a join projects as  b on b.id = a.project_id  WHERE member_id = $id AND b.status_project = '$s' ORDER BY b.id DESC")->getResult();
         }
         foreach ($data as $key => $value) {
             if($value->image_upload){
@@ -367,7 +367,7 @@ class DboModel extends Model
     {
         $db = db_connect();
         if ($role == 'tukang') {
-            return $db->query("SELECT projects.id, DATE_FORMAT(FROM_UNIXTIME(projects.created), '%e %b %Y') AS 'tanggal', product.paket_name, chat.message, chat.user FROM projects 
+            return $db->query("SELECT projects.id, DATE_FORMAT(FROM_UNIXTIME(projects.created), '%e %b %Y') AS 'tanggal', product.paket_name, chat.message, chat.user, chat.type FROM projects 
             JOIN projects_detail ON projects_detail.project_id = projects.id
             JOIN product on product.id = projects_detail.product_id
             LEFT JOIN chat ON chat.project_id = projects.id
@@ -375,7 +375,7 @@ class DboModel extends Model
             GROUP BY chat.project_id
             ORDER BY chat.id DESC")->getResult();
         } else {
-            return $db->query("SELECT chat.id, chat.project_id, DATE_FORMAT(FROM_UNIXTIME(chat.date), '%e %b %Y') AS 'tanggal' , product.paket_name, chat.message, chat.user, member_detail.name as admin FROM chat
+            return $db->query("SELECT chat.id, chat.project_id, DATE_FORMAT(FROM_UNIXTIME(chat.date), '%e %b %Y') AS 'tanggal' , product.paket_name, chat.message, chat.user, member_detail.name as admin, chat.type FROM chat
             JOIN project_data_customer ON chat.project_id = project_data_customer.project_id
             JOIN projects ON chat.project_id = projects.id
             JOIN projects_detail ON projects_detail.project_id = chat.project_id
