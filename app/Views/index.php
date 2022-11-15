@@ -122,7 +122,7 @@
       <?php else: ?>
         <div class="slick-slide slide-item">
           <div class="banner-top-container">
-            <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
+            <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
             <div class="slide-content">
               <!-- <div class="discount-badge">
                 Diskon <?= $p->promo ?>%
