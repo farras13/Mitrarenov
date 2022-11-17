@@ -44,7 +44,7 @@ class Chat extends BaseController
             }
         }
         
-
+        $detail['83rc2kp'] = $this->request->getGet('83rc2kp');
         $cekUser = $model->getWhere('member', ['id' => $id])->getRow();
         $group = $model->getWhere('usergroup',['id' => $cekUser->usergroup_id])->getRow();
         $data['notif'] = $temp;
@@ -68,7 +68,57 @@ class Chat extends BaseController
         }
         return view('percakapan', $data);
     }
-
+    public function chat()
+    {
+        $model = new GeneralModel();
+        $dbo = new DboModel();
+        $sess = session();
+        $id = $sess->get('user_id');
+        if($id != null){
+            $temp = $model->getQuery("SELECT id, kategori,id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc")->getResult();
+            $key = $this->request->getGet();
+        
+            if(array_key_exists("limit",$key) ){
+                $limit  = (int) $key['limit'];
+                $temp = $model->getQuery("SELECT id, kategori,id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $id ORDER BY id desc LIMIT $limit")->getResult();
+            }
+            // var_dump($temp);die;
+            $no = 0;
+            $chat = 0;
+            foreach ($temp as $key => $value) {
+                if($value->status == 0){
+                    $no++;
+                }
+                if($value->status == 0 && $value->kategori == "chat"){
+                    $chat++;
+                }
+            }
+        }
+        
+        $detail['83rc2kp'] = $this->request->getGet('83rc2kp');
+        $cekUser = $model->getWhere('member', ['id' => $id])->getRow();
+        $group = $model->getWhere('usergroup',['id' => $cekUser->usergroup_id])->getRow();
+        $data['notif'] = $temp;
+        $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
+        if($group->name == 'User'){ 
+            $gn = 'customer'; 
+        }else{  
+            $gn = $group->name; 
+        }
+        $data['group'] = $gn;
+        $data_chat = $dbo->getListChat($group->name, $id);
+        $data['list_chat'] = $data_chat;
+        if($detail['83rc2kp'] != null){
+            $data_chat = $dbo->dchat(base64_decode($detail['83rc2kp']));
+            $data['detail_chat'] = $data_chat;
+            $data['idlist'] = $detail['83rc2kp']; 
+        }else{
+            $data['detail_chat'] = $model->getWhere('chat', ['project_id' => $data_chat[0]->project_id])->getResult();
+            $data['idlist'] = base64_encode($data_chat[0]->project_id); 
+        }
+        return view('chat', $data);
+    }
     public function kirim()
     {
         $model = new GeneralModel();

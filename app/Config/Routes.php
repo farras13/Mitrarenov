@@ -57,6 +57,7 @@ $routes->get('gallery', 'Home::gallery');
 // $routes->get('gallery/(:any)/detail', 'Home::detail_gallery/$1');
 
 $routes->get('chat', 'Chat::index');
+$routes->get('chat/chat', 'Chat::chat');
 $routes->post('chat-kirim', 'Chat::kirim');
 $routes->get('notif/(:any)/(:any)', 'Chat::onclicknotif/$1/$2');
 $routes->post('seenallnotif', 'Chat::seenallnotif');

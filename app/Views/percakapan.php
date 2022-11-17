@@ -47,37 +47,14 @@
                             <p class="chat-name">Admin - Mitrarenov</p>
                           </div>
                         </div>
-                        <div class="chat-body">
-                          <?php foreach($detail_chat as $dc){ ?>
-                            <?php if($dc->user == $group){ ?>
-                            <div class="chat-message d-flex">
-                              <div class="chat-message-content is-me">
-                                <?php if($dc->type == 'image'){ ?>
-                                  <img src="<?= $dc->message ?>" width="256px" alt="">
-                                <?php }else{ ?>
-                                  <p><?= $dc->message; ?></p>
-                                <?php } ?>
-                                <p class="chat-time-content"><?= date('d F Y, H:i', $dc->date) ?></p>
-                              </div>
-                            </div>
-                            <?php } else {  ?>
-                            <div class="chat-message d-flex">
-                              <div class="chat-message-content">
-                                <?php if($dc->type == 'image'){ ?>
-                                  <img src="<?= $dc->message ?>" width="256px" alt="">
-                                <?php }else{ ?>
-                                  <p><?= $dc->message; ?></p>
-                                <?php } ?>
-                                <p class="chat-time-content"><?= date('d F Y, H:i', $dc->date) ?></p>
-                              </div>
-                            </div>
-                          <?php }}?>                          
+                        <div class="chat-body" id="chat_body">
+                                                 
                         </div>
                         <form action="<?= base_url('chat-kirim') ?>" method="post">
                           <div class="chat-footer align-items-center">
                             <div class="w-100 pr-3">
-                              <input type="hidden" class="form-control" name="idcht" value="<?= $idlist; ?>">
-                              <input type="text" class="form-control" name="cht" placeholder="Tulis Pesan Disini..">
+                              <input type="hidden" class="form-control" id="idprojekpesan" name="idcht" value="<?= $idlist; ?>">
+                              <input type="text" class="form-control" id="inputpesan" name="cht" placeholder="Tulis Pesan Disini..">
                             </div>
                             <div class="chat-action">
                               <a href="#">
@@ -85,8 +62,9 @@
                               </a>
                             </div>
                             <div class="chat-action">
-                            <label for="mySubmit" class="btn"><i class="ico ico-paperline"></i></label>
-                            <input id="mySubmit" type="submit" hidden />                        
+                              
+                            <label for="mySubmit" class="btn" ><i class="ico ico-paperline"></i></label>
+                            <input id="mySubmit" id="sendpesan" type="submit" hidden />                        
                             </div>
                           </div>
                         </form>
@@ -101,4 +79,61 @@
       </div>
     </div>
  
+<?= $this->endSection() ?>
+
+<?= $this->section('script') ?>
+<script>
+  $(document).ready(function() {
+    var b =  GetURLParameter("83rc2kp");
+    setInterval(() => {
+      dataChat(b);
+      var objDiv = document.getElementById("chat_body");
+      objDiv.scrollTop = objDiv.scrollHeight;
+     
+        // console.log(b);
+    }, 5000);
+    $(document).on('click', '#sendpesan', function() {
+        var id = $('#idprojekpesan').val();
+        var pesan = $('#inputpesan').val();
+        $.post('<?php echo site_url('chat-kirim') ?>', {
+            id: id,
+            pesan: pesan,
+        }, function(data) {
+            if (data != "" || data != null) {
+                $('#inputpesan').val('');
+                $('#idprojekpesan').val(id);
+                $('#chat_body').html('');
+                $('#chat_body').html(data);
+            }
+        });
+    });
+    
+  });
+  function GetURLParameter(sParam)
+  {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return sParameterName[1];
+        }
+    }
+  }
+  function dataChat(b) {
+      $.post('<?php echo site_url('Chat/chat') ?>', {
+          id: b
+      }, function(data) {
+          if (data != "" || data != null) {              
+              $('#chat_body').html('');
+              $('#chat_body').html(data);
+          }
+      });
+  }       
+  
+  
+              
+</script>
 <?= $this->endSection() ?>
