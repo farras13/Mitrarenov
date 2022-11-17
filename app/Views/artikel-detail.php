@@ -158,10 +158,14 @@
     </div>
   </div>
 </div>
+<?= $this->endSection() ?>
 <?= $this->section('script') ?>
 <script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
 
 <script>
+   document.title = '<?=  $berita['meta_title'] ?>';
+  $('head').append('<meta name="<?=  $berita['meta_description'] ?>">');
+  $('head').append('<meta name="<?=  $berita['meta_keyword'] ?>">');
   const postDetails = document.querySelector(".content-article");
   const postSidebar = document.querySelector(".sidebar");
   const postSidebarContent = document.querySelector(".sidebar-inner");
@@ -195,5 +199,4 @@
   }
 </script>
 
-<?= $this->endSection() ?>
 <?= $this->endSection() ?>
