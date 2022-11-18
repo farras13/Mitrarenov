@@ -52,7 +52,14 @@ class Home extends BaseController
         $data['chat_total'] = $chat;
         $data['alur'] = $this->model->getAll('rules')->getResult();
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
-        $data['artikel'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get(9)->getResult();
+        $artikel = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get(9)->getResult();
+        $temp_artikel = [];
+        foreach ($artikel as $key => $value) {
+            if($value->date >= time()){
+                $temp_artikel[] = $value;
+            }
+        }
+        $data['artikel'] = $temp_artikel; 
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
         $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
         $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
@@ -120,7 +127,7 @@ class Home extends BaseController
 
     public function detail_porto($id)
     {
-        $data['porto'] = $this->model->getWhere('merawat', ['id' => $id])->getRow();
+        $data['porto'] = $this->model->getWhere('merawat', ['slug' => $id])->getRow();
         $id = $data['porto']->created_by;
         $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id])->getRow();
         $data['lain'] = $this->model->getWhere('merawat', ['id !=' => $id], 4)->getResult();
@@ -147,6 +154,7 @@ class Home extends BaseController
                 }
             }
         }
+        $data['linkdetail'] = base_url('portofolio');
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
@@ -193,10 +201,10 @@ class Home extends BaseController
 
     public function detail_design_rumah($id)
     {
-        $data['porto'] = $this->model->getWhere('design_rumah', ['id' => $id])->getRow();
+        $data['porto'] = $this->model->getWhere('design_rumah', ['slug' => $id])->getRow();
         $id_member = $data['porto']->created_by;
         $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id_member])->getRow();
-        $data['lain'] = $this->model->getWhere('design_rumah', ['id !=' => $id], 4)->getResult();
+        $data['lain'] = $this->model->getWhere('design_rumah', ['slug !=' => $id], 4)->getResult();
         $data['gambar'] = $this->model->getWhere('gambar_portofolio', ['porto_id' => $id])->getResult();
         $sess = session();
         $key = $this->request->getGet();
@@ -220,6 +228,7 @@ class Home extends BaseController
                 }
             }
         }
+        $data['linkdetail'] = base_url('desain_rumah');
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
@@ -234,9 +243,9 @@ class Home extends BaseController
         $key = $this->request->getVar();
 
         if ($key['cari'] != null) {
-            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where(['is_publish' => '0', 'date <=' => time()])->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
         } else {
-            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where(['is_publish' => '0', 'date <=' => time()])->orderBy('created', 'DESC')->paginate(5, 'berita');
         }
         $data['kategori'] = $this->model->getAll('news_category')->getResult();
         $data['hot'] = $model->orderBy('created', 'ASC')->hot();
@@ -440,7 +449,7 @@ class Home extends BaseController
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
 
-        $data['porto'] = $model->select('gallery_pekerjaan.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = gallery_pekerjaan.created_by')->paginate(12, 'gallery');
+        $data['porto'] = $model->select('gallery_pekerjaan.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = gallery_pekerjaan.created_by')->orderBy('gallery_pekerjaan.id', 'desc')->paginate(12, 'gallery');
         $data['pager'] = $model->pager;
 
         return view('gallery', $data);
@@ -2685,8 +2694,7 @@ class Home extends BaseController
         $data['chat_total'] = $chat;
 
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
-        $data['projek'] = $mdl->getProjectUserS($sess->get('user_id'), 'done');
-        // echo "<pre>"; print_r($data['projekBerjalan']); echo"</pre>";
+        $data['projek'] = $mdl->getProjectUserS($idn, 'done');
         return view('riwayatProjek', $data);
     }
 
@@ -2866,6 +2874,11 @@ class Home extends BaseController
         $model = new GeneralModel();
         $model->upd('notifikasi', ['id' => $id], ['status' => 1]);
         return redirect()->to('chat');        
+    }
+
+    public function subscribe()
+    {
+        
     }
 
     

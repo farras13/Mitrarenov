@@ -47,11 +47,12 @@ $routes->get('member/login', 'Home::login');
 $routes->get('member/register', 'Home::register');
 $routes->get('member/logout', 'Home::logout');
 
-$routes->get('portofolio/(:any)/detail', 'Home::detail_porto/$1');
+// $routes->get('portofolio/(:any)/detail', 'Home::detail_porto/$1');
+$routes->get('portofolio/(:any)', 'Home::detail_porto/$1');
 $routes->get('portofolio', 'Home::portofolio');
 
-$routes->get('design_rumah', 'Home::design_rumah');
-$routes->get('design_rumah/(:any)/detail', 'Home::detail_design_rumah/$1');
+$routes->get('desain_rumah', 'Home::design_rumah');
+$routes->get('desain_rumah/(:any)', 'Home::detail_design_rumah/$1');
 
 $routes->get('gallery', 'Home::gallery');
 // $routes->get('gallery/(:any)/detail', 'Home::detail_gallery/$1');
@@ -62,17 +63,16 @@ $routes->post('chat-kirim', 'Chat::kirim');
 $routes->get('notif/(:any)/(:any)', 'Chat::onclicknotif/$1/$2');
 $routes->post('seenallnotif', 'Chat::seenallnotif');
 
-$routes->get('artikel', 'Home::artikel');
-$routes->get('artikel/kategori/(:any)', 'Home::kategori/$1');
-$routes->get('artikel/(:any)', 'Home::d_artikel/$1');
+$routes->get('berita', 'Home::artikel');
+$routes->get('berita/kategori/(:any)', 'Home::kategori/$1');
+$routes->get('berita/(:any)', 'Home::d_artikel/$1');
 $routes->get('detail-promo/(:any)', 'Home::d_promo/$1');
-$routes->get('kontak', 'Home::hubungi');
+$routes->get('halaman/hubungi-kami', 'Home::hubungi');
 $routes->get('subscribe', 'Home::subscribe');
-$routes->get('tentang-kami', 'Home::tentang_kami');
+$routes->get('halaman/tentang-kami', 'Home::tentang_kami');
 $routes->get('simulasi-kpr', 'Home::simulasi');
 
 // $routes->group('',['filter' => 'auth'], function ($routes) {
-    $routes->get('order', 'Order::index');
     $routes->post('searchPromo', 'Order::searchPromo');    
     $routes->post('kategori', 'Home::getKategori');
     $routes->post('getHarga', 'Home::getHarga');
@@ -80,6 +80,7 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
     $routes->get('order/sukses', 'Order::order_sukses');
     $routes->post('order/desain', 'Home::order_desain');
     $routes->post('order/no_desain', 'Home::order_non');
+    $routes->get('order/(:any)', 'Order::index/$1');
 
     $routes->get('member/akun', 'Home::akun');
     $routes->get('member/projek/tambah', 'Home::projektambah');

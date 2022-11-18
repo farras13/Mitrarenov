@@ -70,16 +70,16 @@
                 <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link <?php if ($currentURL == base_url('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('tentang-kami') ?>" class="nav-link <?php if ($currentURL == base_url('tentang-kami')) echo "active"; ?>">Tentang Kami</a>
+                <a href="<?= base_url('halaman/tentang-kami') ?>" class="nav-link <?php if ($currentURL == base_url('tentang-kami')) echo "active"; ?>">Tentang Kami</a>
               </li>
               <li class="nav-item">
                 <a href="<?= base_url('/#ckk') ?>" class="nav-link <?php if ($currentURL == base_url('/#ckk')) echo "active"; ?>">Cara Kerja</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('kontak') ?>" class="nav-link <?php if ($currentURL == base_url('kontak')) echo "active"; ?>">Hubungi Kami</a>
+                <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link <?php if ($currentURL == base_url('kontak')) echo "active"; ?>">Hubungi Kami</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('artikel') ?>" class="nav-link <?php if ($currentURL == base_url('artikel')) echo "active"; ?>">Artikel</a>
+                <a href="<?= base_url('berita') ?>" class="nav-link <?php if ($currentURL == base_url('berita')) echo "active"; ?>">Artikel</a>
               </li>
               <li class="nav-item">
                 <a href="<?= base_url('/#jasa') ?>" class="nav-link <?php if ($currentURL == base_url('/#jasa')) echo "active"; ?>">Order Jasa</a>
@@ -398,8 +398,10 @@
 
               <h5 class="mt-5 mb-3">TETAP TERHUBUNG</h5>
               <div class="newsletter">
-                <input type="text" class="form-control" placeholder="Masukkan email anda disini">
-                <button type="submit" class="btn">LANGGANAN</button>
+                <form action="#" method="post">
+                  <input type="text" class="form-control" placeholder="Masukkan email anda disini">
+                  <button type="submit" class="btn">LANGGANAN</button>
+                </form>
               </div>
               <p class="mt-3">
                 Tetap up to date dengan berita terbaru dan penawaran khusus kami.

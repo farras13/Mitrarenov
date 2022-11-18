@@ -1,7 +1,7 @@
 <?= $this->extend('template') ?>
 
 <?= $this->section('content') ?>
-<<div class="content-wrapper">
+<div class="content-wrapper">
   <div class="page-title">
     <h1><?= $title ?> </h1>
   </div>
@@ -9,7 +9,7 @@
     <div class="row mt-5">
         <?php foreach($porto as $p){ ?>
             <div class="col-md-3 mb-4">
-                <a href="<?= current_url().'/'.$p["id"].'/detail'; ?>" class="gallery-item">
+                <a href="<?= current_url().'/'.$p["slug"]; ?>" class="gallery-item">
                 <img src="<?= $link_gambar.$p["image"] ?>" class="img-fluid" alt="">
                 <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $p["title"] ?></h5>

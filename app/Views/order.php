@@ -15,30 +15,37 @@
             <div class="card card-border">
                 <div class="card-body py-5">
                     <div class="row">
+                        
                         <div class="col-lg-5 alur-order mb-5">
+                            <?php if($produk->show_alur == "Y"): ?>
                             <h4>Alur Order</h4>
                             <div class="card card-shadow radius-10">
                                 <div class="card-body px-5 py-4">
                                     <div class="row align-items-center">
+                                        <?php foreach($alur as $al => $a): ?>
+                                            <?php if($al % 2): ?>
                                         <div class="col-6 mb-4">
-                                            <img src="public/main/images/alur-order-1.svg" class="img-fluid" alt="">
+                                            <img src="<?= $a->image ?>" class="img-fluid" alt="">
                                         </div>
                                         <div class="col-6 mb-4">
-                                            <h3 class="text-primary mb-3">Order Online</h3>
+                                            <h3 class="text-primary mb-3"><?= $a->type; ?></h3>
                                             <p>
-                                                Order Pekerjaan Renovasi atau Pembangunan rumah anda melalui aplikasi atau website
+                                                <?= $a->description; ?>
+                                            </p>
+                                        </div>
+                                            <?php else: ?>
+                                        <div class="col-6 mb-4">
+                                            <h3 class="text-primary mb-3"><?= $a->type; ?></h3>
+                                            <p>
+                                                <?= $a->description; ?>
                                             </p>
                                         </div>
                                         <div class="col-6 mb-4">
-                                            <h3 class="text-primary mb-3">Survey Lokasi</h3>
-                                            <p>
-                                                Tim lapangan kami akan menghubungi anda untuk melakukan survey dan diskusi
-                                            </p>
+                                            <img src="<?= $a->image ?>" class="img-fluid" alt="">
                                         </div>
-                                        <div class="col-6 mb-4">
-                                            <img src="public/main/images/alur-order-2.svg" class="img-fluid" alt="">
-                                        </div>
-                                        <div class="col-6 mb-4">
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                        <!-- <div class="col-6 mb-4">
                                             <img src="public/main/images/alur-order-3.svg" class="img-fluid" alt="">
                                         </div>
                                         <div class="col-6 mb-4">
@@ -55,10 +62,11 @@
                                         </div>
                                         <div class="col-6 mb-4">
                                             <img src="public/main/images/alur-order-4.svg" class="img-fluid" alt="">
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                         </div>
                         <div class="col-lg-7 right-jasa mb-5">
                             <div class="jasa-content">
@@ -341,7 +349,7 @@
     var base_url = window.location.origin;
     var url_string = window.location;
     var url = new URL(url_string);
-    var type = url.searchParams.get("type");
+    var type = <?= $type ?>;
     var awal = document.getElementById("lang");
     var akhir = document.getElementById("long");
     var link_order = base_url + '/order/add';

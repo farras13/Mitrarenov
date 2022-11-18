@@ -79,7 +79,7 @@
                 <ul class="nav nav-article-cat flex-column">
                   <?php foreach ($hot as $h) : ?>
                     <li class="nav-item">
-                      <a href="<?= base_url('artikel') . '/' . $h->slug ?>" class="nav-link px-0">
+                      <a href="<?= base_url('berita') . '/' . $h->slug ?>" class="nav-link px-0">
                         <div class="row">
                           <div class="col-4">
                             <div class="artikel-side-img">
@@ -100,7 +100,7 @@
                   <?php foreach ($kategori as $k) : ?>
                     <li class="nav-item">
                     <?php $link = str_replace(' ', '-', $k->category); ?>
-                      <a href="<?= base_url('artikel/kategori/' . $link) ?>" class="nav-link px-0"><?= $k->category ?></a>
+                      <a href="<?= base_url('berita/kategori/' . $link) ?>" class="nav-link px-0"><?= $k->category ?></a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
@@ -134,7 +134,7 @@
                   <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/<?= $tk->image ?>" alt="">
                 </div>
                 <div class="w-100 mt-3">
-                  <a href="<?= base_url('artikel') . '/' . $tk->slug ?>">
+                  <a href="<?= base_url('berita') . '/' . $tk->slug ?>">
                     <h4 class="mt-3 mb-2"><?= $tk->title ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= $tk->penulis ?></p>
@@ -145,7 +145,7 @@
                     <?= $tk->meta_description ?> ...
                   </p>
                   <div class="text-right">
-                    <a href="<?= base_url('artikel/' . $tk->slug ) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                    <a href="<?= base_url('berita/' . $tk->slug ) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                   </div>
                 </div>
               </div>

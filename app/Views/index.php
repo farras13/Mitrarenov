@@ -222,8 +222,8 @@
           <div class="row row-sm">
             <?php foreach ($kategori as $k) : ?>
               <div class="col-lg-2 col-md-3 col-6 my-4">
-                <?php if ($k->total == 1) : ?>
-                  <a href="<?= base_url('order?type=' . $k->id . '&jenis=' . $k->paket_name) ?>" target="__BLANK">
+                <?php $string = $k->category_name . ' dan ' . $k->paket_name; $str = str_replace(' ', '-', $string); if ($k->total == 1) : ?>
+                  <a href="<?= base_url('order/' . $str) ?>" target="__BLANK">
                   <?php elseif($k->total > 1) : ?>
                     <a href="#modal-detail-category<?= $k->id ?>" data-toggle="modal">
                     <?php endif; ?>
@@ -233,47 +233,7 @@
                     </div>
                     </a>
               </div>
-            <?php endforeach; ?>
-            <!-- <div class="col-lg-2 col-md-3 col-6 my-4">
-              <a href="<?= base_url('order?type=Renovasi') ?>">
-                <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
-                  <p class="mb-0">Renovasi</p>
-                </div>
-              </a>
-            </div>
-            <div class="col-lg-2 col-md-3 col-6 my-4">
-              <a href="#modal-detail-category" data-toggle="modal">
-                <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-03.svg') ?>" class="img-fluid" alt="">
-                  <p class="mb-0">Perawatan Rumah</p>
-                </div>
-              </a>
-            </div>
-            <div class="col-lg-2 col-md-3 col-6 my-4">
-              <a href="#modal-detail-category" data-toggle="modal">
-                <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-04.svg') ?>" class="img-fluid" alt="">
-                  <p class="mb-0">Interior</p>
-                </div>
-              </a>
-            </div>
-            <div class="col-lg-2 col-md-3 col-6 my-4">
-              <a href="#modal-detail-category" data-toggle="modal">
-                <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-05.svg') ?>" class="img-fluid" alt="">
-                  <p class="mb-0">Pengurusan IMB</p>
-                </div>
-              </a>
-            </div>
-            <div class="col-lg-2 col-md-3 col-6 my-4">
-              <a href="#modal-detail-category" data-toggle="modal">
-                <div class="jasa-container">
-                  <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-06.svg') ?>" class="img-fluid" alt="">
-                  <p class="mb-0">Jasa Arsitek</p>
-                </div>
-              </a>
-            </div> -->
+            <?php endforeach; ?>           
           </div>
         </div>
       </div>
@@ -361,7 +321,7 @@
           <div class="row">
              <?php foreach ($merawat as $m) { ?>
             <div class="col-md-3 mb-4" >
-              <a href="<?= base_url('portofolio/'.$m->id.'/detail'); ?>" class="gallery-item">
+              <a href="<?= base_url('portofolio/'.$m->slug); ?>" class="gallery-item">
                 <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $m->image ?>" class="img-fluid" alt="">
                 <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
@@ -391,7 +351,7 @@
             <?php } ?>
           </div>
           <div class="text-center mt-4">
-            <a href="<?= base_url('design_rumah'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
+            <a href="<?= base_url('desain_rumah'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
           </div>
         </div>
       </div>
@@ -524,7 +484,7 @@
         <h5 class="sub-title-cat">Pilihan Jasa</h5>
 
         <div class="row">
-          <?php foreach ($jasa as $m) : if($kt->id == $m->category_id):?>
+          <?php foreach ($jasa as $m) : if($kt->id == $m->category_id): $string = $kt->category_name . ' dan ' . $m->paket_name; $str = str_replace(' ', '-', $string); ?>
             <div class="col-md-6 my-4">
               <div class="d-flex align-items-center">
 
@@ -532,7 +492,7 @@
                   <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
                 </div>
                 <div class="w-100 text-15 pl-3">
-                  <a href="<?= base_url('order?type=' . $m->category_id . '&jenis=' . rawurlencode($m->paket_name)) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
+                  <a href="<?= base_url('order/' . $str) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
                 </div>
 
               </div>

@@ -15,7 +15,7 @@ class Order extends BaseController
     }   
     
     // ORDER PROJECT
-    public function index()
+    public function index($id)
     {
         $sess = session();
         $idn = $sess->get('user_id');
@@ -39,26 +39,31 @@ class Order extends BaseController
         }
         
         $req = $this->request->getVar();
-        $type = $req['type'];
-        $jenis = $req['jenis'];
-        
-        $produk = $this->model->getWhere('product', ['paket_name' => $jenis, 'category_id' => $type])->getRow();
+		
+		$st = str_replace('-',' ',$id);
+		$str = (explode("dan",$st));
+        $type = trim($str[0]);
+        $jenis = trim($str[1]);
+        $category = $this->model->getWhere('category', ['category_name' => $type])->getRow();
+        $produk = $this->model->getWhere('product', ['paket_name' => $jenis, 'category_id' => $category->id])->getRow();
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
 		$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => $produk->id])->getResult();
+		// var_dump($produk->id);die;
 		if(empty($tipe_rumah)){
 			$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => 0])->getResult();
 		}
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
-        $data['type'] = $type;
+        $data['alur'] = $this->model->getAll('rules')->getResult();
+		$data['type'] = $category->id;
         $data['jenis'] = $jenis;
         $data['nama'] = $sess->get('user_name');
         $data['phone'] = $sess->get('user_phone');
         $data['email'] = $sess->get('user_email');
         $data['tipe_rumah'] = $tipe_rumah;
         $data['spek'] = $spek;
-
+		$data['produk'] = $produk;
         return view('order', $data);
     }
 
