@@ -69,7 +69,7 @@ class Home extends BaseController
         $data['partner'] = $this->model->getOrderBy('partner', 'position', 'asc')->getResult();
         $data['lokasi'] = $this->model->getAll('location')->getResult();
         $data['kategori_old'] = $this->model->getWhere('category', ['id !=' => 3])->getResult();
-        $data['kategori'] = $this->model->getQuery("SELECT category.*, COUNT(product.id) as total, product.paket_name FROM `category` JOIN product ON product.category_id = category.id WHERE category.id != 3 GROUP BY category.id")->getResult();
+        $data['kategori'] = $this->model->getQuery("SELECT category.*, COUNT(product.id) as total, product.paket_name FROM `category` JOIN product ON product.category_id = category.id WHERE category.id != 3 GROUP BY category.id Order By sort")->getResult();
         $data['jasa'] = $this->model->getQuery("SELECT DISTINCT product.* FROM product_price JOIN product ON product.id = product_price.product_id WHERE product.category_id != 3 ORDER BY product.category_id")->getResult();
         $data['membangun'] = $this->model->getWhere('product', ['category_id' => 1])->getResult();
         $data['renovasi'] = $this->model->getWhere('product', ['category_id' => 2])->getResult();
@@ -341,7 +341,10 @@ class Home extends BaseController
         $key = $this->request->getVar();
         // $data['kategori'] = $model->kategori();
         $data['kategori'] = $this->model->getAll('news_category')->getResult();
-        $tagline = $model->where('slug', $id)->get()->getRow();
+        $tagline = $model->where(['is_publish' => '0', 'date <=' => time(), 'slug' => $id])->get()->getRow();
+        if(empty($tagline)){
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
 
         $sess = session();
         $idn = $sess->get('user_id');
@@ -375,12 +378,11 @@ class Home extends BaseController
             $data['hot'] = $model->orderBy('created', 'ASC')->hot();
             $data['pager'] = $model->pager;
             $data['key'] = $key['cari'];
-            return view("artikel", $data);
         } else {
             $data['berita'] = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->find($tagline->id);
             $data['hot'] = $model->orderBy('created', 'ASC')->hot();
-            return view("artikel-detail", $data);
         }
+        return view("artikel-detail", $data);
     }
 
     public function d_promo($id)

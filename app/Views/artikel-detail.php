@@ -21,7 +21,7 @@
             <!-- <p class="text-grey mb-0">Penulis <?= $berita['penulis'] ?></p> -->
             <p class="text-grey mb-0">
               <span>
-                Diterbitkan <?php $time = $berita['created'];
+                Diterbitkan <?php $time = $berita['date'];
                             $date = new DateTime("@$time");
                             echo $date->format('d M Y'); ?>
               </span>
@@ -138,7 +138,7 @@
                     <h4 class="mt-3 mb-2"><?= $tk->title ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= $tk->penulis ?></p>
-                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tk->created;
+                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tk->date;
                                                         $date = new DateTime("@$time");
                                                         echo $date->format('d M Y'); ?></p>
                   <p>
@@ -163,9 +163,9 @@
 <script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
 
 <script>
-   document.title = '<?=  $berita['meta_title'] ?>';
-  $('head').append('<meta name="<?=  $berita['meta_description'] ?>">');
-  $('head').append('<meta name="<?=  $berita['meta_keyword'] ?>">');
+  document.title = '<?=  $berita['meta_title'] ?>';
+  $('head').append('<meta name="description" content="<?=  $berita['meta_description'] ?>">');
+  $('head').append('<meta name="keywords" content="<?=  $berita['meta_keyword'] ?>">');
   const postDetails = document.querySelector(".content-article");
   const postSidebar = document.querySelector(".sidebar");
   const postSidebarContent = document.querySelector(".sidebar-inner");

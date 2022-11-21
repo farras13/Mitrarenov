@@ -80,7 +80,8 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
     $routes->get('order/sukses', 'Order::order_sukses');
     $routes->post('order/desain', 'Home::order_desain');
     $routes->post('order/no_desain', 'Home::order_non');
-    $routes->get('order/(:any)', 'Order::index/$1');
+    $routes->get('jasa/(:any)', 'Order::index/$1');
+    $routes->get('halaman/(:any)', 'Page::index/$1');
 
     $routes->get('member/akun', 'Home::akun');
     $routes->get('member/projek/tambah', 'Home::projektambah');
@@ -99,6 +100,7 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
 $routes->group('api', function ($routes) {
     $routes->group('v1', function ($routes) {
         $routes->post('notifios', 'Api\TransaksiController::notifios');
+
 //  $routes->post('merawat', 'Api\SimulasiKpr::merawat');
         $routes->group('auth', function ($routes) {
             $routes->post('login', 'Api\LoginController::login');

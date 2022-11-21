@@ -8,7 +8,7 @@
 </style>
  <div class="content-wrapper">
         <div class="page-title">
-            <h1>Order <?= $jenis ?></h1>
+            <h1>Order <?= ucwords($jenis) ?></h1>
         </div>
 
         <div class="container-md account-section">
@@ -45,24 +45,7 @@
                                         </div>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
-                                        <!-- <div class="col-6 mb-4">
-                                            <img src="public/main/images/alur-order-3.svg" class="img-fluid" alt="">
-                                        </div>
-                                        <div class="col-6 mb-4">
-                                            <h3 class="text-primary mb-3">Pembuatan RAB</h3>
-                                            <p>
-                                                Tim lapangan kami akan membuatkan Rencana biaya renovasi atau bangun kepada anda
-                                            </p>
-                                        </div>
-                                        <div class="col-6 mb-4">
-                                            <h3 class="text-primary mb-3">Tanda Tangan Surat Kontrak</h3>
-                                            <p>
-                                                Setelah anda menyetujui harga, anda akan menandatangani kontrak
-                                            </p>
-                                        </div>
-                                        <div class="col-6 mb-4">
-                                            <img src="public/main/images/alur-order-4.svg" class="img-fluid" alt="">
-                                        </div> -->
+                                    
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +61,7 @@
                                         <li class="nav-item">
                                             <a href="#" class="nav-link nav-non-design">TANPA DESAIN</a>
                                         </li> -->
-                                    </ul>
+                                    <!-- </ul> -->
                                 </div>
                                 <div class="mt-5">
                                     <form onsubmit="get_action(this);" method="POST" enctype="multipart/form-data" id="formorder">
@@ -341,6 +324,10 @@
     src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initialize&key=AIzaSyC-cK7kr1VeKQPDDCf-_RoA53ZGZLN6LaE"
     defer></script>
 <script>
+
+    document.title = '<?=  $produk->meta_title ?>';
+    $('head').append('<meta name="description" content="<?=  $produk->meta_description ?>">');
+    $('head').append('<meta name="keywords" content="<?=  $produk->meta_keyword ?>">');
     var baseURL = "<?php echo base_url(); ?>";
     var nluas = $("#luasbang").val();
     var nharga;

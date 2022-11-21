@@ -65,7 +65,7 @@
                     <h4 class="mt-3 mb-2"><?= $h->title ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= $h->penulis ?></p>
-                  <p class="text-grey mb-0">Diterbitkan <?php $time = $h->created;
+                  <p class="text-grey mb-0">Diterbitkan <?php $time = $h->date;
                                                         $date = new DateTime("@$time");
                                                         echo $date->format('d M Y'); ?></p>
                   <p>
@@ -98,7 +98,7 @@
                     <h4 class="mb-2"><?= $tb['title'] ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
-                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['created'];
+                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['date'];
                                                         $date = new DateTime("@$time");
                                                         echo $date->format('d M Y'); ?></p>
                   <p>

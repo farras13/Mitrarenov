@@ -39,6 +39,39 @@ $(function () {
             }
         ]
     })
+    $(".top-banner-mobile").slick({
+        centerMode: true,
+        centerPadding: '120px',
+        slidesToShow: 1,
+        // prevArrow: '.btn-prev',
+        // nextArrow: '.btn-next',
+        autoplay: true,
+        autoplaySpeed: 5000,
+        dots: true,
+        responsive: [
+            {
+                breakpoint: 991.98,
+                settings: {
+                    centerMode: true,
+                    centerPadding: '60px',
+                }
+            },
+            {
+                breakpoint: 767.98,
+                settings: {
+                    centerMode: false,
+                    slidesToShow: 1,
+                }
+            },
+            {
+                breakpoint: 575.98,
+                settings: {
+                    centerMode: false,
+                    slidesToShow: 1,
+                }
+            }
+        ]
+    })
 
     $('.testi-slide').slick({
         slidesToShow: 2,
@@ -174,4 +207,3 @@ $(function () {
     })
 
 })
-

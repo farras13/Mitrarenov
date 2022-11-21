@@ -83,7 +83,7 @@
     <div class="btn-slide btn-next"><i class="ico ico-next"></i></div>
   </div>
   <div class="main-banner position-relative mobile-slider">
-    <div class="top-banner">
+    <div class="top-banner-mobile">
       <?php foreach ($promo as $p) : if($p->kategori == 2):?>
         <div class="slick-slide slide-item">
           <div class="banner-top-container">
@@ -158,8 +158,8 @@
       <?php endforeach; ?>
 
     </div>
-    <div class="btn-slide btn-prev"><i class="ico ico-prev"></i></div>
-    <div class="btn-slide btn-next"><i class="ico ico-next"></i></div>
+    <!-- <div class="btn-slide btn-prev"><i class="ico ico-prev"></i></div>
+    <div class="btn-slide btn-next"><i class="ico ico-next"></i></div> -->
   </div>
   <div class="section section-1 pt-4 pb-5" id="ckk">
     <div class="text-center">
@@ -223,7 +223,7 @@
             <?php foreach ($kategori as $k) : ?>
               <div class="col-lg-2 col-md-3 col-6 my-4">
                 <?php $string = $k->category_name . ' dan ' . $k->paket_name; $str = str_replace(' ', '-', $string); if ($k->total == 1) : ?>
-                  <a href="<?= base_url('order/' . $str) ?>" target="__BLANK">
+                  <a href="<?= base_url('jasa/' . $str) ?>" target="__BLANK">
                   <?php elseif($k->total > 1) : ?>
                     <a href="#modal-detail-category<?= $k->id ?>" data-toggle="modal">
                     <?php endif; ?>
@@ -484,7 +484,7 @@
         <h5 class="sub-title-cat">Pilihan Jasa</h5>
 
         <div class="row">
-          <?php foreach ($jasa as $m) : if($kt->id == $m->category_id): $string = $kt->category_name . ' dan ' . $m->paket_name; $str = str_replace(' ', '-', $string); ?>
+          <?php foreach ($jasa as $m) : if($kt->id == $m->category_id): $string = strtolower($kt->category_name) . ' dan ' . $m->slug; $str = str_replace(' ', '-', $string); ?>
             <div class="col-md-6 my-4">
               <div class="d-flex align-items-center">
 
@@ -492,7 +492,7 @@
                   <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
                 </div>
                 <div class="w-100 text-15 pl-3">
-                  <a href="<?= base_url('order/' . $str) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
+                  <a href="<?= base_url('jasa/' . $str) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
                 </div>
 
               </div>
@@ -534,7 +534,7 @@
                     <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $rn->image_icon ?>" class="img-fluid" alt="">
                   </div>
                   <div class="w-100 text-19 pl-3">
-                    <a href="<?= base_url('order?type='.$rn->category_id.'&jenis='.$rn->paket_name) ?>" target="_blank">
+                    <a href="<?= base_url('jasa?type='.$rn->category_id.'&jenis='.$rn->paket_name) ?>" target="_blank">
                       <?= $rn->paket_name ?>
                    </a>
                   </div>

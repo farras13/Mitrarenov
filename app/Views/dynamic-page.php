@@ -1,26 +1,19 @@
 <?= $this->extend('template') ?>
-
+<?= $this->section('css') ?>
+    <meta name="description" content="<?= $data->meta_desc; ?>">
+    <meta name="keywords" content="<?= $data->meta_keyword; ?>">
+<?= $this->endSection(); ?>
 <?= $this->section('content') ?>
-<div class="content-wrapper">
+<<div class="content-wrapper">
   <div class="page-title">
-    <h1><?= $title ?> </h1>
+    <h1><?= $data->judul ?> </h1>
   </div>
   <div class="container my-5">
     <div class="row mt-5">
-        <?php foreach($porto as $p){ ?>
-            <div class="col-md-3 mb-4">
-                <a href="#" class="gallery-item">
-                <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/photo_promo_paket/<?= $p["image"] ?>" class="img-fluid" alt="">
-                <div class="gallery-cnt">
-                    <h5 class="mb-1"><?= $p["judul"] ?></h5>
-                    <p class="mb-0">diliput oleh <?= $p["penulis"]; ?></p>
-                </div>
-                </a>
-            </div>
-        <?php } ?>
-     
-    </div>
-    <?= $pager->links('gallery', 'bootstrap_pagination') ?>
+        <prev>
+            <?= $data->page; ?>
+        </prev>
+    </div>   
   </div>
   </div>
   <?= $this->section('script') ?>
