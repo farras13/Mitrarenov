@@ -1,5 +1,11 @@
 <?= $this->extend('template') ?>
-
+<?= $this->section('css') ?>
+<style>
+  .testi-content a{
+    color: white;
+  }
+</style>
+<?= $this->endSection(); ?>
 <?= $this->section('content') ?>
 
 <div class="content-wrapper">
@@ -256,7 +262,7 @@
                 <p class="font-weight-bold mb-0"><?= $t->name ?></p>
                 <p class="mb-2"><?= strip_tags($t->company) ?></p>
                 <p class="text-14">
-                  <i>"<?= strip_tags($t->testimoni) ?>"</i>
+                  <i>"<?= $t->testimoni ?>"</i>
                 </p>
               </div>
             </div>
@@ -388,7 +394,7 @@
             <div class="article-dsc">
               <h4><?= $art->title ?></h4>
               <p class="mb-0">Penulis <?= $art->penulis; ?></p>
-              <p>Diterbitkan <?php $time = $art->created;
+              <p>Diterbitkan <?php $time = $art->date;
                               $date = new DateTime("@$time");
                               echo $date->format('d F Y'); ?></p>
               <a href="<?= base_url('artikel/' . $art->slug) ?>">Baca Selengkapnya...</a>

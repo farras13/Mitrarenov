@@ -244,6 +244,11 @@ class Order extends BaseController
             'product_price_id' => $id_spek,
             'desain_id' => (int)$idd + 1
         ];
+
+		$cek_subkon = $this->model->getWhere('product', ['id' => $temp_produk->product_id])->getRow();
+		if($cek_subkon != null && !empty($cek_subkon)){
+			$insert['tukang_id'] = $cek_subkon->tukang_id;
+		}
         
         // insert design or not
         if($tipe_rumah != null){
