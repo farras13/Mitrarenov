@@ -1,7 +1,12 @@
 <?= $this->extend('template') ?>
+<?= $this->section('meta') ?>
+<title>MITRARENOV – 0822 9000 9990 – Jasa Bangun Rumah, Jasa Renovasi Rumah, Jasa Kontraktor Rumah, Jasa Bangun Ruko, Jasa Renovasi Kantor, Jasa Tukang Borongan, Jasa Pemborong Bangunan Rumah Kost, Gudang, dan Gedung</title>
+<meta name="description" content="PROMO Mitrarenov - Jasa Kontraktor bangun dan renovasi rumah MURAH hingga MEWAH, TERPERCAYA, BERPENGALAMAN dan BERGARANSI dengan pekerjaan Jasa Desain Rumah dan Jasa Arsitek Rumah di area DKI Jakarta, Bogor, Depok, Tangerang, Bekasi, BSD, Bandung, Cirebon, Semarang, Yogyakarta dan Surabaya ">
+<meta name="keywords" content="jasa bangun rumah, jasa bangun rumah murah, kontraktor bangun rumah, jasa renovasi rumah, jasa renovasi rumah murah, kontraktor renovasi rumah, jasa kontraktor rumah, kontraktor jasa renovasi rumah, kontraktor jasa bangun rumah, jasa bangun ruko, kontraktor bangun ruko, jasa renovasi kantor, kontraktor renovasi kantor, jasa renovasi rumah bekasi, jasa bangun rumah bekasi, jasa kontraktor rumah bekasi, kontraktor rumah bekasi, cari tukang bangunan yang bagus, tukang bangunan rumah, jasa pemborong rumah, jasa tukang borongan, ">
+<?= $this->endSection(); ?>
 <?= $this->section('css') ?>
 <style>
-  .testi-content a{
+  .testi-content a {
     color: white;
   }
 </style>
@@ -11,77 +16,77 @@
 <div class="content-wrapper">
   <div class="main-banner position-relative desktop-slider">
     <div class="top-banner">
-      <?php foreach ($promo as $p) : if($p->kategori == 2):?>
-        <div class="slick-slide slide-item">
-          <div class="banner-top-container">
-            <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
-            <div class="slide-content">
-              <div class="discount-badge">
-               Diskon <?= $p->promo ?>%
-              </div>
-              <div class="slide-text">
-                <div class="row">
-                  <div class="col-md-8">
-                  <?php if($p->head == 1){ ?>  
-                      <h1><?= $p->title ?></h1>
-                     <?php }elseif($p->head == 2){ ?>  
-                      <h2><?= $p->title ?></h2>
-                    <?php }elseif($p->head == 3){ ?>  
-                      <h3><?= $p->title ?></h3>
-                    <?php }elseif($p->head == 4){ ?>  
-                      <h4><?= $p->title ?></h4>
-                    <?php }elseif($p->head == 5){ ?>  
-                      <h5><?= $p->title ?></h5>
-                    <?php }elseif($p->head == 6){ ?>  
-                      <h6><?= $p->title ?></h6>
-                    <?php }elseif($p->head == 7){ ?>  
-                      <p><?= $p->title ?></p>
-                    <?php }?>
-                    <?php $date = new DateTime($p->expired); ?>
-                    <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
-                  </div>
+      <?php foreach ($promo as $p) : if ($p->kategori == 2) : ?>
+          <div class="slick-slide slide-item">
+            <div class="banner-top-container">
+              <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
+              <div class="slide-content">
+                <div class="discount-badge">
+                  Diskon <?= $p->promo ?>%
+                </div>
+                <div class="slide-text">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <?php if ($p->head == 1) { ?>
+                        <h1><?= $p->title ?></h1>
+                      <?php } elseif ($p->head == 2) { ?>
+                        <h2><?= $p->title ?></h2>
+                      <?php } elseif ($p->head == 3) { ?>
+                        <h3><?= $p->title ?></h3>
+                      <?php } elseif ($p->head == 4) { ?>
+                        <h4><?= $p->title ?></h4>
+                      <?php } elseif ($p->head == 5) { ?>
+                        <h5><?= $p->title ?></h5>
+                      <?php } elseif ($p->head == 6) { ?>
+                        <h6><?= $p->title ?></h6>
+                      <?php } elseif ($p->head == 7) { ?>
+                        <p><?= $p->title ?></p>
+                      <?php } ?>
+                      <?php $date = new DateTime($p->expired); ?>
+                      <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
+                    </div>
 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      <?php else: ?>
-        <div class="slick-slide slide-item">
-          <div class="banner-top-container">
-            <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
-            <div class="slide-content">
-              <!-- <div class="discount-badge">
+        <?php else : ?>
+          <div class="slick-slide slide-item">
+            <div class="banner-top-container">
+              <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
+              <div class="slide-content">
+                <!-- <div class="discount-badge">
                 Diskon <?= $p->promo ?>%
               </div> -->
-              <div class="slide-text">
-                <div class="row">
-                  <div class="col-md-8">
-                  <?php if($p->head == 1){ ?>  
-                      <h1><?= $p->title ?></h1>
-                    <?php }elseif($p->head == 2){ ?>  
-                      <h2><?= $p->title ?></h2>
-                    <?php }elseif($p->head == 3){ ?>  
-                      <h3><?= $p->title ?></h3>
-                    <?php }elseif($p->head == 4){ ?>  
-                      <h4><?= $p->title ?></h4>
-                    <?php }elseif($p->head == 5){ ?>  
-                      <h5><?= $p->title ?></h5>
-                    <?php }elseif($p->head == 6){ ?>  
-                      <h6><?= $p->title ?></h6>
-                    <?php }elseif($p->head == 7){ ?>  
-                      <p><?= $p->title ?></p>
-                    <?php }?>
-                    <!-- <?php $date = new DateTime($p->expired); ?>
+                <div class="slide-text">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <?php if ($p->head == 1) { ?>
+                        <h1><?= $p->title ?></h1>
+                      <?php } elseif ($p->head == 2) { ?>
+                        <h2><?= $p->title ?></h2>
+                      <?php } elseif ($p->head == 3) { ?>
+                        <h3><?= $p->title ?></h3>
+                      <?php } elseif ($p->head == 4) { ?>
+                        <h4><?= $p->title ?></h4>
+                      <?php } elseif ($p->head == 5) { ?>
+                        <h5><?= $p->title ?></h5>
+                      <?php } elseif ($p->head == 6) { ?>
+                        <h6><?= $p->title ?></h6>
+                      <?php } elseif ($p->head == 7) { ?>
+                        <p><?= $p->title ?></p>
+                      <?php } ?>
+                      <!-- <?php $date = new DateTime($p->expired); ?>
                     <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p> -->
-                  </div>
+                    </div>
 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      <?php endif; ?>
+        <?php endif; ?>
       <?php endforeach; ?>
 
     </div>
@@ -90,77 +95,77 @@
   </div>
   <div class="main-banner position-relative mobile-slider">
     <div class="top-banner-mobile">
-      <?php foreach ($promo as $p) : if($p->kategori == 2):?>
-        <div class="slick-slide slide-item">
-          <div class="banner-top-container">
-            <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
-            <div class="slide-content">
-              <div class="discount-badge">
-               Diskon <?= $p->promo ?>%
-              </div>
-              <div class="slide-text">
-                <div class="row">
-                  <div class="col-md-8">
-                  <?php if($p->head == 1){ ?>  
-                      <h1><?= $p->title ?></h1>
-                    <?php }elseif($p->head == 2){ ?>  
-                      <h2><?= $p->title ?></h2>
-                    <?php }elseif($p->head == 3){ ?>  
-                      <h3><?= $p->title ?></h3>
-                    <?php }elseif($p->head == 4){ ?>  
-                      <h4><?= $p->title ?></h4>
-                    <?php }elseif($p->head == 5){ ?>  
-                      <h5><?= $p->title ?></h5>
-                    <?php }elseif($p->head == 6){ ?>  
-                      <h6><?= $p->title ?></h6>
-                    <?php }elseif($p->head == 7){ ?>  
-                      <p><?= $p->title ?></p>
-                    <?php }?>
-                    <?php $date = new DateTime($p->expired); ?>
-                    <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
-                  </div>
+      <?php foreach ($promo as $p) : if ($p->kategori == 2) : ?>
+          <div class="slick-slide slide-item">
+            <div class="banner-top-container">
+              <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
+              <div class="slide-content">
+                <div class="discount-badge">
+                  Diskon <?= $p->promo ?>%
+                </div>
+                <div class="slide-text">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <?php if ($p->head == 1) { ?>
+                        <h1><?= $p->title ?></h1>
+                      <?php } elseif ($p->head == 2) { ?>
+                        <h2><?= $p->title ?></h2>
+                      <?php } elseif ($p->head == 3) { ?>
+                        <h3><?= $p->title ?></h3>
+                      <?php } elseif ($p->head == 4) { ?>
+                        <h4><?= $p->title ?></h4>
+                      <?php } elseif ($p->head == 5) { ?>
+                        <h5><?= $p->title ?></h5>
+                      <?php } elseif ($p->head == 6) { ?>
+                        <h6><?= $p->title ?></h6>
+                      <?php } elseif ($p->head == 7) { ?>
+                        <p><?= $p->title ?></p>
+                      <?php } ?>
+                      <?php $date = new DateTime($p->expired); ?>
+                      <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
+                    </div>
 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      <?php else: ?>
-        <div class="slick-slide slide-item">
-          <div class="banner-top-container">
-            <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
-            <div class="slide-content">
-              <!-- <div class="discount-badge">
+        <?php else : ?>
+          <div class="slick-slide slide-item">
+            <div class="banner-top-container">
+              <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
+              <div class="slide-content">
+                <!-- <div class="discount-badge">
                 Diskon <?= $p->promo ?>%
               </div> -->
-              <div class="slide-text">
-                <div class="row">
-                  <div class="col-md-8">
-                  <?php if($p->head == 1){ ?>  
-                      <h1><?= $p->title ?></h1>
-                    <?php }elseif($p->head == 2){ ?>  
-                      <h2><?= $p->title ?></h2>
-                    <?php }elseif($p->head == 3){ ?>  
-                      <h3><?= $p->title ?></h3>
-                    <?php }elseif($p->head == 4){ ?>  
-                      <h4><?= $p->title ?></h4>
-                    <?php }elseif($p->head == 5){ ?>  
-                      <h5><?= $p->title ?></h5>
-                    <?php }elseif($p->head == 6){ ?>  
-                      <h6><?= $p->title ?></h6>
-                    <?php }elseif($p->head == 7){ ?>  
-                      <p><?= $p->title ?></p>
-                    <?php }?>
-                    <!-- <?php $date = new DateTime($p->expired); ?>
+                <div class="slide-text">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <?php if ($p->head == 1) { ?>
+                        <h1><?= $p->title ?></h1>
+                      <?php } elseif ($p->head == 2) { ?>
+                        <h2><?= $p->title ?></h2>
+                      <?php } elseif ($p->head == 3) { ?>
+                        <h3><?= $p->title ?></h3>
+                      <?php } elseif ($p->head == 4) { ?>
+                        <h4><?= $p->title ?></h4>
+                      <?php } elseif ($p->head == 5) { ?>
+                        <h5><?= $p->title ?></h5>
+                      <?php } elseif ($p->head == 6) { ?>
+                        <h6><?= $p->title ?></h6>
+                      <?php } elseif ($p->head == 7) { ?>
+                        <p><?= $p->title ?></p>
+                      <?php } ?>
+                      <!-- <?php $date = new DateTime($p->expired); ?>
                     <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p> -->
-                  </div>
+                    </div>
 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      <?php endif; ?>
+        <?php endif; ?>
       <?php endforeach; ?>
 
     </div>
@@ -173,7 +178,8 @@
     </div>
     <div class="section-inner">
       <div class="row align-items-center">
-        <?php $no=1; foreach($alur as $a){ ?>
+        <?php $no = 1;
+        foreach ($alur as $a) { ?>
           <div class="col-md-6 my-4">
             <div class="d-flex align-items-center">
               <div class="icon-how">
@@ -182,13 +188,14 @@
               <div class="w-100 pl-4">
                 <h4><span><?= $no; ?>.</span> <?= $a->type; ?></h4>
                 <p class="mb-0">
-                 <?= $a->description; ?>
+                  <?= $a->description; ?>
                 </p>
               </div>
             </div>
           </div>
-         
-        <?php $no++; } ?>
+
+        <?php $no++;
+        } ?>
       </div>
     </div>
   </div>
@@ -199,7 +206,7 @@
     </h3>
     <div class="section-inner">
       <div class="row">
-        <?php foreach($keunggulan as $k){ ?>
+        <?php foreach ($keunggulan as $k) { ?>
           <div class="col-md-4 col-6 text-center">
             <div class="image-keunggulan mb-4">
               <img src="<?= $k->image ?>" class="img-fluid" alt="">
@@ -228,9 +235,11 @@
           <div class="row row-sm">
             <?php foreach ($kategori as $k) : ?>
               <div class="col-lg-2 col-md-3 col-6 my-4">
-                <?php $string = strtolower($k->paket_name); $str = str_replace(' ', '-', $string); if ($k->total == 1) : ?>
+                <?php $string = strtolower($k->paket_name);
+                $str = str_replace(' ', '-', $string);
+                if ($k->total == 1) : ?>
                   <a href="<?= base_url('jasa/' . $str) ?>" target="__BLANK">
-                  <?php elseif($k->total > 1) : ?>
+                  <?php elseif ($k->total > 1) : ?>
                     <a href="#modal-detail-category<?= $k->id ?>" data-toggle="modal">
                     <?php endif; ?>
                     <div class="jasa-container">
@@ -239,7 +248,7 @@
                     </div>
                     </a>
               </div>
-            <?php endforeach; ?>           
+            <?php endforeach; ?>
           </div>
         </div>
       </div>
@@ -325,23 +334,23 @@
         </div>
         <div class="tab-pane fade" id="portofolio">
           <div class="row">
-             <?php foreach ($merawat as $m) { ?>
-            <div class="col-md-3 mb-4" >
-              <a href="<?= base_url('portofolio/'.$m->slug); ?>" class="gallery-item">
-                <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $m->image ?>" class="img-fluid" alt="">
-                <div class="gallery-cnt">
+            <?php foreach ($merawat as $m) { ?>
+              <div class="col-md-3 mb-4">
+                <a href="<?= base_url('portofolio/' . $m->slug); ?>" class="gallery-item">
+                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $m->image ?>" class="img-fluid" alt="">
+                  <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
-                </div>
-              </a>
-            </div>
+                  </div>
+                </a>
+              </div>
             <?php } ?>
           </div>
           <div class="text-center mt-4">
             <a href="<?= base_url('portofolio'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
           </div>
         </div>
-       
+
         <div class="tab-pane fade" id="desain_rumah">
           <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
@@ -372,7 +381,7 @@
       <?php foreach ($liputan as $lp) { ?>
         <div class="client-item">
           <a href="<?= $lp->judul; ?>" target="_blank"> <img src="<?= $lp->image; ?>" class="img-fluid" alt=""></a>
-        </div>      
+        </div>
       <?php } ?>
     </div>
     <div class="btn-slide liputan-prev"><i class="ico ico-prev"></i></div>
@@ -468,71 +477,72 @@
   </div>
 </div>
 <!-- Modal Detail Category -->
-<?php foreach($kategori as $kt): ?>
-<div class="modal fade" id="modal-detail-category<?= $kt->id ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-category modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="ico ico-close"></i>
-        </button>
+<?php foreach ($kategori as $kt) : ?>
+  <div class="modal fade" id="modal-detail-category<?= $kt->id ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-category modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="ico ico-close"></i>
+          </button>
 
-        <div class="row align-items-center">
-          <div class="col-md-6 col-4">
-            <img src="<?= $kt->image ?>" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-6 col-8 text-right">
-            <h4 class="mb-0 title-category-modal"><?= $kt->category_name ?></h4>
-          </div>
-        </div>
-        <hr class="my-5">
-
-        <h5 class="sub-title-cat">Pilihan Jasa</h5>
-
-        <div class="row">
-          <?php foreach ($jasa as $m) : if($kt->id == $m->category_id): $string = $m->slug; $str = str_replace(' ', '-', $string); ?>
-            <div class="col-md-6 my-4">
-              <div class="d-flex align-items-center">
-
-                <div class="cat-img-i">
-                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
-                </div>
-                <div class="w-100 text-15 pl-3">
-                  <a href="<?= base_url('jasa/' . $str) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
-                </div>
-
-              </div>
+          <div class="row align-items-center">
+            <div class="col-md-6 col-4">
+              <img src="<?= $kt->image ?>" class="img-fluid" alt="">
             </div>
-            <?php endif; ?>
-          <?php endforeach; ?>
+            <div class="col-md-6 col-8 text-right">
+              <h4 class="mb-0 title-category-modal"><?= $kt->category_name ?></h4>
+            </div>
+          </div>
+          <hr class="my-5">
+
+          <h5 class="sub-title-cat">Pilihan Jasa</h5>
+
+          <div class="row">
+            <?php foreach ($jasa as $m) : if ($kt->id == $m->category_id) : $string = $m->slug;
+                $str = str_replace(' ', '-', $string); ?>
+                <div class="col-md-6 my-4">
+                  <div class="d-flex align-items-center">
+
+                    <div class="cat-img-i">
+                      <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
+                    </div>
+                    <div class="w-100 text-15 pl-3">
+                      <a href="<?= base_url('jasa/' . $str) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>
+                    </div>
+
+                  </div>
+                </div>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 <?php endforeach; ?>
 
 <?= $this->section('script') ?>
-  <script>
-    $(document).ready(function() {
-      $(".col-gallery").slice(0, 8).show();
-      $("#morePekerjaan").on('click', function(e) {
-        e.preventDefault();
-        $(".col-gallery:hidden").slice(0, 8).slideDown();
-        if ($(".col-gallery:hidden").length == 0) {
-          $("#morePekerjaan").fadeOut('slow');
-        }
-      });
-     
-      $(".col-gallery-desain").slice(0, 8).show();
-      $("#moreDesain").on('click', function(e) {
-        e.preventDefault();
-        $(".col-gallery-desain:hidden").slice(0, 8).slideDown();
-        if ($(".col-gallery-desain:hidden").length == 0) {
-          $("#moreDesain").fadeOut('slow');
-        }
-      });
+<script>
+  $(document).ready(function() {
+    $(".col-gallery").slice(0, 8).show();
+    $("#morePekerjaan").on('click', function(e) {
+      e.preventDefault();
+      $(".col-gallery:hidden").slice(0, 8).slideDown();
+      if ($(".col-gallery:hidden").length == 0) {
+        $("#morePekerjaan").fadeOut('slow');
+      }
     });
-  </script>
+
+    $(".col-gallery-desain").slice(0, 8).show();
+    $("#moreDesain").on('click', function(e) {
+      e.preventDefault();
+      $(".col-gallery-desain:hidden").slice(0, 8).slideDown();
+      if ($(".col-gallery-desain:hidden").length == 0) {
+        $("#moreDesain").fadeOut('slow');
+      }
+    });
+  });
+</script>
 <?= $this->endSection() ?>
 <?= $this->endSection() ?>
