@@ -11,7 +11,8 @@
   <link rel="icon" type="image/png" href="<?= base_url('main/images/favico.png ') ?>" />
   <!-- toast -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-  <title>Mitrarenov</title>
+
+  <?= $this->renderSection('meta') ?>
   <?= $this->renderSection('css') ?>
 </head>
 
