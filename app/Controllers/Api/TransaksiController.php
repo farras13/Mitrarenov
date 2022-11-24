@@ -347,7 +347,7 @@ class TransaksiController extends ResourceController
 			
 			$device = $headers['User-Agent']->getValue();
 
-			if(strpos("Okhttp", $device) != "" || strpos("okhttp", $device) != "" ){
+			if(!empty(strpos("Okhttp", $device)) || !empty(strpos("okhttp", $device)) ){
 				$currentAgent = 2;
 			}else{
 				$currentAgent = 1; 

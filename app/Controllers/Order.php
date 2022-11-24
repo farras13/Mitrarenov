@@ -80,6 +80,23 @@ class Order extends BaseController
 		echo json_encode($data);
 	}
 
+	public function searchArea()
+	{
+		$req = $this->request->getVar();
+        $temp = str_replace('Kota', '', $req['city']) ;
+		$cek_area = $this->model->getAll('area')->getResult();
+		$res = FALSE; 
+        foreach ($cek_area as $c) {
+            if (strpos(strtolower($temp), strtolower('bks')) > -1) {
+                $res = TRUE;
+            }
+            if (strpos(strtolower($temp), strtolower($c->nama_area)) > -1) {
+                $res = TRUE;
+            }
+        }	
+		echo json_encode($res);
+	}
+
     public function order_ins()
     {
         $auth = new AuthModel();

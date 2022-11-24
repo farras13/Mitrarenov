@@ -74,6 +74,7 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
 
 // $routes->group('',['filter' => 'auth'], function ($routes) {
     $routes->post('searchPromo', 'Order::searchPromo');    
+    $routes->post('searchArea', 'Order::searchArea');    
     $routes->post('kategori', 'Home::getKategori');
     $routes->post('getHarga', 'Home::getHarga');
     $routes->post('order/add', 'Order::order_ins');

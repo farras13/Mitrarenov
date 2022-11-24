@@ -399,6 +399,24 @@
         // console.log(action);
         return true;
     }
+
+    function getCity(city, fulladdres) {
+        $.ajax({  
+            url : "<?php echo site_url('searchArea');?>",
+            method : "POST",
+            data : {city: city},
+            dataType : 'json',           
+            success:function(data){
+                console.log(data);
+                if(data == false){
+                    alert("Maaf area anda belum kami jangkau! ");
+                }else{
+                    $('#city').val(city);
+                    $('#autocomplete').val(fulladdres);
+                }
+            }  
+        });
+    }
 </script>
  <script>
     function initialize() {
@@ -431,8 +449,8 @@
             country=value[count-1];
             state=value[count-2];
             city=value[count-3];
-            $('#city').val(city);
-      console.log(place);
+            getCity(city);
+    //   console.log(place);
       if (place.geometry.viewport) {
         map.fitBounds(place.geometry.viewport);
       } else {
@@ -480,14 +498,15 @@
               { 'latLng': pos },
               function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK && results[0]) {
-                  $('#autocomplete').val(results[0].formatted_address);
+                 
                   var add = results[0].formatted_address ;
                   var value = add.split(",");
                     count=value.length;
                     country=value[count-1];
                     state=value[count-2];
                     city=value[count-3];
-                    $('#city').val(city);
+                    getCity(city, add);
+                    // $('#city').val(city);
                 }
               }
             );
@@ -507,14 +526,13 @@
                 function (results, status) {
                 if (status === 'OK') {
                   if (results[0]) {
-                    $('#autocomplete').val(results[0].formatted_address);
                     var add = results[0].formatted_address ;
                     var value = add.split(",");
                         count=value.length;
                         country=value[count-1];
                         state=value[count-2];
                         city=value[count-3];
-                        $('#city').val(city);
+                        getCity(city, add);                        
                   }
                 }
 
