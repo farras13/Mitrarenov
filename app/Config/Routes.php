@@ -36,16 +36,16 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('home', 'Home::index');
 
-$routes->post('login', 'Home::pros_log');
-$routes->get('lupa_password/(:any)', 'Home::forgot_pass/$1');
-$routes->get('lupa_password', 'Home::pageEmail');
-$routes->post('lupa_password/sendEmail', 'Home::sendEmail');
-$routes->post('lupa_password/send', 'Home::sendReset');
-$routes->post('regis', 'Home::reg');
+$routes->post('login', 'Login::pros_log');
+$routes->get('lupa_password/(:any)', 'Login::forgot_pass/$1');
+$routes->get('lupa_password', 'Login::pageEmail');
+$routes->post('lupa_password/sendEmail', 'Login::sendEmail');
+$routes->post('lupa_password/send', 'Login::sendReset');
+$routes->post('regis', 'Login::reg');
 
-$routes->get('member/login', 'Home::login');
-$routes->get('member/register', 'Home::register');
-$routes->get('member/logout', 'Home::logout');
+$routes->get('member/login', 'Login::login');
+$routes->get('member/register', 'Login::register');
+$routes->get('member/logout', 'Login::logout');
 
 // $routes->get('portofolio/(:any)/detail', 'Home::detail_porto/$1');
 $routes->get('portofolio/(:any)', 'Home::detail_porto/$1');
@@ -63,9 +63,9 @@ $routes->post('chat-kirim', 'Chat::kirim');
 $routes->get('notif/(:any)/(:any)', 'Chat::onclicknotif/$1/$2');
 $routes->post('seenallnotif', 'Chat::seenallnotif');
 
-$routes->get('berita', 'Home::artikel');
-$routes->get('berita/kategori/(:any)', 'Home::kategori/$1');
-$routes->get('berita/(:any)', 'Home::d_artikel/$1');
+$routes->get('berita', 'Artikel::artikel');
+$routes->get('berita/kategori/(:any)', 'Artikel::kategori/$1');
+$routes->get('berita/(:any)', 'Artikel::d_artikel/$1');
 $routes->get('detail-promo/(:any)', 'Home::d_promo/$1');
 $routes->get('halaman/hubungi-kami', 'Home::hubungi');
 $routes->get('subscribe', 'Home::subscribe');
@@ -83,17 +83,17 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
     $routes->get('jasa/(:any)', 'Order::index/$1');
     $routes->get('halaman/(:any)', 'Page::index/$1');
 
-    $routes->get('member/akun', 'Home::akun');
-    $routes->get('member/projek/tambah', 'Home::projektambah');
-    $routes->get('member/projek/kurang', 'Home::projekkurang');
-    $routes->get('member/edit_profile', 'Home::edit_profile');
-    $routes->post('member/update_profile', 'Home::update_profile');
-    $routes->get('member/tentang-mitra', 'Home::tentang_mitra');
-    $routes->get('member/riwayat', 'Home::riwayat_projek');
-    $routes->get('member/ubah_password', 'Home::changePass');
-    $routes->post('member/change_password', 'Home::updPass');
-    $routes->get('member/qa', 'Home::qa');
-    $routes->get('member/syarat', 'Home::snk');
+    $routes->get('member/akun', 'Akun::akun');
+    $routes->get('member/projek/tambah', 'Akun::projektambah');
+    $routes->get('member/projek/kurang', 'Akun::projekkurang');
+    $routes->get('member/edit_profile', 'Akun::edit_profile');
+    $routes->post('member/update_profile', 'Akun::update_profile');
+    $routes->get('member/tentang-mitra', 'Akun::tentang_mitra');
+    $routes->get('member/riwayat', 'Akun::riwayat_projek');
+    $routes->get('member/ubah_password', 'Akun::changePass');
+    $routes->post('member/change_password', 'Akun::updPass');
+    $routes->get('member/qa', 'Akun::qa');
+    $routes->get('member/syarat', 'Akun::snk');
     $routes->get('member/page_link', 'Api\LoginController::page_link');
 // });
 

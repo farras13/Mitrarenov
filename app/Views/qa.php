@@ -15,7 +15,16 @@
             </div>
         </div>
         <div class="faq" id="faq">
-             <?= $tentang->description ?>
+            <?php foreach($tentang as $t): ?>
+            <div class="faq-list">
+                <a href="#faq<?= $t->id ?>" class="faq-btn" data-toggle="collapse" aria-expanded="false"><?= $t->pertanyaan ?></a>
+                <div class="collapse" id="faq<?= $t->id ?>" data-parent="#faq">
+                    <div class="faq-content">
+                        <?= $t->jawaban ?>
+                    </div>
+                </div>
+            </div>                
+            <?php endforeach; ?>
             <!-- <div class="faq-list">
                 <a href="#faq1" class="faq-btn" data-toggle="collapse" aria-expanded="false">Lorem Ipsum Dolor sit
                     amet</a>

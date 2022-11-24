@@ -59,7 +59,7 @@
               <?php foreach ($hot as $h) : ?>
                 <div class="article-slider-item">
                   <div class="article-img">
-                    <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="">
+                    <img src="<?= base_url('images/news') . '/' . $h->image ?>" alt="">
                   </div>
                   <a href="<?= base_url('berita') . '/' . $h->slug ?>">
                     <h4 class="mt-3 mb-2"><?= $h->title ?></h4>
@@ -125,7 +125,7 @@
   </div>
 </div>
 <?= $this->section('script') ?>
-<script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
+<script src="<?= base_url('main/js/ScrollMagic.min.js') ?>"></script>
 
 <script>
   

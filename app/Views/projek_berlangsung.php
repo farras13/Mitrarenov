@@ -207,18 +207,6 @@
 
         <div class="row" id="showresult">
           
-            <!-- <div class="col-md-6 my-4">
-              <div class="d-flex align-items-center">
-
-                <div class="cat-img-i">
-                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
-                </div>
-                <div class="w-100 text-15 pl-3">
-                  <a href="#" target="_blank" style="color:black;"> Download PDF </a>
-                </div>
-
-              </div>
-            </div> -->
            
         </div>
       </div>

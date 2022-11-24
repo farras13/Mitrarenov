@@ -53,7 +53,7 @@
       <div class="col-lg-8 mb-5 content-article">
         <div class="article-list">
 
-          <h5 class="mt-5 text-primary"> <?php if(!$key['cari']): ?> <?= $judul; ?>  <?php else: ?>Result Search<?php endif; ?></h5>
+          <h5 class="mt-5 text-primary"> <?php if(!empty($key['cari'])): ?> <?= $judul; ?>  <?php else: ?>Result Search<?php endif; ?></h5>
 
           <?php if($terbaru != null): ?>
           <div class="article-list-small">
@@ -61,7 +61,7 @@
               <div class="d-flex article-item-small">
                 <div class="article-sm-img">
                   <div class="article-sm-img-inner">
-                    <img src="<?= base_url('public/images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
+                    <img src="<?= base_url('images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
                   </div>
                 </div>
                 <div class="w-100 pl-4">
@@ -93,11 +93,11 @@
                 <div class="d-flex article-item-small">
                   <div class="article-sm-img">
                     <div class="article-sm-img-inner">
-                      <img src="<?= base_url('public/images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
+                      <img src="<?= base_url('images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
                     </div>
                   </div>
                   <div class="w-100 pl-4">
-                    <a href="<?= base_url('artikel/' . $tb['slug']) ?>">
+                    <a href="<?= base_url('berita/' . $tb['slug']) ?>">
                       <h4 class="mb-2"><?= $tb['title'] ?></h4>
                     </a>
                     <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
@@ -105,10 +105,10 @@
                                                           $date = new DateTime("@$time");
                                                           echo $date->format('d M Y'); ?></p>
                     <p>
-                      <?= $h->meta_description ?> ...
+                      <?= empty($h->meta_description) ? '' : $h->meta_description; ?> ...
                     </p>
                     <div class="text-right">
-                      <a href="<?= base_url('artikel/' . $tb['slug']) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                      <a href="<?= base_url('berita/' . $tb['slug']) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                     </div>
                   </div>
                 </div>
@@ -128,7 +128,7 @@
   </div>
 </div>
 <?= $this->section('script') ?>
-<script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
+<script src="<?= base_url('main/js/ScrollMagic.min.js') ?>"></script>
 
 <script>
   const postDetails = document.querySelector(".content-article");

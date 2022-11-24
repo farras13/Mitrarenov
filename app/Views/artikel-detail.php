@@ -11,7 +11,7 @@
       <div class="col-lg-9 mb-5 content-article">
 
         <div class="article-img">
-          <img src="<?= base_url('public/images/news') . '/' . $berita['image'] ?>" class="w-100" alt="">
+          <img src="<?= base_url('images/news') . '/' . $berita['image'] ?>" class="w-100" alt="">
         </div>
         <h1 class="mt-4 article-title text-primary">
           <?= $berita['title'] ?>
@@ -25,7 +25,7 @@
                             $date = new DateTime("@$time");
                             echo $date->format('d M Y'); ?>
               </span>
-              <?php if($bertia['kategori'] != ''){ ?>
+              <?php if(!empty($berita['kategori'])){ ?>
               <span>#</span>
               <span>
                 <a href="#" class="text-warning">
@@ -83,7 +83,7 @@
                         <div class="row">
                           <div class="col-4">
                             <div class="artikel-side-img">
-                              <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="" class="img-fluid">
+                              <img src="<?= base_url('images/news') . '/' . $h->image ?>" alt="" class="img-fluid">
                             </div>
                           </div>
                           <div class="col-8 pl-0">
@@ -137,7 +137,7 @@
                   <a href="<?= base_url('berita') . '/' . $tk->slug ?>">
                     <h4 class="mt-3 mb-2"><?= $tk->title ?></h4>
                   </a>
-                  <p class="text-grey mb-0"><?= $tk->penulis ?></p>
+                  <p class="text-grey mb-0"><?= empty($tk->penulis) ? "Admin Mitrarenov" : $tk->penulis; ?></p>
                   <p class="text-grey mb-0">Diterbitkan <?php $time = $tk->date;
                                                         $date = new DateTime("@$time");
                                                         echo $date->format('d M Y'); ?></p>
@@ -160,7 +160,7 @@
 </div>
 <?= $this->endSection() ?>
 <?= $this->section('script') ?>
-<script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
+<script src="<?= base_url('main/js/ScrollMagic.min.js') ?>"></script>
 
 <script>
   document.title = '<?=  $berita['meta_title'] ?>';

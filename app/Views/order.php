@@ -584,25 +584,7 @@
             order.value = "desain";
             action = link_order;
         }
-    });
-    $('.nav-design').click(function (e) {
-      e.preventDefault();
-      $('.nav-tab-rounded .nav-link').removeClass('active');
-      $(this).addClass('active');
-      $('#designOrder').collapse('show')
-      action = link_order;
-
-    })
-    $('.nav-non-design').click(function (e) {
-      e.preventDefault();
-      $('.nav-tab-rounded .nav-link').removeClass('active');
-      $(this).addClass('active');
-      $('#designOrder').collapse('hide')
-      action = link_order;
-
-
-    })
-   
+    });   
 
     $('.images-upload').click(function () {
       var x = $(this).find('input[type="file"]').attr("id");

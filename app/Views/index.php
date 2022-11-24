@@ -24,7 +24,7 @@
                   <div class="col-md-8">
                   <?php if($p->head == 1){ ?>  
                       <h1><?= $p->title ?></h1>
-                    <?php }elseif($p->head == 2){ ?>  
+                     <?php }elseif($p->head == 2){ ?>  
                       <h2><?= $p->title ?></h2>
                     <?php }elseif($p->head == 3){ ?>  
                       <h3><?= $p->title ?></h3>
@@ -228,7 +228,7 @@
           <div class="row row-sm">
             <?php foreach ($kategori as $k) : ?>
               <div class="col-lg-2 col-md-3 col-6 my-4">
-                <?php $string = $k->category_name . ' dan ' . $k->paket_name; $str = str_replace(' ', '-', $string); if ($k->total == 1) : ?>
+                <?php $string = strtolower($k->paket_name); $str = str_replace(' ', '-', $string); if ($k->total == 1) : ?>
                   <a href="<?= base_url('jasa/' . $str) ?>" target="__BLANK">
                   <?php elseif($k->total > 1) : ?>
                     <a href="#modal-detail-category<?= $k->id ?>" data-toggle="modal">
@@ -309,8 +309,8 @@
           <div class="row" id="pekerjaanGallery">
             <?php foreach ($galery as $g) { ?>
               <div class="col-md-3 mb-4 col-gallery">
-                <a href="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
-                  <img src="<?= base_url('public/images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('images/photo_promo_paket') . '/' . $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
+                  <img src="<?= base_url('images/photo_promo_paket') . '/' . $g->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $g->judul ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -346,8 +346,8 @@
           <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
               <div class="col-md-3 mb-4 col-gallery-desain">
-                <a href="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
-                  <img src="<?= base_url('public/images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('images/design_rumah') . '/' . $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
+                  <img src="<?= base_url('images/design_rumah') . '/' . $dr->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $dr->title ?></h5>
                     <p class="mb-0">diliput oleh Admin Mitrarenov</p>
@@ -448,20 +448,20 @@
     <div class="unduh-container mt-5">
       <div class="row align-items-center justify-content-center">
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('public/main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
         </div>
         <div class="col-md-4 col-10">
           <div class="d-flex download-btn">
             <a href="#">
-              <img src="<?= base_url('public/main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
             </a>
             <a href="#">
-              <img src="<?= base_url('public/main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
             </a>
           </div>
         </div>
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('public/main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
         </div>
       </div>
     </div>
@@ -490,7 +490,7 @@
         <h5 class="sub-title-cat">Pilihan Jasa</h5>
 
         <div class="row">
-          <?php foreach ($jasa as $m) : if($kt->id == $m->category_id): $string = strtolower($kt->category_name) . ' dan ' . $m->slug; $str = str_replace(' ', '-', $string); ?>
+          <?php foreach ($jasa as $m) : if($kt->id == $m->category_id): $string = $m->slug; $str = str_replace(' ', '-', $string); ?>
             <div class="col-md-6 my-4">
               <div class="d-flex align-items-center">
 
@@ -511,48 +511,6 @@
   </div>
 </div>
 <?php endforeach; ?>
-
-<div class="modal fade" id="modal-detail-category2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-category modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="ico ico-close"></i>
-        </button>
-
-        <div class="row align-items-center">
-          <div class="col-md-6 col-4">
-            <img src="<?= base_url('public/main/images/icon-mitrarenov-jasa-02.svg') ?>" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-6 col-8 text-right">
-            <h4 class="mb-0 title-category-modal">Renovasi</h4>
-          </div>
-        </div>
-        <hr class="my-5">
-
-        <h5 class="sub-title-cat">Pilihan Jasa</h5>
-
-        <div class="row">
-          <?php foreach($renovasi as $rn): ?>
-            <div class="col-md-6 my-4">
-                <div class="d-flex align-items-center">
-                  <div class="cat-img-i">
-                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $rn->image_icon ?>" class="img-fluid" alt="">
-                  </div>
-                  <div class="w-100 text-19 pl-3">
-                    <a href="<?= base_url('jasa?type='.$rn->category_id.'&jenis='.$rn->paket_name) ?>" target="_blank">
-                      <?= $rn->paket_name ?>
-                   </a>
-                  </div>
-                </div>
-            </div>
-          <?php endforeach; ?>
-         
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <?= $this->section('script') ?>
   <script>

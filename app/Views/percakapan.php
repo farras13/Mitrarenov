@@ -18,7 +18,7 @@
                       <?php } ?>
                         <div class="chat-img">
                           <div class="chat-img-inner">
-                            <img style="object-fit: contain !important;" src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" alt="">
+                            <img style="object-fit: contain !important;" src="<?= base_url('/main/images/logo-mitrarenov.png') ?>" alt="">
                           </div>
                         </div>
                         <div class="chat-content">
@@ -37,19 +37,24 @@
                   <div class="tab-content">
                     <div class="tab-pane fade show active" id="chat1">
                       <div class="chat-detail">
+                        <?php if(!empty($list_chat)): ?>
                         <div class="chat-header">
                           <div class="chat-img">
                             <div class="chat-img-inner">
-                              <img style="object-fit: contain !important;" src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" alt="">
+                              <img style="object-fit: contain !important;" src="<?= base_url('/main/images/logo-mitrarenov.png') ?>" alt="">
                             </div>
                           </div>
                           <div class="chat-content">
                             <p class="chat-name">Admin - Mitrarenov</p>
                           </div>
                         </div>
+                        <?php endif; ?>     
                         <div class="chat-body" id="chat_body">
-                                                 
-                        </div>
+                              <?php if(empty($list_chat)): ?>
+                                <h3>Anda belum memliki projek.</h3>
+                              <?php endif; ?>     
+                        </div> 
+                        <?php if(!empty($list_chat)): ?>
                         <form action="<?= base_url('chat-kirim') ?>" method="post">
                           <div class="chat-footer align-items-center">
                             <div class="w-100 pr-3">
@@ -68,6 +73,7 @@
                             </div>
                           </div>
                         </form>
+                        <?php endif; ?>     
                       </div>
                     </div>
                   </div>

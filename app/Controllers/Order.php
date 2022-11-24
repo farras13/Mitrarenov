@@ -20,11 +20,11 @@ class Order extends BaseController
         $sess = session();
         $idn = $sess->get('user_id');
         if ($idn != null) {
-            $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
+            $temp = $this->model->getQuery("SELECT id, kategori, id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc")->getResult();
             $key = $this->request->getGet();        
             if(array_key_exists("limit",$key) ){
                 $limit  = (int) $key['limit'];
-                $temp = $this->model->getQuery("SELECT id, kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
+                $temp = $this->model->getQuery("SELECT id, kategori,id_kategori, message, DATE_FORMAT(FROM_UNIXTIME(date), '%e %b %Y') AS 'date', status FROM notifikasi WHERE member_id = $idn ORDER BY id desc LIMIT $limit")->getResult();
             }
             $no = 0;
             $chat = 0;
@@ -36,25 +36,21 @@ class Order extends BaseController
                     $chat++;
                 }
             }
+			$data['notif'] = $temp;
+			$data['notif_total'] = $no;
+			$data['chat_total'] = $chat;
         }
         
-        $req = $this->request->getVar();
-		
-		$st = str_replace('-',' ',$id);
-		$str = (explode("dan",$st));
-        $type = trim($str[0]);
-        $jenis = trim($str[1]);
-        $category = $this->model->getWhere('category', ['category_name' => $type])->getRow();
-        $produk = $this->model->getWhere('product', ['paket_name' => $jenis, 'category_id' => $category->id])->getRow();
+        $req = $this->request->getVar();		
+		$jenis = str_replace('-',' ',$id);
+        $produk = $this->model->getWhere('product', ['paket_name' => $jenis])->getRow();
+        $category = $this->model->getWhere('category', ['id' => $produk->category_id])->getRow();
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
 		$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => $produk->id])->getResult();
 		// var_dump($produk->id);die;
 		if(empty($tipe_rumah)){
 			$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => 0])->getResult();
 		}
-        $data['notif'] = $temp;
-        $data['notif_total'] = $no;
-        $data['chat_total'] = $chat;
         $data['alur'] = $this->model->getAll('rules')->getResult();
 		$data['type'] = $category->id;
         $data['jenis'] = $jenis;
@@ -381,6 +377,77 @@ class Order extends BaseController
         } else {
             $this->tambah_log_email_db('permintaan jasa', $emailData['to'], 'customer', 'terkirim');
         }
+    }
+
+	private function jasaType($product_id = "")
+    {
+        $jasa = "";
+        if ($product_id == 1) {
+            $jasa = "Membangun Rumah";
+        } else if ($product_id == 2) {
+            $jasa = "Membuat Dak";
+        } else if ($product_id == 3) {
+            $jasa = "Menambah Ruangan";
+        } else if ($product_id == 4) {
+            $jasa = "Meningkat Rumah";
+        } else if ($product_id == 5) {
+            $jasa = "Perbaikan Genteng";
+        } else if ($product_id == 6) {
+            $jasa = "Pengecatan";
+        } else if ($product_id == 7) {
+            $jasa = "Membuat Carport";
+        } else if ($product_id == 8) {
+            $jasa = "Membangun Rumah Kost";
+        } else if ($product_id == 9) {
+            $jasa = "Membangun Ruko";
+        } else if ($product_id == 10) {
+            $jasa = "Pembuatan Kolam Renang";
+        } else if ($product_id == 11) {
+            $jasa = "Pekerjaan Interior";
+        } else {
+            $jasa = "Pekerjaan Lain";
+        }
+
+        return $jasa;
+    }
+
+    public function uploadImage($file, $path)
+    {
+        helper(['form']);
+        $date = date('Y-m-d');
+        $profile_image = $file->getName();
+        $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20).'.'.$file->guessExtension();
+        // var_dump($newfilename);die;
+        if (!$file->isValid()) {
+            return $response = $file->getErrorString();
+        }
+
+        if ($file->move($path, $nameNew)) {
+            $response = [
+                'data' => [
+                    "file_name" => $nameNew,
+                    "file_path" => $path,
+                ]
+            ];
+        } else {
+            $response = [
+                'status' => 500,
+                'error' => true,
+                'message' => 'Failed to upload image',
+                'data' => []
+            ];
+        }
+
+        return $response;
+    }
+
+    public function tambah_log_email_db($tipe, $email, $role, $status)
+    {
+        $inserts['tipe'] = $tipe;
+        $inserts['email'] = $email;
+        $inserts['role'] = $role;
+        $inserts['status'] = $status;
+        $query = $this->model->insB('log_email', $inserts);
     }
 
     private function content3($temp, $email)
@@ -1299,76 +1366,5 @@ class Order extends BaseController
 				</table>
 			</body>
 		';
-    }
-
-    private function jasaType($product_id = "")
-    {
-        $jasa = "";
-        if ($product_id == 1) {
-            $jasa = "Membangun Rumah";
-        } else if ($product_id == 2) {
-            $jasa = "Membuat Dak";
-        } else if ($product_id == 3) {
-            $jasa = "Menambah Ruangan";
-        } else if ($product_id == 4) {
-            $jasa = "Meningkat Rumah";
-        } else if ($product_id == 5) {
-            $jasa = "Perbaikan Genteng";
-        } else if ($product_id == 6) {
-            $jasa = "Pengecatan";
-        } else if ($product_id == 7) {
-            $jasa = "Membuat Carport";
-        } else if ($product_id == 8) {
-            $jasa = "Membangun Rumah Kost";
-        } else if ($product_id == 9) {
-            $jasa = "Membangun Ruko";
-        } else if ($product_id == 10) {
-            $jasa = "Pembuatan Kolam Renang";
-        } else if ($product_id == 11) {
-            $jasa = "Pekerjaan Interior";
-        } else {
-            $jasa = "Pekerjaan Lain";
-        }
-
-        return $jasa;
-    }
-
-    public function uploadImage($file, $path)
-    {
-        helper(['form']);
-        $date = date('Y-m-d');
-        $profile_image = $file->getName();
-        $nameNew = $date . substr($profile_image, 0, 5) . rand(0, 20).'.'.$file->guessExtension();
-        // var_dump($newfilename);die;
-        if (!$file->isValid()) {
-            return $response = $file->getErrorString();
-        }
-
-        if ($file->move($path, $nameNew)) {
-            $response = [
-                'data' => [
-                    "file_name" => $nameNew,
-                    "file_path" => $path,
-                ]
-            ];
-        } else {
-            $response = [
-                'status' => 500,
-                'error' => true,
-                'message' => 'Failed to upload image',
-                'data' => []
-            ];
-        }
-
-        return $response;
-    }
-
-    public function tambah_log_email_db($tipe, $email, $role, $status)
-    {
-        $inserts['tipe'] = $tipe;
-        $inserts['email'] = $email;
-        $inserts['role'] = $role;
-        $inserts['status'] = $status;
-        $query = $this->model->insB('log_email', $inserts);
-    }
+    }    
 }

@@ -44,6 +44,7 @@ class ArtikelModel extends Model
         ->select('news.*, member_detail.name as penulis')
         ->join('member', 'member.id = news.created_by')
         ->join('member_detail', 'member_detail.member_id = member.id')
+        ->where('news.is_publish', 0)
         ->orderBy('news.analyticsviews', 'desc')->get(8)->getResult(); 
     }
 
@@ -81,7 +82,7 @@ class ArtikelModel extends Model
     {
         return  $this->db->table('news')
         ->select('news.*')
-        ->where('tagline', $id)
+        ->where(['tagline' => $id, 'is_publish' => 0])
         ->orderBy('id', 'desc')->get(4)->getResult();
     }
 
