@@ -44,7 +44,7 @@
                   <?php foreach ($kategori as $h) : if($h->category != null || $h->category != ''): ?>
                     <li class="nav-item">
                       <?php $link = str_replace(' ', '-', $h->category); ?>
-                      <a href="<?= base_url('artikel/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
+                      <a href="<?= base_url('berita/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
                     </li>
                   <?php endif; endforeach; ?>
                 </ul>
@@ -63,7 +63,7 @@
               <?php foreach ($hot as $h) : ?>
                 <div class="article-slider-item">
                   <div class="article-img">
-                    <img src="<?= base_url('images/news') . '/' . $h->image ?>" alt="">
+                    <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="">
                   </div>
                   <a href="<?= base_url('berita') . '/' . $h->slug ?>">
                     <h4 class="mt-3 mb-2"><?= $h->title ?></h4>
@@ -115,7 +115,7 @@
               </div>
             <?php endforeach; ?>
           </div>
-          <?= $pager->links('berita', 'bootstrap_pagination') ?>
+          <?= $pager->links('page_berita', 'bootstrap_pagination') ?>
           <!-- <nav aria-label="Page navigation">
               <ul class="pagination justify-content-center mt-4">
                 <li class="page-item"><a class="page-link active" href="#">1</a></li>

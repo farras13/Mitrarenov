@@ -297,6 +297,7 @@ class DboModel extends Model
 
     public function detailInvoice($invoice)
     {
+        $db = db_connect();
         $termin_unpaid = $db->query("SELECT id, tipe, project_id, nomor_invoice, biaya, keterangan, DATE_FORMAT(FROM_UNIXTIME(tanggal_dibuat), '%e %b %Y') AS tanggal_terbit, DATE_FORMAT(due_date, '%e %b %Y') as jatuh_tempo, status
             FROM projects_pembayaran
             WHERE project_id = $id AND nomor_invoice = $invoice AND keterangan NOT LIKE '%RAP%' AND due_date != 0000-00-00 AND status = 'belum dibayar'")->getResult();

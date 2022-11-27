@@ -49,11 +49,13 @@ class Akun extends BaseController
             if($value->status == 0 && $value->kategori == "chat"){
                 $chat++;
             }
-            $data['notif'] = $temp;
-            $data['notif_total'] = $no;
-            $data['chat_total'] = $chat;
+            // $data['notif'] = $temp;
+            // $data['notif_total'] = $no;
+            // $data['chat_total'] = $chat;
         }
-
+        $data['notif'] = $temp;
+        $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         // echo "<pre>"; print_r($data['projekBerjalan']); echo"</pre>";
         echo view("projek_berlangsung", $data);
     }
@@ -103,10 +105,10 @@ class Akun extends BaseController
             if($value->status == 0 && $value->kategori == "chat"){
                 $chat++;
             }
-            $data['notif'] = $temp;
-            $data['notif_total'] = $no;
-            $data['chat_total'] = $chat;
         }
+        $data['notif'] = $temp;
+        $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
       
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         return view('ubah_profile', $data);
@@ -215,10 +217,10 @@ class Akun extends BaseController
             if($value->status == 0 && $value->kategori == "chat"){
                 $chat++;
             }
-            $data['notif'] = $temp;
-            $data['notif_total'] = $no;
-            $data['chat_total'] = $chat;
         }
+        $data['notif'] = $temp;
+        $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
 
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         $data['projek'] = $mdl->getProjectUserS($idn, 'done');
@@ -249,10 +251,10 @@ class Akun extends BaseController
             if($value->status == 0 && $value->kategori == "chat"){
                 $chat++;
             }
-            $data['notif'] = $temp;
-            $data['notif_total'] = $no;
-            $data['chat_total'] = $chat;
         }
+        $data['notif'] = $temp;
+        $data['notif_total'] = $no;
+        $data['chat_total'] = $chat;
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         return view('reset_pass', $data);
     }

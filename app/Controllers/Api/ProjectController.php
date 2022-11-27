@@ -100,6 +100,7 @@ class ProjectController extends ResourceController
         $data = $model->getWhere('projects_update', ['project_id' => $id])->getResult();
         foreach ($data as $key => $value) {
             $value->image = $path_dokumen.$value->image;
+            $value->progres = (int) str_replace('%', '', $value->progres);
         }
         if (!$data) {
             return $this->failNotFound('data tidak ditemukan!');         

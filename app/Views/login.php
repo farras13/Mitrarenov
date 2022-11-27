@@ -5,8 +5,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?= base_url('/main/css/styles.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('/main/css/custom.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('public/main/css/styles.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('public/main/css/custom.css') ?>">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link rel="icon" type="image/png" href="images/favico.png" />
      <!-- toast -->
@@ -19,7 +19,7 @@
         <div class="auth-inner">
             <a href="javascript:window.history.go(-1);" class="back-btn"><i class="ico ico-back"></i></a>
             <div class="auth-logo">
-                <img src="<?= base_url('/main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
             </div>
             <div class="mt-5">
                 <form action="<?= base_url('login') ?>" method="POST">

@@ -9,13 +9,13 @@
                     <form action="<?= base_url('member/change_password') ?>" method="POST">
                      <?= csrf_field(); ?>
                         <div class="form-group">
-                            <input type="text" class="form-control form-material" placeholder="Password Lama" name="passlama">
+                            <input type="text" class="form-control form-material" placeholder="Password Lama" name="passlama" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="pass" class="form-control form-material" placeholder="Password Baru" name="passbaru">
+                            <input type="text" id="pass" class="form-control form-material" placeholder="Password Baru" name="passbaru" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="passk" class="form-control form-material" placeholder="Konfirmasi Password" name="passK">
+                            <input type="text" id="passk" class="form-control form-material" placeholder="Konfirmasi Password" name="passK" required>
                             <small style="color:red;"> password anda tidak sama! </small>
                         </div>
 

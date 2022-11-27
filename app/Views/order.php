@@ -1,11 +1,13 @@
 <?= $this->extend('template') ?>
-
-<?= $this->section('content') ?>
+<?= $this->section('css') ?>
 <style>
     .pencetgambar {
         box-shadow: 0px 0px 10px 7px #606060;
     }
 </style>
+<?= $this->endSection() ?>
+<?= $this->section('content') ?>
+
  <div class="content-wrapper">
         <div class="page-title">
             <h1>Order <?= ucwords($jenis) ?></h1>

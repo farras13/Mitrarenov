@@ -1,5 +1,9 @@
 <?= $this->extend('template') ?>
-
+<?= $this->section('meta') ?>
+<title>Gallery | MITRARENOV.COM</title>
+<meta name="description" content="Anda ingin bangun atau renovasi rumah anda? Hubungi kami sekarang! Tim Mitrarenov siap membantu anda dalam segala kebutuhan rumah anda">
+<meta name="keywords" content="Hubungi mitrarenov sekarang">
+<?= $this->endSection(); ?>
 <?= $this->section('content') ?>
 <div class="content-wrapper">
   <div class="page-title">

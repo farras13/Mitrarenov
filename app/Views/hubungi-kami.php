@@ -19,16 +19,16 @@
                 <div class="col-md-6">
                     <h5 class="mb-4">Informasi Pribadi</h5>
                     <div class="form-group">
-                        <input type="text" class="form-control pl-35" placeholder="Nama Lengkap" name="nama">
+                        <input type="text" class="form-control pl-35" placeholder="Nama Lengkap" name="nama" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control pl-35" placeholder="Nomor Telepon" name="notlp">
+                        <input type="text" class="form-control pl-35" placeholder="Nomor Telepon" name="notlp" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control pl-35" placeholder="Email" name="email">
+                        <input type="email" class="form-control pl-35" placeholder="Email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <select class="provinsi w-100" id="provinsi" name="provinsi">
+                        <select class="provinsi w-100" id="provinsi" name="provinsi" required>
                             <option value="">select province</option>
                             <?php foreach ($prov as $p): ?>
                             <option value="<?= $p->province_id ?>"><?=  $p->name ?></option>
@@ -36,19 +36,19 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <select class="area w-100" id="area" name="area">
+                        <select class="area w-100" id="area" name="area" required>
                             <option value=""></option>
                            
                         </select>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control pl-35" cols="30" rows="4" placeholder="Pesan" name="pesan"></textarea>
+                        <textarea class="form-control pl-35" cols="30" rows="4" placeholder="Pesan" name="pesan" required></textarea>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <h5 class="mb-4">Perihal</h5>
                     <div class="form-group">
-                        <select class="perihal w-100" name="perihal" id="perihal">
+                        <select class="perihal w-100" name="perihal" id="perihal" required>
                             <option value=""></option>
                             <option value="mitra">Menjadi Mitra</option>
                             <option value="suplier">Menjadi Suplier</option>

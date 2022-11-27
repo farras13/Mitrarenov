@@ -5,8 +5,6 @@ namespace App\Controllers;
 use App\Controllers\Api\BaseController;
 use App\Models\ArtikelModel;
 use App\Models\DboModel;
-use App\Models\AuthDetailModel;
-use App\Models\AuthModel;
 use App\Models\GeneralModel;
 use App\Models\PortoModel;
 use App\Models\DesignModel;
@@ -55,16 +53,16 @@ class Home extends BaseController
         $artikel = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get(9)->getResult();
         $temp_artikel = [];
         foreach ($artikel as $key => $value) {
-            if($value->date >= time()){
+            if($value->date <= time()){
                 $temp_artikel[] = $value;
             }
         }
         $data['artikel'] = $temp_artikel; 
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
         $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
-        $data['galery'] = $this->model->getAll('gallery_pekerjaan')->getResult();
+        $data['galery'] = $this->model->getOrderBy('gallery_pekerjaan', 'id', 'desc')->getResult();
         $data['merawat'] = $this->model->getAll('merawat', 8)->getResult();
-        $data['design_rumah'] = $this->model->getAll('design_rumah')->getResult();
+        $data['design_rumah'] = $this->model->getWhere('design_rumah', ['is_publish' => 1], null, 'id', 'desc')->getResult();
         $data['liputan'] = $this->model->getAll('liputan')->getResult();
         $data['partner'] = $this->model->getOrderBy('partner', 'position', 'asc')->getResult();
         $data['lokasi'] = $this->model->getAll('location')->getResult();
@@ -127,6 +125,7 @@ class Home extends BaseController
 
     public function detail_porto($id)
     {
+        $data['title'] = "Portofolio";
         $data['porto'] = $this->model->getWhere('merawat', ['slug' => $id])->getRow();
         $id = $data['porto']->created_by;
         $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id])->getRow();
@@ -192,7 +191,7 @@ class Home extends BaseController
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;        
-        $data['porto'] = $model->select('*')->paginate(12, 'berita');
+        $data['porto'] = $model->select('*')->where('is_publish', '1')->orderBy('id', 'DESC')->paginate(12, 'berita');
         $data['pager'] = $model->pager;
         $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/";
 
@@ -228,6 +227,7 @@ class Home extends BaseController
                 }
             }
         }
+        $data['title'] = "Design Rumah";
         $data['linkdetail'] = base_url('desain_rumah');
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
@@ -504,7 +504,7 @@ class Home extends BaseController
             return redirect()->to('kontak');
         }
         session()->setFlashdata('toast', 'success:Berhasil dikirm !.');
-        return redirect()->to('kontak');
+        return redirect()->to('halaman/hubungi-kami');
     }
     
     public function onclicknotif($id)

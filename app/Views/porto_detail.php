@@ -1,5 +1,9 @@
 <?= $this->extend('template') ?>
-
+<?= $this->section('meta') ?>
+<title> <?= !empty($porto->meta_title) ? $porto->meta_title: $title; ?></title>
+<meta name="description" content="<?= !empty($porto->meta_description) ? $porto->meta_description: 'Anda ingin bangun atau renovasi rumah anda? Hubungi kami sekarang! Tim Mitrarenov siap membantu anda dalam segala kebutuhan rumah anda' ; ?>">
+<meta name="keywords" content="<?= !empty($porto->meta_keyword) ? $porto->meta_keyword: 'Hubungi mitrarenov sekarang' ; ?>">
+<?= $this->endSection(); ?>
 <?= $this->section('content') ?>
     <div class="content-wrapper">
         <div class="page-title">

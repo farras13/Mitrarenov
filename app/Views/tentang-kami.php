@@ -53,16 +53,16 @@
 
         <div class="row my-5">
             <div class="col-md-3 col-6 mb-5 text-center">
-                <img src="<?= base_url('main/images/tentang-kami-1.svg') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/tentang-kami-1.svg') ?>" class="img-fluid" alt="">
             </div>
             <div class="col-md-3 col-6 mb-5 text-center">
-                <img src="<?= base_url('main/images/tentang-kami-2.svg') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/tentang-kami-2.svg') ?>" class="img-fluid" alt="">
             </div>
             <div class="col-md-3 col-6 mb-5 text-center">
-                <img src="<?= base_url('main/images/tentang-kami-3.svg') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/tentang-kami-3.svg') ?>" class="img-fluid" alt="">
             </div>
             <div class="col-md-3 col-6 mb-5 text-center">
-                <img src="<?= base_url('main/images/tentang-kami-4.svg') ?>" class="img-fluid" alt="">
+                <img src="<?= base_url('public/main/images/tentang-kami-4.svg') ?>" class="img-fluid" alt="">
             </div>
         </div>
         <p class="mb-0 font-weight-bold">Terpercaya</p>

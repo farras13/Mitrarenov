@@ -18,7 +18,7 @@
                       <?php } ?>
                         <div class="chat-img">
                           <div class="chat-img-inner">
-                            <img style="object-fit: contain !important;" src="<?= base_url('/main/images/logo-mitrarenov.png') ?>" alt="">
+                            <img style="object-fit: contain !important;" src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" alt="">
                           </div>
                         </div>
                         <div class="chat-content">
@@ -41,7 +41,7 @@
                         <div class="chat-header">
                           <div class="chat-img">
                             <div class="chat-img-inner">
-                              <img style="object-fit: contain !important;" src="<?= base_url('/main/images/logo-mitrarenov.png') ?>" alt="">
+                              <img style="object-fit: contain !important;" src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" alt="">
                             </div>
                           </div>
                           <div class="chat-content">
@@ -51,7 +51,7 @@
                         <?php endif; ?>     
                         <div class="chat-body" id="chat_body">
                               <?php if(empty($list_chat)): ?>
-                                <h3>Anda belum memliki projek.</h3>
+                                <h3>Chatting tersedia saat project berjalan.</h3>
                               <?php endif; ?>     
                         </div> 
                         <?php if(!empty($list_chat)): ?>

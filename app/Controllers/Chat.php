@@ -57,16 +57,17 @@ class Chat extends BaseController
         }
         $data['group'] = $gn;
         $data_chat = $dbo->getListChat($group->name, $id);
-       
+        $data['data_project'] = $dbo->getProjectUser($id);
+        $data['idlist'] = empty($data_chat) ? null : base64_encode($data_chat[0]->project_id); 
         $data['list_chat'] = $data_chat;
         if($detail['83rc2kp'] != null){
             $data_chat = $dbo->dchat(base64_decode($detail['83rc2kp']));
             $data['detail_chat'] = $data_chat;
             $data['idlist'] = $detail['83rc2kp']; 
         }else{
-            $data['detail_chat'] = empty($datachat) ? null : $model->getWhere('chat', ['project_id' => $data_chat[0]->project_id])->getResult(); 
-            $data['idlist'] = empty($datachat) ? null : base64_encode($data_chat[0]->project_id); 
+            $data['detail_chat'] = empty($data_chat) ? null : $model->getWhere('chat', ['project_id' => $data_chat[0]->project_id])->getResult(); 
         }
+        
         return view('percakapan', $data);
     }
     
@@ -119,6 +120,7 @@ class Chat extends BaseController
             $data['detail_chat'] = $model->getWhere('chat', ['project_id' => $data_chat[0]->project_id])->getResult();
             $data['idlist'] = base64_encode($data_chat[0]->project_id); 
         }
+
         return view('chat', $data);
     }
     public function kirim()

@@ -21,13 +21,17 @@ class Artikel extends BaseController
         $key = $this->request->getVar();
         if($key){
             if ($key['cari'] != null) {
-                $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where(['is_publish' => '0', 'date <=' => time()])->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
+                $data['hot'] = $this->artikel->orderBy('created', 'ASC')->search_hot($key['cari']);
+                $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where(['is_publish' => '0', 'date <=' => time()])->like('title', $key['cari'])->orderBy('date', 'DESC')->paginate(5, 'page_berita');
+            }else {
+                $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where(['is_publish' => '0', 'date <=' => time()])->orderBy('date', 'DESC')->paginate(5, 'page_berita');
+                $data['hot'] = $this->artikel->orderBy('created', 'ASC')->hot();
             } 
         }else {
-            $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where(['is_publish' => '0', 'date <=' => time()])->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where(['is_publish' => '0', 'date <=' => time()])->orderBy('date', 'DESC')->paginate(5, 'page_berita');
+            $data['hot'] = $this->artikel->orderBy('created', 'ASC')->hot();
         }
         $data['kategori'] = $this->model->getAll('news_category')->getResult();
-        $data['hot'] = $this->artikel->orderBy('created', 'ASC')->hot();
         $data['pager'] = $this->artikel->pager;
         $data['key'] = empty($key['cari']) ? "" : $key['cari'];
 
@@ -68,9 +72,9 @@ class Artikel extends BaseController
         $kategori = $this->model->getWhere('news_category', ['category' => $kat])->getRow();
 
         if (!empty($key['cari'])) {
-            $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->like('title', $key['cari'])->orderBy('date', 'DESC')->paginate(5, 'berita');
         } else {
-            $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('news_category', $kategori->id_news_category)->where('is_publish', '0')->orderBy('created', 'DESC')->paginate(5, 'berita');
+            $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('news_category', $kategori->id_news_category)->where('is_publish', '0')->orderBy('date', 'DESC')->paginate(5, 'berita');
         }
         
         if (count($data['terbaru']) < 5) {
@@ -83,11 +87,12 @@ class Artikel extends BaseController
         $data['hot'] = $this->artikel->orderBy('created', 'ASC')->hot();
         $data['pager'] = $this->artikel->pager;
         if ($key) {
-            if($key['cari'])
-                $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
+            if($key['cari']){
+                $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->where('is_publish', '0')->like('title', $key['cari'])->orderBy('date', 'DESC')->paginate(5, 'berita');
                 $data['hot'] = $this->artikel->orderBy('created', 'ASC')->search_hot($key['cari']);
                 $data['pager'] = $this->artikel->pager;
                 $data['key'] = $key['cari'];
+            }
         } 
         $data['key'] = $key;
         $sess = session();
@@ -124,7 +129,7 @@ class Artikel extends BaseController
         $key = $this->request->getVar();
         // $data['kategori'] = $model->kategori();
         $data['kategori'] = $this->model->getAll('news_category')->getResult();
-        $tagline = $this->artikel->where(['is_publish' => '0', 'date <=' => time(), 'url' => $id])->get()->getRow();
+        $tagline = $this->artikel->where(['is_publish' => '0', 'date <=' => time(), 'slug' => $id])->get()->getRow();
         if(empty($tagline)){
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
@@ -155,17 +160,18 @@ class Artikel extends BaseController
             $data['chat_total'] = $chat;
         }
 
+        $key = $this->request->getGet();
         $data['terkait'] = $this->artikel->terkait($tagline->tagline);
         $data['berita'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->find($tagline->id);
         $data['hot'] = $this->artikel->orderBy('created', 'ASC')->hot();
         if ($key) {
-            if($key['cari'])
+            if($key['cari']){
                 $data['terbaru'] = $this->artikel->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by')->like('title', $key['cari'])->orderBy('created', 'DESC')->paginate(5, 'berita');
                 $data['hot'] = $this->artikel->orderBy('created', 'ASC')->search_hot($key['cari']);
                 $data['pager'] = $this->artikel->pager;
                 $data['key'] = $key['cari'];
+            }
         } 
-        // var_dump($data['berita']);
         return view("artikel-detail", $data);
     }
 }

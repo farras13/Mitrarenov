@@ -202,4 +202,15 @@ class Home extends ResourceController
         ];
        
     }
+
+    public function updurl()
+    {
+        $model = new GeneralModel;
+        $datas = $model->getAll('news')->getResult();
+        foreach ($datas as $key => $value) {
+            $model->upd('news', ['id' => $value->id], ['url' => $value->slug]);
+        }
+        $resp = $model->getAll('news')->getResult();
+        return $this->respond($resp, 200);
+    }
 }

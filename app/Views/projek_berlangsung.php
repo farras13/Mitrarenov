@@ -206,7 +206,6 @@
         <!-- <h5 class="sub-title-cat">List Pekerjaan tambah</h5> -->
 
         <div class="row" id="showresult">
-          
            
         </div>
       </div>

@@ -11,7 +11,7 @@
       <div class="col-lg-9 mb-5 content-article">
 
         <div class="article-img">
-          <img src="<?= base_url('images/news') . '/' . $berita['image'] ?>" class="w-100" alt="">
+          <img src="<?= base_url('public/images/news') . '/' . $berita['image'] ?>" class="w-100" alt="">
         </div>
         <h1 class="mt-4 article-title text-primary">
           <?= $berita['title'] ?>
@@ -77,13 +77,16 @@
                 <h5 class="text-primary mt-3">Artikel Terbaru</h5>
 
                 <ul class="nav nav-article-cat flex-column">
+                  <?php if (empty($hot)) : ?>
+                      <li class="nav-item text-grey"> Pencarian tidak ditemukan ! </li>
+                  <?php else: ?>
                   <?php foreach ($hot as $h) : ?>
                     <li class="nav-item">
                       <a href="<?= base_url('berita') . '/' . $h->slug ?>" class="nav-link px-0">
                         <div class="row">
                           <div class="col-4">
                             <div class="artikel-side-img">
-                              <img src="<?= base_url('images/news') . '/' . $h->image ?>" alt="" class="img-fluid">
+                              <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="" class="img-fluid">
                             </div>
                           </div>
                           <div class="col-8 pl-0">
@@ -93,6 +96,7 @@
                       </a>
                     </li>
                   <?php endforeach; ?>
+                  <?php endif; ?>
                 </ul>
                 <h5 class="text-primary mt-4">Kategori Artikel</h5>
 

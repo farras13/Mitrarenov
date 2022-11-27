@@ -1,5 +1,9 @@
 <?= $this->extend('template') ?>
-
+<?= $this->section('meta') ?>
+<title>Artikel | MITRARENOV.COM</title>
+<meta name="description" content="Anda ingin bangun atau renovasi rumah anda? Hubungi kami sekarang! Tim Mitrarenov siap membantu anda dalam segala kebutuhan rumah anda">
+<meta name="keywords" content="Hubungi mitrarenov sekarang">
+<?= $this->endSection(); ?>
 <?= $this->section('content') ?>
 <div class="content-wrapper">
   <div class="page-title">
@@ -40,7 +44,7 @@
                   <?php foreach ($kategori as $h) : if($h->category != null || $h->category != ''): ?>
                     <li class="nav-item">
                       <?php $link = str_replace(' ', '-', $h->category); ?>
-                      <a href="<?= base_url('artikel/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
+                      <a href="<?= base_url('berita/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
                     </li>
                   <?php endif; endforeach; ?>
                 </ul>
@@ -61,11 +65,11 @@
               <div class="d-flex article-item-small">
                 <div class="article-sm-img">
                   <div class="article-sm-img-inner">
-                    <img src="<?= base_url('images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
+                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/thumbs/<?= $tb['image'] ?>" alt="">
                   </div>
                 </div>
                 <div class="w-100 pl-4">
-                  <a href="<?= base_url('artikel/' . $tb['slug']) ?>">
+                  <a href="<?= base_url('berita/' . $tb['slug']) ?>">
                     <h4 class="mb-2"><?= $tb['title'] ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
@@ -76,7 +80,7 @@
                     <?= $h->meta_description ?> ...
                   </p>
                   <div class="text-right">
-                    <a href="<?= base_url('artikel/' . $tb['slug']) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                    <a href="<?= base_url('berita/' . $tb['slug']) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                   </div>
                 </div>
               </div>
@@ -93,7 +97,7 @@
                 <div class="d-flex article-item-small">
                   <div class="article-sm-img">
                     <div class="article-sm-img-inner">
-                      <img src="<?= base_url('images/news/thumbs') . '/' . $tb['image'] ?>" alt="">
+                      <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/thumbs/<?= $tb['image'] ?>" alt="">
                     </div>
                   </div>
                   <div class="w-100 pl-4">

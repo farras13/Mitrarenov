@@ -5,10 +5,10 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<?= base_url('main/css/custom.css') ?>">
-  <link rel="stylesheet" href="<?= base_url('main/css/styles.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('public/main/css/custom.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('public/main/css/styles.css') ?>">
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-  <link rel="icon" type="image/png" href="<?= base_url('main/images/favico.png ') ?>" />
+  <link rel="icon" type="image/png" href="<?= base_url('public/main/images/favico.png ') ?>" />
   <!-- toast -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
@@ -49,7 +49,7 @@
         <div class="d-flex align-items-center header-row">
           <div class="header-logo">
             <a href="<?= base_url('/') ?>">
-              <img src="<?= base_url('main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('public/main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
             </a>
           </div>
           <div class="header-main-nav">
@@ -74,13 +74,13 @@
                 <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link <?php if ($currentURL == base_url('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('halaman/tentang-kami') ?>" class="nav-link <?php if ($currentURL == base_url('tentang-kami')) echo "active"; ?>">Tentang Kami</a>
+                <a href="<?= base_url('halaman/tentang-kami-2') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/tentang-kami-2')) echo "active"; ?>">Tentang Kami</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('/#ckk') ?>" class="nav-link <?php if ($currentURL == base_url('/#ckk')) echo "active"; ?>">Cara Kerja</a>
+                <a href="<?= base_url('halaman/cara-kerja') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/cara-kerja')) echo "active"; ?>">Cara Kerja</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link <?php if ($currentURL == base_url('kontak')) echo "active"; ?>">Hubungi Kami</a>
+                <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/hubungi-kami')) echo "active"; ?>">Hubungi Kami</a>
               </li>
               <li class="nav-item">
                 <a href="<?= base_url('berita') ?>" class="nav-link <?php if ($currentURL == base_url('berita')) echo "active"; ?>">Artikel</a>
@@ -224,7 +224,7 @@
       <div class="row">
         <div class="col-12 mb-4">
           <a href="#">
-            <img src="<?= base_url('main/images/logo-mitrarenov-white.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= base_url('public/main/images/logo-mitrarenov-white.svg') ?>" class="img-fluid" alt="">
           </a>
         </div>
         <div class="col-md-7">
@@ -418,49 +418,49 @@
       <h5>We accept:</h5>
       <div class="payment-bank">
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/mastercard-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/mastercard-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/visa-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/visa-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/shopepay-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/shopepay-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/akulaku-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/akulaku-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/uob-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/uob-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/octo-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/octo-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bca-clickpay-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bca-clickpay-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/indomaret-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/indomaret-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/alfamart-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/alfamart-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/danamon-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/danamon-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="row payment-options">
 
@@ -494,12 +494,12 @@
     </div>
   </footer>
 
-  <script type="text/javascript" src="<?= base_url('main/js/script-bundle.min.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/leaflet.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/leaflet-src.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/esri-leaflet-debug.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/script.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/script-bundle.min.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/leaflet.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/leaflet-src.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-debug.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/script.js') ?>"></script>
   <!-- toast -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <?= $this->renderSection('script') ?>

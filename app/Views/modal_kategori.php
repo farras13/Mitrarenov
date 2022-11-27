@@ -1,4 +1,4 @@
- <?= $this->section('content') ?>
+<?= $this->section('content') ?>
     <div class="modal-body">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <i class="ico ico-close"></i>

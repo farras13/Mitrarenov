@@ -82,8 +82,8 @@
       <div class="col-md-6 mb-4">
         <div class="syarat-ketentuan">
           <h5 class="mb-4">Syarat dan Ketentuan</h5>
-          <?php foreach ($snk as $s) : ?>
-            <?= $s->snk; ?>
+          <?php foreach ($snk as $s): ?>
+              <?= $s->snk; ?>
           <?php endforeach ?>
         </div>
       </div>
@@ -100,17 +100,17 @@
           <div class="px-5">
             <h5 class="mb-4">Detail Informasi</h5>
             <div class="form-group">
-              <select class="provinsi w-100" name="prov" id="prov">
+              <select class="provinsi w-100" name="prov" id="prov" >
                 <option value=""></option>
 
-                <?php foreach ($prov as $p) : ?>
+                <?php foreach ($prov as $p): ?>
                   <option value="<?= $p->province_id ?>"> <?= $p->name ?> </option>
                 <?php endforeach ?>
               </select>
             </div>
             <div class="form-group">
               <select class="area w-100" id="area" name="area">
-
+             
               </select>
             </div>
             <div class="form-group">
@@ -190,7 +190,7 @@
 </div>
 
 <?= $this->section('script') ?>
-<script src="<?= base_url('main/js/easy-number-separator.js') ?>"></script>
+<script src="<?= base_url('public/main/js/easy-number-separator.js') ?>"></script>
 <script>
   $(document).ready(function() {
     easyNumberSeparator({
@@ -215,28 +215,26 @@
     });
     $('.date').datepicker();
 
-    $('#prov').change(function() {
-      var id = $(this).val();
+    $('#prov').change(function(){ 
+      var id=$(this).val();
       $.ajax({
-        url: "<?php echo site_url('home/get_area'); ?>",
-        method: "POST",
-        data: {
-          id: id
-        },
-        async: true,
-        dataType: 'json',
-        success: function(data) {
-          var html = '';
-          var i;
-          for (i = 0; i < data.length; i++) {
-            html += '<option value=' + data[i].id_area + '>' + data[i].nama_area + '</option>';
-          }
-          $('#area').html(html);
+          url : "<?php echo site_url('home/get_area');?>",
+          method : "POST",
+          data : {id: id},
+          async : true,
+          dataType : 'json',
+          success: function(data){                
+              var html = '';
+              var i;
+              for(i=0; i<data.length; i++){
+                  html += '<option value='+data[i].id_area+'>'+data[i].nama_area+'</option>';
+              }
+              $('#area').html(html);
 
-        }
+          }
       });
       return false;
-    });
+    }); 
 
 
   })
