@@ -96,13 +96,12 @@ class Cctv extends ResourceController
         $query = [];        
         
         foreach ($produk as $key => $value) {
-            $temp = new \stdClass;;
-            $temp->id_device = $value->produk_id;
-            $temp->name_device = $value->nama   ;
-            $temp->status = $value->status == 1 ? "Online" : "Offline";
-            $value->link_stream =  $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $value->produk_id , [ 'type' => 'hls' ] );
-            $temp->link = $value->link_stream != null ? $value->link_stream->result->url : "-";
-            array_push($query, $temp);
+            $query['id_device'] = $value->produk_id;
+            $query['nama'] = $value->nama;
+            $query['status'] = $value->status == 1 ? "Online" : "Offline";
+            $link_stream =  $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $value->produk_id , [ 'type' => 'hls' ] )->result->url;
+            $query['link'] = $link_stream;
+            
         }
         $res = [
             "status" => 200,

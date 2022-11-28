@@ -74,7 +74,7 @@
                 <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link <?php if ($currentURL == base_url('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('halaman/tentang-kami-2') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/tentang-kami-2')) echo "active"; ?>">Tentang Kami</a>
+                <a href="<?= base_url('halaman/tentang-kami') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/tentang-kami')) echo "active"; ?>">Tentang Kami</a>
               </li>
               <li class="nav-item">
                 <a href="<?= base_url('halaman/cara-kerja') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/cara-kerja')) echo "active"; ?>">Cara Kerja</a>
@@ -257,54 +257,7 @@
 
             </div>
             <div class="col-lg-7">
-              <!-- <h5>Peroleh Bantuan</h5>
-              <div class="row">
-                <div class="col-lg-7">
-                  <ul class="nav flex-column">
-                    <li class="nav-item">
-                      <a href="#" class="nav-link px-0">
-                        Informasi pengiriman
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        Syarat & ketentuan penjualan
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        Pengembalian uang
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        Pemberitahuan privasi
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        FAQ Belanja
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-5">
-                  <ul class="nav flex-column">
-                    <li class="nav-item">
-                      <a href="#" class="nav-link px-0">
-                        Partner
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        Disclaimer
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        User Privacy
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        Application privacy
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        Complaint
-                      </a>
-                      <a href="#" class="nav-link px-0">
-                        Blog
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div> -->
+             
               <h5>Peroleh Bantuan</h5>
               <div class="row">
                 <div class="col-lg-7">
@@ -350,29 +303,7 @@
         <div class="col-md-5">
           <div class="row">
             <div class="col-lg-5">
-              <!-- <h5>PARTNER</h5>
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a href="#" class="nav-link px-0">
-                    Daftar Rekanan
-                  </a>
-                  <a href="#" class="nav-link px-0">
-                    Karir
-                  </a>
-                  <a href="#" class="nav-link px-0">
-                    Perawatan Rumah
-                  </a>
-                  <a href="#" class="nav-link px-0">
-                    Interior
-                  </a>
-                  <a href="#" class="nav-link px-0">
-                    Pengurusan IMB
-                  </a>
-                  <a href="#" class="nav-link px-0">
-                    Jasa Arsitek
-                  </a>
-                </li>
-              </ul> -->
+              
             </div>
             <div class="col-lg-7">
               <h5 class="mb-3">Ikuti Kami di Sosial media</h5>

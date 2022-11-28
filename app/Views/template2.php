@@ -73,7 +73,7 @@
                                 <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link <?php if ($currentURL == base_url('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
                             </li>
                             <li class="nav-item">
-                                <a href="<?= base_url('halaman/tentang-kami-2') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/tentang-kami-2')) echo "active"; ?>">Tentang Kami</a>
+                                <a href="<?= base_url('halaman/tentang-kami') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/tentang-kami')) echo "active"; ?>">Tentang Kami</a>
                             </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('halaman/cara-kerja') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/cara-kerja')) echo "active"; ?>">Cara Kerja</a>
@@ -274,7 +274,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= base_url('member/qa') ?>" class="nav-link ">
+                                            <a href="<?= base_url('halaman/tanya-jawab') ?>" class="nav-link ">
                                                 <div class="nav-ico"><i class="ico ico-question"></i></div>
                                                 <div>Tanya Jawab</div>
                                             </a>
@@ -286,7 +286,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= base_url('member/syarat') ?>" class="nav-link ">
+                                            <a href="<?= base_url('halaman/syarat-ketentuan') ?>" class="nav-link ">
                                                 <div class="nav-ico"><i class="ico ico-document"></i></div>
                                                 <div>Syarat dan Ketentuan</div>
                                             </a>
@@ -334,13 +334,13 @@
                         <div class="col-lg-5">
                             <h5>Info Kontak</h5>
 
-                            <div class="d-flex mb-2 align-items-center">
+                            <div class="d-flex mb align-items-center">
                                 <div class="icon-cnt">
                                     <i class="ico ico-phone-white"></i>
                                 </div>
                                 <div class="pl-3">0822 9000 9990</div>
                             </div>
-                            <div class="d-flex mb-2 align-items-center">
+                            <div class="d-flex mb align-items-center">
                                 <div class="icon-cnt">
                                     <i class="ico ico-location"></i>
                                 </div>
@@ -348,7 +348,7 @@
                                     Rukan Taman Pondok Kelapa Blok F No.1, Jaktim
                                 </div>
                             </div>
-                            <div class="d-flex mb-2 align-items-center">
+                            <div class="d-flex mb align-items-center">
                                 <div class="icon-cnt">
                                     <i class="ico ico-mail-white"></i>
                                 </div>
@@ -526,16 +526,16 @@
                 </div>
                 <div class="row payment-options">
 
-                    <div class="col-3 mb-2">
+                    <div class="col-3 mb">
 
                     </div>
-                    <div class="col-3 mb-2">
+                    <div class="col-3 mb">
 
                     </div>
-                    <div class="col-3 mb-2">
+                    <div class="col-3 mb">
 
                     </div>
-                    <div class="col-3 mb-2">
+                    <div class="col-3 mb">
 
                     </div>
                 </div>
@@ -585,16 +585,15 @@
     <script>
 	
     function seenallnotif(){
-    $.ajax({
-          method: "POST",
-          url: "<?php echo base_url('seenallnotif');?>",
-          success:function(data){
+        $.ajax({
+            method: "POST",
+            url: "<?php echo base_url('seenallnotif');?>",
+            success:function(data){
             console.log("remove class");
             $("a").removeClass("new-notif");
-          },
+            },
         });
-
-}
+    }
 </script>
     <?= $this->renderSection('script') ?>
 </body>

@@ -107,6 +107,11 @@ class Order extends BaseController
         if(!empty($sess->get('user_id'))){
             $log_sign = TRUE;
             $id = $sess->get('user_id');
+			$cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();
+			if(!empty($cek_member) && $input['email'] != $sess->get('user_email')){
+				session()->setFlashdata('toast', 'error:Maaf email sudah terdaftar!.');
+				return redirect()->back()->withInput();
+			}
         }else{
             $log_sign = FALSE;
             $cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();

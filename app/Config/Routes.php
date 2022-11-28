@@ -55,7 +55,7 @@ $routes->get('desain_rumah', 'Home::design_rumah');
 $routes->get('desain_rumah/(:any)', 'Home::detail_design_rumah/$1');
 
 $routes->get('gallery', 'Home::gallery');
-// $routes->get('gallery/(:any)/detail', 'Home::detail_gallery/$1');
+// $routes->get('gallery/(:any)', 'Home::detail_gallery/$1');
 
 $routes->get('chat', 'Chat::index');
 $routes->get('chat/chat', 'Chat::chat');
@@ -69,7 +69,7 @@ $routes->get('berita/(:any)', 'Artikel::d_artikel/$1');
 $routes->get('detail-promo/(:any)', 'Home::d_promo/$1');
 $routes->get('halaman/hubungi-kami', 'Home::hubungi');
 $routes->get('subscribe', 'Home::subscribe');
-$routes->get('halaman/tentang-kami', 'Home::tentang_kami');
+// $routes->get('halaman/tentang-kami', 'Home::tentang_kami');
 $routes->get('simulasi-kpr', 'Home::simulasi');
 
 // $routes->group('',['filter' => 'auth'], function ($routes) {
@@ -101,6 +101,7 @@ $routes->get('simulasi-kpr', 'Home::simulasi');
 $routes->group('api', function ($routes) {
     $routes->group('v1', function ($routes) {
         $routes->post('notifios', 'Api\TransaksiController::notifios');
+        // $routes->post('projekurl', 'Api\Home::updurl');
 
 //  $routes->post('merawat', 'Api\SimulasiKpr::merawat');
         $routes->group('auth', function ($routes) {

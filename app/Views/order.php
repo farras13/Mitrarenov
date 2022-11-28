@@ -189,8 +189,8 @@
                                                         budget pembangunan anda</i></div>
                                             </div>
                                             <div class="mb-3">
-                                                <input id="autocomplete" class="form-control form-shadow controls" type="text" placeholder="Alamat" name="alamat" />
-                                                <input id="city" class="form-control form-shadow controls" type="text" placeholder="City" name="city" />
+                                                <input id="autocomplete" class="form-control form-shadow controls" type="text" placeholder="Alamat" name="alamat" required/>
+                                                <input id="city" class="form-control form-shadow controls" type="text" placeholder="City" name="city" required/>
                                             </div>
 
                                             <div class="form-group mb-4">
@@ -208,7 +208,7 @@
                                             <div class="py-5">
                                                 <p class="text-22 text-primary font-weight-bold">Isi Data Order</p>
                                                 <div class="form-group">
-                                                    <select class="choose-spec w-100" id="spek"> 
+                                                    <select class="choose-spec w-100" id="spek" required> 
                                                         <option></option>
                                                         <?php $no = 0;
                                                         $bnyk = count($spek);
@@ -238,7 +238,7 @@
                                                     endforeach; ?>
                                                 </div>
                                                 <div class="form-group">
-                                                    <select class="methode_pembayaran w-100" name="metodpay">
+                                                    <select class="methode_pembayaran w-100" name="metodpay" required>
                                                         <option></option>
                                                         <option value="cash">Cash</option>
                                                         <option value="kredit">KPR</option>
@@ -252,7 +252,7 @@
 
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control form-shadow" placeholder="Nomor Telepon" name="telepon" <?php if ($phone != null) {
+                                                    <input type="number" class="form-control form-shadow" placeholder="Nomor Telepon" name="telepon" <?php if ($phone != null) {
                                                                                                                                                         echo 'value=' . $phone;
                                                                                                                                                     }  ?> required>
 

@@ -24,6 +24,15 @@ class DboModel extends Model
         return $data = $db->query("SELECT * FROM snk_kpr")->getResult();
     }
 
+    public function getProfile($id)
+    {
+        $db = db_connect();
+        $query = $db->query("SELECT a.*, b.email from member_detail a inner join member b on a.member_id = b.id  WHERE a.member_id = $id ");
+        $json = $query->getRow();
+
+        return $json;
+    }
+
     function findTukang($area_id)
     {
         $db = db_connect();
@@ -95,7 +104,7 @@ class DboModel extends Model
         return $data;
     }
 
-    public function getProjectUserD($id)
+    public function getProjectUserD($id, $cek = null)
     {
         $db = db_connect();
         // var_dump($id);
@@ -175,7 +184,10 @@ class DboModel extends Model
                 $tp->biaya = str_replace('.', '', $tp->biaya);
                 $tp->biaya_tambahan = '-';
                 $tp->title = "Pembayaran Termin " . $tp->keterangan;
-            
+                if($cek != null){
+                    // $tp->tanggal_terbit = date('Y-m-d', strtotime($tp->tanggal_terbit));
+                    $tp->jatuh_tempo = date('Y-m-d', strtotime($tp->jatuh_tempo));
+                }
                 // if($tp->jatuh_tempo == "01 Jan 1970"){
                 //     $tp->jatuh_tempo = "-";
                 // }
@@ -199,7 +211,10 @@ class DboModel extends Model
                 $t->biaya = str_replace('.', '', $t->biaya);
                 $t->biaya_tambahan = '-';
                 $t->title = "Pembayaran Termin " . $t->keterangan;
-               
+                if($cek != null){
+                    // $tp->tanggal_terbit = date('Y-m-d', strtotime($tp->tanggal_terbit));
+                    $t->jatuh_tempo = date('Y-m-d', strtotime($t->jatuh_tempo));
+                }
                 // if($t->jatuh_tempo == "01 Jan 1970"){
                 //     $t->jatuh_tempo = "-";
                 // }

@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Controllers\Api\BaseController;
 use App\Models\ArtikelModel;
 use App\Models\DboModel;
+use App\Models\AuthDetailModel;
+use App\Models\AuthModel;
 use App\Models\GeneralModel;
 use App\Models\PortoModel;
 use App\Models\DesignModel;
@@ -50,7 +52,7 @@ class Home extends BaseController
         }
         $data['alur'] = $this->model->getAll('rules')->getResult();
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
-        $artikel = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('created', 'DESC')->get(9)->getResult();
+        $artikel = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('date', 'DESC')->get(9)->getResult();
         $temp_artikel = [];
         foreach ($artikel as $key => $value) {
             if($value->date <= time()){

@@ -37,10 +37,10 @@ class Page extends BaseController
                     $chat++;
                 }
             }
+            $data['notif'] = $temp;
+            $data['notif_total'] = $no;
+            $data['chat_total'] = $chat;
         }
-        $data['notif'] = $temp;
-        $data['notif_total'] = $no;
-        $data['chat_total'] = $chat;
         $data['data'] = $this->model->getWhere('page_website', ['url_page' => $Id])->getRow(); 
         // var_dump($data);die;
         return view('dynamic-page', $data);
@@ -70,10 +70,10 @@ class Page extends BaseController
                     $chat++;
                 }
             }
+            $data['notif'] = $temp;
+            $data['notif_total'] = $no;
+            $data['chat_total'] = $chat;
         }
-        $data['notif'] = $temp;
-        $data['notif_total'] = $no;
-        $data['chat_total'] = $chat;
         $data['tentang'] = $this->model->getWhere('footer', ['id' => 4])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         echo view('snk', $data);
@@ -104,10 +104,10 @@ class Page extends BaseController
                     $chat++;
                 }
             }
+            $data['notif'] = $temp;
+            $data['notif_total'] = $no;
+            $data['chat_total'] = $chat;
         }
-        $data['notif'] = $temp;
-        $data['notif_total'] = $no;
-        $data['chat_total'] = $chat;
         $data['tentang'] = $model->getWhere('footer', ['id' => 7])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         echo view('qa', $data);
@@ -138,10 +138,10 @@ class Page extends BaseController
                     $chat++;
                 }
             }
+            $data['notif'] = $temp;
+            $data['notif_total'] = $no;
+            $data['chat_total'] = $chat;
         }
-        $data['notif'] = $temp;
-        $data['notif_total'] = $no;
-        $data['chat_total'] = $chat;
         $data['tentang'] = $model->getWhere('footer', ['id' => 1])->getRow();
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         echo view('tentang-mitra', $data);

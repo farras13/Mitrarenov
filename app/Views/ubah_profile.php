@@ -26,13 +26,13 @@
                         </div>
 
                         <div class="form-group">
-                            <input type="text" name="nama" class="form-control form-material" value="<?= $akun->name ?>" required>
+                            <input type="text" maxlength="30" name="nama" class="form-control form-material" value="<?= $akun->name ?>" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="email" class="form-control form-material" value="<?= $sess->get('user_email'); ?>" required>
+                            <input type="email" maxlength="30" name="email" class="form-control form-material" value="<?= $akun->email; ?>" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="telephone" class="form-control form-material" value="<?= $akun->telephone ?>" required>
+                            <input type="text" pattern="[0-9]+" maxlength="13" name="telephone" class="form-control form-material" value="<?= $akun->telephone ?>" required>
                         </div>
 
                         <div class="mt-5 text-center">

@@ -12,6 +12,7 @@ class Akun extends BaseController
     function __construct()
     {
         $this->model = new GeneralModel();
+        $this->dbo = new DboModel();
     }
 
     public function akun()
@@ -110,7 +111,7 @@ class Akun extends BaseController
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
       
-        $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
+        $data['akun'] = $this->dbo->getProfile($sess->get('user_id'));
         return view('ubah_profile', $data);
     }
 
@@ -124,8 +125,23 @@ class Akun extends BaseController
 
         $request = $this->request->getVar();
         $gambar = $this->request->getFile('file');
-
-        $data = array('email' => $request['email']);
+        $akun = $this->dbo->getProfile($session->get('user_id'));
+      
+        if($akun->email != $request['email']){
+            $data = array('email' => $request['email']);
+            $cekuser = $this->model->getWhere('member', $data)->getRow();
+            if(!empty($cekuser)){
+                $session->setFlashdata('toast', 'error:Gagal update email , email sudah mempunyai akun!');
+                return redirect()->back()->withInput();
+            }
+            $w = array('id' => $session->get('user_id'));
+            $member = $this->model->upd('member', $w, $data);
+            if (!$member) {
+                $session->setFlashdata('toast', 'error:Gagal update email member!');
+                return redirect()->back()->withInput();
+            }
+        }     
+       
 
         if (!$gambar->isValid()) {
             $data_detail = array(
@@ -143,16 +159,10 @@ class Akun extends BaseController
             );
         }
         $wd = array('member_id' => $session->get('user_id'));
-        $w = array('id' => $session->get('user_id'));
         $detail = $this->model->upd('member_detail', $wd, $data_detail);
-        $member = $this->model->upd('member', $w, $data);
 
         if (!$detail) {
-            $session->setFlashdata('toast', 'errorr:Gagal update member!');
-            return redirect()->back()->withInput();
-        }
-        if (!$member) {
-            $session->setFlashdata('toast', 'errorr:Gagal update email member!');
+            $session->setFlashdata('toast', 'error:Gagal update member!');
             return redirect()->back()->withInput();
         }
 

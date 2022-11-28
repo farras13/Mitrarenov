@@ -126,7 +126,7 @@ class ProjectController extends ResourceController
 
         $id_user = (int)$cekUser->member_id;
           
-        $data = $models->getProjectUserD($id);
+        $data = $models->getProjectUserD($id, true);
         $berkas = $models->getProjectUser($id_user, null, 'project');
         $path_dokumen = "https://admin.mitrarenov.soldig.co.id/assets/main/berkas/";
         $data['berkas'] = $path_dokumen.$berkas[0]->dokumen;
