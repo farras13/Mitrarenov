@@ -71,7 +71,7 @@ class Order extends BaseController
 		if(empty($data)){
 			$data = false;
 		}else{
-			if(strtotime($data->expired) > time()){
+			if(strtotime($data->expired) >= strtotime(date('Y-m-d'))){
 				$data = true;
 			}else{
 				$data = false;

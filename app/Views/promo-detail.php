@@ -34,7 +34,7 @@
             <h5>Kode Promo</h5>
 
             <input type="text" class="form-control" value="<?= $promo->promoCode ?>" disabled id="codePromo">
-            <?php if(time() < strtotime($promo->expired)){ ?>
+            <?php if(strtotime(date('Y-m-d')) <= strtotime($promo->expired)){ ?>
               <button type="button" class="btn btn-success btn-lg btn-block btn-rounded" onclick="copyToClipboard('#codePromo')">SALIN KODE PROMO</button>
               <?php $date = strtotime($promo->expired); ?>
               <p>Masa Berlaku s/d <?= date('F Y', $date); ?></p>
