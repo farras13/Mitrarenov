@@ -205,7 +205,7 @@ class Order extends BaseController
 		//promo 
 		if($input['promo'] != null || $input['promo'] != '' ){
 			$promo = $this->model->getWhere('promomobile',['promocode' => $input['promo']])->getRow();
-			if (strtotime($promo->expired) < time()) {
+			if (strtotime($promo->expired) < strtotime(date('Y-m-d'))) {
 				session()->setFlashdata('toast', 'error:Maaf promo expired!.');
             	return redirect()->back()->withInput();
 			}

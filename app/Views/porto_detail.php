@@ -8,7 +8,7 @@
     <div class="content-wrapper">
         <div class="page-title">
             <h1> <?= $porto->title; ?> </h1>
-            <p class="text-white">diliput oleh <?= $penulis->name; ?></p>
+            <!-- <p class="text-white">diliput oleh <?= $penulis->name; ?></p> -->
         </div>
 
         <div class="container my-5">
@@ -54,7 +54,7 @@
                                 <img src="<?= $link_gambar.$l->image ?>" class="img-fluid" alt="">
                                 <div class="gallery-cnt">
                                     <h5 class="mb-1"><?= $l->title; ?></h5>
-                                    <p class="mb-0">diliput oleh Admin</p>
+                                    
                                 </div>
                             </a>
                         </div>

@@ -63,7 +63,7 @@ class Home extends BaseController
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
         $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
         $data['galery'] = $this->model->getOrderBy('gallery_pekerjaan', 'id', 'desc')->getResult();
-        $data['merawat'] = $this->model->getAll('merawat', 8)->getResult();
+        $data['merawat'] = $this->model->getOrderBy('merawat', 'created', 'desc', 8)->getResult();
         $data['design_rumah'] = $this->model->getWhere('design_rumah', ['is_publish' => 1], null, 'id', 'desc')->getResult();
         $data['liputan'] = $this->model->getAll('liputan')->getResult();
         $data['partner'] = $this->model->getOrderBy('partner', 'position', 'asc')->getResult();

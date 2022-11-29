@@ -318,11 +318,11 @@
           <div class="row" id="pekerjaanGallery">
             <?php foreach ($galery as $g) { ?>
               <div class="col-md-3 mb-4 col-gallery">
-                <a href="https://admin.mitrarenov.soldig.co.id/assets/main/images/photo_promo_paket/<?= $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $g->judul ?>">
+                <a href="https://admin.mitrarenov.soldig.co.id/assets/main/images/photo_promo_paket/<?= $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-description="<?= $g->judul ?>">
                   <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/photo_promo_paket/<?= $g->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $g->judul ?></h5>
-                    <p class="mb-0">diliput oleh Admin Mitrarenov</p>
+                    <p class="mb-0"></p>
                   </div>
                 </a>
               </div>
@@ -340,7 +340,7 @@
                   <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $m->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
-                    <p class="mb-0">diliput oleh Admin Mitrarenov</p>
+                    <p class="mb-0"></p>
                   </div>
                 </a>
               </div>
@@ -355,11 +355,11 @@
           <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
               <div class="col-md-3 mb-4 col-gallery-desain">
-                <a href="https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/<?= $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-author="diliput oleh Admin Mitrarenov" data-description="<?= $dr->title ?>">
+                <a href="https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/<?= $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-description="<?= $dr->title ?>">
                   <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/<?= $dr->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $dr->title ?></h5>
-                    <p class="mb-0">diliput oleh Admin Mitrarenov</p>
+                    <p class="mb-0"></p>
                   </div>
                 </a>
               </div>

@@ -15,9 +15,9 @@ class GeneralModel extends Model
         }
     }
 
-    public function getOrderBy($t, $row, $order)
+    public function getOrderBy($t, $row, $order, $l=null)
     {
-        return $this->db->table($t)->orderBy($row, $order)->get();
+        return $this->db->table($t)->orderBy($row, $order)->get($l);
     }
 
     public function getQuery($query)
