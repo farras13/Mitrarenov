@@ -24,7 +24,7 @@ class App extends BaseConfig
      * @var string
      */
     // public $baseURL = 'https://mitrarenov.soldig.co.id/';
-    public $baseURL = 'http://localhost/mitrarenov/public';
+    public $baseURL = 'http://localhost/mitrarenov';
 
     /**
      * --------------------------------------------------------------------------
