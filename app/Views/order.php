@@ -281,7 +281,7 @@
                                                     Newslatter
                                                 </label>
                                             </div>
-                                            <button type="submit" class="btn btn-success btn-block btn-lg btn-rounded py-3 mt-5">SUBMIT</button>
+                                            <button type="submit" id="btnsumbit" class="btn btn-success btn-block btn-lg btn-rounded py-3 mt-5">SUBMIT</button>
                                             <p class="text-22 text-primary font-weight-bold mt-5">Estimasi Harga</p>
                                             <div class="spec">
                                                 <div class="spec-content border-0">
@@ -389,8 +389,10 @@
             success:function(data){
                 if(data == false){
                     $("#alertpromo").show();
+                    $("#btnsubmit").hide();
                 }else{
                     $("#alertpromo").hide();
+                    $("#btnsubmit").show();
                 }
             }  
         });
@@ -444,38 +446,38 @@
     //   console.log(autocomplete);
     }
     function fillInAddress() {
-      var place = autocomplete.getPlace();
-      var add = place.formatted_address ;
+        var place = autocomplete.getPlace();
+        var add = place.formatted_address ;
         var value = add.split(",");
             count=value.length;
             country=value[count-1];
             state=value[count-2];
             city=value[count-3];
-            getCity(city);
-    //   console.log(place);
-      if (place.geometry.viewport) {
-        map.fitBounds(place.geometry.viewport);
-      } else {
-        map.setCenter(place.geometry.location);
-        map.setZoom(17);
-        // console.log('tsss');
-        
-      }
-      // Clear out the old markers.
-      markers = [];
-      markers.forEach((marker) => {
-        marker.setMap(null);
-      });
-      if (!marker) {
-        marker = new google.maps.Marker({
-          map: map,
-          anchorPoint: new google.maps.Point(0, -29)
+            getCity(city, add);
+        //   console.log(place);
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);
+            // console.log('tsss');
+            
+        }
+        // Clear out the old markers.
+        markers = [];
+        markers.forEach((marker) => {
+            marker.setMap(null);
         });
-      } else marker.setMap(null);
-      marker.setOptions({
-        position: place.geometry.location,
-        map: map
-      });
+        if (!marker) {
+            marker = new google.maps.Marker({
+            map: map,
+            anchorPoint: new google.maps.Point(0, -29)
+            });
+        } else marker.setMap(null);
+        marker.setOptions({
+            position: place.geometry.location,
+            map: map
+        });
     }
     function geolocate() {
       infoWindow = new google.maps.InfoWindow();

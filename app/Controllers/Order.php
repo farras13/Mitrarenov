@@ -77,6 +77,9 @@ class Order extends BaseController
 				$data = false;
 			}
 		}
+		if($req["promo"] == null || empty($req["promo"])){
+			$data = true;
+		}
 		echo json_encode($data);
 	}
 
