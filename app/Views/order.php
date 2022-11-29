@@ -172,7 +172,7 @@
                                             </span>
                                         </div>
                                         <div class="images-upload">
-                                            <input type="file" id="fotoRumah" hidden="" accept="image/*" name="gambar_rumah" required>
+                                            <input type="file" id="fotoRumah" hidden="" accept="image/*" name="gambar_rumah">
                                             <label for="fotoRumah" class="btn foto-rumah">
                                                 <div class="label-inner">
                                                     <div class="w-100">Upload Foto Rumah</div>
@@ -283,7 +283,7 @@
                                                 Newslatter
                                             </label>
                                         </div>
-                                        <button type="submit" id="btnsumbit" class="btn btn-success btn-block btn-lg btn-rounded py-3 mt-5">SUBMIT</button>
+                                        <button type="submit" id="btnsubmit" class="btn btn-success btn-block btn-lg btn-rounded py-3 mt-5">SUBMIT</button>
                                         <p class="text-22 text-primary font-weight-bold mt-5">Estimasi Harga</p>
                                         <div class="spec">
                                             <div class="spec-content border-0">
@@ -390,10 +390,10 @@
             success: function(data) {
                 if (data == false) {
                     $("#alertpromo").show();
-                    $("#btnsubmit").hide();
+                    $("#btnsubmit").attr('disabled', 'disabled');
                 } else {
                     $("#alertpromo").hide();
-                    $("#btnsubmit").show();
+                    $("#btnsubmit").removeAttr("disabled");
                 }
             }
         });
