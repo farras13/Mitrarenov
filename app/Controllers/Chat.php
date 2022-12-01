@@ -143,7 +143,9 @@ class Chat extends BaseController
             'date' => time(),
             'type' => 'text' 
         );
-        $model->ins('chat', $data);
+        if(!ctype_space($input['chat'])){
+            $model->ins('chat', $data);
+        }
         return redirect()->to('chat?83rc2kp='.$input['idcht']);
     }
 

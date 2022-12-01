@@ -124,6 +124,10 @@ class Akun extends BaseController
         }
 
         $request = $this->request->getVar();
+        if(ctype_space($request['email']) || ctype_space($request['nama']) || ctype_space($request['telephone'])){
+            $session->setFlashdata('toast', 'error:Pastikan semua data terisi!');
+            return redirect()->back()->withInput();
+        }
         $gambar = $this->request->getFile('file');
         $akun = $this->dbo->getProfile($session->get('user_id'));
       
