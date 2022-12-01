@@ -634,6 +634,9 @@ class TransaksiController extends ResourceController
         $dtrans = $mdl->getWhere('projects_detail', ['project_id' => $htrans->project_id], null)->getRow();
         $produk = $mdl->getWhere('product', ['id' => $dtrans->product_id], null)->getRow();
         $member = $mdl->getWhere('project_data_customer', ['project_id' => $htrans->project_id], null)->getRow();
+		if($member->member_id != null){
+			$member = $mdl->getWhere('member_detail', ['member_id' => $member->member_id], null)->getRow(); 
+		}
         
         // $track = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(24 / strlen($x)))), 1, 24);
         

@@ -62,7 +62,7 @@
                 <div class="slide-text">
                   <div class="row">
                     <div class="col-md-8">
-                      <?php if ($p->head == 1) { ?>
+                      <!-- <?php if ($p->head == 1) { ?>
                         <h1><?= $p->title ?></h1>
                       <?php } elseif ($p->head == 2) { ?>
                         <h2><?= $p->title ?></h2>
@@ -76,7 +76,7 @@
                         <h6><?= $p->title ?></h6>
                       <?php } elseif ($p->head == 7) { ?>
                         <p><?= $p->title ?></p>
-                      <?php } ?>
+                      <?php } ?> -->
                       <!-- <?php $date = new DateTime($p->expired); ?>
                     <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p> -->
                     </div>
