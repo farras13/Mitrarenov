@@ -13,8 +13,9 @@
   <div class="container my-5">
     <div class="row main-content">
       <div class="col-lg-4 mb-5">
+        <div id="trigger1"></div>
         <div class="sidebar">
-          <div class="card rounded-0 sidebar-inner">
+          <div class="card rounded-0 sidebar-inner" id="pin1">
             <div class="card-body p-5 card-sidebar">
               <div class="d-flex align-items-center">
                 <div class="mr-3 nav-collapse">
@@ -41,12 +42,13 @@
                 <h5 class="text-primary mt-5">Kategori Artikel</h5>
 
                 <ul class="nav nav-article-cat flex-column">
-                  <?php foreach ($kategori as $h) : if($h->category != null || $h->category != ''): ?>
-                    <li class="nav-item">
-                      <?php $link = str_replace(' ', '-', $h->category); ?>
-                      <a href="<?= base_url('berita/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
-                    </li>
-                  <?php endif; endforeach; ?>
+                  <?php foreach ($kategori as $h) : if ($h->category != null || $h->category != '') : ?>
+                      <li class="nav-item">
+                        <?php $link = str_replace(' ', '-', $h->category); ?>
+                        <a href="<?= base_url('berita/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
+                      </li>
+                  <?php endif;
+                  endforeach; ?>
                 </ul>
               </div>
 
@@ -55,39 +57,40 @@
         </div>
       </div>
       <div class="col-lg-8 mb-5 content-article">
+
         <div class="article-list">
-          <?php if(!$key): ?>
-          <h5 class="mb-4 text-primary">Artikel Populer</h5>
-          <div class="article-slider-outer">
-            <div class="article-slider">
-              <?php foreach ($hot as $h) : ?>
-                <div class="article-slider-item">
-                  <div class="article-img">
-                    <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="">
+          <?php if (!$key) : ?>
+            <h5 class="mb-4 text-primary">Artikel Populer</h5>
+            <div class="article-slider-outer">
+              <div class="article-slider">
+                <?php foreach ($hot as $h) : ?>
+                  <div class="article-slider-item">
+                    <div class="article-img">
+                      <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="">
+                    </div>
+                    <a href="<?= base_url('berita') . '/' . $h->slug ?>">
+                      <h4 class="mt-3 mb-2"><?= $h->title ?></h4>
+                    </a>
+                    <p class="text-grey mb-0"><?= $h->penulis ?></p>
+                    <p class="text-grey mb-0">Diterbitkan <?php $time = $h->date;
+                                                          $date = new DateTime("@$time");
+                                                          echo $date->format('d M Y'); ?></p>
+                    <p>
+                      <?= $h->meta_description ?> ...
+                    </p>
+                    <div class="text-right">
+                      <a href="<?= base_url('berita') . '/' . $h->slug ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                    </div>
                   </div>
-                  <a href="<?= base_url('berita') . '/' . $h->slug ?>">
-                    <h4 class="mt-3 mb-2"><?= $h->title ?></h4>
-                  </a>
-                  <p class="text-grey mb-0"><?= $h->penulis ?></p>
-                  <p class="text-grey mb-0">Diterbitkan <?php $time = $h->date;
-                                                        $date = new DateTime("@$time");
-                                                        echo $date->format('d M Y'); ?></p>
-                  <p>
-                    <?= $h->meta_description ?> ...
-                  </p>
-                  <div class="text-right">
-                    <a href="<?= base_url('berita') . '/' . $h->slug ?>" class="font-weight-bold">Baca Selengkapnya..</a>
-                  </div>
-                </div>
-              <?php endforeach; ?>
+                <?php endforeach; ?>
+              </div>
+              <div class="btn-slide article-btn-prev"><i class="ico ico-prev"></i></div>
+              <div class="btn-slide article-btn-next"><i class="ico ico-next"></i></div>
             </div>
-            <div class="btn-slide article-btn-prev"><i class="ico ico-prev"></i></div>
-            <div class="btn-slide article-btn-next"><i class="ico ico-next"></i></div>
-          </div>
           <?php endif; ?>
 
 
-          <h5 class="mt-5 text-primary"> <?php if(!$key): ?>Artikel Terbaru<?php else: ?>Result Search<?php endif; ?></h5>
+          <h5 class="mt-5 text-primary"> <?php if (!$key) : ?>Artikel Terbaru<?php else : ?>Result Search<?php endif; ?></h5>
 
           <div class="article-list-small">
             <?php foreach ($terbaru as $tb) : ?>
@@ -109,7 +112,7 @@
                     <?= $tb['meta_description'] ?> ...
                   </p>
                   <div class="text-right">
-                    <a href="<?= base_url('berita/' . $tb['slug'] ) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
+                    <a href="<?= base_url('berita/' . $tb['slug']) ?>" class="font-weight-bold">Baca Selengkapnya..</a>
                   </div>
                 </div>
               </div>
@@ -129,41 +132,45 @@
   </div>
 </div>
 <?= $this->section('script') ?>
-<script src="<?= base_url('main/js/ScrollMagic.min.js') ?>"></script>
+<script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
+
 
 <script>
-  
-  const postDetails = document.querySelector(".content-article");
-  const postSidebar = document.querySelector(".sidebar");
-  const postSidebarContent = document.querySelector(".sidebar-inner");
+  $(document).ready(function() {
+    const postDetails = document.querySelector(".content-article");
+    const postSidebar = document.querySelector(".sidebar");
+    const postSidebarContent = document.querySelector(".sidebar-inner");
+    const content = $(".article-list").height();
+    var controller = new ScrollMagic.Controller();
+    var scene = new ScrollMagic.Scene({
+        triggerElement: "#trigger1",
+        duration: content,
+        triggerHook: 0,
+        offset: -100,
+      })
+      .setPin("#pin1")
+      .addTo(controller);
 
-  const controller = new ScrollMagic.Controller();
-  const scene = new ScrollMagic.Scene({
-    triggerElement: postSidebar,
-    triggerHook: 0,
-    duration: getDuration,
-    offset: -100
-  }).addTo(controller);
-
-  if (window.matchMedia("(min-width: 768px)").matches) {
-    scene.setPin(postSidebar, {
-      pushFollowers: false
-    });
-  }
-
-  window.addEventListener("resize", () => {
     if (window.matchMedia("(min-width: 768px)").matches) {
       scene.setPin(postSidebar, {
         pushFollowers: false
       });
-    } else {
-      scene.removePin(postSidebar, true);
     }
-  });
 
-  function getDuration() {
-    return postDetails.offsetHeight - postSidebarContent.offsetHeight;
-  }
+    window.addEventListener("resize", () => {
+      if (window.matchMedia("(min-width: 768px)").matches) {
+        scene.setPin(postSidebar, {
+          pushFollowers: false
+        });
+      } else {
+        scene.removePin(postSidebar, true);
+      }
+    });
+
+    function getDuration() {
+      return postDetails.offsetHeight - postSidebarContent.offsetHeight;
+    }
+  })
 </script>
 
 <?= $this->endSection() ?>
