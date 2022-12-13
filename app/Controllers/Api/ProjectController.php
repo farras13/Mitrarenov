@@ -96,7 +96,7 @@ class ProjectController extends ResourceController
         $cekUser = $model->getWhere('token_login', ['token' => $token])->getRow();
         $id_user = (int)$cekUser->member_id;
 
-        $path_dokumen = "https://admin.mitrarenov.soldig.co.id/assets/main/images/project_update/";
+        $path_dokumen = "https://office.mitrarenov.com/assets/main/images/project_update/";
         $data = $model->getWhere('projects_update', ['project_id' => $id])->getResult();
         foreach ($data as $key => $value) {
             $value->image = $path_dokumen.$value->image;
@@ -128,7 +128,7 @@ class ProjectController extends ResourceController
           
         $data = $models->getProjectUserD($id, true);
         $berkas = $models->getProjectUser($id_user, null, 'project');
-        $path_dokumen = "https://admin.mitrarenov.soldig.co.id/assets/main/berkas/";
+        $path_dokumen = "https://office.mitrarenov.com/assets/main/berkas/";
         $data['berkas'] = $path_dokumen.$berkas[0]->dokumen;
         $data['berkas_rab'] = $path_dokumen.$berkas[0]->dokumen_rab;
         $data['image_default'] = $url."public/main/images/gambar-blum-update.png";

@@ -5,12 +5,12 @@ namespace App\Controllers;
 use App\Controllers\Api\BaseController;
 use App\Models\ArtikelModel;
 use App\Models\DboModel;
-use App\Models\AuthDetailModel;
-use App\Models\AuthModel;
 use App\Models\GeneralModel;
 use App\Models\PortoModel;
 use App\Models\DesignModel;
 use App\Models\GalleryModel;
+use CodeIgniter\I18n\Time;
+use DOMDocument;
 
 class Home extends BaseController
 {
@@ -514,6 +514,38 @@ class Home extends BaseController
         $model = new GeneralModel();
         $model->upd('notifikasi', ['id' => $id], ['status' => 1]);
         return redirect()->to('chat');        
+    }
+
+    public function sitemap(){
+        $datetime = Time::createFromFormat('Y-m-d H:i:s', '2020-11-25 17:48:31');
+        $hasil = array('berita','gallery_pekerjaan','portofolio','design_rumah','simulasi-kpr','halaman/tentang-kami','halaman/cara-kerja','halaman/hubungi-kami','halaman/jadilah-rekanan-kami','halaman/career');
+          
+        $xmlString = '<?xml version="1.0" encoding="UTF-8"?>
+              <?xml-stylesheet type="text/xsl" href="https://mitrarenov.com/Home/sitemap_style2"?>
+              <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+              <url>
+                  <loc>https://mitrarenov.com/</loc>
+                  <priority>1.0</priority>
+                  <lastmod>'.$datetime.'</lastmod>
+              </url>';
+              $hasil = array('berita','gallery_pekerjaan','portofolio','design_rumah','simulasi-kpr','halaman/tentang-kami','halaman/cara-kerja','halaman/hubungi-kami','halaman/jadilah-rekanan-kami','halaman/career');
+          foreach($hasil as $h){
+           $xmlString .=   '<url>';
+           $xmlString .=  '<loc>'.base_url(''.$h).'</loc>';
+           $xmlString .=  '<lastmod>'.$datetime.'</lastmod>';
+           $xmlString .=  '<priority>0.80</priority>';
+           $xmlString .=  '</url>';
+          }
+          
+          $xmlString .= '</urlset>';
+           $dom = new DOMDocument();
+          $dom->preserveWhiteSpace = FALSE;
+          $dom->loadXML($xmlString);
+          $this->output->set_content_type('text/xml');
+          $this->output->set_output($xmlString);
     }
     
 }

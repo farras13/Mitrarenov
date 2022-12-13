@@ -45,6 +45,9 @@ class Order extends BaseController
 		$jenis = str_replace('-',' ',$id);
         $produk = $this->model->getWhere('product', ['paket_name' => $jenis])->getRow();
         $category = $this->model->getWhere('category', ['id' => $produk->category_id])->getRow();
+		if(empty($produk)){
+			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+		}
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
 		$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => $produk->id])->getResult();
 		// var_dump($produk->id);die;

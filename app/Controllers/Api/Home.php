@@ -59,10 +59,10 @@ class Home extends ResourceController
         
         $url = base_url();
         foreach ($subdata as $key => $value) {
-            $value->image_icon = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/'.$value->image_icon;
+            $value->image_icon = 'https://office.mitrarenov.com/assets/main/images/product_icon/'.$value->image_icon;
         }
         $data = [
-            "base_image" => 'https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/',
+            "base_image" => 'https://office.mitrarenov.com/assets/main/images/product_icon/',
             "data" => $subdata
         ];
 
@@ -85,7 +85,7 @@ class Home extends ResourceController
         $data = $model->getWhere('promomobile', ['is_publish' => 0, 'kategori' => 2])->getResult();
         
         $url = base_url();
-        $base_image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/';
+        $base_image = 'https://office.mitrarenov.com/assets/main/images/promo/';
         
         $key = $this->request->getGet();
     
@@ -137,7 +137,7 @@ class Home extends ResourceController
         }  
 
         $url = base_url();
-        $base_image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/';
+        $base_image = 'https://office.mitrarenov.com/assets/main/images/promo/';
         if($data->image != null){
             $data->image = $base_image.$data->image;
             $data->imagecontent = $base_image.$data->imagecontent;
@@ -165,7 +165,7 @@ class Home extends ResourceController
         $data = $model->getWhere('promomobile', ['is_publish' => 0, 'kategori' => 2])->getResult();
         
         $url = base_url();
-        $base_image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/';
+        $base_image = 'https://office.mitrarenov.com/assets/main/images/promo/';
         
         $key = $this->request->getGet();
         $cari = $key['code'];
@@ -183,7 +183,7 @@ class Home extends ResourceController
         }  
 
         $url = base_url();
-        $base_image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/';
+        $base_image = 'https://office.mitrarenov.com/assets/main/images/promo/';
         if($data->image != null){
             $data->image = $base_image.$data->image;
             $data->imagecontent = $base_image.$data->imagecontent;

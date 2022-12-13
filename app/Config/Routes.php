@@ -34,6 +34,7 @@ $routes->setAutoRoute(true);
 // $routes->get('/', 'Home::index');
 
 $routes->get('/', 'Home::index');
+$routes->get('/sitemap', 'Home::sitemap');
 $routes->get('home', 'Home::index');
 
 $routes->post('login', 'Login::pros_log');

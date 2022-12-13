@@ -21,13 +21,13 @@
             <div class="banner-top-container">
               <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
               <div class="slide-content">
-                <div class="discount-badge">
+                <!-- <div class="discount-badge">
                   Diskon <?= $p->promo ?>%
-                </div>
+                </div> -->
                 <div class="slide-text">
                   <div class="row">
                     <div class="col-md-8">
-                      <?php if ($p->head == 1) { ?>
+                      <!-- <?php if ($p->head == 1) { ?>
                         <h1><?= $p->title ?></h1>
                       <?php } elseif ($p->head == 2) { ?>
                         <h2><?= $p->title ?></h2>
@@ -43,7 +43,7 @@
                         <p><?= $p->title ?></p>
                       <?php } ?>
                       <?php $date = new DateTime($p->expired); ?>
-                      <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
+                      <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p> -->
                     </div>
 
                   </div>
@@ -406,7 +406,7 @@
               <p>Diterbitkan <?php $time = $art->date;
                               $date = new DateTime("@$time");
                               echo $date->format('d F Y'); ?></p>
-              <a href="<?= base_url('artikel/' . $art->slug) ?>">Baca Selengkapnya...</a>
+              <a href="<?= base_url('berita/' . $art->slug) ?>">Baca Selengkapnya...</a>
             </div>
           </div>
         <?php endforeach; ?>
@@ -542,6 +542,7 @@
         $("#moreDesain").fadeOut('slow');
       }
     });
+    
   });
 </script>
 <?= $this->endSection() ?>

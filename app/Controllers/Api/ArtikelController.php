@@ -81,12 +81,12 @@ class ArtikelController extends ResourceController
         foreach ($data as $d) {
             $time = $d->created;
             $date = new DateTime("@$time");
-            $d->image = 'https://admin.mitrarenov.soldig.co.id/assets/main/images/news/' . $d->image;
+            $d->image = 'https://office.mitrarenov.com/assets/main/images/news/' . $d->image;
             $d->date = $date->format('d M Y');
         }
 
         $temp = [
-            "base_image" => 'https://admin.mitrarenov.soldig.co.id/assets/main/images/news/',
+            "base_image" => 'https://office.mitrarenov.com/assets/main/images/news/',
             "total_page" => $count,
             "page" => $page,
             "artikel" => $data
@@ -120,7 +120,7 @@ class ArtikelController extends ResourceController
         $url = base_url();
         $time = $data->created;
         $date = new DateTime("@$time");
-        $data->image ='https://admin.mitrarenov.soldig.co.id/assets/main/images/news/' . $data->image;
+        $data->image ='https://office.mitrarenov.com/assets/main/images/news/' . $data->image;
         $data->date = $date->format('d M Y');
         $res = [
             "status" => TRUE,

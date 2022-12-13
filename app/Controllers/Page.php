@@ -42,7 +42,9 @@ class Page extends BaseController
             $data['chat_total'] = $chat;
         }
         $data['data'] = $this->model->getWhere('page_website', ['url_page' => $Id])->getRow(); 
-        // var_dump($data);die;
+        if(empty($data['data'])){
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
         return view('dynamic-page', $data);
     }
 

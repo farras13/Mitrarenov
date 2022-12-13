@@ -248,7 +248,7 @@ class DboModel extends Model
         $exten = ['tambah' => $addenum_tambah, 'kurang' => $addenum_kurang ];
 
         $url = base_url();
-        $path = "https://admin.mitrarenov.soldig.co.id/assets/main/images/project_update/";
+        $path = "https://office.mitrarenov.com/assets/main/images/project_update/";
         if ($progres != null) {
             foreach ($progres as $p) {
                 if ($p->image != null) {
