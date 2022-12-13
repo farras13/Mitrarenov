@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= base_url('public/main/css/styles.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('public/main/css/custom.css') ?>">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link rel="icon" type="image/png" href="<?= base_url('public/main/images/favico.png') ?>" />
      <!-- toast -->

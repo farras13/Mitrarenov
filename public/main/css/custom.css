@@ -184,7 +184,16 @@
     padding-bottom: 0 !important;
 } */
 
-
+.auth-container {
+    min-height: 100%;
+    height: auto;
+    background: #fafafa;
+    position: relative;
+    display: flex;
+    align-items: unset;
+    justify-content: unset;
+    padding: 50px 0;
+}
 
 @media (max-width: 1366.98px) {
     .header .header-main-nav {
