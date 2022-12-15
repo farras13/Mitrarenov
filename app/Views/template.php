@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="<?= base_url('public/main/css/styles.css') ?>">
   <link rel="icon" type="image/png" href="<?= base_url('public/main/images/favico.png ') ?>" />
   <!-- toast -->
-	<link rel="stylesheet" type="text/css" href="<?= base_url('public/main/css/toastr.min.css') ?>">
+  <link rel="stylesheet" type="text/css" href="<?= base_url('public/main/css/toastr.min.css') ?>">
 
   <?= $this->renderSection('meta') ?>
   <?= $this->renderSection('css') ?>
@@ -21,8 +21,8 @@
       <div class="header-inner">
         <div class="d-flex align-items-center">
           <div class="w-100">
-            <?php if(empty(session()->get('user_id'))):  ?>
-            Belum memiliki akun ? <a href="<?= base_url('member/register') ?>" class="text-warning font-weight-bold">Registrasi sekarang</a>
+            <?php if (empty(session()->get('user_id'))) :  ?>
+              Belum memiliki akun ? <a href="<?= base_url('member/register') ?>" class="text-warning font-weight-bold">Registrasi sekarang</a>
             <?php endif; ?>
           </div>
           <div class="w-100 text-right">
@@ -53,11 +53,12 @@
           </div>
           <div class="header-main-nav">
             <div class="login-mobile">
-              <?php $sess = session(); if ($sess->get('logged_in') != TRUE) { ?>
+              <?php $sess = session();
+              if ($sess->get('logged_in') != TRUE) { ?>
                 <a href="<?= base_url('member/login') ?>" class="nav-link px-0">
                   <i class="ico ico-user"></i> Login / Daftar
                 </a>
-              <?php }else { ?>
+              <?php } else { ?>
                 <a href="#" class="nav-link px-0">
                   <i class="ico ico-user"></i> <?= $sess->get('user_name') ?>
                 </a>
@@ -114,13 +115,13 @@
                 <li class="nav-item">
                   <a href="<?= base_url('chat') ?>" class="nav-link">
                     <i class="ico ico-chat"></i>
-                      
+
                   </a>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link" href="#" id="notifDropdown" role="button" data-toggle="dropdown" data-offset="40" aria-expanded="false">
                     <i class="ico ico-bell"></i>
-                    <span class="badge" <?= $notif_total == 0 ? "hidden": "";?>><?= $notif_total ?></span>
+                    <span class="badge" <?= $notif_total == 0 ? "hidden" : ""; ?>><?= $notif_total ?></span>
                   </a>
                   <div class="dropdown-menu notif-dropdown dropdown-menu-right" aria-labelledby="notifDropdown">
                     <div class="mt-3">
@@ -133,30 +134,30 @@
                     </div>
                     <div class="notif-list">
                       <?php foreach ($notif as $key => $value) { ?>
-                          <?php if($value->kategori == "chat"){ 
-                              $link=base_url('notif/chat/'.$value->id); 
-                          }else if($value->kategori == "Project"){ 
-                              $link=base_url('notif/project/'.$value->id);
-                          }else if($value->kategori == "ProjectUpdate"){ 
-                            $link=base_url('notif/project/'.$value->id); 
-                          }else if($value->kategori == "promo"){ 
-                            $link=base_url('detail-promo/'.$value->id_kategori); 
-                          }else if($value->kategori == "transaction"){ 
-                            $link=base_url('notif/transaction/'.$value->id); 
-                        } ?>                                   
-                          <?php if($value->status == 0){ ?>  
-                              <a class="dropdown-item new-notif" href="<?= $link ?>">
-                          <?php }else{ ?>    
-                              <a class="dropdown-item" href="<?= $link ?>">
-                          <?php } ?>  
-                              <p class="font-weight-bold"><?= $value->kategori ?></p>
-                              <p>
-                                  <?= $value->message; ?>
-                              </p>
-                              <p class="text-right mb-0"><?= $value->date ?></p>
-                          </a>
-                      <?php } ?>
-                    </div>                                            
+                        <?php if ($value->kategori == "chat") {
+                          $link = base_url('notif/chat/' . $value->id);
+                        } else if ($value->kategori == "Project") {
+                          $link = base_url('notif/project/' . $value->id);
+                        } else if ($value->kategori == "ProjectUpdate") {
+                          $link = base_url('notif/project/' . $value->id);
+                        } else if ($value->kategori == "promo") {
+                          $link = base_url('detail-promo/' . $value->id_kategori);
+                        } else if ($value->kategori == "transaction") {
+                          $link = base_url('notif/transaction/' . $value->id);
+                        } ?>
+                        <?php if ($value->status == 0) { ?>
+                          <a class="dropdown-item new-notif" href="<?= $link ?>">
+                          <?php } else { ?>
+                            <a class="dropdown-item" href="<?= $link ?>">
+                            <?php } ?>
+                            <p class="font-weight-bold"><?= $value->kategori ?></p>
+                            <p>
+                              <?= $value->message; ?>
+                            </p>
+                            <p class="text-right mb-0"><?= $value->date ?></p>
+                            </a>
+                          <?php } ?>
+                    </div>
                   </div>
                 </li>
               <?php } ?>
@@ -256,7 +257,7 @@
 
             </div>
             <div class="col-lg-7">
-             
+
               <h5>Peroleh Bantuan</h5>
               <div class="row">
                 <div class="col-lg-7">
@@ -302,7 +303,7 @@
         <div class="col-md-5">
           <div class="row">
             <div class="col-lg-5">
-              
+
             </div>
             <div class="col-lg-7">
               <h5 class="mb-3">Ikuti Kami di Sosial media</h5>
@@ -348,50 +349,24 @@
       <h5>We accept:</h5>
       <div class="payment-bank">
         <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/mastercard-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/visa-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/shopepay-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/akulaku-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/uob-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/octo-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/bca-clickpay-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/indomaret-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/alfamart-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
-        </div>
-        <div class="bank-logo">
           <img src="<?php echo base_url('public/main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
           <img src="<?php echo base_url('public/main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
+        </div>
+        <div class="bank-logo">
           <img src="<?php echo base_url('public/main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('public/main/images/payment/danamon-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo base_url('public/main/images/payment/permata-bank.png'); ?>" class="img-fluid" alt="">
         </div>
+        <div class="bank-logo">
+          <img src="<?php echo base_url('public/main/images/payment/logo-gopay.png'); ?>" class="img-fluid" alt="">
+        </div>
+
         <div class="row payment-options">
 
           <div class="col-3 mb-2">
@@ -498,18 +473,18 @@
     });
   </script>
   <script>
-function seenallnotif(){
-    $.ajax({
-          method: "POST",
-          url: "<?php echo base_url('seenallnotif');?>",
-          success:function(data){
-            console.log("remove class");
-            $("a").removeClass("new-notif");
-          },
-        });
+    function seenallnotif() {
+      $.ajax({
+        method: "POST",
+        url: "<?php echo base_url('seenallnotif'); ?>",
+        success: function(data) {
+          console.log("remove class");
+          $("a").removeClass("new-notif");
+        },
+      });
 
-}
-</script>
+    }
+  </script>
 </body>
 
 </html>
