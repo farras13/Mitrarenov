@@ -426,9 +426,13 @@
   </footer>
 
   <script type="text/javascript" src="<?= base_url('public/main/js/script-bundle.min.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/leaflet.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/leaflet-src.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-debug.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('public/main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('public/main/js/script.js') ?>"></script>
   <!-- toast -->
-  <script src="<?= base_url('public/main/js/toastr.min.js') ?>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <?= $this->renderSection('script') ?>
   <script>
     $(document).ready(() => {
