@@ -5,14 +5,13 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?= base_url('main/css/custom.css') ?>">
     <link rel="stylesheet" href="<?= base_url('main/css/styles.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('main/css/custom.css') ?>">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link rel="icon" type="image/png" href="<?= base_url('main/images/favico.png ') ?>" />
-    <!-- toast -->
-    <link rel="stylesheet" type="text/css" href="<?= base_url('main/css/toastr.min.css') ?>">
-
+     <!-- toast -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <?= $this->renderSection('meta') ?>
     
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -156,28 +155,30 @@
                                         </div>
                                         <div class="notif-list">
                                             <?php foreach ($notif as $key => $value) { ?>
-                                                <?php if ($value->kategori == "chat") {
-                                                    $link = base_url('notif/chat/' . $value->id);
-                                                } else if ($value->kategori == "Project") {
-                                                    $link = base_url('notif/project/' . $value->id);
-                                                } else if ($value->kategori == "ProjectUpdate") {
-                                                    $link = base_url('notif/project/' . $value->id);
-                                                } else if ($value->kategori == "promo") {
-                                                    $link = base_url('detail-promo/' . $value->id_kategori);
-                                                } else if ($value->kategori == "transaction") {
-                                                    $link = base_url('notif/transaction/' . $value->id);
-                                                } ?>
-                                                <?php if ($value->status == 0) { ?>
+                                                <?php if($value->kategori == "chat"){ 
+                                                    $link=base_url('notif/chat/'.$value->id); 
+                                                }else if($value->kategori == "Project"){ 
+                                                    $link=base_url('notif/project/'.$value->id);
+                                                }else if($value->kategori == "ProjectUpdate"){ 
+                                                    $link=base_url('notif/project/'.$value->id); 
+                                                }else if($value->kategori == "promo"){ 
+                                                    $link=base_url('detail-promo/'.$value->id_kategori); 
+                                                }else if($value->kategori == "transaction"){ 
+                                                    $link=base_url('notif/transaction/'.$value->id); 
+                                                } ?>                                   
+                                                <?php if($value->status == 0){ ?>  
                                                     <a class="dropdown-item new-notif" href="<?= $link ?>">
-                                                <?php } else { ?>
+                                                <?php }else{ ?>    
                                                     <a class="dropdown-item" href="<?= $link ?>">
-                                                <?php } ?>
+                                                <?php } ?>  
                                                     <p class="font-weight-bold"><?= $value->kategori ?></p>
-                                                    <p><?= $value->message; ?></p>
+                                                    <p>
+                                                        <?= $value->message; ?>
+                                                    </p>
                                                     <p class="text-right mb-0"><?= $value->date ?></p>
                                                 </a>
                                             <?php } ?>
-                                        </div>                                 
+                                        </div>                                        
                                     </div>
                                 </li>
                             <?php } ?>
@@ -536,40 +537,66 @@
             <h5>We accept:</h5>
             <div class="payment-bank">
                 <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/mastercard-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/visa-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/shopepay-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/akulaku-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/uob-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/octo-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/bca-clickpay-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/indomaret-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/alfamart-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
+                    <img src="<?php echo base_url('main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
+                </div>
+                <div class="bank-logo">
                     <img src="<?php echo base_url('main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
                 </div>
                 <div class="bank-logo">
                     <img src="<?php echo base_url('main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
                 </div>
                 <div class="bank-logo">
-                    <img src="<?php echo base_url('main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
-                </div>
-                <div class="bank-logo">
                     <img src="<?php echo base_url('main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
                 </div>
                 <div class="bank-logo">
-                    <img src="<?php echo base_url('main/images/payment/permata-bank.png'); ?>" class="img-fluid" alt="">
+                    <img src="<?php echo base_url('main/images/payment/danamon-logo.png'); ?>" class="img-fluid" alt="">
                 </div>
-                <div class="bank-logo">
-                    <img src="<?php echo base_url('main/images/payment/logo-gopay.png'); ?>" class="img-fluid" alt="">
-                </div>
-
                 <div class="row payment-options">
-                    <div class="col-3 mb-2">
+
+                    <div class="col-3 mb">
 
                     </div>
-                    <div class="col-3 mb-2">
+                    <div class="col-3 mb">
 
                     </div>
-                    <div class="col-3 mb-2">
+                    <div class="col-3 mb">
 
                     </div>
-                    <div class="col-3 mb-2">
+                    <div class="col-3 mb">
 
                     </div>
                 </div>
             </div>
-
 
 
         </div>
@@ -587,9 +614,13 @@
     </footer>
 
     <script type="text/javascript" src="<?= base_url('main/js/script-bundle.min.js') ?>"></script>
+    <script type="text/javascript" src="<?= base_url('main/js/leaflet.js') ?>"></script>
+    <script type="text/javascript" src="<?= base_url('main/js/leaflet-src.js') ?>"></script>
+    <script type="text/javascript" src="<?= base_url('main/js/esri-leaflet-debug.js') ?>"></script>
+    <script type="text/javascript" src="<?= base_url('main/js/esri-leaflet-geocoder-debug.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('main/js/script.js') ?>"></script>
     <!-- toast -->
-    <script src="<?= base_url('main/js/toastr.min.js') ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     
     <script>
         $(document).ready(() => {

@@ -34,8 +34,14 @@ $routes->setAutoRoute(true);
 // $routes->get('/', 'Home::index');
 
 $routes->get('/', 'Home::index');
-$routes->get('/sitemap', 'Home::sitemap');
 $routes->get('home', 'Home::index');
+
+$routes->get('sitemap\.xml', 'Sitemap::index');
+$routes->get('sitemap-home\.xml', 'Sitemap::sitemap_home');
+$routes->get('sitemap-berita\.xml', 'Sitemap::sitemap_berita');
+$routes->get('sitemap-gallery\.xml', 'Sitemap::sitemap_gallery');
+$routes->get('sitemap-portofolio\.xml', 'Sitemap::sitemap_portofolio');
+$routes->get('sitemap-designrumah\.xml', 'Sitemap::sitemap_designrumah');
 
 $routes->post('login', 'Login::pros_log');
 $routes->get('lupa_password/(:any)', 'Login::forgot_pass/$1');
@@ -104,7 +110,7 @@ $routes->group('api', function ($routes) {
         $routes->post('notifios', 'Api\TransaksiController::notifios');
         // $routes->post('projekurl', 'Api\Home::updurl');
 
-//  $routes->post('merawat', 'Api\SimulasiKpr::merawat');
+        //  $routes->post('merawat', 'Api\SimulasiKpr::merawat');
         $routes->group('auth', function ($routes) {
             $routes->post('login', 'Api\LoginController::login');
             $routes->post('register', 'Api\LoginController::register');
@@ -167,7 +173,10 @@ $routes->group('api', function ($routes) {
         $routes->group('', ['filter' => 'token'], function ($routes) {
             $routes->get('lihatinvoice/(:num)', 'Api\ProjectController::generatePDF/$1');
             $routes->group('auth', function ($routes) {
-                
+                $routes->post('login', 'Api\LoginController::login');
+                $routes->post('register', 'Api\LoginController::register');
+                $routes->get('updreferal', 'Api\LoginController::updReferal');
+                $routes->post('reset_pass', 'Api\LoginController::resetPass_luar');
                 $routes->get('profile', 'Api\LoginController::profile');
                 $routes->post('editProfile', 'Api\LoginController::uploadImage');
                 $routes->post('reset_password', 'Api\LoginController::resetPass');

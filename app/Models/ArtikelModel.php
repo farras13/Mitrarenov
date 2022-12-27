@@ -60,6 +60,14 @@ class ArtikelModel extends Model
         }
     }
 
+    public function getPages()
+    {
+        // Select kolom url dan last_modified dari tabel pages
+        return $this->db->table('news')
+            ->select('slug, date')
+            ->get()->getResult();
+    }
+
     // function kategori()
     // {
     //     return $this->db->table('news_category')

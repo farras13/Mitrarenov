@@ -19,7 +19,7 @@ class LoginController extends ResourceController
     use ResponseTrait;
     protected $helpers = ['text'];
 
-    public function login()
+    public function login_create()
     {
         // inisiet model
         $auth = new AuthModel();

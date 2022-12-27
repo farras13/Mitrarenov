@@ -81,6 +81,7 @@ class ArtikelController extends ResourceController
         foreach ($data as $d) {
             $time = $d->created;
             $date = new DateTime("@$time");
+            $d->image = base_url('berita').'/'. $d->slug;
             $d->image = 'https://office.mitrarenov.com/assets/main/images/news/' . $d->image;
             $d->date = $date->format('d M Y');
         }
