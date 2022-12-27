@@ -38,10 +38,11 @@ $routes->get('home', 'Home::index');
 
 $routes->get('sitemap\.xml', 'Sitemap::index');
 $routes->get('sitemap-home\.xml', 'Sitemap::sitemap_home');
+$routes->get('sitemap-halaman\.xml', 'Sitemap::sitemap_halaman');
 $routes->get('sitemap-berita\.xml', 'Sitemap::sitemap_berita');
 $routes->get('sitemap-gallery\.xml', 'Sitemap::sitemap_gallery');
 $routes->get('sitemap-portofolio\.xml', 'Sitemap::sitemap_portofolio');
-$routes->get('sitemap-designrumah\.xml', 'Sitemap::sitemap_designrumah');
+$routes->get('sitemap-desainrumah\.xml', 'Sitemap::sitemap_designrumah');
 
 $routes->post('login', 'Login::pros_log');
 $routes->get('lupa_password/(:any)', 'Login::forgot_pass/$1');

@@ -90,14 +90,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; // Tambahkan header xml
                 </tr>
                 </thead>
                 <tbody>
-                    <xsl:for-each select="sitemap:sitemapindex/sitemap:sitemap">
-                    <xsl:variable name="sitemapURL">
-                        <xsl:value-of select="sitemap:loc"/>
-                    </xsl:variable>
+                    <tr>
+						<td><a href="<?= base_url('berita'); ?>"><loc><?= base_url('berita'); ?></loc></a></td>
+						<td><lastmod><?= date('Y-m-d') ?></lastmod></td>
+					</tr>
                     <?php foreach($post as $page): ?>
                     <tr>
                         <td>
-                        <a href="<?php echo base_url('berita').'/'.$page->slug; ?>"><loc><?php echo base_url('berita').'/'.$page->slug; ?></loc></a>
+                        <a href="<?php echo $page->slug; ?>"><loc><?php echo $page->slug; ?></loc></a>
                         </td>
                         <td>
                         <lastmod><?php echo date('Y-m-d', $page->date); ?></lastmod>

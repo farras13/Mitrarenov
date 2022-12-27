@@ -78,7 +78,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; // Tambahkan header xml
         </p>
         <xsl:if test="count(sitemap:sitemapindex/sitemap:sitemap) &gt; 0">
             <p class="expl">
-                This XML Sitemap Index file contains <xsl:value-of select="count(sitemap:sitemapindex/sitemap:sitemap)"/> sitemaps.
+                This XML Sitemap Index file contains 5 sitemaps.
             </p>
             <table id="sitemap" cellpadding="3">
                 <thead>
@@ -88,14 +88,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; // Tambahkan header xml
                 </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <a href="<?php echo base_url('sitemap-home.xml'); ?>"><loc><?php echo base_url('sitemap-home.xml'); ?></loc></a>
-                        </td>
-                        <td>
-                            <lastmod><?php echo date('Y-m-d'); ?></lastmod>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             <a href="<?php echo base_url('sitemap-portofolio.xml'); ?>"><loc><?php echo base_url('sitemap-portofolio.xml'); ?></loc></a>
@@ -114,6 +106,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; // Tambahkan header xml
                     </tr>
                     <tr>
                         <td>
+                            <a href="<?php echo base_url('sitemap-desainrumah.xml'); ?>"><loc><?php echo base_url('sitemap-desainrumah.xml'); ?></loc></a>
+                        </td>
+                        <td>
+                            <lastmod><?php echo date('Y-m-d'); ?></lastmod>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <a href="<?php echo base_url('sitemap-berita.xml'); ?>"><loc><?php echo base_url('sitemap-berita.xml'); ?></loc></a>
                         </td>
                         <td>
@@ -122,7 +122,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; // Tambahkan header xml
                     </tr>
                     <tr>
                         <td>
-                            <a href="<?php echo base_url('sitemap-designrumah.xml'); ?>"><loc><?php echo base_url('sitemap-designrumah.xml'); ?></loc></a>
+                            <a href="<?php echo base_url('sitemap-halaman.xml'); ?>"><loc><?php echo base_url('sitemap-halaman.xml'); ?></loc></a>
                         </td>
                         <td>
                             <lastmod><?php echo date('Y-m-d'); ?></lastmod>

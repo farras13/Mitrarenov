@@ -90,6 +90,10 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; // Tambahkan header xml
 				</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td><a href="<?= base_url('gallery'); ?>"><loc><?= base_url('gallery'); ?></loc></a></td>
+						<td><lastmod><?= date('Y-m-d') ?></lastmod></td>
+					</tr>
 					<?php foreach($data as $m): ?>
 					<tr>
 						<td><a href="https://office.mitrarenov.com/assets/main/images/photo_promo_paket/<?= $m->image ?>"><loc><?= base_url('gallery/' . $m->slug); ?></loc></a></td>
