@@ -143,7 +143,7 @@ class Login extends BaseController
         $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="' . base_url('lupa_password') . '/' . $token . '">Link reset</a></b> </p>';
 
         $email = \Config\Services::email();
-        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
+        $email->setFrom('info@mitrarenov.com', 'info@mitrarenov.com');
         $email->setTo($to);
         $email->setSubject($title);
         $email->setMessage($message);

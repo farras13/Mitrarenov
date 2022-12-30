@@ -440,16 +440,16 @@ class TransaksiController extends ResourceController
 			// send email
 			if ($status_cust == 1) {
 				$emailData = array(
-					'from' => 'notifikasi@mitrarenov.com',
-					'name' => 'notifikasi@mitrarenov.com',
+					'from' => 'info@mitrarenov.com',
+					'name' => 'info@mitrarenov.com',
 					'to' => $input['email'],
 					'bcc' => "",
 					'subject' => "Permintaan Jasa di Mitrarenov.com"  
 				);
 			} else {
 				$emailData = array(
-					'from' => 'notifikasi@mitrarenov.com',
-					'name' => 'notifikasi@mitrarenov.com',
+					'from' => 'info@mitrarenov.com',
+					'name' => 'info@mitrarenov.com',
 					'to' => $input['email'],
 					'bcc' => "",
 					'subject' => "Informasi Akun & Permintaan Jasa di Mitrarenov.com"             
@@ -478,7 +478,7 @@ class TransaksiController extends ResourceController
 				if ($d2->email_tukang !== null or $d2->email_tukang !== '') {
 
 					$email = \Config\Services::email();
-					$email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
+					$email->setFrom('info@mitrarenov.com', 'info@mitrarenov.com');
 					$email->setTo($d2->email_tukang);
 					$email->setSubject($subject_tukang);
 					$email->setMessage($this->contenttukang($data2, $d2));
@@ -1003,7 +1003,7 @@ class TransaksiController extends ResourceController
         $mdl = new GeneralModel();
 		$temp = $mdl->getWhere('email_ebook', array('id' => '1'))->getResult();
 		$email = \Config\Services::email();
-        $email->setFrom('testing@mitrarenov.com', 'testing@mitrarenov.com');
+        $email->setFrom('no-reply@mitrarenov.com', 'no-reply@mitrarenov.com');
         $email->setTo($emailData['to']);
         $email->setSubject($emailData['subject']);
 		if ($tipe == 0) {

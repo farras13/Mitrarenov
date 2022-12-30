@@ -154,7 +154,7 @@ class LoginController extends ResourceController
     private function sendEmail($to, $title, $message)
     {
         $email = \Config\Services::email();
-        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
+        $email->setFrom('info@mitrarenov.com', 'info@mitrarenov.com');
         $email->setTo($to);
         $email->setSubject($title);
         $email->setMessage($message);

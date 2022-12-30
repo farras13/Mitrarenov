@@ -289,16 +289,16 @@ class Order extends BaseController
         // send email 
         if ($log_sign == TRUE) {
             $emailData = array(
-                'from' => 'testing@mitrarenov.com',
-                'name' => 'testing@mitrarenov.com',
+                'from' => 'no-reply@mitrarenov.com',
+                'name' => 'no-reply@mitrarenov.com',
                 'to' => $input['email'],
                 'bcc' => "",
                 'subject' => "Permintaan Jasa di Mitrarenov.com"             
             );
         } else {
             $emailData = array(
-                'from' => 'testing@mitrarenov.com',
-                'name' => 'testing@mitrarenov.com',
+                'from' => 'no-reply@mitrarenov.com',
+                'name' => 'no-reply@mitrarenov.com',
                 'to' => $input['email'],
                 'bcc' => "",
                 'subject' => "Informasi Akun & Permintaan Jasa di Mitrarenov.com"            
@@ -328,7 +328,7 @@ class Order extends BaseController
             if ($d2->email_tukang !== null or $d2->email_tukang !== '') {
 
                 $email = \Config\Services::email();
-                $email->setFrom('testing@mitrarenov.com', 'testing@mitrarenov.com');
+                $email->setFrom('no-reply@mitrarenov.com', 'no-reply@mitrarenov.com');
                 $email->setTo($d2->email_tukang);
                 $email->setSubject($subject_tukang);
                 $email->setMessage($this->contenttukang($data2, $d2));
@@ -388,7 +388,7 @@ class Order extends BaseController
     {
         $temp = $this->model->getWhere('email_ebook', array('id' => '1'))->getResult();
         $email = \Config\Services::email();
-        $email->setFrom('testing@mitrarenov.com', 'testing@mitrarenov.com');
+        $email->setFrom('no-reply@mitrarenov.com', 'no-reply@mitrarenov.com');
         $email->setTo($emailData['to']);
         $email->setSubject($emailData['subject']);
         if ($tipe == 0) {
