@@ -270,9 +270,9 @@
               <div class="testi-content">
                 <p class="font-weight-bold mb-0"><?= $t->name ?></p>
                 <p class="mb-2"><?= strip_tags($t->company) ?></p>
-                <p class="text-14">
-                  <i>"<?= $t->testimoni ?>"</i>
-                </p>
+                <div class="text-14 text-italic">
+                  "<?= $t->testimoni ?>"
+                </div>
               </div>
             </div>
           <?php endforeach; ?>
@@ -542,7 +542,7 @@
         $("#moreDesain").fadeOut('slow');
       }
     });
-    
+
   });
 </script>
 <?= $this->endSection() ?>
