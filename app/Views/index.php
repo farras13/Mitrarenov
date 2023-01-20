@@ -270,8 +270,8 @@
               <div class="testi-content">
                 <p class="font-weight-bold mb-0"><?= $t->name ?></p>
                 <p class="mb-2"><?= strip_tags($t->company) ?></p>
-                <div class="text-14 text-italic">
-                  "<?= $t->testimoni ?>"
+                <div class="text-14 testidesc">
+                  <?= $t->testimoni ?>
                 </div>
               </div>
             </div>
