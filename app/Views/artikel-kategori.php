@@ -14,7 +14,7 @@
     <div class="row main-content">
       <div class="col-lg-4 mb-5">
         <div class="sidebar">
-          <div class="card rounded-0 sidebar-inner" id="pin1">
+          <div class="card rounded-0 sidebar-inner">
             <div class="card-body p-5 card-sidebar">
               <div class="d-flex align-items-center">
                 <div class="mr-3 nav-collapse">
@@ -132,45 +132,5 @@
     </div>
   </div>
 </div>
-<?= $this->section('script') ?>
-<script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
-<script>
-  $(document).ready(function() {
-    const postDetails = document.querySelector(".content-article");
-    const postSidebar = document.querySelector(".sidebar");
-    const postSidebarContent = document.querySelector(".sidebar-inner");
-    const content = $(".article-list").height();
-    var controller = new ScrollMagic.Controller();
-    var scene = new ScrollMagic.Scene({
-        triggerElement: "#trigger1",
-        duration: content,
-        triggerHook: 0,
-        offset: -100,
-      })
-      .setPin("#pin1")
-      .addTo(controller);
 
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      scene.setPin(postSidebar, {
-        pushFollowers: false
-      });
-    }
-
-    window.addEventListener("resize", () => {
-      if (window.matchMedia("(min-width: 768px)").matches) {
-        scene.setPin(postSidebar, {
-          pushFollowers: false
-        });
-      } else {
-        scene.removePin(postSidebar, true);
-      }
-    });
-
-    function getDuration() {
-      return postDetails.offsetHeight - postSidebarContent.offsetHeight;
-    }
-  })
-</script>
-
-<?= $this->endSection() ?>
 <?= $this->endSection() ?>
