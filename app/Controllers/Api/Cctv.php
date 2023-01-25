@@ -96,12 +96,41 @@ class Cctv extends ResourceController
         $query = [];        
         
         foreach ($produk as $key => $value) {
-            $query['id_device'] = $value->produk_id;
-            $query['nama'] = $value->nama;
-            $query['status'] = $value->status == 1 ? "Online" : "Offline";
-            $link_stream =  $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $value->produk_id , [ 'type' => 'hls' ] )->result->url;
-            $query['link'] = $link_stream;
-            
+            $temp = new \stdClass;;
+            $temp->id_device = $value->produk_id;
+            $temp->name_device = $value->nama   ;
+            $temp->status = $value->status == 1 ? "Online" : "Offline";
+            $value->link_stream =  $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $value->produk_id , [ 'type' => 'hls' ] );
+            $temp->link = $value->link_stream != null ? $value->link_stream->result->url : "-";
+            array_push($query, $temp);
+        }
+        $res = [
+            "status" => 200,
+            "messages" => "Sukses",
+            "data" => $query
+        ];
+        return $this->respond($res, 200);
+    }
+
+    public function streamrud()
+    {
+        $model = new GeneralModel();
+        $input =  $this->request->getVar();
+        $tuya = $this->configtuya();  
+       
+        $token = $input['token'];
+        $produk = $model->getWhere('projects_cctv', ['project_id' => $input['id']])->getResult();
+        // var_dump($produk);die;
+        $query = [];        
+        
+        foreach ($produk as $key => $value) {
+            $temp = new \stdClass;;
+            $temp->id_device = $value->produk_id;
+            $temp->name_device = $value->nama   ;
+            $temp->status = $value->status == 1 ? "Online" : "Offline";
+            $value->link_stream =  $tuya->devices( $token )->post_stream_allocate( $this->app_id() , $value->produk_id , [ 'type' => 'hls' ] );
+            $temp->link = $value->link_stream != null ? $value->link_stream : "-";
+            array_push($query, $temp);
         }
         $res = [
             "status" => 200,

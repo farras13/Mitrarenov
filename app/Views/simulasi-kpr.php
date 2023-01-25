@@ -190,7 +190,7 @@
 </div>
 
 <?= $this->section('script') ?>
-<script src="<?= base_url('public/main/js/easy-number-separator.js') ?>"></script>
+<script src="<?= base_url('main/js/easy-number-separator.js') ?>"></script>
 <script>
   $(document).ready(function() {
     easyNumberSeparator({

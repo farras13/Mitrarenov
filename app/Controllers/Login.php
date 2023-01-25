@@ -18,12 +18,20 @@ class Login extends BaseController
 
     public function login()
     {
+        $sess = session();
+        if ($sess->get('logged_in') != FALSE) {
+            return redirect()->back();
+        }
         helper(['form']);
         echo view("login");
     }
 
     public function register()
     {
+        $sess = session();
+        if ($sess->get('logged_in') != FALSE) {
+            return redirect()->back();
+        }
         echo view("register");
     }
 
@@ -34,21 +42,29 @@ class Login extends BaseController
         //set rules validation form
         $rules = [
             'name'          => 'required|min_length[3]|max_length[20]',
-            'phone'         => 'required|min_length[9]|max_length[13]',
+            'phone'         => 'required|min_length[9]|max_length[13]|number',
             'email'         => 'required|min_length[6]|max_length[50]|valid_email',
             'password'      => 'required|min_length[6]|max_length[200]',
             'confpassword'  => 'matches[password]'
         ];
-
+        if(!is_numeric($this->request->getVar('phone'))){
+            $session->setFlashdata('toast', 'error:Pastikan inputan telephone hanya menggunakan angka!');
+            return redirect()->back()->withInput();
+        }
         if ($this->validate($rules)) {
             $use = $this->model->getWhere('member', ['email' => $this->request->getVar('email')])->getRow();
+            $use_nomor = $this->model->getWhere('member_detail', ['telephone' => $this->request->getVar('phone')])->getRow();
             // var_dump($use);die;
             if ($use != null) {
                 $data['valmail'] = "Email sudah terdaftar!";
                 session()->setFlashdata('toast', 'error:' . $data);
                 return view('register', $data);
             }
-
+            if ($use_nomor != null) {
+                $data['valmail'] = "Nomor telephone sudah terdaftar!";
+                session()->setFlashdata('toast', 'error:' . $data);
+                return view('register', $data);
+            }
             $data = [
                 'email'    => $this->request->getVar('email'),
                 'password' => md5($this->request->getVar('password')),
@@ -140,7 +156,7 @@ class Login extends BaseController
         }
         $this->model->ins('temp_reset_pass', ['member_id' => $cek['id'], 'token' => $token]);
         $title = "Reset Password";
-        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="' . base_url('lupa_password') . '/' . $token . '">Link reset</a></b> </p>';
+        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="' . base_url('member/lupa-password') . '/' . $token . '">Link reset</a></b> </p>';
 
         $email = \Config\Services::email();
         $email->setFrom('info@mitrarenov.com', 'info@mitrarenov.com');
@@ -174,10 +190,10 @@ class Login extends BaseController
 
         // $this->model->ins('temp_reset_pass', ['member_id' => $cek['id'], 'token' => $token]);
         $title = "Order Mitrarenov";
-        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="' . base_url('lupa_password') . '/' . $token . '">Link reset</a></b> </p>';
+        $message = '<h2>Reset Password</h2><p>Untuk melakukan reset password anda dapat klik link berikut <b><a href="' . base_url('member/lupa-password') . '/' . $token . '">Link reset</a></b> </p>';
 
         $email = \Config\Services::email();
-        $email->setFrom('notifikasi@mitrarenov.com', 'notifikasi@mitrarenov.com');
+        $email->setFrom('info@mitrarenov.com', 'info@mitrarenov.com');
         $email->setTo($to);
         $email->setSubject($title);
         $email->setMessage($message);

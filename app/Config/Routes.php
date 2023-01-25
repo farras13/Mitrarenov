@@ -36,21 +36,22 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('home', 'Home::index');
 
-$routes->get('sitemap\.xml', 'Sitemap::index');
-$routes->get('sitemap-home\.xml', 'Sitemap::sitemap_home');
-$routes->get('sitemap-halaman\.xml', 'Sitemap::sitemap_halaman');
-$routes->get('sitemap-berita\.xml', 'Sitemap::sitemap_berita');
-$routes->get('sitemap-gallery\.xml', 'Sitemap::sitemap_gallery');
-$routes->get('sitemap-portofolio\.xml', 'Sitemap::sitemap_portofolio');
-$routes->get('sitemap-desainrumah\.xml', 'Sitemap::sitemap_designrumah');
+$routes->get('sitemap', 'Sitemap::index');
+$routes->get('sitemap-home', 'Sitemap::sitemap_home');
+$routes->get('sitemap-halaman', 'Sitemap::sitemap_halaman');
+$routes->get('sitemap-berita', 'Sitemap::sitemap_berita');
+$routes->get('sitemap-gallery', 'Sitemap::sitemap_gallery');
+$routes->get('sitemap-portofolio', 'Sitemap::sitemap_portofolio');
+$routes->get('sitemap-desainrumah', 'Sitemap::sitemap_designrumah');
 
 $routes->post('login', 'Login::pros_log');
-$routes->get('lupa_password/(:any)', 'Login::forgot_pass/$1');
-$routes->get('lupa_password', 'Login::pageEmail');
-$routes->post('lupa_password/sendEmail', 'Login::sendEmail');
-$routes->post('lupa_password/send', 'Login::sendReset');
+$routes->get('member/lupa-password/(:any)', 'Login::forgot_pass/$1');
+$routes->get('member/lupa-password', 'Login::pageEmail');
+$routes->post('member/lupa-password/sendEmail', 'Login::sendEmail');
+$routes->post('member/lupa-password/send', 'Login::sendReset');
 $routes->post('regis', 'Login::reg');
 
+$routes->get('member', 'Page::redirectpagetologin');
 $routes->get('member/login', 'Login::login');
 $routes->get('member/register', 'Login::register');
 $routes->get('member/logout', 'Login::logout');
@@ -59,8 +60,8 @@ $routes->get('member/logout', 'Login::logout');
 $routes->get('portofolio/(:any)', 'Home::detail_porto/$1');
 $routes->get('portofolio', 'Home::portofolio');
 
-$routes->get('desain_rumah', 'Home::design_rumah');
-$routes->get('desain_rumah/(:any)', 'Home::detail_design_rumah/$1');
+$routes->get('desain-rumah', 'Home::design_rumah');
+$routes->get('desain-rumah/(:any)', 'Home::detail_design_rumah/$1');
 
 $routes->get('gallery', 'Home::gallery');
 // $routes->get('gallery/(:any)', 'Home::detail_gallery/$1');
@@ -111,7 +112,7 @@ $routes->group('api', function ($routes) {
         $routes->post('notifios', 'Api\TransaksiController::notifios');
         // $routes->post('projekurl', 'Api\Home::updurl');
 
-        //  $routes->post('merawat', 'Api\SimulasiKpr::merawat');
+//  $routes->post('merawat', 'Api\SimulasiKpr::merawat');
         $routes->group('auth', function ($routes) {
             $routes->post('login', 'Api\LoginController::login');
             $routes->post('register', 'Api\LoginController::register');
@@ -174,10 +175,7 @@ $routes->group('api', function ($routes) {
         $routes->group('', ['filter' => 'token'], function ($routes) {
             $routes->get('lihatinvoice/(:num)', 'Api\ProjectController::generatePDF/$1');
             $routes->group('auth', function ($routes) {
-                $routes->post('login', 'Api\LoginController::login');
-                $routes->post('register', 'Api\LoginController::register');
-                $routes->get('updreferal', 'Api\LoginController::updReferal');
-                $routes->post('reset_pass', 'Api\LoginController::resetPass_luar');
+                
                 $routes->get('profile', 'Api\LoginController::profile');
                 $routes->post('editProfile', 'Api\LoginController::uploadImage');
                 $routes->post('reset_password', 'Api\LoginController::resetPass');
@@ -219,9 +217,16 @@ $routes->group('api', function ($routes) {
                 $routes->post('device', 'Api\Cctv::getDevice');
                 $routes->post('stream_device', 'Api\Cctv::streamAll');
                 $routes->post('stream_device_detail', 'Api\Cctv::stream');
+                $routes->post('stream_rud', 'Api\Cctv::streamrud');
             });        
         });
     });
+    $routes->group('auth', function ($routes) {
+            $routes->post('login', 'Api\LoginController::login');
+            $routes->post('register', 'Api\LoginController::register');
+            $routes->get('updreferal', 'Api\LoginController::updReferal');
+            $routes->post('reset_pass', 'Api\LoginController::resetPass_luar');
+        });
 });
 /*
  * --------------------------------------------------------------------

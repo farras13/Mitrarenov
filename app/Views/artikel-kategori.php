@@ -66,15 +66,15 @@
                 <div class="d-flex article-item-small">
                   <div class="article-sm-img">
                     <div class="article-sm-img-inner">
-                      <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/thumbs/<?= $tb['image'] ?>" alt="">
+                      <img src="https://office.mitrarenov.com/assets/main/images/news/<?= $tb['image'] ?>" alt="">
                     </div>
                   </div>
                   <div class="w-100 pl-4">
                     <a href="<?= base_url('berita/' . $tb['slug']) ?>">
                       <h4 class="mb-2"><?= $tb['title'] ?></h4>
                     </a>
-                    <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
-                    <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['created'];
+                    <p class="text-grey mb-0"><?= !empty($tb['penulis']) ? $tb['penulis'] : "Admin Mitrarenov"; ?></p>
+                    <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['date'];
                                                           $date = new DateTime("@$time");
                                                           echo $date->format('d M Y'); ?></p>
                     <p>
@@ -98,15 +98,15 @@
                 <div class="d-flex article-item-small">
                   <div class="article-sm-img">
                     <div class="article-sm-img-inner">
-                      <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/thumbs/<?= $tb['image'] ?>" alt="">
+                      <img src="https://office.mitrarenov.com/assets/main/images/news/<?= $tb['image'] ?>" alt="">
                     </div>
                   </div>
                   <div class="w-100 pl-4">
                     <a href="<?= base_url('berita/' . $tb['slug']) ?>">
                       <h4 class="mb-2"><?= $tb['title'] ?></h4>
                     </a>
-                    <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
-                    <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['created'];
+                    <p class="text-grey mb-0"><?= !empty($tb['penulis']) ? $tb['penulis'] : "Admin Mitrarenov"; ?></p>
+                    <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['date'];
                                                           $date = new DateTime("@$time");
                                                           echo $date->format('d M Y'); ?></p>
                     <p>
@@ -120,20 +120,13 @@
               <?php endforeach; ?>
             </div>
           <?php } ?>
-          <!-- <nav aria-label="Page navigation">
-              <ul class="pagination justify-content-center mt-4">
-                <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-              </ul>
-            </nav> -->
         </div>
       </div>
     </div>
   </div>
 </div>
 <?= $this->section('script') ?>
-<script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
+<script src="<?= base_url('main/js/ScrollMagic.min.js') ?>"></script>
 <script>
   $(document).ready(function() {
     const postDetails = document.querySelector(".content-article");

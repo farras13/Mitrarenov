@@ -1,15 +1,16 @@
 <?= $this->extend('template') ?>
 <?= $this->section('meta') ?>
-<title>MITRARENOV – 0822 9000 9990 – Jasa Bangun Rumah, Jasa Renovasi Rumah, Jasa Kontraktor Rumah, Jasa Bangun Ruko, Jasa Renovasi Kantor, Jasa Tukang Borongan, Jasa Pemborong Bangunan Rumah Kost, Gudang, dan Gedung</title>
-<meta name="description" content="PROMO Mitrarenov - Jasa Kontraktor bangun dan renovasi rumah MURAH hingga MEWAH, TERPERCAYA, BERPENGALAMAN dan BERGARANSI dengan pekerjaan Jasa Desain Rumah dan Jasa Arsitek Rumah di area DKI Jakarta, Bogor, Depok, Tangerang, Bekasi, BSD, Bandung, Cirebon, Semarang, Yogyakarta dan Surabaya ">
-<meta name="keywords" content="jasa bangun rumah, jasa bangun rumah murah, kontraktor bangun rumah, jasa renovasi rumah, jasa renovasi rumah murah, kontraktor renovasi rumah, jasa kontraktor rumah, kontraktor jasa renovasi rumah, kontraktor jasa bangun rumah, jasa bangun ruko, kontraktor bangun ruko, jasa renovasi kantor, kontraktor renovasi kantor, jasa renovasi rumah bekasi, jasa bangun rumah bekasi, jasa kontraktor rumah bekasi, kontraktor rumah bekasi, cari tukang bangunan yang bagus, tukang bangunan rumah, jasa pemborong rumah, jasa tukang borongan, ">
+    <title>MITRARENOV – 0822 9000 9990 – Jasa Bangun Rumah, Jasa Renovasi Rumah, Jasa Kontraktor Rumah, Jasa Pemborong Bangunan Rumah Kost, Gudang, dan Gedung</title>
+    <meta name="description" content="PROMO Mitrarenov - Jasa Kontraktor bangun dan renovasi rumah MURAH, hingga MEWAH, TERPERCAYA, BERPENGALAMAN dan BERGARANSI dengan pekerjaan berbagai layanan lengkap, fitur kemudahan dan Tanpa ribet! ">
+    <meta name="keywords" content="jasa bangun rumah, jasa bangun rumah murah, kontraktor bangun rumah, jasa renovasi rumah, jasa renovasi rumah murah, kontraktor renovasi rumah, jasa kontraktor rumah, kontraktor jasa renovasi rumah, kontraktor jasa bangun rumah, jasa bangun ruko, kontraktor bangun ruko, jasa renovasi kantor, kontraktor renovasi kantor, jasa renovasi rumah bekasi, jasa bangun rumah bekasi, jasa kontraktor rumah bekasi, kontraktor rumah bekasi, cari tukang bangunan yang bagus, tukang bangunan rumah, jasa pemborong rumah, jasa tukang borongan, ">
+    <link rel="canonical" href="https://www.mitrarenov.com/">
 <?= $this->endSection(); ?>
 <?= $this->section('css') ?>
-<style>
-  .testi-content a {
-    color: white;
-  }
-</style>
+    <style>
+      .testi-content a {
+        color: white;
+      }
+    </style>
 <?= $this->endSection(); ?>
 <?= $this->section('content') ?>
 
@@ -19,7 +20,7 @@
       <?php foreach ($promo as $p) : if ($p->kategori == 2) : ?>
           <div class="slick-slide slide-item">
             <div class="banner-top-container">
-              <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
+              <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://office.mitrarenov.com/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
               <div class="slide-content">
                 <!-- <div class="discount-badge">
                   Diskon <?= $p->promo ?>%
@@ -54,7 +55,7 @@
         <?php else : ?>
           <div class="slick-slide slide-item">
             <div class="banner-top-container">
-              <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
+              <a href="#"><img src="https://office.mitrarenov.com/assets/main/images/promo/<?= $p->image ?>" class="w-100" alt=""></a>
               <div class="slide-content">
                 <!-- <div class="discount-badge">
                 Diskon <?= $p->promo ?>%
@@ -98,7 +99,7 @@
       <?php foreach ($promo as $p) : if ($p->kategori == 2) : ?>
           <div class="slick-slide slide-item">
             <div class="banner-top-container">
-              <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
+              <a href="<?= base_url('detail-promo') . '/' . $p->id ?>"><img src="https://office.mitrarenov.com/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
               <div class="slide-content">
                 <div class="discount-badge">
                   Diskon <?= $p->promo ?>%
@@ -106,23 +107,23 @@
                 <div class="slide-text">
                   <div class="row">
                     <div class="col-md-8">
-                      <?php if ($p->head == 1) { ?>
-                        <h1><?= $p->title ?></h1>
-                      <?php } elseif ($p->head == 2) { ?>
-                        <h2><?= $p->title ?></h2>
-                      <?php } elseif ($p->head == 3) { ?>
-                        <h3><?= $p->title ?></h3>
-                      <?php } elseif ($p->head == 4) { ?>
-                        <h4><?= $p->title ?></h4>
-                      <?php } elseif ($p->head == 5) { ?>
-                        <h5><?= $p->title ?></h5>
-                      <?php } elseif ($p->head == 6) { ?>
-                        <h6><?= $p->title ?></h6>
-                      <?php } elseif ($p->head == 7) { ?>
-                        <p><?= $p->title ?></p>
-                      <?php } ?>
-                      <?php $date = new DateTime($p->expired); ?>
-                      <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>
+                      <!--<?php if ($p->head == 1) { ?>-->
+                      <!--  <h1><?= $p->title ?></h1>-->
+                      <!--<?php } elseif ($p->head == 2) { ?>-->
+                      <!--  <h2><?= $p->title ?></h2>-->
+                      <!--<?php } elseif ($p->head == 3) { ?>-->
+                      <!--  <h3><?= $p->title ?></h3>-->
+                      <!--<?php } elseif ($p->head == 4) { ?>-->
+                      <!--  <h4><?= $p->title ?></h4>-->
+                      <!--<?php } elseif ($p->head == 5) { ?>-->
+                      <!--  <h5><?= $p->title ?></h5>-->
+                      <!--<?php } elseif ($p->head == 6) { ?>-->
+                      <!--  <h6><?= $p->title ?></h6>-->
+                      <!--<?php } elseif ($p->head == 7) { ?>-->
+                      <!--  <p><?= $p->title ?></p>-->
+                      <!--<?php } ?>-->
+                      <!--<?php $date = new DateTime($p->expired); ?>-->
+                      <!--<p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p>-->
                     </div>
 
                   </div>
@@ -133,7 +134,7 @@
         <?php else : ?>
           <div class="slick-slide slide-item">
             <div class="banner-top-container">
-              <a href="#"><img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
+              <a href="#"><img src="https://office.mitrarenov.com/assets/main/images/promo/<?= $p->imagecontent ?>" class="w-100" alt=""></a>
               <div class="slide-content">
                 <!-- <div class="discount-badge">
                 Diskon <?= $p->promo ?>%
@@ -141,21 +142,21 @@
                 <div class="slide-text">
                   <div class="row">
                     <div class="col-md-8">
-                      <?php if ($p->head == 1) { ?>
-                        <h1><?= $p->title ?></h1>
-                      <?php } elseif ($p->head == 2) { ?>
-                        <h2><?= $p->title ?></h2>
-                      <?php } elseif ($p->head == 3) { ?>
-                        <h3><?= $p->title ?></h3>
-                      <?php } elseif ($p->head == 4) { ?>
-                        <h4><?= $p->title ?></h4>
-                      <?php } elseif ($p->head == 5) { ?>
-                        <h5><?= $p->title ?></h5>
-                      <?php } elseif ($p->head == 6) { ?>
-                        <h6><?= $p->title ?></h6>
-                      <?php } elseif ($p->head == 7) { ?>
-                        <p><?= $p->title ?></p>
-                      <?php } ?>
+                      <!--<?php if ($p->head == 1) { ?>-->
+                      <!--  <h1><?= $p->title ?></h1>-->
+                      <!--<?php } elseif ($p->head == 2) { ?>-->
+                      <!--  <h2><?= $p->title ?></h2>-->
+                      <!--<?php } elseif ($p->head == 3) { ?>-->
+                      <!--  <h3><?= $p->title ?></h3>-->
+                      <!--<?php } elseif ($p->head == 4) { ?>-->
+                      <!--  <h4><?= $p->title ?></h4>-->
+                      <!--<?php } elseif ($p->head == 5) { ?>-->
+                      <!--  <h5><?= $p->title ?></h5>-->
+                      <!--<?php } elseif ($p->head == 6) { ?>-->
+                      <!--  <h6><?= $p->title ?></h6>-->
+                      <!--<?php } elseif ($p->head == 7) { ?>-->
+                      <!--  <p><?= $p->title ?></p>-->
+                      <!--<?php } ?>-->
                       <!-- <?php $date = new DateTime($p->expired); ?>
                     <p class="mb-0">Masa berlaku s/d <?= $date->format('F Y'); ?></p> -->
                     </div>
@@ -174,7 +175,7 @@
   </div>
   <div class="section section-1 pt-4 pb-5" id="ckk">
     <div class="text-center">
-      <h2 class="title text-primary">Cara Kerja Kami</h2>
+      <h2 class="title text-primary">Bangun Rumah Nggak Lagi Ribet!</h2>
     </div>
     <div class="section-inner">
       <div class="row align-items-center">
@@ -265,14 +266,14 @@
           <?php foreach ($testimoni as $t) : ?>
             <div class="testi-item">
               <div class="testi-img">
-                <img class="testi-img" src="https://admin.mitrarenov.soldig.co.id/assets/main/images/testimoni/<?= $t->image ?>" alt="">
+                <img class="testi-img" src="https://office.mitrarenov.com/assets/main/images/testimoni/<?= $t->image ?>" alt="">
               </div>
               <div class="testi-content">
                 <p class="font-weight-bold mb-0"><?= $t->name ?></p>
                 <p class="mb-2"><?= strip_tags($t->company) ?></p>
-                <p class="text-14">
-                  <i>"<?= $t->testimoni ?>"</i>
-                </p>
+                <div class="text-14 text-italic">
+                  "<?= $t->testimoni ?>"
+                </div>
               </div>
             </div>
           <?php endforeach; ?>
@@ -318,8 +319,8 @@
           <div class="row" id="pekerjaanGallery">
             <?php foreach ($galery as $g) { ?>
               <div class="col-md-3 mb-4 col-gallery">
-                <a href="https://admin.mitrarenov.soldig.co.id/assets/main/images/photo_promo_paket/<?= $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-description="<?= $g->judul ?>">
-                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/photo_promo_paket/<?= $g->image ?>" class="img-fluid" alt="">
+                <a href="https://office.mitrarenov.com/assets/main/images/photo_promo_paket/<?= $g->image ?>" class="gallery-item" title="<?= $g->judul ?>" data-description="<?= $g->judul ?>">
+                  <img src="https://office.mitrarenov.com/assets/main/images/photo_promo_paket/<?= $g->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $g->judul ?></h5>
                     <p class="mb-0"></p>
@@ -336,8 +337,8 @@
           <div class="row">
             <?php foreach ($merawat as $m) { ?>
               <div class="col-md-3 mb-4">
-                <a href="<?= base_url('portofolio/' . $m->slug); ?>" class="gallery-item">
-                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/<?= $m->image ?>" class="img-fluid" alt="">
+                <a href="<?= base_url('portofolio/' . strtolower($m->slug)); ?>" class="gallery-item">
+                  <img src="https://office.mitrarenov.com/assets/main/images/merawat/<?= $m->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $m->title ?></h5>
                     <p class="mb-0"></p>
@@ -355,8 +356,8 @@
           <div class="row" id="desainGallery">
             <?php foreach ($design_rumah as $dr) { ?>
               <div class="col-md-3 mb-4 col-gallery-desain">
-                <a href="https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/<?= $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-description="<?= $dr->title ?>">
-                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/<?= $dr->image ?>" class="img-fluid" alt="">
+                <a href="https://office.mitrarenov.com/assets/main/images/design_rumah/<?= $dr->image ?>" class="gallery-item" title="<?= $dr->title ?>" data-description="<?= $dr->title ?>">
+                  <img src="https://office.mitrarenov.com/assets/main/images/design_rumah/<?= $dr->image ?>" class="img-fluid" alt="">
                   <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $dr->title ?></h5>
                     <p class="mb-0"></p>
@@ -366,7 +367,7 @@
             <?php } ?>
           </div>
           <div class="text-center mt-4">
-            <a href="<?= base_url('desain_rumah'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
+            <a href="<?= site_url('desain-rumah'); ?>" class="readmore-link" id="morePortfolio">Lihat Selengkapnya</a>
           </div>
         </div>
       </div>
@@ -398,14 +399,14 @@
         <?php foreach ($artikel as $art) : ?>
           <div class="article-item">
             <div class="article-img">
-              <img src="<?= "https://admin.mitrarenov.soldig.co.id/assets/main/images/news/" . $art->image ?>" alt="">
+              <img src="<?= "https://office.mitrarenov.com/assets/main/images/news/" . $art->image ?>" alt="">
             </div>
             <div class="article-dsc">
               <h4><?= $art->title ?></h4>
               <p class="mb-0">Penulis <?= $art->penulis; ?></p>
               <p>Diterbitkan <?php $time = $art->date;
                               $date = new DateTime("@$time");
-                              echo $date->format('d F Y'); ?></p>
+                              echo $date->format('d M Y'); ?></p>
               <a href="<?= base_url('berita/' . $art->slug) ?>">Baca Selengkapnya...</a>
             </div>
           </div>
@@ -424,7 +425,7 @@
       <div class="client-slide">
         <?php foreach ($partner as $p) : ?>
           <div class="client-item">
-            <img src="<?= "https://admin.mitrarenov.soldig.co.id/assets/main/images/partner_icon/" . $p->image ?>" class="img-fluid" alt="">
+            <img src="<?= "https://office.mitrarenov.com/assets/main/images/partner_icon/" . $p->image ?>" class="img-fluid" alt="">
           </div>
         <?php endforeach ?>
 
@@ -442,7 +443,7 @@
         </h3>
         <div class="d-flex justify-content-center flex-wrap city-area mt-5">
           <?php foreach ($lokasi as $l) : ?>
-            <a target="_blank" href="<?= $l->maps_location ?>" class="area-item"><?= $l->title ?></a>
+            <a target="_blank" href="<?= $l->maps_location == null ? '#' : $l->maps_location ?>" class="area-item"><?= $l->title ?></a>
           <?php endforeach ?>
         </div>
       </div>
@@ -457,20 +458,20 @@
     <div class="unduh-container mt-5">
       <div class="row align-items-center justify-content-center">
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('public/main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('main/images/unduh-bg-1.png') ?>" class="img-fluid" alt="">
         </div>
         <div class="col-md-4 col-10">
           <div class="d-flex download-btn">
             <a href="#">
-              <img src="<?= base_url('public/main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('main/images/google-play-btn.png') ?>" class="img-fluid" alt="">
             </a>
             <a href="#">
-              <img src="<?= base_url('public/main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
+              <img src="<?= base_url('main/images/app-store-btn.png') ?>" class="img-fluid" alt="">
             </a>
           </div>
         </div>
         <div class="col-md-4 mobile-off">
-          <img src="<?= base_url('public/main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
+          <img src="<?= base_url('main/images/unduh-bg-2.png') ?>" class="img-fluid" alt="">
         </div>
       </div>
     </div>
@@ -499,13 +500,13 @@
           <h5 class="sub-title-cat">Pilihan Jasa</h5>
 
           <div class="row">
-            <?php foreach ($jasa as $m) : if ($kt->id == $m->category_id) : $string = $m->slug;
+            <?php foreach ($jasa as $m) : if ($kt->id == $m->category_id) : $string = strtolower($m->slug);
                 $str = str_replace(' ', '-', $string); ?>
                 <div class="col-md-6 my-4">
                   <div class="d-flex align-items-center">
 
                     <div class="cat-img-i">
-                      <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
+                      <img src="https://office.mitrarenov.com/assets/main/images/product_icon/<?= $m->image_icon ?>" class="img-fluid" alt="">
                     </div>
                     <div class="w-100 text-15 pl-3">
                       <a href="<?= base_url('jasa/' . $str) ?>" target="_blank" style="color:black;"> <?= $m->paket_name ?> </a>

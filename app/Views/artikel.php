@@ -1,8 +1,9 @@
 <?= $this->extend('template') ?>
 <?= $this->section('meta') ?>
-<title>Artikel | MITRARENOV.COM</title>
-<meta name="description" content="Anda ingin bangun atau renovasi rumah anda? Hubungi kami sekarang! Tim Mitrarenov siap membantu anda dalam segala kebutuhan rumah anda">
-<meta name="keywords" content="Hubungi mitrarenov sekarang">
+<title>Berbagai Tips Bangun dan Renovasi Rumah | Artikel Mitrarenov</title>
+<meta name="description" content="Berbagai Tips Bangun, renovasi dan perawatan rumah, kantor, gedung hingga gudang">
+<meta name="keywords" content="Artikel Mitrarenov">
+
 <?= $this->endSection(); ?>
 <?= $this->section('content') ?>
 <div class="content-wrapper">
@@ -44,7 +45,8 @@
                 <ul class="nav nav-article-cat flex-column">
                   <?php foreach ($kategori as $h) : if ($h->category != null || $h->category != '') : ?>
                       <li class="nav-item">
-                        <?php $link = str_replace(' ', '-', $h->category); ?>
+                        <?php $kategori = strtolower($h->category); ?>
+                        <?php $link = str_replace(' ', '-', $kategori); ?>
                         <a href="<?= base_url('berita/kategori/' . $link) ?>" class="nav-link px-0"><?= $h->category ?></a>
                       </li>
                   <?php endif;
@@ -66,12 +68,12 @@
                 <?php foreach ($hot as $h) : ?>
                   <div class="article-slider-item">
                     <div class="article-img">
-                      <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="">
+                      <img src="https://office.mitrarenov.com/assets/main/images/news/<?= $h->image ?>" alt="">
                     </div>
                     <a href="<?= base_url('berita') . '/' . $h->slug ?>">
                       <h4 class="mt-3 mb-2"><?= $h->title ?></h4>
                     </a>
-                    <p class="text-grey mb-0"><?= $h->penulis ?></p>
+                    <p class="text-grey mb-0"><?= !empty($h->penulis) ? $h->penulis : "Admin Mitrarenov"; ?></p>
                     <p class="text-grey mb-0">Diterbitkan <?php $time = $h->date;
                                                           $date = new DateTime("@$time");
                                                           echo $date->format('d M Y'); ?></p>
@@ -97,17 +99,15 @@
               <div class="d-flex article-item-small">
                 <div class="article-sm-img">
                   <div class="article-sm-img-inner">
-                    <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/<?= $tb['image'] ?>" alt="">
+                    <img src="https://office.mitrarenov.com/assets/main/images/news/<?= $tb['image'] ?>" alt="">
                   </div>
                 </div>
                 <div class="w-100 pl-4">
                   <a href="<?= base_url('berita') . '/' . $tb['slug'] ?>">
                     <h4 class="mb-2"><?= $tb['title'] ?></h4>
                   </a>
-                  <p class="text-grey mb-0"><?= $tb['penulis'] ?></p>
-                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['date'];
-                                                        $date = new DateTime("@$time");
-                                                        echo $date->format('d M Y'); ?></p>
+                  <p class="text-grey mb-0"><?= !empty($tb['penulis']) ? $tb['penulis'] : "Admin Mitrarenov"; ?></p>
+                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tb['date']; echo date('d M Y', $time); ?></p>
                   <p>
                     <?= $tb['meta_description'] ?> ...
                   </p>
@@ -119,20 +119,13 @@
             <?php endforeach; ?>
           </div>
           <?= $pager->links('page_berita', 'bootstrap_pagination') ?>
-          <!-- <nav aria-label="Page navigation">
-              <ul class="pagination justify-content-center mt-4">
-                <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-              </ul>
-            </nav> -->
         </div>
       </div>
     </div>
   </div>
 </div>
 <?= $this->section('script') ?>
-<script src="<?= base_url('public/main/js/ScrollMagic.min.js') ?>"></script>
+<script src="<?= base_url('main/js/ScrollMagic.min.js') ?>"></script>
 
 
 <script>

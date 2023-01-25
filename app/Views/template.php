@@ -5,8 +5,8 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<?= base_url('main/css/custom.css') ?>">
   <link rel="stylesheet" href="<?= base_url('main/css/styles.css') ?>">
+   <link rel="stylesheet" href="<?= base_url('main/css/custom.css') ?>">
   <link rel="icon" type="image/png" href="<?= base_url('main/images/favico.png ') ?>" />
   <!-- toast -->
   <link rel="stylesheet" type="text/css" href="<?= base_url('main/css/toastr.min.css') ?>">
@@ -319,13 +319,13 @@
               <a target="_BLANK" href="https://www.instagram.com/mitrarenov/" class="mr-4 mb-3">
                 <i class="ico ico-instagram"></i>
               </a>
-              <a target="_BLANK" href="https://www.twitter.com/" class="mr-4 mb-3">
-                <i class="ico ico-twitter"></i>
-              </a>
-              <a target="_BLANK" href="https://www.youtube.com/" class="mr-4 mb-3">
+              <!--<a target="_BLANK" href="https://www.twitter.com/" class="mr-4 mb-3">-->
+              <!--  <i class="ico ico-twitter"></i>-->
+              <!--</a>-->
+              <a target="_BLANK" href="https://youtube.com/@mitrarenovofficial7672" class="mr-4 mb-3">
                 <i class="ico ico-youtube"></i>
               </a>
-              <a target="_BLANK" href="https://www.tiktok.com/" class="mr-4 mb-3">
+              <a target="_BLANK" href="https://www.tiktok.com/@mitrarenov?_t=8YgCwHDqUfB&_r=1" class="mr-4 mb-3">
                 <i class="ico ico-tiktok"></i>
               </a>
 
@@ -396,7 +396,7 @@
     <div class="section-inner py-3">
       <div class="row">
         <div class="col-md-6">
-          ©2021, mitrarenov
+          ©<?= date('Y'); ?>, mitrarenov
         </div>
         <div class="col-md-6 text-right">
           All Rights Reserved.

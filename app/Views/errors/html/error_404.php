@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>404 Page Not Found</title>
-
+	<title>404 - Halaman Tidak ada</title>
+	<link rel="icon" type="image/x-icon" href="https://mitrarenov.com/cdn/frontend/img/icon/favicon.png">
 	<style>
 		div.logo {
 			height: 200px;
@@ -70,13 +70,13 @@
 </head>
 <body>
 	<div class="wrap">
-		<h1>404 - File Not Found</h1>
+		<h1>404 - Halaman Tidak Ditemukan</h1>
 
 		<p>
 			<?php if (! empty($message) && $message !== '(null)') : ?>
 				<?= nl2br(esc($message)) ?>
 			<?php else : ?>
-				Sorry! Cannot seem to find the page you were looking for.
+				Maaf, halaman yang anda cari tidak ditemukan. Yuk kembali ke homepage <a href="https://www.mitrarenov.com">mitrarenov.com</a>.
 			<?php endif ?>
 		</p>
 	</div>

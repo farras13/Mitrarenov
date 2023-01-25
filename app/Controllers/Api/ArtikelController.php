@@ -19,7 +19,7 @@ class ArtikelController extends ResourceController
         $db = db_connect();
         $key = $this->request->getGet();
         $page = 0;
-
+        $tgl_sekarang = strtotime(date("Y-m-d"));
         // var_dump($count);die;
         if (array_key_exists("page", $key) || array_key_exists("cari", $key) || array_key_exists("category", $key)) {
 
@@ -28,31 +28,31 @@ class ArtikelController extends ResourceController
             $kategori  = $key['category'];
              
             if ($page != 0 && $cari != null && $kategori != null) {
-                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date, a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND news_category = $kategori AND title LIKE '%$cari%'  ORDER BY a.created desc")->getResult();
+                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date, a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.date <= '$tgl_sekarang' AND news_category = $kategori AND title LIKE '%$cari%'  ORDER BY a.created desc")->getResult();
                 $temp_count = count($default);
                 $count = round($temp_count / 8);
                 $limit = 8;
                 $ofs = $page * $limit - 8;
-                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0  AND a.news_category = $kategori AND title LIKE '%$cari%' ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
+                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.date <= '$tgl_sekarang' AND a.news_category = $kategori AND title LIKE '%$cari%' ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
             } elseif ($page != 0 && $cari != null) {
-                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND title LIKE '%$cari%' ORDER BY a.created desc")->getResult();
+                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.date <= '$tgl_sekarang' AND title LIKE '%$cari%' ORDER BY a.created desc")->getResult();
                 $limit = 8;
                 $ofs = $page * $limit - 8;
-                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND title LIKE '%$cari%' ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
+                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.date <= '$tgl_sekarang' AND title LIKE '%$cari%' ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
                 $temp_count = count($default);
                 $count = round($temp_count / 8);
             }elseif ($page != 0 && $kategori != null) {
-                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date, a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.news_category = $kategori  ORDER BY a.created desc")->getResult();
+                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date, a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.date <= '$tgl_sekarang' AND a.news_category = $kategori  ORDER BY a.created desc")->getResult();
                 $temp_count = count($default);
                 $count = round($temp_count / 8);
                 $limit = 8;
                 $ofs = $page * $limit - 8;
-                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.news_category = $kategori ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
+                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.date <= '$tgl_sekarang' AND a.news_category = $kategori ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
             } elseif ($page != 0) {
-                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 ORDER BY a.created desc")->getResult();
+                $default = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0  AND a.date <= '$tgl_sekarang' ORDER BY a.created desc")->getResult();
                 $limit = 8;
                 $ofs = $page * $limit - 8;
-                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
+                $data = $db->query("SELECT a.id, a.title, a.slug, a.image, a.created, a.date,a.news_category, a.meta_description, a.hits, a.tagline, a.analyticsviews, member_detail.name AS penulis FROM news as a join member on member.id = a.created_by JOIN member_detail on member.id = member_detail.member_id WHERE a.is_publish = 0 AND a.date <= '$tgl_sekarang' ORDER BY a.created desc LIMIT $ofs,$limit ")->getResult();
                 $temp_count = count($default);
                 $count = round($temp_count / 8);
             } 
@@ -79,11 +79,11 @@ class ArtikelController extends ResourceController
         $url = base_url();
 
         foreach ($data as $d) {
-            $time = $d->created;
+            $time = $d->date;
             $date = new DateTime("@$time");
-            $d->image = base_url('berita').'/'. $d->slug;
+            $d->url = base_url('berita').'/'.$d->slug;
             $d->image = 'https://office.mitrarenov.com/assets/main/images/news/' . $d->image;
-            $d->date = $date->format('d M Y');
+            $d->date = date('d M Y', $time);
         }
 
         $temp = [
@@ -119,10 +119,10 @@ class ArtikelController extends ResourceController
             return $this->respond($res, 200);
         }
         $url = base_url();
-        $time = $data->created;
+        $time = $data->date;
         $date = new DateTime("@$time");
         $data->image ='https://office.mitrarenov.com/assets/main/images/news/' . $data->image;
-        $data->date = $date->format('d M Y');
+        $d->date = date('d M Y', $time);
         $res = [
             "status" => TRUE,
             "messages" => "Sukses",
@@ -166,10 +166,10 @@ class ArtikelController extends ResourceController
         }
         $url = base_url();
         foreach ($data as $d) {
-            $time = $d->created;
+            $time = $d->date;
             $date = new DateTime("@$time");
-            $d->image = $url . '/public/images/news/thumbs/' . $d->image;
-            $d->date = $date->format('d M Y');
+            $d->image ='https://office.mitrarenov.com/assets/main/images/news/' . $d->image;
+            $d->date = date('d M Y', $time);
             $d->url = $url . '/artikel/' . $d->id . '/detail';
         }
         $res = [

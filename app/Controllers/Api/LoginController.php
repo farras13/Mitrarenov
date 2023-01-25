@@ -19,7 +19,7 @@ class LoginController extends ResourceController
     use ResponseTrait;
     protected $helpers = ['text'];
 
-    public function login_create()
+    public function login()
     {
         // inisiet model
         $auth = new AuthModel();
@@ -28,7 +28,7 @@ class LoginController extends ResourceController
         // init request json
         $headers = $this->request->headers();
         $request = $this->request->getVar();
-        
+        // var_dump($request);die;
         $device = $headers['User-Agent']->getValue();
 
         if(strpos("Okhttp/3.12.12", $device) != ""){
@@ -231,7 +231,8 @@ class LoginController extends ResourceController
         }
         $url = base_url();
         $user->email = $user_temp->email;
-        $user->path_image = $url . '' . '/public/images/pp/' . $user->photo;
+        $user->path_image = !empty($user->photo) ? $url . '' . '/images/pp/' . $user->photo : "";
+        
         $res = [
             'data' => $user,
             'error' => null
@@ -496,7 +497,7 @@ class LoginController extends ResourceController
             $temp = explode(".", $profile_image);
             $newfilename = round(microtime(true)) . '.' . end($temp);
 
-            if ($file->move('./public/images/pp', $newfilename)) {
+            if ($file->move('./images/pp', $newfilename)) {
 
                 $data = [
                     'name' => $input['name'],
@@ -517,7 +518,7 @@ class LoginController extends ResourceController
                         'status' => 200,
                         'error' => false,
                         'message' => 'File uploaded successfully',
-                        'data' => ["file_path" => "./public/images/pp/" . $newfilename]
+                        'data' => ["file_path" => "./images/pp/" . $newfilename]
                     ];
                 } else {
 

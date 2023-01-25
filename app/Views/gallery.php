@@ -1,8 +1,9 @@
 <?= $this->extend('template') ?>
 <?= $this->section('meta') ?>
-<title>Gallery | MITRARENOV.COM</title>
-<meta name="description" content="Anda ingin bangun atau renovasi rumah anda? Hubungi kami sekarang! Tim Mitrarenov siap membantu anda dalam segala kebutuhan rumah anda">
-<meta name="keywords" content="Hubungi mitrarenov sekarang">
+<title>Gallery Pekerjaan Mitrarenov | MITRARENOV.COM</title>
+<meta name="description" content="Berbagai dokumentasi foto project bangun dan renovasi rumah Mitrarenov">
+<meta name="keywords" content="Gallery Pekerjaan">
+<link rel="canonical" href="https://www.mitrarenov.com/gallery">
 <?= $this->endSection(); ?>
 <?= $this->section('content') ?>
 <div class="content-wrapper">
@@ -14,10 +15,10 @@
         <?php foreach($porto as $p){ ?>
             <div class="col-md-3 mb-4">
                 <a href="#" class="gallery-item">
-                <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/photo_promo_paket/<?= $p["image"] ?>" class="img-fluid" alt="">
+                <img src="https://office.mitrarenov.com/assets/main/images/photo_promo_paket/<?= $p["image"] ?>" class="img-fluid" alt="">
                 <div class="gallery-cnt">
                     <h5 class="mb-1"><?= $p["judul"] ?></h5>
-                    <p class="mb-0">diliput oleh <?= $p["penulis"]; ?></p>
+                    <!--<p class="mb-0">diliput oleh <?= $p["penulis"]; ?></p>-->
                 </div>
                 </a>
             </div>

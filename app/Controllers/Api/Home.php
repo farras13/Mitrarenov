@@ -30,7 +30,6 @@ class Home extends ResourceController
             // $data = $model->getWhere('category', ['id !=' => 3], $limit)->getResult();
             $data = $db->query("SELECT category.* FROM category join product on category.id = product.category_id where category.id != 3 group by category.id LIMIT $limit")->getResult();
         }
-
         if (!$data) {
             $res = [
                 "status" => 200,

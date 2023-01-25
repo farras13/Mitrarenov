@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Controllers\Api\BaseController;
 use App\Models\ArtikelModel;
 use App\Models\DboModel;
+use App\Models\AuthDetailModel;
+use App\Models\AuthModel;
 use App\Models\GeneralModel;
 use App\Models\PortoModel;
 use App\Models\DesignModel;
@@ -52,19 +54,20 @@ class Home extends BaseController
         }
         $data['alur'] = $this->model->getAll('rules')->getResult();
         $data['keunggulan'] = $this->model->getAll('keunggulan')->getResult();
-        $artikel = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('date', 'DESC')->get(9)->getResult();
+        $artikel = $model->select('news.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = news.created_by', 'left')->where('is_publish', '0')->orderBy('date', 'DESC')->get(10)->getResult();
         $temp_artikel = [];
         foreach ($artikel as $key => $value) {
-            if($value->date <= time()){
+            if(date('Y-m-d',$value->date) <= date('Y-m-d')){
                 $temp_artikel[] = $value;
             }
         }
+       
         $data['artikel'] = $temp_artikel; 
         $data['testimoni'] = $this->model->getAll('testimoni')->getResult();
         $data['promo'] = $this->model->getWhere('promomobile', ['is_publish' => 0], null, 'posisi', 'asc')->getResult();
-        $data['galery'] = $this->model->getOrderBy('gallery_pekerjaan', 'id', 'desc')->getResult();
+        $data['galery'] = $this->model->getOrderBy('gallery_pekerjaan', 'id', 'desc', 8)->getResult();
         $data['merawat'] = $this->model->getOrderBy('merawat', 'created', 'desc', 8)->getResult();
-        $data['design_rumah'] = $this->model->getWhere('design_rumah', ['is_publish' => 1], null, 'id', 'desc')->getResult();
+        $data['design_rumah'] = $this->model->getWhere('design_rumah', ['is_publish' => 1], 8, 'id', 'desc')->getResult();
         $data['liputan'] = $this->model->getAll('liputan')->getResult();
         $data['partner'] = $this->model->getOrderBy('partner', 'position', 'asc')->getResult();
         $data['lokasi'] = $this->model->getAll('location')->getResult();
@@ -117,7 +120,7 @@ class Home extends BaseController
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
-        $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/";
+        $data['link_gambar'] = "https://office.mitrarenov.com/assets/main/images/merawat/";
 
         $data['porto'] = $model->select('merawat.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = merawat.created_by')->paginate(12, 'berita');
         $data['pager'] = $model->pager;
@@ -128,7 +131,29 @@ class Home extends BaseController
     public function detail_porto($id)
     {
         $data['title'] = "Portofolio";
+        
+		$jenis = str_replace('-',' ',$id);
+		$explod = explode("-",$id);
+        
+	    foreach($explod as $v){
+        	$foundCharacter = strpos($v, ".");
+            if($foundCharacter !== false){
+                $cek = explode(".", $v);
+    		    foreach($cek as $c){
+                    if (!empty($c) && !is_numeric($c) && !ctype_lower($c)) {
+                        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+                    }
+                }
+            }else{
+                if (!empty($c) && !is_numeric($v) && !ctype_lower($v)) {
+                    throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+                } 
+            }
+        }
         $data['porto'] = $this->model->getWhere('merawat', ['slug' => $id])->getRow();
+        if (empty($data['porto'])) {
+        	throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    	} 
         $id = $data['porto']->created_by;
         $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id])->getRow();
         $data['lain'] = $this->model->getWhere('merawat', ['id !=' => $id], 4)->getResult();
@@ -159,7 +184,7 @@ class Home extends BaseController
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
-        $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/merawat/";
+        $data['link_gambar'] = "https://office.mitrarenov.com/assets/main/images/merawat/";
 
         return view('porto_detail', $data);
     }
@@ -195,14 +220,25 @@ class Home extends BaseController
         $data['chat_total'] = $chat;        
         $data['porto'] = $model->select('*')->where('is_publish', '1')->orderBy('id', 'DESC')->paginate(12, 'berita');
         $data['pager'] = $model->pager;
-        $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/";
+        $data['link_gambar'] = "https://office.mitrarenov.com/assets/main/images/design_rumah/";
 
         return view('portofolio', $data);
     }
 
     public function detail_design_rumah($id)
     {
+        $jenis = str_replace('-',' ',$id);
+		$explod = explode("-",$id);
+        
+	    foreach($explod as $v){
+        	if (!ctype_lower($v)) {
+            	throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        	} 
+        }
         $data['porto'] = $this->model->getWhere('design_rumah', ['slug' => $id])->getRow();
+        if (empty($data['porto'])) {
+        	throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    	} 
         $id_member = $data['porto']->created_by;
         $data['penulis'] = $this->model->getWhere('member_detail', ['member_id' => $id_member])->getRow();
         $data['lain'] = $this->model->getWhere('design_rumah', ['slug !=' => $id], 4)->getResult();
@@ -230,11 +266,11 @@ class Home extends BaseController
             }
         }
         $data['title'] = "Design Rumah";
-        $data['linkdetail'] = base_url('desain_rumah');
+        $data['linkdetail'] = base_url('desain-rumah');
         $data['notif'] = $temp;
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
-        $data['link_gambar'] = "https://admin.mitrarenov.soldig.co.id/assets/main/images/design_rumah/";
+        $data['link_gambar'] = "https://office.mitrarenov.com/assets/main/images/design_rumah/";
 
         return view('porto_detail', $data);
     }
@@ -244,6 +280,7 @@ class Home extends BaseController
         $model = new GeneralModel();
         $w = array('id' => (int)$id, 'is_publish' => 0);
         $data['promo'] = $model->getWhere('promomobile', $w)->getRow();
+        
         $sess = session();
         $idn = $sess->get('user_id');
         
@@ -305,7 +342,7 @@ class Home extends BaseController
         $data['notif_total'] = $no;
         $data['chat_total'] = $chat;
 
-        $data['porto'] = $model->select('gallery_pekerjaan.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = gallery_pekerjaan.created_by')->orderBy('gallery_pekerjaan.id', 'desc')->paginate(12, 'gallery');
+        $data['porto'] = $model->select('gallery_pekerjaan.*, member_detail.name as penulis')->join('member_detail', 'member_detail.member_id = gallery_pekerjaan.created_by')->orderBy('gallery_pekerjaan.id', 'desc')->paginate(8, 'gallery');
         $data['pager'] = $model->pager;
 
         return view('gallery', $data);
@@ -515,9 +552,15 @@ class Home extends BaseController
         $model->upd('notifikasi', ['id' => $id], ['status' => 1]);
         return redirect()->to('chat');        
     }
-
+    
     public function sitemap(){
-        $datetime = Time::createFromFormat('Y-m-d H:i:s', '2020-11-25 17:48:31');
+        
+         echo view("sitemap");
+    }
+    
+    public function sitemap_backup(){
+        $datetime = Time::parse('2020-11-25 17:48:31', 'Asia/Jakarta');
+        $result = $datetime->format('Y-m-d\TH:i:sP');
         $hasil = array('berita','gallery_pekerjaan','portofolio','design_rumah','simulasi-kpr','halaman/tentang-kami','halaman/cara-kerja','halaman/hubungi-kami','halaman/jadilah-rekanan-kami','halaman/career');
           
         $xmlString = '<?xml version="1.0" encoding="UTF-8"?>
@@ -529,23 +572,21 @@ class Home extends BaseController
               <url>
                   <loc>https://mitrarenov.com/</loc>
                   <priority>1.0</priority>
-                  <lastmod>'.$datetime.'</lastmod>
+                  <lastmod>'.$result.'</lastmod>
               </url>';
               $hasil = array('berita','gallery_pekerjaan','portofolio','design_rumah','simulasi-kpr','halaman/tentang-kami','halaman/cara-kerja','halaman/hubungi-kami','halaman/jadilah-rekanan-kami','halaman/career');
           foreach($hasil as $h){
            $xmlString .=   '<url>';
            $xmlString .=  '<loc>'.base_url(''.$h).'</loc>';
-           $xmlString .=  '<lastmod>'.$datetime.'</lastmod>';
+           $xmlString .=  '<lastmod>'.$result.'</lastmod>';
            $xmlString .=  '<priority>0.80</priority>';
            $xmlString .=  '</url>';
           }
           
           $xmlString .= '</urlset>';
-           $dom = new DOMDocument();
+          $dom = new DOMDocument();
           $dom->preserveWhiteSpace = FALSE;
           $dom->loadXML($xmlString);
-          $this->output->set_content_type('text/xml');
-          $this->output->set_output($xmlString);
+          echo $dom->saveXML();
     }
-    
 }

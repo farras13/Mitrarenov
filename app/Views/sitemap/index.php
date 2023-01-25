@@ -1,6 +1,7 @@
 <?php
 echo '<?xml version="1.0" encoding="UTF-8"?>'; // Tambahkan header xml
 ?>
+
 <xsl:stylesheet version="2.0"
     xmlns:html="http://www.w3.org/TR/REC-html40"
     xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
@@ -80,7 +81,43 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'; // Tambahkan header xml
             <p class="expl">
                 This XML Sitemap Index file contains 5 sitemaps.
             </p>
+            <!--<url>-->
+            <!--  <loc>https://www.mitrarenov.com/</loc>-->
+            <!--  <lastmod>2022-12-13T02:21:36+00:00</lastmod>-->
+            <!--  <priority>1.00</priority>-->
+            <!--</url>-->
+            <!--<url>-->
+            <!--  <loc><?php echo base_url('sitemap-portofolio.xml'); ?></loc>-->
+            <!--  <lastmod><?php echo date('Y-m-d'); ?></lastmod>-->
+            <!--  <priority>1.00</priority>-->
+            <!--</url>-->
+            <!--<url>-->
+            <!--  <loc><?php echo base_url('sitemap-portofolio.xml'); ?></loc>-->
+            <!--  <lastmod><?php echo date('Y-m-d'); ?></lastmod>-->
+            <!--  <priority>1.00</priority>-->
+            <!--</url>-->
+            <!--<url>-->
+            <!--  <loc><?php echo base_url('sitemap-gallery.xml'); ?></loc>-->
+            <!--  <lastmod><?php echo date('Y-m-d'); ?></lastmod>-->
+            <!--  <priority>1.00</priority>-->
+            <!--</url>-->
+            <!--<url>-->
+            <!--  <loc><?php echo base_url('sitemap-desainrumah.xml'); ?></loc>-->
+            <!--  <lastmod><?php echo date('Y-m-d'); ?></lastmod>-->
+            <!--  <priority>1.00</priority>-->
+            <!--</url>-->
+            <!--<url>-->
+            <!--  <loc><?php echo base_url('sitemap-berita.xml'); ?></loc>-->
+            <!--  <lastmod><?php echo date('Y-m-d'); ?></lastmod>-->
+            <!--  <priority>1.00</priority>-->
+            <!--</url>-->
+            <!--<url>-->
+            <!--  <loc><?php echo base_url('sitemap-halaman.xml'); ?></loc>-->
+            <!--  <lastmod><?php echo date('Y-m-d'); ?></lastmod>-->
+            <!--  <priority>1.00</priority>-->
+            <!--</url>-->
             <table id="sitemap" cellpadding="3">
+                
                 <thead>
                 <tr>
                     <th width="75%">Sitemap</th>

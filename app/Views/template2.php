@@ -577,7 +577,7 @@
         <div class="section-inner py-3">
             <div class="row">
                 <div class="col-md-6">
-                    ©2021, mitrarenov
+                    ©<?= date('Y') ?>, mitrarenov
                 </div>
                 <div class="col-md-6 text-right">
                     All Rights Reserved.

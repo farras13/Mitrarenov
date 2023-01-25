@@ -50,7 +50,7 @@
                         </div>
                         <?php foreach($lain as $l): ?>
                         <div class="col-md-3 mb-3">
-                            <a href="<?= $linkdetail.'/'.$l->slug; ?>" class="gallery-item">
+                            <a href="<?= $linkdetail.'/'.strtolower($l->slug); ?>" class="gallery-item">
                                 <img src="<?= $link_gambar.$l->image ?>" class="img-fluid" alt="">
                                 <div class="gallery-cnt">
                                     <h5 class="mb-1"><?= $l->title; ?></h5>

@@ -42,15 +42,29 @@ class ArtikelModel extends Model
     function hot(){
         return $this->db->table('news')
         ->select('news.*, member_detail.name as penulis')
-        ->join('member', 'member.id = news.created_by')
-        ->join('member_detail', 'member_detail.member_id = member.id')
-        ->orderBy('news.analyticsviews', 'desc')->get(8)->getResult(); 
+        ->join('member', 'member.id = news.created_by', 'left')
+        ->join('member_detail', 'member_detail.member_id = member.id', 'left')
+        ->where('news.is_publish', 0)
+        ->where('date <=', time())
+        ->orderBy('news.hits', 'desc')->get(8)->getResult(); 
+    }
+    
+    public function getPages()
+    {
+        // Select kolom url dan last_modified dari tabel pages
+        return $this->db->table('news')
+            ->select('slug, date')
+            ->where('news.is_publish', 0)
+            ->where('date <=', time())
+            ->get()->getResult();
     }
 
     function kategori()
     {
         $cek =  $this->db->table('news')
         ->select('news.id, news.news_category as title, count(kategori) as banyak')
+        ->where('news.is_publish', 0)
+        ->where('date <=', time())
         ->groupBy('news.kategori')
         ->orderBy('banyak', 'desc')->get(8);
         if($cek){
@@ -59,13 +73,15 @@ class ArtikelModel extends Model
             return $this->tagline();
         }
     }
-
-    public function getPages()
-    {
-        // Select kolom url dan last_modified dari tabel pages
+    
+    function newest(){
         return $this->db->table('news')
-            ->select('slug, date')
-            ->get()->getResult();
+        ->select('news.*, member_detail.name as penulis')
+        ->join('member', 'member.id = news.created_by', 'left')
+        ->join('member_detail', 'member_detail.member_id = member.id', 'left')
+        ->where('news.is_publish', 0)
+        ->where('date <=', time())
+        ->orderBy('news.date', 'desc')->get(8)->getResult(); 
     }
 
     // function kategori()
@@ -81,6 +97,8 @@ class ArtikelModel extends Model
     {
         return  $this->db->table('news')
         ->select('news.id, news.tagline as title, count(tagline) as banyak')
+        ->where('news.is_publish', 0)
+        ->where('date <=', time())
         ->groupBy('news.tagline')
         ->orderBy('banyak', 'desc')->get(8)->getResult();
     }
@@ -90,16 +108,30 @@ class ArtikelModel extends Model
         return  $this->db->table('news')
         ->select('news.*')
         ->where('tagline', $id)
-        ->orderBy('id', 'desc')->get(4)->getResult();
+        ->where('date <=', time())
+        ->where('news.is_publish', 0)
+        ->orderBy('rand()')->get(4)->getResult();
+    }
+    
+    function bycategory($id){
+        return  $this->db->table('news')
+            ->select('news.*')
+            ->where('news_category', $id)
+            ->where('news.is_publish', 0)
+            ->where('news.date <=', time())
+            ->orderBy('rand()')->get(4)->getResult();
     }
 
     function search_hot($s)
     {
          return $this->db->table('news')
         ->select('news.*, member_detail.name as penulis')
-        ->join('member', 'member.id = news.created_by')
-        ->join('member_detail', 'member_detail.member_id = member.id')
+        ->join('member', 'member.id = news.created_by', 'left')
+        ->join('member_detail', 'member_detail.member_id = member.id', 'left')
+        ->where('news.is_publish', 0)
+        ->where('date <=', time())
         ->like('title', $s)
-        ->orderBy('news.analyticsviews', 'desc')->get(8)->getResult(); 
+        ->orderBy('news.date', 'desc')
+        ->orderBy('news.hits', 'desc')->get(8)->getResult(); 
     }
 }

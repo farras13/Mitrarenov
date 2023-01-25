@@ -1,29 +1,31 @@
 <?= $this->extend('template') ?>
-
+<?= $this->section('meta') ?>
+<title><?=  $berita['meta_title'] ?></title>
+<meta name="description" content="<?=  $berita['meta_description'] ?>">
+<meta name="keywords" content="<?=  $berita['meta_keyword'] ?>">
+<?= $this->endSection(); ?>
 <?= $this->section('content') ?>
 <div class="content-wrapper">
-  <div class="page-title">
-    <h1>Artikel Detail</h1>
-  </div>
+  <!--<div class="page-title">-->
+  <!--  <h1>Artikel Detail</h1>-->
+  <!--</div>-->
 
   <div class="container my-5">
     <div class="row">
       <div class="col-lg-9 mb-5 content-article">
 
         <div class="article-img">
-          <img src="<?= base_url('public/images/news') . '/' . $berita['image'] ?>" class="w-100" alt="">
+          <img src="<?= $path.$berita['image'] ?>" class="w-100" alt="">
         </div>
         <h1 class="mt-4 article-title text-primary">
           <?= $berita['title'] ?>
         </h1>
         <div class="row align-items-center py-2">
           <div class="col-8">
-            <!-- <p class="text-grey mb-0">Penulis <?= $berita['penulis'] ?></p> -->
+             <p class="text-grey mb-0">Penulis <?= !empty($berita['penulis']) ? $berita['penulis'] : "Admin Mitrarenov"; ?></p> 
             <p class="text-grey mb-0">
               <span>
-                Diterbitkan <?php $time = $berita['date'];
-                            $date = new DateTime("@$time");
-                            echo $date->format('d M Y'); ?>
+                Diterbitkan <?php $time = $berita['date']; echo date('d M Y', $time); ?>
               </span>
               <?php if(!empty($berita['kategori'])){ ?>
               <span>#</span>
@@ -66,7 +68,7 @@
                   </a>
                 </div>
                 <div class="input-inline w-100">
-                  <form action="" method="get" name="artikel_search">
+                  <form action="<?= base_url('berita') ?>" method="get" name="artikel_search">
                     <input type="text" name="cari" class="form-control pl-4" placeholder="Cari Artikel">
                     <span class="input-icon" onclick="artikel_search.submit()"><i class="ico ico-search"></i></span>
                   </form>
@@ -86,7 +88,7 @@
                         <div class="row">
                           <div class="col-4">
                             <div class="artikel-side-img">
-                              <img src="<?= base_url('public/images/news') . '/' . $h->image ?>" alt="" class="img-fluid">
+                              <img src="<?= $path.$h->image ?>" alt="" class="img-fluid">
                             </div>
                           </div>
                           <div class="col-8 pl-0">
@@ -109,15 +111,6 @@
                   <?php endforeach; ?>
                 </ul>
 
-                <!-- <h5 class="text-primary mt-4">Tags</h5>
-                <div class="tags">
-                  <a href="#" class="nav-tags">Tag 1</a>
-                  <a href="#" class="nav-tags">Tag 2</a>
-                  <a href="#" class="nav-tags">Tag 3</a>
-                  <a href="#" class="nav-tags">Tag 4</a>
-                  <a href="#" class="nav-tags">Tag 5</a>
-                </div> -->
-
               </div>
 
             </div>
@@ -135,16 +128,14 @@
             <div class="col-md-3">
               <div class="article-item-small" style="border-bottom: 0;">
                 <div class="article-sm-img-inner">
-                  <img src="https://admin.mitrarenov.soldig.co.id/assets/main/images/news/<?= $tk->image ?>" alt="">
+                  <img src="<?= $path.$tk->image ?>" alt="">
                 </div>
                 <div class="w-100 mt-3">
                   <a href="<?= base_url('berita') . '/' . $tk->slug ?>">
                     <h4 class="mt-3 mb-2"><?= $tk->title ?></h4>
                   </a>
                   <p class="text-grey mb-0"><?= empty($tk->penulis) ? "Admin Mitrarenov" : $tk->penulis; ?></p>
-                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tk->date;
-                                                        $date = new DateTime("@$time");
-                                                        echo $date->format('d M Y'); ?></p>
+                  <p class="text-grey mb-0">Diterbitkan <?php $time = $tk->date; echo date('d M Y', $time); ?></p>
                   <p>
                     <?= $tk->meta_description ?> ...
                   </p>
@@ -167,9 +158,6 @@
 <script src="<?= base_url('main/js/ScrollMagic.min.js') ?>"></script>
 
 <script>
-  document.title = '<?=  $berita['meta_title'] ?>';
-  $('head').append('<meta name="description" content="<?=  $berita['meta_description'] ?>">');
-  $('head').append('<meta name="keywords" content="<?=  $berita['meta_keyword'] ?>">');
   const postDetails = document.querySelector(".content-article");
   const postSidebar = document.querySelector(".sidebar");
   const postSidebarContent = document.querySelector(".sidebar-inner");

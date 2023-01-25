@@ -148,4 +148,8 @@ class Page extends BaseController
         $data['akun'] = $this->model->getWhere('member_detail', ['member_id' => $sess->get('user_id')])->getRow();
         echo view('tentang-mitra', $data);
     }
+    
+    public function redirectpagetologin(){
+        return redirect()->to('member/login');
+    }
 }

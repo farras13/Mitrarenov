@@ -122,14 +122,13 @@ class Akun extends BaseController
         if ($session->get('logged_in') == FALSE) {
             return redirect()->to('/');
         }
-
         $request = $this->request->getVar();
+        $gambar = $this->request->getFile('file');
+        $akun = $this->dbo->getProfile($session->get('user_id'));
         if(ctype_space($request['email']) || ctype_space($request['nama']) || ctype_space($request['telephone'])){
             $session->setFlashdata('toast', 'error:Pastikan semua data terisi!');
             return redirect()->back()->withInput();
         }
-        $gambar = $this->request->getFile('file');
-        $akun = $this->dbo->getProfile($session->get('user_id'));
       
         if($akun->email != $request['email']){
             $data = array('email' => $request['email']);
@@ -145,7 +144,10 @@ class Akun extends BaseController
                 return redirect()->back()->withInput();
             }
         }     
-       
+        if(!is_numeric($request['telephone'])){
+            $session->setFlashdata('toast', 'error:Pastikan inputan telephone hanya menggunakan angka!');
+            return redirect()->back()->withInput();
+        }
 
         if (!$gambar->isValid()) {
             $data_detail = array(

@@ -43,11 +43,18 @@ class Order extends BaseController
         
         $req = $this->request->getVar();		
 		$jenis = str_replace('-',' ',$id);
+		$explod = explode("-",$id);
+        
+	    foreach($explod as $v){
+        	if (ctype_alpha($v) && !ctype_lower($v)) {
+            	throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        	} 
+        }
         $produk = $this->model->getWhere('product', ['paket_name' => $jenis])->getRow();
-        $category = $this->model->getWhere('category', ['id' => $produk->category_id])->getRow();
-		if(empty($produk)){
+        if(empty($produk)){
 			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 		}
+        $category = $this->model->getWhere('category', ['id' => $produk->category_id])->getRow();
         $spek = $this->model->getWhere('product_price', ['product_id' => $produk->id])->getResult();
 		$tipe_rumah = $this->model->getWhere('tipe_rumah', ['product_id' => $produk->id])->getResult();
 		// var_dump($produk->id);die;
@@ -89,11 +96,15 @@ class Order extends BaseController
 	public function searchArea()
 	{
 		$req = $this->request->getVar();
-        $temp = str_replace('Kota', '', $req['city']) ;
+        $temp_area = str_replace('Kota', '', $req['city']) ;
+        $temp = str_replace('City', '', $temp_area) ;
 		$cek_area = $this->model->getAll('area')->getResult();
 		$res = FALSE; 
         foreach ($cek_area as $c) {
             if (strpos(strtolower($temp), strtolower('bks')) > -1) {
+                $res = TRUE;
+            }
+			if (strpos(strtolower($temp), strtolower('sby')) > -1) {
                 $res = TRUE;
             }
             if (strpos(strtolower($temp), strtolower($c->nama_area)) > -1) {
@@ -121,7 +132,10 @@ class Order extends BaseController
         }else{
             $log_sign = FALSE;
             $cek_member = $this->model->getWhere('member', ['email' => $input['email']])->getRow();
-			
+			if(!is_numeric($input['telepon'])){
+                session()->setFlashdata('toast', 'error:Pastikan nomor telphone hanya menggunakan Angka!.');
+    			return redirect()->back()->withInput();
+            }
             if(empty($cek_member)){
                 $insert_h['usergroup_id'] = 5;
                 $insert_h['email'] = $input['email'];
@@ -184,10 +198,14 @@ class Order extends BaseController
         $tipe_rumah = $input['tiperumah'];
         $total = $input['totalHarga'];
         $id_spek =  $input['spek'];
-        $uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
-        if ($uploadImg != null) {
-            $img_rumah = $uploadImg['data']['file_name'];
-        }
+        if(!empty($file_rumah->getName())){
+			$uploadImg = $this->uploadImage($file_rumah, $path_uploadImg);
+			if ($uploadImg != null) {
+				$img_rumah = $uploadImg['data']['file_name'];
+			}
+		}else{
+		    $img_rumah = "";
+		}
         // make noprojek
         $db = db_connect();
         $noprojek = $db->query("SELECT COUNT(id) as hitung FROM projects WHERE DATE_FORMAT(FROM_UNIXTIME(created), '%Y%m') = EXTRACT(YEAR_MONTH FROM CURRENT_DATE()) ")->getRow();

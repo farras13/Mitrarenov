@@ -54,14 +54,14 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPUser = 'notifikasi@mitrarenov.com';
+    public $SMTPUser = 'no-reply@mitrarenov.com';
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = '$no#2134WKOA';
+    public $SMTPPass = '#MR$13450&HAHA';
 
     /**
      * SMTP Port

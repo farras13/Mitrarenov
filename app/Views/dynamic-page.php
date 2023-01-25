@@ -1,9 +1,5 @@
 <?= $this->extend('template') ?>
 <?= $this->section('meta') ?>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-<?= $this->endSection(); ?>
-<?= $this->section('meta') ?>
 <title><?= $data->meta_title; ?> | MITRARENOV.COM</title>
 <meta name="description" content="<?= $data->meta_desc; ?>">
 <meta name="keywords" content="<?= $data->meta_keyword; ?>">

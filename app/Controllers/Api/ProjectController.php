@@ -64,11 +64,11 @@ class ProjectController extends ResourceController
         if (!$data) {
             return $this->failNotFound('data tidak ditemukan! Belum pernah melakukan transaksi.');
         }
-        $path = "/public/images/projek/";   
+        $path = "/images/projek/";   
          
         foreach ($data as $p) {
            if($p->image_upload == null){
-                $p->image_upload = $url.'/public/images/no-picture/no_logo.png';
+                $p->image_upload = $url.'/images/no-picture/no_logo.png';
            }else{
                 $p->image_upload = $url.$path.$p->image_upload;
            }          
@@ -131,7 +131,7 @@ class ProjectController extends ResourceController
         $path_dokumen = "https://office.mitrarenov.com/assets/main/berkas/";
         $data['berkas'] = $path_dokumen.$berkas[0]->dokumen;
         $data['berkas_rab'] = $path_dokumen.$berkas[0]->dokumen_rab;
-        $data['image_default'] = $url."public/main/images/gambar-blum-update.png";
+        $data['image_default'] = $url."main/images/gambar-blum-update.png";
         
         if (!$data) {
             return $this->failNotFound('data tidak ditemukan! Belum pernah melakukan transaksi.');         
@@ -171,13 +171,13 @@ class ProjectController extends ResourceController
             $dompdf->setPaper('A4', 'portrait'); //ukuran kertas dan orientasi
             $dompdf->render();
             // $dompdf->stream($nama); //nama file pdf  
-            $file_path = FCPATH. "public/main/pdf/". $nama.".pdf";
+            $file_path = FCPATH. "main/pdf/". $nama.".pdf";
             
             if (file_exists($file_path)) {
                 unlink($file_path);    
             }
             file_put_contents($file_path, $dompdf->output());  
-            $res['data'] = ['file' => base_url("public/main/pdf/". $nama.".pdf")];
+            $res['data'] = ['file' => base_url("main/pdf/". $nama.".pdf")];
             return $this->respond($res, 200);
              //arahkan ke list-iklan setelah laporan di unduh
         } catch (\Throwable $th) {
@@ -450,8 +450,8 @@ class ProjectController extends ResourceController
         $cekUser = $model->getWhere('token_login', ['token' => $token])->getRow();
 
         $id = (int)$cekUser->member_id;
-        $path = "./public/images/desain_rumah_user";
-        $path1 = "./public/images/projek";
+        $path = "./images/desain_rumah_user";
+        $path1 = "./images/projek";
         $data = $models->getProjectUserS($id, 'project');
         // var_dump($data);die;
 
