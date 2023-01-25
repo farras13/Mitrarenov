@@ -138,12 +138,12 @@ class Artikel extends BaseController
           if($foundCharacter !== false){
             $cek = explode(".", $v);
     		foreach($cek as $c){
-              if (!empty($c) && !is_numeric($c) && !ctype_lower($c)) {
+              if (!empty($c) || !is_numeric($c) && !ctype_lower($c)) {
                  throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
               }
             }
           }else{
-            if (!empty($c) && !is_numeric($v) && !ctype_lower($v)) {
+            if (!empty($c) || !is_numeric($v) && !ctype_lower($v)) {
               throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             } 
           }
