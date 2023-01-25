@@ -249,7 +249,7 @@
                                             <?php if(empty($akun->photo)): ?>
                                                 <img src="<?= base_url('main/images/article-sd.jpg') ?>" alt="">                                            
                                             <?php else: ?>
-                                                <img src="<?= base_url('images/pp/'. $akun->photo) ?>" alt="">
+                                                <img src="<?= base_url('public/images/pp/'. $akun->photo) ?>" alt="">
                                             <?php endif; ?>
                                         </div>
                                     </div>

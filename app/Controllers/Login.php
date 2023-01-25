@@ -102,7 +102,7 @@ class Login extends BaseController
 
     public function forgot_pass()
     {
-        $data['segment'] = $this->request->uri->getSegment(2);
+        $data['segment'] = $this->request->uri->getSegment(3);
         echo view("forgot_pass", $data);
     }
 
