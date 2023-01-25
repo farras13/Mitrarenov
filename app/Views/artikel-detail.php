@@ -155,40 +155,10 @@
 </div>
 <?= $this->endSection() ?>
 <?= $this->section('script') ?>
-<script src="<?= base_url('main/js/ScrollMagic.min.js') ?>"></script>
-
 <script>
-  const postDetails = document.querySelector(".content-article");
-  const postSidebar = document.querySelector(".sidebar");
-  const postSidebarContent = document.querySelector(".sidebar-inner");
-
-  const controller = new ScrollMagic.Controller();
-  const scene = new ScrollMagic.Scene({
-    triggerElement: postSidebar,
-    triggerHook: 0,
-    duration: getDuration,
-    offset: -100
-  }).addTo(controller);
-
-  if (window.matchMedia("(min-width: 768px)").matches) {
-    scene.setPin(postSidebar, {
-      pushFollowers: false
-    });
-  }
-
-  window.addEventListener("resize", () => {
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      scene.setPin(postSidebar, {
-        pushFollowers: false
-      });
-    } else {
-      scene.removePin(postSidebar, true);
-    }
-  });
-
-  function getDuration() {
-    return postDetails.offsetHeight - postSidebarContent.offsetHeight;
-  }
+  document.title = '<?=  $berita['meta_title'] ?>';
+  $('head').append('<meta name="description" content="<?=  $berita['meta_description'] ?>">');
+  $('head').append('<meta name="keywords" content="<?=  $berita['meta_keyword'] ?>">');
 </script>
 
 <?= $this->endSection() ?>
