@@ -145,7 +145,7 @@ class Home extends BaseController
                     }
                 }
             }else{
-                if (!empty($c) && !is_numeric($v) && !ctype_lower($v)) {
+                if (!empty($v) && !is_numeric($v) && !ctype_lower($v)) {
                     throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
                 } 
             }

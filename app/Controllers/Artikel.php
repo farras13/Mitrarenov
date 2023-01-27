@@ -135,15 +135,20 @@ class Artikel extends BaseController
 
         foreach($explod as $v){
           $foundCharacter = strpos($v, ".");
+        //   var_dump($foundCharacter);
           if($foundCharacter !== false){
             $cek = explode(".", $v);
-    		foreach($cek as $c){
-              if (!empty($c) || !is_numeric($c) && !ctype_lower($c)) {
-                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-              }
+            // var_dump($cek);
+            $hitung = count($cek) - 1;  
+    		foreach($cek as $ck => $c)
+            {
+                if (!empty($c) && !is_numeric($c) && !ctype_lower($c)) {
+                    throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+                } 
             }
           }else{
-            if (!empty($c) || !is_numeric($v) && !ctype_lower($v)) {
+
+            if (!empty($v) && !is_numeric($v) && !ctype_lower($v)) {
               throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             } 
           }
