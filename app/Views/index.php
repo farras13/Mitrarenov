@@ -402,7 +402,7 @@
               <img src="<?= "https://office.mitrarenov.com/assets/main/images/news/" . $art->image ?>" alt="">
             </div>
             <div class="article-dsc">
-              <h4><?= $art->title ?></h4>
+              <a href="<?= base_url('berita/' . $art->slug) ?>"><h4><?= $art->title ?></h4></a>
               <p class="mb-0">Penulis <?= $art->penulis; ?></p>
               <p>Diterbitkan <?php $time = $art->date;
                               $date = new DateTime("@$time");
