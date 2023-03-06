@@ -13,6 +13,7 @@ use App\Models\DesignModel;
 use App\Models\GalleryModel;
 use CodeIgniter\I18n\Time;
 use DOMDocument;
+use mysqli;
 
 class Home extends BaseController
 {
@@ -145,9 +146,11 @@ class Home extends BaseController
                     }
                 }
             }else{
-                if (!empty($v) && !is_numeric($v) && !ctype_lower($v)) {
-                    throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-                } 
+                if($v != "&"){
+                    if (!empty($v) && !is_numeric($v) && !ctype_lower($v)) {
+                        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+                    } 
+                }
             }
         }
         $data['porto'] = $this->model->getWhere('merawat', ['slug' => $id])->getRow();
@@ -231,7 +234,7 @@ class Home extends BaseController
 		$explod = explode("-",$id);
         
 	    foreach($explod as $v){
-        	if (!ctype_lower($v)) {
+        	if (!ctype_lower($v) && !empty($v)) {
             	throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         	} 
         }

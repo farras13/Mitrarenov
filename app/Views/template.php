@@ -1,15 +1,15 @@
+<?= helper('general_helper'); ?>
 <!doctype html>
 <html lang="en">
-
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<?= base_url('main/css/styles.css') ?>">
-   <link rel="stylesheet" href="<?= base_url('main/css/custom.css') ?>">
-  <link rel="icon" type="image/png" href="<?= base_url('main/images/favico.png ') ?>" />
+  <link rel="stylesheet" href="<?= urlbase('main/css/styles.css') ?>">
+   <link rel="stylesheet" href="<?= urlbase('main/css/custom.css') ?>">
+  <link rel="icon" type="image/png" href="<?= urlbase('main/images/favico.png ') ?>" />
   <!-- toast -->
-  <link rel="stylesheet" type="text/css" href="<?= base_url('main/css/toastr.min.css') ?>">
+  <link rel="stylesheet" type="text/css" href="<?= urlbase('main/css/toastr.min.css') ?>">
 
   <?= $this->renderSection('meta') ?>
 
@@ -42,7 +42,7 @@
         <div class="d-flex align-items-center">
           <div class="w-100">
             <?php if (empty(session()->get('user_id'))) :  ?>
-              Belum memiliki akun ? <a href="<?= base_url('member/register') ?>" class="text-warning font-weight-bold">Registrasi sekarang</a>
+              Belum memiliki akun ? <a href="<?= urlbase('member/register') ?>" class="text-warning font-weight-bold">Registrasi sekarang</a>
             <?php endif; ?>
           </div>
           <div class="w-100 text-right">
@@ -67,15 +67,15 @@
       <div class="header-inner">
         <div class="d-flex align-items-center header-row">
           <div class="header-logo">
-            <a href="<?= base_url('/') ?>">
-              <img src="<?= base_url('main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
+            <a href="<?= urlbase('/') ?>">
+              <img src="<?= urlbase('main/images/logo-mitrarenov.png') ?>" class="img-fluid" alt="">
             </a>
           </div>
           <div class="header-main-nav">
             <div class="login-mobile">
               <?php $sess = session();
               if ($sess->get('logged_in') != TRUE) { ?>
-                <a href="<?= base_url('member/login') ?>" class="nav-link px-0">
+                <a href="<?= urlbase('member/login') ?>" class="nav-link px-0">
                   <i class="ico ico-user"></i> Login / Daftar
                 </a>
               <?php } else { ?>
@@ -87,26 +87,25 @@
             <?php $currentURL = current_url(); ?>
             <ul class="nav main-nav">
               <li class="nav-item">
-
-                <a href="<?= base_url() . '/' ?>" class="nav-link <?php if ($currentURL == base_url() . '/') echo "active"; ?>">Home</a>
+                <a href="<?= urlbase() . '/' ?>" class="nav-link <?php if ($currentURL == urlbase() . '/') echo "active"; ?>">Home</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link <?php if ($currentURL == base_url('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
+                <a href="<?= urlbase('simulasi-kpr') ?>" class="nav-link <?php if ($currentURL == urlbase('simulasi-kpr')) echo "active"; ?>">Simulasi KPR</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('halaman/tentang-kami') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/tentang-kami')) echo "active"; ?>">Tentang Kami</a>
+                <a href="<?= urlbase('halaman/tentang-kami') ?>" class="nav-link <?php if ($currentURL == urlbase('halaman/tentang-kami')) echo "active"; ?>">Tentang Kami</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('halaman/cara-kerja') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/cara-kerja')) echo "active"; ?>">Cara Kerja</a>
+                <a href="<?= urlbase('halaman/cara-kerja') ?>" class="nav-link <?php if ($currentURL == urlbase('halaman/cara-kerja')) echo "active"; ?>">Cara Kerja</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link <?php if ($currentURL == base_url('halaman/hubungi-kami')) echo "active"; ?>">Hubungi Kami</a>
+                <a href="<?= urlbase('halaman/hubungi-kami') ?>" class="nav-link <?php if ($currentURL == urlbase('halaman/hubungi-kami')) echo "active"; ?>">Hubungi Kami</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('berita') ?>" class="nav-link <?php if ($currentURL == base_url('berita')) echo "active"; ?>">Artikel</a>
+                <a href="<?= urlbase('berita') ?>" class="nav-link <?php if ($currentURL == urlbase('berita')) echo "active"; ?>">Artikel</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('/#jasa') ?>" class="nav-link <?php if ($currentURL == base_url('/#jasa')) echo "active"; ?>">Order Jasa</a>
+                <a href="<?= urlbase('/#jasa') ?>" class="nav-link <?php if ($currentURL == urlbase('/#jasa')) echo "active"; ?>">Order Jasa</a>
               </li>
             </ul>
             <ul class="nav justify-content-end mobile-call-center">
@@ -133,7 +132,7 @@
               </li>
               <?php if ($sess->get('logged_in') == TRUE) { ?>
                 <li class="nav-item">
-                  <a href="<?= base_url('chat') ?>" class="nav-link">
+                  <a href="<?= urlbase('chat') ?>" class="nav-link">
                     <i class="ico ico-chat"></i>
 
                   </a>
@@ -155,15 +154,15 @@
                     <div class="notif-list">
                       <?php foreach ($notif as $key => $value) { ?>
                         <?php if ($value->kategori == "chat") {
-                          $link = base_url('notif/chat/' . $value->id);
+                          $link = urlbase('notif/chat/' . $value->id);
                         } else if ($value->kategori == "Project") {
-                          $link = base_url('notif/project/' . $value->id);
+                          $link = urlbase('notif/project/' . $value->id);
                         } else if ($value->kategori == "ProjectUpdate") {
-                          $link = base_url('notif/project/' . $value->id);
+                          $link = urlbase('notif/project/' . $value->id);
                         } else if ($value->kategori == "promo") {
-                          $link = base_url('detail-promo/' . $value->id_kategori);
+                          $link = urlbase('detail-promo/' . $value->id_kategori);
                         } else if ($value->kategori == "transaction") {
-                          $link = base_url('notif/transaction/' . $value->id);
+                          $link = urlbase('notif/transaction/' . $value->id);
                         } ?>
                         <?php if ($value->status == 0) { ?>
                           <a class="dropdown-item new-notif" href="<?= $link ?>">
@@ -183,18 +182,18 @@
               <?php } ?>
               <?php if ($sess->get('logged_in') == FALSE) { ?>
                 <li class="nav-item mobile-off">
-                  <a href="<?= base_url('member/login') ?>" class="nav-link btn btn-outline-primary ml-3">
+                  <a href="<?= urlbase('member/login') ?>" class="nav-link btn btn-outline-primary ml-3">
                     Login
                   </a>
                 </li>
                 <li class="nav-item mobile-off">
-                  <a href="<?= base_url('member/register') ?>" class="nav-link btn btn-primary ml-3">
+                  <a href="<?= urlbase('member/register') ?>" class="nav-link btn btn-primary ml-3">
                     Register
                   </a>
                 </li>
               <?php } else { ?>
                 <li class="nav-item mobile-off">
-                  <a href="<?= base_url('member/akun') ?>" class="nav-link">
+                  <a href="<?= urlbase('member/akun') ?>" class="nav-link">
                     <i class="ico ico-user"></i>
                   </a>
                 </li>
@@ -233,7 +232,7 @@
       <div class="row">
         <div class="col-12 mb-4">
           <a href="#">
-            <img src="<?= base_url('main/images/logo-mitrarenov-white.svg') ?>" class="img-fluid" alt="">
+            <img src="<?= urlbase('main/images/logo-mitrarenov-white.svg') ?>" class="img-fluid" alt="">
           </a>
         </div>
         <div class="col-md-7">
@@ -272,16 +271,16 @@
                 <div class="col-lg-7">
                   <ul class="nav flex-column">
                     <li class="nav-item">
-                      <a href="<?= base_url('halaman/tentang-kami') ?>" class="nav-link px-0">
+                      <a href="<?= urlbase('halaman/tentang-kami') ?>" class="nav-link px-0">
                         Tentang Kami
                       </a>
-                      <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link px-0">
+                      <a href="<?= urlbase('halaman/hubungi-kami') ?>" class="nav-link px-0">
                         Hubungi Kami
                       </a>
-                      <a href="<?= base_url('halaman/kebijakan-privasi') ?>" class="nav-link px-0">
+                      <a href="<?= urlbase('halaman/kebijakan-privasi') ?>" class="nav-link px-0">
                         Pemberitahuan privasi
                       </a>
-                      <a href="<?= base_url('halaman/syarat-ketentuan') ?>" class="nav-link px-0">
+                      <a href="<?= urlbase('halaman/syarat-ketentuan') ?>" class="nav-link px-0">
                         Syarat & Ketentuan
                       </a>
                     </li>
@@ -290,13 +289,13 @@
                 <div class="col-lg-5">
                   <ul class="nav flex-column">
                     <li class="nav-item">
-                      <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link px-0">
+                      <a href="<?= urlbase('halaman/hubungi-kami') ?>" class="nav-link px-0">
                         Partner
                       </a>
-                      <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link px-0">
+                      <a href="<?= urlbase('simulasi-kpr') ?>" class="nav-link px-0">
                         Simulasi KPR
                       </a>
-                      <a href="<?= base_url('halaman/tanya-jawab') ?>" class="nav-link px-0">
+                      <a href="<?= urlbase('halaman/tanya-jawab') ?>" class="nav-link px-0">
                         Tanya Jawab
                       </a>
                     </li>
@@ -355,22 +354,22 @@
       <h5>We accept:</h5>
       <div class="payment-bank">
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo urlbase('main/images/payment/bca-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo urlbase('main/images/payment/bni-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo urlbase('main/images/payment/bri-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo urlbase('main/images/payment/mandiri-logo.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/permata-bank.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo urlbase('main/images/payment/permata-bank.png'); ?>" class="img-fluid" alt="">
         </div>
         <div class="bank-logo">
-          <img src="<?php echo base_url('main/images/payment/logo-gopay.png'); ?>" class="img-fluid" alt="">
+          <img src="<?php echo urlbase('main/images/payment/logo-gopay.png'); ?>" class="img-fluid" alt="">
         </div>
 
         <div class="row payment-options">
@@ -405,10 +404,10 @@
     </div>
   </footer>
 
-  <script type="text/javascript" src="<?= base_url('main/js/script-bundle.min.js') ?>"></script>
-  <script type="text/javascript" src="<?= base_url('main/js/script.js') ?>"></script>
+  <script type="text/javascript" src="<?= urlbase('main/js/script-bundle.min.js') ?>"></script>
+  <script type="text/javascript" src="<?= urlbase('main/js/script.js') ?>"></script>
   <!-- toast -->
-  <script src="<?= base_url('main/js/toastr.min.js') ?>"></script>
+  <script src="<?= urlbase('main/js/toastr.min.js') ?>"></script>
   <?= $this->renderSection('script') ?>
   <script>
     $(document).ready(() => {
@@ -482,7 +481,7 @@
     function seenallnotif() {
       $.ajax({
         method: "POST",
-        url: "<?php echo base_url('seenallnotif'); ?>",
+        url: "<?php echo urlbase('seenallnotif'); ?>",
         success: function(data) {
           console.log("remove class");
           $("a").removeClass("new-notif");

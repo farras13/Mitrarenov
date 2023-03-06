@@ -1,4 +1,15 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+/**
+ * This file is part of CodeIgniter 4 framework.
+ *
+ * (c) CodeIgniter Foundation <admin@codeigniter.com>
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
+
+// CodeIgniter Array Helpers
 
 if(!function_exists('findTukang')) {
     function findTukang($area_id)
@@ -8,6 +19,20 @@ if(!function_exists('findTukang')) {
         $json['data_tukang'] = $query->getRow();
 		
 		return json_encode($json);
+    }
+}
+
+if(!function_exists('urlbase')) {
+    function urlbase($string = null)
+    {      
+		return "https://www.mitrarenov.com/".$string;
+    }
+}
+
+if(!function_exists('urlasset')) {
+    function urlasset($string = null)
+    {      
+		return "https://www.mitrarenov.com/public/".$string;
     }
 }
 

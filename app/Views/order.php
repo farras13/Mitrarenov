@@ -172,7 +172,7 @@
 
                                             <div class="input-inline mb-3">
                                                 <input type="number" class="form-control form-shadow" placeholder="Luas Bangunan" name="luas" id="luasbang" required>
-                                                <span class="input-icon">
+                                                <span class="input-icon" id="satuanspan">
                                                     <i class="ico ico-m2"></i>
                                                 </span>
                                             </div>
@@ -218,7 +218,7 @@
                                                         <?php $no = 0;
                                                         $bnyk = count($spek);
                                                         foreach ($spek as $s) : ?>
-                                                            <option value="spesifikasi<?= $no ?>" data-spekid="<?= $s->id ?>" data-spekid="<?= $s->id ?>" data-harga="<?= $s->product_price ?>">Spesifikasi <?= ucfirst($s->type_price); ?></option>
+                                                            <option value="spesifikasi<?= $no ?>" data-spekid="<?= $s->id ?>" data-satuan="<?= $s->satuan ?>" data-harga="<?= $s->product_price ?>">Spesifikasi <?= ucfirst($s->type_price); ?></option>
                                                         <?php $no++;
                                                         endforeach; ?>
                                                     </select>
@@ -367,7 +367,12 @@
          }
         this.style.setProperty('box-shadow', '0px 0px 10px 7px #606060');
     });
-
+    $('#spek').on('change', function(){
+        nluas = $("#luasbang").val();
+        var satuan = $('option:selected', '#spek').attr('data-satuan');
+        $('#satuanspan').text(satuan);
+        $('#nluas').text(': ' + nluas + ' '+ satuan);
+    });
     $('#luasbang').on('keyup', function() {
         nluas = $("#luasbang").val();
         nharga = $('option:selected', '#spek').attr('data-harga');

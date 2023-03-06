@@ -26,7 +26,6 @@ class App extends BaseConfig
     // public $baseURL = BASE.'public/';
     // public $baseURL = 'https://mitrarenov.soldig.co.id/';
     public $baseURL = 'http://localhost:8080/';
-
     /**
      * --------------------------------------------------------------------------
      * Index File
@@ -464,4 +463,8 @@ class App extends BaseConfig
      * @var bool
      */
     public $CSPEnabled = false;
+
+    public $helpers = [
+        'general_helper'
+    ];
 }
