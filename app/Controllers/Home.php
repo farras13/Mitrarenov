@@ -592,4 +592,28 @@ class Home extends BaseController
           $dom->loadXML($xmlString);
           echo $dom->saveXML();
     }
+
+    public function add_langganan()
+    {
+        $input = $this->request->getVar();
+        $cek = $this->model->getWhere('newsletter_send', ['email' => $input['email']])->getRow();
+        if(empty($cek)){
+            $rules = [
+                'email'  => 'required|valid_email',
+            ];
+
+            if ($this->validate($rules)) {
+                $name = "Cust-".date('dmY');
+                $this->model->ins('newsletter_send', ['email' => $input['email'], 'name' => $name, 'tanggal' => date('Y-m-d')]);
+                session()->setFlashdata('toast', 'success:Terima kasih telah berlangganan !.');
+                return redirect()->to('Home');
+            }else{
+                session()->setFlashdata('toast', 'error:Pastikan inputan berupa email yang valid !.');
+                return redirect()->to('Home');
+            }
+        }else{
+            session()->setFlashdata('toast', 'warn:Email anda sudah berlangganan !.');
+            return redirect()->to('Home');
+        }
+    }
 }

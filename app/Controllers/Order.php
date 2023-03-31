@@ -176,6 +176,8 @@ class Order extends BaseController
         foreach ($cek_area as $c) {
             if (strpos(strtolower($input['city']), strtolower('bks')) > -1) {
                 $input['city'] = "Bekasi";
+				DI Yogyakarta
+				Daerah Istimewa Yogyakarta
             }
             if (strpos(strtolower($input['city']), strtolower($c->nama_area)) > -1) {
                 $log_area = true;

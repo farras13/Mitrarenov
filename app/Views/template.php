@@ -338,8 +338,9 @@
 
               <h5 class="mt-5 mb-3">TETAP TERHUBUNG</h5>
               <div class="newsletter">
-                <form action="#" method="post">
-                  <input type="text" class="form-control" placeholder="Masukkan email anda disini">
+                <form action="<?= base_url('langganan') ?>" method="POST">
+                  <?= csrf_field(); ?>
+                  <input type="email" class="form-control" name="email" placeholder="Masukkan email anda disini">
                   <button type="submit" class="btn">LANGGANAN</button>
                 </form>
               </div>

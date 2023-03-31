@@ -35,6 +35,7 @@ $routes->setAutoRoute(true);
 
 $routes->get('/', 'Home::index');
 $routes->get('home', 'Home::index');
+$routes->post('langganan', 'Home::add_langganan');
 
 $routes->get('sitemap', 'Sitemap::index');
 $routes->get('sitemap-home', 'Sitemap::sitemap_home');

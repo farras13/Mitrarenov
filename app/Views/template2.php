@@ -14,25 +14,31 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url('main/css/toastr.min.css') ?>">
 
     <?= $this->renderSection('meta') ?>
-    
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110308463-1"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'UA-110308463-1');
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-110308463-1');
     </script>
-    
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XRR3LQSP4D"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-XRR3LQSP4D');
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-XRR3LQSP4D');
     </script>
     <title>Mitrarenov</title>
     <?= $this->renderSection('css') ?>
@@ -44,7 +50,7 @@
             <div class="header-inner">
                 <div class="d-flex align-items-center">
                     <div class="w-100">
-                        <?php if(empty(session()->get('user_id'))):  ?>
+                        <?php if (empty(session()->get('user_id'))) :  ?>
                             Belum memiliki akun ? <a href="<?= base_url('member/register') ?>" class="text-warning font-weight-bold">Registrasi sekarang</a>
                         <?php endif; ?>
                     </div>
@@ -76,13 +82,14 @@
                     </div>
                     <div class="header-main-nav">
                         <div class="login-mobile">
-                            <?php $sess = session(); if ($sess->get('logged_in') != TRUE) { ?>
+                            <?php $sess = session();
+                            if ($sess->get('logged_in') != TRUE) { ?>
                                 <a href="<?= base_url('member/login') ?>" class="nav-link px-0">
-                                <i class="ico ico-user"></i> Login / Daftar
+                                    <i class="ico ico-user"></i> Login / Daftar
                                 </a>
-                            <?php }else { ?>
+                            <?php } else { ?>
                                 <a href="#" class="nav-link px-0">
-                                <i class="ico ico-user"></i> <?= $sess->get('user_name') ?>
+                                    <i class="ico ico-user"></i> <?= $sess->get('user_name') ?>
                                 </a>
                             <?php } ?>
                         </div>
@@ -137,13 +144,13 @@
                                 <li class="nav-item">
                                     <a href="<?= base_url('chat') ?>" class="nav-link">
                                         <i class="ico ico-chat"></i>
-                                        <span class="badge" <?= $chat_total == 0 ? "hidden": "";?>><?= $chat_total; ?></span>
+                                        <span class="badge" <?= $chat_total == 0 ? "hidden" : ""; ?>><?= $chat_total; ?></span>
                                     </a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="#" id="notifDropdown" role="button" data-toggle="dropdown" data-offset="40" aria-expanded="false">
                                         <i class="ico ico-bell"></i>
-                                        <span class="badge" <?= $notif_total == 0 ? "hidden": "";?>><?= $notif_total; ?></span>
+                                        <span class="badge" <?= $notif_total == 0 ? "hidden" : ""; ?>><?= $notif_total; ?></span>
                                     </a>
                                     <div class="dropdown-menu notif-dropdown dropdown-menu-right" aria-labelledby="notifDropdown">
                                         <div class="mt-3">
@@ -169,15 +176,15 @@
                                                 } ?>
                                                 <?php if ($value->status == 0) { ?>
                                                     <a class="dropdown-item new-notif" href="<?= $link ?>">
-                                                <?php } else { ?>
-                                                    <a class="dropdown-item" href="<?= $link ?>">
-                                                <?php } ?>
-                                                    <p class="font-weight-bold"><?= $value->kategori ?></p>
-                                                    <p><?= $value->message; ?></p>
-                                                    <p class="text-right mb-0"><?= $value->date ?></p>
-                                                </a>
-                                            <?php } ?>
-                                        </div>                                 
+                                                    <?php } else { ?>
+                                                        <a class="dropdown-item" href="<?= $link ?>">
+                                                        <?php } ?>
+                                                        <p class="font-weight-bold"><?= $value->kategori ?></p>
+                                                        <p><?= $value->message; ?></p>
+                                                        <p class="text-right mb-0"><?= $value->date ?></p>
+                                                        </a>
+                                                    <?php } ?>
+                                        </div>
                                     </div>
                                 </li>
                             <?php } ?>
@@ -237,91 +244,91 @@
             <div class="card card-border">
                 <div class="card-body py-4">
                     <div class="row">
-                        <?php if($currentURL != base_url('chat')): ?>
-                        <div class="col-lg-3 col-left">
-                            <div class="card-nav card-menu-nav">
-                                <a href="#" class="close-nav">
-                                    <i class="ico ico-close"></i>
-                                </a>
-                                <div class="account-user mb-4">
-                                    <div class="img-user">
-                                        <div class="img-user-inner">
-                                            <?php if(empty($akun->photo)): ?>
-                                                <img src="<?= base_url('main/images/article-sd.jpg') ?>" alt="">                                            
-                                            <?php else: ?>
-                                                <img src="<?= base_url('public/images/pp/'. $akun->photo) ?>" alt="">
-                                            <?php endif; ?>
+                        <?php if ($currentURL != base_url('chat')) : ?>
+                            <div class="col-lg-3 col-left">
+                                <div class="card-nav card-menu-nav">
+                                    <a href="#" class="close-nav">
+                                        <i class="ico ico-close"></i>
+                                    </a>
+                                    <div class="account-user mb-4">
+                                        <div class="img-user">
+                                            <div class="img-user-inner">
+                                                <?php if (empty($akun->photo)) : ?>
+                                                    <img src="<?= base_url('main/images/article-sd.jpg') ?>" alt="">
+                                                <?php else : ?>
+                                                    <img src="<?= base_url('public/images/pp/' . $akun->photo) ?>" alt="">
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="data-user">
+                                            <p class="username"><?= $akun->name ?></p>
+                                            <p><?= $sess->get('user_email') ?></p>
+                                            <p><?= $akun->telephone ?></p>
+                                        </div>
+                                        <div class="action-user">
+                                            <a href="<?= base_url('member/edit_profile') ?>"><i class="ico ico-edit"></i></a>
                                         </div>
                                     </div>
-                                    <div class="data-user">
-                                        <p class="username"><?= $akun->name ?></p>
-                                        <p><?= $sess->get('user_email') ?></p>
-                                        <p><?= $akun->telephone ?></p>
+                                    <div class="row align-items-center mb-4">
+                                        <div class="col-12">
+                                            <p class="text-grey text-14 mb-1">Kode Referal</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="reveral" id="reveral"><?= $akun->referal ?></div>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <a href="#" onclick="copyToClipboard('#reveral')"><i class="ico ico-copy"></i></a>
+                                        </div>
                                     </div>
-                                    <div class="action-user">
-                                        <a href="<?= base_url('member/edit_profile') ?>"><i class="ico ico-edit"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-4">
-                                    <div class="col-12">
-                                        <p class="text-grey text-14 mb-1">Kode Referal</p>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="reveral" id="reveral"><?= $akun->referal ?></div>
-                                    </div>
-                                    <div class="col-4 text-right">
-                                        <a href="#" onclick="copyToClipboard('#reveral')"><i class="ico ico-copy"></i></a>
-                                    </div>
-                                </div>
 
-                                <div class="menu-list">
-                                    <ul class="nav flex-column nav-account">
-                                        <li class="nav-item">
-                                            <a href="<?= base_url('member/akun') ?>" class="nav-link active">
-                                                <div class="nav-ico"><i class="ico ico-hammer"></i></div>
-                                                <div>Project Berlangsung</div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= base_url('member/riwayat') ?>" class="nav-link ">
-                                                <div class="nav-ico"><i class="ico ico-history"></i></div>
-                                                <div>Riwayat Dok. Project</div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= base_url('member/ubah_password') ?>" class="nav-link ">
-                                                <div class="nav-ico"><i class="ico ico-lock"></i></div>
-                                                <div>Ubah Password</div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= base_url('halaman/tanya-jawab') ?>" class="nav-link ">
-                                                <div class="nav-ico"><i class="ico ico-question"></i></div>
-                                                <div>Tanya Jawab</div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= base_url('member/tentang-mitra') ?>" class="nav-link ">
-                                                <div class="nav-ico"><i class="ico ico-info"></i></div>
-                                                <div>Tentang Mitrarenov</div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= base_url('halaman/syarat-ketentuan') ?>" class="nav-link ">
-                                                <div class="nav-ico"><i class="ico ico-document"></i></div>
-                                                <div>Syarat dan Ketentuan</div>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= site_url('member/logout') ?>" class="nav-link">
-                                                <div class="nav-ico"><i class="ico ico-power-off"></i></div>
-                                                <div>Logout</div>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <div class="menu-list">
+                                        <ul class="nav flex-column nav-account">
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('member/akun') ?>" class="nav-link active">
+                                                    <div class="nav-ico"><i class="ico ico-hammer"></i></div>
+                                                    <div>Project Berlangsung</div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('member/riwayat') ?>" class="nav-link ">
+                                                    <div class="nav-ico"><i class="ico ico-history"></i></div>
+                                                    <div>Riwayat Dok. Project</div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('member/ubah_password') ?>" class="nav-link ">
+                                                    <div class="nav-ico"><i class="ico ico-lock"></i></div>
+                                                    <div>Ubah Password</div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('halaman/tanya-jawab') ?>" class="nav-link ">
+                                                    <div class="nav-ico"><i class="ico ico-question"></i></div>
+                                                    <div>Tanya Jawab</div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('member/tentang-mitra') ?>" class="nav-link ">
+                                                    <div class="nav-ico"><i class="ico ico-info"></i></div>
+                                                    <div>Tentang Mitrarenov</div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('halaman/syarat-ketentuan') ?>" class="nav-link ">
+                                                    <div class="nav-ico"><i class="ico ico-document"></i></div>
+                                                    <div>Syarat dan Ketentuan</div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= site_url('member/logout') ?>" class="nav-link">
+                                                    <div class="nav-ico"><i class="ico ico-power-off"></i></div>
+                                                    <div>Logout</div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         <?php endif; ?>
 
                         <?= $this->renderSection('content') ?>
@@ -383,39 +390,39 @@
                             <h5>Peroleh Bantuan</h5>
                             <div class="row">
                                 <div class="col-lg-7">
-                                  <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                      <a href="<?= base_url('halaman/tentang-kami') ?>" class="nav-link px-0">
-                                        Tentang Kami
-                                      </a>
-                                      <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link px-0">
-                                        Hubungi Kami
-                                      </a>
-                                      <a href="<?= base_url('halaman/kebijakan-privasi') ?>" class="nav-link px-0">
-                                        Kebijakan privasi
-                                      </a>
-                                      <a href="<?= base_url('halaman/syarat-ketentuan') ?>" class="nav-link px-0">
-                                        Syarat & Ketentuan
-                                      </a>
-                                    </li>
-                                  </ul>
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('halaman/tentang-kami') ?>" class="nav-link px-0">
+                                                Tentang Kami
+                                            </a>
+                                            <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link px-0">
+                                                Hubungi Kami
+                                            </a>
+                                            <a href="<?= base_url('halaman/kebijakan-privasi') ?>" class="nav-link px-0">
+                                                Kebijakan privasi
+                                            </a>
+                                            <a href="<?= base_url('halaman/syarat-ketentuan') ?>" class="nav-link px-0">
+                                                Syarat & Ketentuan
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div class="col-lg-5">
-                                  <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                      <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link px-0">
-                                        Partner
-                                      </a>
-                                      <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link px-0">
-                                        Simulasi KPR
-                                      </a>
-                                      <a href="<?= base_url('halaman/tanya-jawab') ?>" class="nav-link px-0">
-                                        Tanya Jawab
-                                      </a>
-                                    </li>
-                                  </ul>
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('halaman/hubungi-kami') ?>" class="nav-link px-0">
+                                                Partner
+                                            </a>
+                                            <a href="<?= base_url('simulasi-kpr') ?>" class="nav-link px-0">
+                                                Simulasi KPR
+                                            </a>
+                                            <a href="<?= base_url('halaman/tanya-jawab') ?>" class="nav-link px-0">
+                                                Tanya Jawab
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                             </div>
+                            </div>
                             <!--<div class="row">-->
                             <!--    <div class="col-lg-7">-->
                             <!--        <ul class="nav flex-column">-->
@@ -521,8 +528,11 @@
 
                             <h5 class="mt-5 mb-3">TETAP TERHUBUNG</h5>
                             <div class="newsletter">
-                                <input type="text" class="form-control" placeholder="Masukkan email">
-                                <button type="submit" class="btn">LANGGANAN</button>
+                                <form action="<?= base_url('langganan') ?>" method="POST">
+                                    <?= csrf_field(); ?>
+                                    <input type="email" class="form-control" name="email" placeholder="Masukkan email anda disini">
+                                    <button type="submit" class="btn">LANGGANAN</button>
+                                </form>
                             </div>
                             <p class="mt-3">
                                 Tetap up to date dengan berita terbaru
@@ -590,32 +600,32 @@
     <script type="text/javascript" src="<?= base_url('main/js/script.js') ?>"></script>
     <!-- toast -->
     <script src="<?= base_url('main/js/toastr.min.js') ?>"></script>
-    
+
     <script>
         $(document).ready(() => {
-        <?php if (session()->get('toast')) { ?>
-            toastr.options.closeButton = true;
-            var toastvalue = "<?php echo session()->get('toast') ?>";
-            var status = toastvalue.split(":")[0];
-            var message = toastvalue.split(":")[1];
-            if (status === "success") {
-            toastr.success(message, status);
-            } else if (status === "error") {
-            toastr.error(message, status);
-            } else if (status == "warn") {
-            toastr.warning(message, status);
-            }
-        <?php } ?>
+            <?php if (session()->get('toast')) { ?>
+                toastr.options.closeButton = true;
+                var toastvalue = "<?php echo session()->get('toast') ?>";
+                var status = toastvalue.split(":")[0];
+                var message = toastvalue.split(":")[1];
+                if (status === "success") {
+                    toastr.success(message, status);
+                } else if (status === "error") {
+                    toastr.error(message, status);
+                } else if (status == "warn") {
+                    toastr.warning(message, status);
+                }
+            <?php } ?>
         });
     </script>
-    <script>	
-        function seenallnotif(){
+    <script>
+        function seenallnotif() {
             $.ajax({
                 method: "POST",
-                url: "<?php echo base_url('seenallnotif');?>",
-                success:function(data){
-                console.log("remove class");
-                $("a").removeClass("new-notif");
+                url: "<?php echo base_url('seenallnotif'); ?>",
+                success: function(data) {
+                    console.log("remove class");
+                    $("a").removeClass("new-notif");
                 },
             });
         }
